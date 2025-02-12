@@ -1,0 +1,17 @@
+﻿<Window x:Class="psdPH.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:psdPH"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Rectangle x:Name="rect_mask" HorizontalAlignment="Left" Height="98" Margin="170,152,0,0" Stroke="Black" VerticalAlignment="Top" Width="94"/>
+        <Border x:Name="border_semitrans" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="362" Margin="10,0,0,0" VerticalAlignment="Center" Width="414" Background="#7F8E2C2C">
+            <Image x:Name="sobolcoin_image" Margin="312,19,-312,-69" Source="/sobolcoin phonk.png" Stretch="Fill"/>
+        </Border>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="538,36,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+
+    </Grid>
+</Window>
