@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<psd path="">
+	<tph ln="underpic">
+		<text>
+			Я нынче на приколе
+		</text>
+	</tph>
+	<tph ln="week_date">
+		<text>
+			02 - 08 марта
+		</text>
+	</tph>
+	<img ln="pic" path=""/>
+	<blob x='300' y='100' path="">
+		<tph ln="date_number">
+			<text>
+				09
+			</text>
+		</tph>
+		<tph ln="activity1">
+			<text>
+				Twin\rTowers
+			</text>
+		</tph>
+		<tph ln="activity2">
+			<text>
+				Single\rTowers
+			</text>
+		</tph>
+		<vis ln="activity1_collab" is="true"/>
+		<vis ln="activity2_collab" is="false"/>
+		<vis ln="boosty_flag" is="true"/>
+	</blob>
+</psd>
+
+
+<!-- XML Редактор 4.2.5 (81) -->

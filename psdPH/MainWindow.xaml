@@ -7,11 +7,78 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Rectangle x:Name="rect_mask" HorizontalAlignment="Left" Height="98" Margin="170,152,0,0" Stroke="Black" VerticalAlignment="Top" Width="94"/>
-        <Border x:Name="border_semitrans" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="362" Margin="10,0,0,0" VerticalAlignment="Center" Width="414" Background="#7F8E2C2C">
-            <Image x:Name="sobolcoin_image" Margin="312,19,-312,-69" Source="/sobolcoin phonk.png" Stretch="Fill"/>
-        </Border>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="538,36,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="656,31,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Menu VerticalAlignment="Top">
+            <!-- Пункт меню "Файл" -->
+            <MenuItem Header="Файл">
+                <!-- Подменю -->
+                <MenuItem Header="Новый" />
+                <MenuItem Header="Открыть" />
+                <Separator/>
+                <!-- Разделитель -->
+                <MenuItem Header="Сохранить" />
+                <MenuItem Header="Сохранить как..." />
+                <Separator/>
+                <MenuItem Header="Выход" />
+            </MenuItem>
 
+            <!-- Пункт меню "Правка" -->
+            <MenuItem Header="Правка">
+                <MenuItem Header="Вырезать" />
+                <MenuItem Header="Копировать" />
+                <MenuItem Header="Вставить" />
+            </MenuItem>
+
+            <!-- Пункт меню "Справка" -->
+            <MenuItem Header="Справка">
+                <MenuItem Header="О программе" />
+            </MenuItem>
+        </Menu>
+        <TabControl HorizontalAlignment="Left" Height="342" Margin="10,0,0,0" VerticalAlignment="Center" Width="401">
+            <TabItem Header="Структура">
+                <Grid x:Name="structure_grid">
+                    <ToolBar HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="520">
+                        <ToolBar.Background>
+                            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
+                        </ToolBar.Background>
+                        <Button Content="+" HorizontalAlignment="Left" Width="24" BorderBrush="Black" Click="Button_Click_1" x:Name="addButton">
+                            <Button.ContextMenu>
+                                <ContextMenu x:Name="DropdownMenu" >
+                                    <MenuItem x:Name="addFlagItem" Header="Флаг" Click="msg" />
+                                    <MenuItem Header="Текстовое поле" />
+                                    <MenuItem Header="Поле изображения" />
+                                    <MenuItem Header="Видимость слоя" />
+                                </ContextMenu>
+                            </Button.ContextMenu>
+                        </Button>
+                        <Menu/>
+                    </ToolBar>
+                    <ScrollViewer Margin="0,26,0,0">
+                        <StackPanel x:Name="stackPanel">
+                            <Button x:Name="button" Margin="0,1,0,0" >
+                                <Button.Background>
+                                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.InactiveBorderColorKey}}"/>
+                                </Button.Background>
+                                <Button.BorderBrush>
+                                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
+                                </Button.BorderBrush>
+                                <Grid Height="25" Width="368" Margin="0,3,0,0" HorizontalAlignment="Left">
+                                    <Label HorizontalAlignment="Left" Foreground="#FF848484" Content="Флаг"/>
+                                    <Label Content="Label" HorizontalAlignment="Left" Margin="83,0,0,0" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Button>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Правила">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="19*"/>
+                        <ColumnDefinition Width="241*"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

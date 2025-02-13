@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ComposTemplate.cs" />
     <Compile Include="Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
@@ -103,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="sobolcoin phonk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="European_Brown_Bear.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

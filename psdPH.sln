@@ -5,6 +5,11 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psdPH", "psdPH\psdPH.csproj", "{9FFAB28D-5D38-47CF-9D39-F587CFC90455}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{868E0A7A-6D41-4EED-830F-66EEB987752B}"
+	ProjectSection(SolutionItems) = preProject
+		xml_sample.xml = xml_sample.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
