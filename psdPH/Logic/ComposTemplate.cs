@@ -9,16 +9,16 @@ using System.Xml;
 
 namespace psdPH
 {
-    class CompositeRule
+    public class CompositeRule
     {
 
     }
-    class CopyingRule:CompositeRule { }
-    class RuleSet
+    public class CopyingRule:CompositeRule { }
+    public class RuleSet
     {
 
     }
-    class Composition
+    public class Composition
     {
         static public readonly string Xml_name;
         private Composition _parent = null;
@@ -29,12 +29,12 @@ namespace psdPH
         virtual public void apply(XmlDocument xmlDoc, XmlElement xmlEl) { }
         virtual public void addChild(Composition child) { }
         virtual public void removeChild(Composition child) { }
-        public Composition[] getChildren() { return null; }
+        virtual public List<Composition> getChildren() { return null; }
         public RuleSet getRules() { return null; }
 
         public Composition() { }
     }
-    class FlagLeaf : Composition
+    public class FlagLeaf : Composition
     {
         private bool _toggle;
         private string _name;
@@ -46,7 +46,7 @@ namespace psdPH
             root_elem.AppendChild(flag);
         }
     }
-    class ImageLeaf : Composition
+    public class ImageLeaf : Composition
     {
         private string _path;
         private string _layer_name;
@@ -71,7 +71,7 @@ namespace psdPH
             root_elem.AppendChild(img);
         }
     }
-    class TextLeaf : Composition
+    public class TextLeaf : Composition
     {
         private string _text;
         private string _layer_name;
@@ -83,12 +83,17 @@ namespace psdPH
             text.InnerText = _text;
             root_elem.AppendChild(tph);
         }
+        public TextLeaf(string text, string layer_name)
+        {
+            _text = text;
+            _layer_name = layer_name;
+        }
     }
-    class Compositor : Composition
+    public class Compositor : Composition
     {
         const string _xmlName = "blob";
         private string _psd_path = "";
-        List<Composition> children = null;
+        List<Composition> children = new List<Composition>();
         RuleSet ruleset = null;
         override public void apply(XmlDocument xmlDoc, XmlElement root_elem)
         {
@@ -101,7 +106,13 @@ namespace psdPH
             }
 
         }
-        override public void addChild(Composition child) => children.Append(child);
+        override public void addChild(Composition child) => children.Add(child);
         override public void removeChild(Composition child) { children.Remove(child); }
+        override public List<Composition> getChildren() { return children; }
+        public Compositor(string psd_path)
+        {
+
+            _psd_path = psd_path;
+        }
     }
 }

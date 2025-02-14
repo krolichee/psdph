@@ -18,7 +18,7 @@ namespace psdPH
     /// <summary>
     /// Логика взаимодействия для Window1.xaml
     /// </summary>
-    public partial class Cropper : Window
+    public partial class CropperWindow : Window
     {
         private Point _lastMousePosition;
         private bool _isDragging;
@@ -36,7 +36,7 @@ namespace psdPH
         }
 
         public BitmapImage Result { get; }
-        public Cropper(Size size)
+        public CropperWindow(Size size)
         {
             InitializeComponent();
             Size = size;

@@ -17,27 +17,109 @@ using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
-
+using Aspose.PSD.FileFormats.Psd;
+using Aspose.PSD.FileFormats.Psd.Layers;
+using System.Diagnostics;
+using Aspose.PSD;
+using Photoshop;
+using System.Xml.Linq;
+//using Aspose.PSD.Xmp.Schemas.Photoshop;
+//using Aspose.PSD.Xmp.Schemas.Photoshop;
 
 namespace psdPH
 {
-    public class DrawingGroupToImage
+    public class PSDFileLayers
     {
- 
+        Dictionary<string,string> layers = new Dictionary<string,string>();
     }
+
+
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
+    
+
     public partial class MainWindow : Window
     {
-        Cropper cropper = new Cropper(new Size(300,500));
+        public MainViewModel mvm;
+        CropperWindow cropper = new CropperWindow(new System.Windows.Size(300,500));
         public MainWindow()
         {
+            
             InitializeComponent();
-            addFlagItem.CommandParameter = "flag";
+            string filePath = "input.psd";
+            PhotoshopWrapper psd = new PhotoshopWrapper();
+            string absolutePath = System.IO.Path.GetFullPath(filePath);
+            psd.OpenDocument(absolutePath);
+            TemplateEditorWindow editor = new TemplateEditorWindow(psd);
+            editor.ShowDialog();
 
-            //border_semitrans.Opacity = 0.5;
 
+        }
+        void test_ps(string absolutePath)
+        {
+            
+            mvm = new MainViewModel(stackPanel);
+            try
+            {
+                // Создаем экземпляр Photoshop
+                Type psType = Type.GetTypeFromProgID("Photoshop.Application");
+                dynamic psApp = Activator.CreateInstance(psType);
+
+                // Делаем Photoshop видимым
+                psApp.Visible = true;
+
+                // Открываем PSD файл
+                dynamic doc = psApp.Open(absolutePath);
+
+                // Получаем имена слоев и их типы
+                GetLayerNamesAndTypes(doc);
+                doc.SaveAs(@"C:\\Users\\Puziko\\Desktop\\p\\output.png", new PNGSaveOptions(), true, PsExtensionType.psLowercase);
+
+                // Закрываем документ без сохранения
+                doc.Close(PsSaveOptions.psDoNotSaveChanges);
+
+
+                // Закрываем Photoshop
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(psApp);
+                psApp = null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка: {ex.Message}");
+            }
+        }
+
+        static void GetLayerNamesAndTypes(dynamic doc)
+        {
+            // Обрабатываем обычные слои (ArtLayers)
+            foreach (dynamic layer in doc.ArtLayers)
+            {
+                Console.WriteLine($"Слой: {layer.Name}, Тип: {(PsLayerKind)layer.Kind}");
+            }
+
+            // Обрабатываем группы слоев (LayerSets)
+            foreach (dynamic layerSet in doc.LayerSets)
+            {
+                Console.WriteLine($"Группа слоев: {layerSet.Name}, Тип: LayerSet");
+                ProcessLayerSet(layerSet); // Рекурсивно обрабатываем вложенные слои
+            }
+        }
+
+        static void ProcessLayerSet(dynamic layerSet)
+        {
+            // Обрабатываем обычные слои внутри группы
+            foreach (dynamic layer in layerSet.ArtLayers)
+            {
+                Console.WriteLine($"Слой: {layer.Name}, Тип: {(PsLayerKind)layer.Kind } (в группе {layerSet.Name})");
+            }
+
+            // Обрабатываем вложенные группы слоев
+            foreach (dynamic nestedLayerSet in layerSet.LayerSets)
+            {
+                Console.WriteLine($"Группа слоев: {nestedLayerSet.Name}, Тип: LayerSet (в группе {layerSet.Name})");
+                ProcessLayerSet(nestedLayerSet); // Рекурсивный вызов для вложенных групп
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -67,5 +149,104 @@ namespace psdPH
         static class AD { 
             
         }
+        static Dictionary<string, string> GetLayersInfo(string filePath)
+        {
+            var layersInfo = new Dictionary<string, string>();
+
+            // Загружаем PSD-файл
+            using (PsdImage psdImage = (PsdImage)Aspose.PSD.Image.Load(filePath))
+            {
+                
+                //psdImage.DataStreamContainer.ToBytes();
+
+                // Проходим по всем слоям
+                foreach (Aspose.PSD.FileFormats.Psd.Layers.Layer layer in psdImage.Layers)
+                {
+                    byte[] bytes = Encoding.GetEncoding(1251).GetBytes(layer.Name);
+                    string utf8Text = Encoding.UTF8.GetString(bytes);
+                    // Получаем имя слоя
+                    string layerName = utf8Text;
+
+                    // Определяем тип слоя
+                    string layerType = GetLayerType(layer);
+
+                    // Добавляем информацию в словарь
+                    layersInfo[layerName] = layerType;
+                }
+            }
+
+            return layersInfo;
+        }
+        static string GetLayerType(Layer layer)
+        {
+            switch (layer)
+                
+            {
+                case TextLayer _:
+                    return "Text Layer";
+                case Aspose.PSD.FileFormats.Psd.Layers.SmartObjects.SmartObjectLayer _:
+                    return "Smart Object";
+                case Aspose.PSD.FileFormats.Psd.Layers.FillLayers.FillLayer _:
+                    return "Fill Layer";
+                case Aspose.PSD.FileFormats.Psd.Layers.AdjustmentLayers.AdjustmentLayer _:
+                    return "Adjustment Layer";
+                case LayerGroup _:
+                    return "Layer Group";
+                default:
+                    return "Regular Layer";
+            }
+        }
     }
+    public class MainViewModel
+    {
+        private StackPanel _sp;
+
+        public ICommand MyCommand { get; set; }
+
+        public MainViewModel(StackPanel sp)
+        {
+            _sp = sp;
+            MyCommand = new RelayCommand(ExecuteCommand, CanExecuteCommand);
+        }
+
+        private void ExecuteCommand(object parameter)
+        {
+            MessageBox.Show(parameter.ToString());
+        }
+
+        private bool CanExecuteCommand(object parameter)
+        {
+            return parameter.ToString()== "Hello World"; // Здесь можно добавить логику для определения, может ли команда быть выполнена
+        }
+    }
+
+    public class RelayCommand : ICommand
+    {
+        
+        private readonly Action<object> _execute;
+        private readonly Func<object, bool> _canExecute;
+
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute == null || _canExecute(parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            _execute(parameter);
+        }
+
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+    }
+
 }
