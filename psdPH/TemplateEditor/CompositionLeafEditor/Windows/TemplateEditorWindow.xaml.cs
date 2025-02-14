@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.TemplateEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static psdPH.TemplateEditorWindow;
 
 namespace psdPH
 {
@@ -25,15 +26,18 @@ namespace psdPH
     /// <summary>
     /// Логика взаимодействия для TemplateEditor.xaml
     /// </summary>
-    public partial class TemplateEditorWindow : Window
+    
+    
+    public class TemplateEditorWindow : CompositionEditorWindow
     {
+        
         public class EditCompositionWindow : Window
         {
             
 
         }
         Composition _root;
-        AddStructureItemCommand addStructureItemCommand;
+        AddStructureItemCommand _addStructureItemCommand;
         public TemplateEditorWindow(PhotoshopWrapper psd,Composition root=null)
         {
             InitializeComponent();
@@ -46,13 +50,9 @@ namespace psdPH
             }
             _root = root;
 
-            addStructureItemCommand = new AddStructureItemCommand(psd,_root);
-            addTphItem.Command = addStructureItemCommand.MyCommand;
+            _addStructureItemCommand = new AddStructureItemCommand(psd,_root);
+            addTphItem.Command = _addStructureItemCommand.MyCommand;
             addTphItem.CommandParameter = "hello";
-
-
-            
-            
         }
         public class PSDFile
         {
@@ -63,6 +63,12 @@ namespace psdPH
         {
             (sender as Button).ContextMenu.IsOpen = true;
         }
+
+        public Composition getResultComposition()
+        {
+            return _root;
+        }
+
         public class AddStructureItemCommand
         {
             private Composition _root_composition;
@@ -80,11 +86,8 @@ namespace psdPH
 
             private void ExecuteCommand(object parameter)
             {
-                List<string> layer_names = new List<string>();
-                foreach (var layer in _psd.GetLayerNames())
-                    if (layer.kind == PsLayerKind.psTextLayer)
-                        layer_names.Add(layer.name);
-                var cle_w = new CompositionLeafEditorWindow(layer_names.ToArray(),new CompositionLeafEditorConfig());
+                
+                var cle_w = new TextLeafEditorWindow(_psd.GetLayerNames(), new CompositionLeafEditorConfig( new PsLayerKind[]{PsLayerKind.psTextLayer}));
                 cle_w.ShowDialog();
                 _root_composition.addChild(cle_w.getResult());
                 new EditCompositionWindow();

@@ -62,17 +62,18 @@
     <Compile Include="CollectionEditor\Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\CompositionLeafEditorWindow.xaml.cs">
-      <DependentUpon>CompositionLeafEditorWindow.xaml</DependentUpon>
+    <Compile Include="TemplateEditor\CompositionEditorWindow.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TextLeafEditorWindow.xaml.cs">
+      <DependentUpon>TextLeafEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\PhotoshopWrapper.cs" />
-    <Compile Include="TemplateEditor\TemplateEditorWindow.xaml.cs">
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateEditorWindow.xaml.cs">
       <DependentUpon>TemplateEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WeekGalery.xaml.cs">
       <DependentUpon>WeekGalery.xaml</DependentUpon>
     </Compile>
-    <Page Include="TemplateEditor\CompositionLeafEditor\CompositionLeafEditorWindow.xaml">
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\TextLeafEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -92,7 +93,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\TemplateEditorWindow.xaml">
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
