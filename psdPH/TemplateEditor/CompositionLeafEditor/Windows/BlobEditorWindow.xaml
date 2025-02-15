@@ -1,11 +1,12 @@
-﻿<Window x:Class="psdPH.TemplateEditorWindow"
+﻿<Window  x:Class="psdPH.BlobEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:psdPH"
         mc:Ignorable="d"
-        Title="TemplateEditor" Height="450" Width="800">
+        Title="TemplateEditor" Height="450" Width="800"
+        >
     <Grid>
 
         <TabControl>
@@ -25,7 +26,8 @@
                                 <MenuItem x:Name="addFlagItem" Header="Флаг" Command=""/>
                                 <MenuItem x:Name="addTphItem" Header="Текстовое поле" />
                                 <MenuItem x:Name="addImageItem" Header="Поле изображения" />
-                                <MenuItem x:Name="addVis" Header="Видимость слоя" />
+                                <MenuItem x:Name="addVisItem" Header="Видимость слоя" />
+                                <MenuItem x:Name="addSub" Header="Поддокумент" />
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>

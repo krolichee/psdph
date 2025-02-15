@@ -14,6 +14,21 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,9 +50,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.PSD, Version=25.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.PSD.25.1.0\lib\net40\Aspose.PSD.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -58,25 +70,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Logic\ComposTemplate.cs" />
+    <Compile Include="Logic\Composition.cs" />
     <Compile Include="CollectionEditor\Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionEditorWindow.cs" />
+    <Compile Include="TemplateEditor\CompositionEditorConfig.cs" />
+    <Compile Include="TemplateEditor\CompositionEditorWindowProvider.cs" />
+    <Compile Include="Logic\PhotoshopWrapper.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionButtonGrid.xaml.cs">
+      <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\LayerChoiceWindow.xaml.cs">
+      <DependentUpon>LayerChoiceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml.cs">
+      <DependentUpon>BlobEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TextLeafEditorWindow.xaml.cs">
       <DependentUpon>TextLeafEditorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Logic\PhotoshopWrapper.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateEditorWindow.xaml.cs">
-      <DependentUpon>TemplateEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WeekGalery.xaml.cs">
       <DependentUpon>WeekGalery.xaml</DependentUpon>
     </Compile>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\TextLeafEditorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -93,7 +108,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateEditorWindow.xaml">
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionButtonGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\LayerChoiceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\TextLeafEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -145,7 +172,27 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+    <COMReference Include="PhotoshopTypeLibrary">
+      <Guid>{4B0AB3E1-80F1-11CF-86B4-444553540000}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>1033</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

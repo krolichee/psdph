@@ -19,33 +19,8 @@ namespace psdPH
     /// <summary>
     /// Логика взаимодействия для EditCompositionWindow.xaml
     /// </summary>
-    public interface ICompositionEditorWindowFactory
-    {
-        CompositionEditorWindow CreateCompositionEditorWindow(List<PSDLayer> layers);
-    };
-    public class TextLeafEditorWindowFactory : ICompositionEditorWindowFactory
-    {
-        public CompositionEditorWindow CreateCompositionEditorWindow(List<PSDLayer> layers)
-        {
-            return new TextLeafEditorWindow(layers);
-        }
-    }
 
-    public abstract class CompositionLeafEditorConfig
-    {
-        public Composition Composition;
-        static public PsLayerKind[] Kinds;
-        public ICompositionEditorWindowFactory Factory;
-    }
-    public class TextLeafEditorConfig : CompositionLeafEditorConfig
-    {
-        public TextLeafEditorConfig(TextLeaf textLeaf)
-        {
-            Factory = new TextLeafEditorWindowFactory();
-        }
-    }
-
-    public class TextLeafEditorWindow: CompositionEditorWindow
+    public partial class TextLeafEditorWindow : Window, ICompositionGenerator
     {
 
         private Composition _composition;
@@ -53,25 +28,33 @@ namespace psdPH
         {
             return _composition;
         }
-        public TextLeafEditorWindow(List<PSDLayer> layers)
+        public TextLeafEditorWindow(PhotoshopWrapper psd, TextLeafEditorConfig config)
         {
             InitializeComponent();
-            List<string> layer_names = new List<string>();
-            foreach (var layer in layers)
-                foreach (var kind in TextLeafEditorConfig.Kinds)
-                    if (layer.kind == kind)
-                        layer_names.Add(layer.name);
+            _composition = config.Composition;
+            var layers = psd.GetLayers().ToArray();
+            layers = PSDLayer.FilterByKinds(layers, config.Kinds);
+            string[] layer_names = layers.Select(l=>l.name).ToArray();
             foreach (var name in layer_names)
                 comboBox.Items.Add(name);
+            comboBox.SelectedIndex = 0;
         }
-        public TextLeafEditorWindow(List<PSDLayer> layers, CompositionLeafEditorConfig config, Composition composition)
-        {
-            _composition = composition;
-        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             _composition = new TextLeaf(textBox.Text, comboBox.Text);
-            this.Close();
+            Close();
+        }
+
+
+        public new bool? ShowDialog()
+        {
+            return base.ShowDialog();
+        }
+
+        public Composition getResultComposition()
+        {
+            return _composition;
         }
     }
 }

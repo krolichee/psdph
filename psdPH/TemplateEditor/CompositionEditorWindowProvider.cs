@@ -5,14 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace psdPH.TemplateEditor
+namespace psdPH
 {
     public interface ICompositionGenerator
     {
         Composition getResultComposition();
+        bool? ShowDialog();
     }
-    public abstract class CompositionEditorWindow : Window, ICompositionGenerator
+    abstract public partial class CompositionEditorWindowProvider : ICompositionGenerator
     {
         abstract public Composition getResultComposition();
+
+        public bool? ShowDialog()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

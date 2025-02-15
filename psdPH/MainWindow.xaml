@@ -62,7 +62,7 @@
                                 <Button.BorderBrush>
                                     <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
                                 </Button.BorderBrush>
-                                <Grid Height="25" Width="368" Margin="0,3,0,0" HorizontalAlignment="Left">
+                                <Grid Height="25" Width="368" HorizontalAlignment="Center">
                                     <Label HorizontalAlignment="Left" Foreground="#FF848484" Content="Флаг"/>
                                     <Label Content="Label" HorizontalAlignment="Left" Margin="83,0,0,0" VerticalAlignment="Center"/>
                                 </Grid>
