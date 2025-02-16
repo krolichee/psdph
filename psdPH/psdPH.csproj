@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -74,9 +74,14 @@
     <Compile Include="CollectionEditor\Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logic\CompositionXmlDictionary.cs" />
+    <Compile Include="Logic\PhotoshopDocumentWrapper.cs" />
     <Compile Include="TemplateEditor\CompositionEditorConfig.cs" />
     <Compile Include="TemplateEditor\CompositionEditorWindowProvider.cs" />
     <Compile Include="Logic\PhotoshopWrapper.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\BlobPathEditorWindow.xaml.cs">
+      <DependentUpon>BlobPathEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionButtonGrid.xaml.cs">
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
     </Compile>
@@ -105,6 +110,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="CollectionEditor\Cropper.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\BlobPathEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -148,6 +157,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Projects\test\input.psd" />
+    <None Include="Projects\test\template.psd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -193,6 +204,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Projects\test\template.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

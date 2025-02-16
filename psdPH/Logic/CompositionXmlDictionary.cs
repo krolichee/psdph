@@ -1,0 +1,53 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace psdPH.Logic
+{
+    class CompositionXmlDictionary
+    {
+        class KV
+        {
+            public static KeyValuePair<string, Type> NewKV(string xmlname, Type type)
+            {
+                return new KeyValuePair<string, Type>(xmlname, type);
+            }
+            public static KeyValuePair<string, Type> NewKV(Type c)
+            {
+
+                return NewKV(c.GetProperty("XmlName").GetValue(null) as string, c);
+            }
+        }
+        static Dictionary<string, Type> StoT = new Dictionary<string, Type>
+        { };
+        public static void InitializeDictionary()
+        {
+            KeyValuePair<string, Type>[] pairs =
+            {
+                    KV.NewKV(typeof(Blob)),
+                    KV.NewKV(typeof(PlaceholderLeaf)),
+                    KV.NewKV(typeof(ImageLeaf)),
+                    KV.NewKV(typeof(FlagLeaf)),
+                    KV.NewKV(typeof(VisLeaf)),
+                };
+            foreach (var pair in pairs)
+                StoT.Add(pair.Key, pair.Value);
+        }
+        public static string GetXmlName(Type type)
+        {
+            foreach (var kvp in StoT)
+            {
+                if (kvp.Value == type)
+                    return kvp.Key;
+            }
+
+            throw new ArgumentException();
+        }
+        public static Type GetCompositionType(string xmlname)
+        {
+            return StoT[xmlname];
+        }
+    }
+}

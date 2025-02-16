@@ -21,10 +21,10 @@ namespace psdPH
     }
     public abstract class Composition
     {
-        protected static string _xmlName = "";
-        protected static string _uiName = "";
-        public string XmlName { get { return _xmlName; } }
-        public string UIName { get { return _uiName; } }
+        protected static string _xmlTag = "";
+        protected static string _uiTag = "";
+        public string XmlName { get { return _xmlTag; } }
+        public string UIName { get { return _uiTag; } }
         abstract public string ObjName { get; }
         private Composition _parent = null;
         public Composition getParent()
@@ -55,8 +55,8 @@ namespace psdPH
         }
         public FlagLeaf()
         {
-            _xmlName = "flag";
-            _uiName = "Флаг";
+            _xmlTag = "flag";
+            _uiTag = "Флаг";
         }
     }
     public class ImageLeaf : Composition
@@ -77,8 +77,8 @@ namespace psdPH
         }
         public ImageLeaf()
         {
-            _xmlName = "tph";
-            _uiName = "Изобр.";
+            _xmlTag = "tph";
+            _uiTag = "Изобр.";
         }
     }
     class VisLeaf : Composition
@@ -96,8 +96,8 @@ namespace psdPH
         }
         public VisLeaf()
         {
-            _xmlName = "vis";
-            _uiName = "Видим.";
+            _xmlTag = "vis";
+            _uiTag = "Видим.";
 
         }
     }
@@ -111,7 +111,7 @@ namespace psdPH
         override public void apply(XmlDocument xmlDoc, XmlElement root_elem)
         {
             
-            XmlElement tph = xmlDoc.CreateElement(_xmlName);
+            XmlElement tph = xmlDoc.CreateElement(_xmlTag);
             tph.SetAttribute("ln", _layer_name);
             XmlElement text = xmlDoc.CreateElement("text");
             text.InnerText = _text;
@@ -119,43 +119,75 @@ namespace psdPH
         }
         public TextLeaf(string text, string layer_name)
         {
-            _xmlName = "tph";
-            _uiName = "Текст";
+            _xmlTag = "tph";
+            _uiTag = "Текст";
             _text = text;
             _layer_name = layer_name;
         }
     }
+    public enum BlobMode
+    {
+        Layer,
+        Path
+    }
     public class Blob : Composition
     {
-        private string _layer_name = "";
+        private string _name = "";
         private string _psd_path;
+        private string _layer_name;
+        private BlobMode _mode;
         List<Composition> children = new List<Composition>();
         RuleSet ruleset = null;
 
-        public override string ObjName => _layer_name;
+        public override string ObjName => _name;
+        public string Name { get { return _name; } set { _name = value; } }
         public string LayerName => _layer_name;
-        public string Path => _psd_path;
+        public string Path { get { return _psd_path; } set { _psd_path = value; } }
+        public BlobMode Mode => _mode;
 
         override public void apply(XmlDocument xmlDoc, XmlElement root_elem)
         {
-            XmlElement blob = xmlDoc.CreateElement(XmlName);
-            blob.SetAttribute("path", _layer_name);
-            root_elem.AppendChild(blob);
+            XmlElement blobEl = xmlDoc.CreateElement(XmlName);
+            blobEl.SetAttribute("path", _name);
+            root_elem.AppendChild(blobEl);
             foreach (var child in children)
             {
-                child.apply(xmlDoc, blob);
+                child.apply(xmlDoc, blobEl);
             }
 
         }
         override public void addChild(Composition child) => children.Add(child);
         override public void removeChild(Composition child) { children.Remove(child); }
         override public List<Composition> getChildren() { return children; }
-        public Blob(string layer_name, string psd_path)
+        public Blob(string indiv, BlobMode mode)
         {
-            _xmlName = "blob";
-            _uiName = "Подфайл";
-            _layer_name = layer_name;
-            _psd_path = psd_path;
+            //----static----
+            _xmlTag = "blob";
+            _uiTag = "Подфайл";
+            //--------------
+            _mode = mode;
+            if (_mode == BlobMode.Layer) {
+                _name = System.IO.Path.GetFileNameWithoutExtension(indiv);
+                _layer_name = indiv;
+                _psd_path = null;
+            }
+            if (_mode == BlobMode.Path)
+            {
+                _name = System.IO.Path.GetFileNameWithoutExtension(indiv);
+                _layer_name = null;
+                _psd_path = indiv;
+            }
+        }
+    }
+    public class PlaceholderLeaf : Composition
+    {
+        
+        private string _layer_name;
+        public string LayerName => _layer_name;
+        public override string ObjName => throw new NotImplementedException();
+        public PlaceholderLeaf(string layername)
+        {
+            _layer_name = layername;
         }
     }
 }

@@ -1,0 +1,25 @@
+﻿<Window x:Class="psdPH.TemplateEditor.CompositionLeafEditor.Windows.BlobPathEditorWindow"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="File Drag 'n' Drop or Select" Height="350" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- TextBox для ввода имени -->
+        <Label Grid.Row="0" Content="Введите имя:" Margin="10"/>
+        <TextBox Grid.Row="0" Name="NameTextBox" Margin="10,30,10,10" />
+
+        <!-- Область для перетаскивания файла -->
+        <Label Grid.Row="1" Content="Перетащите файл сюда или выберите на диске:" Margin="10"/>
+        <Border Grid.Row="2" Name="DropArea" Background="LightGray" Margin="10">
+            <TextBlock Text="Перетащите файл .psd сюда" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+
+        <!-- Кнопка для выбора файла -->
+        <Button Grid.Row="2" Content="Выбрать файл" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Click="SelectFileButton_Click"/>
+    </Grid>
+</Window>

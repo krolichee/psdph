@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Logic;
 using psdPH.TemplateEditor;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using System;
@@ -27,16 +28,20 @@ namespace psdPH
     {
         Composition _root;
         AddStructureItemCommand _addStructureItemCommand;
-        public BlobEditorWindow(PhotoshopWrapper psd, CompositionEditorConfig config)
-        {
+
+        ///<summary>
+        ///Конструктор для открытия смарт-объекта в данном документе. Выход из документа без сохранения
+        ///</summary>
+        public BlobEditorWindow(PhotoshopDocumentWrapper doc, CompositionEditorConfig config)
+        {   
+            string psd_path = InitializeParameters(doc, ref config);
             InitializeComponent();
-            string psd_path = InitializeParameters(ref psd, ref config);
             if (psd_path == "")
             {
                 this.Close();
                 return;
             }
-            psd.OpenDocument(psd_path);
+            doc.OpenSmartLayer(psd_path);
             _root = config.Composition;
             _addStructureItemCommand = new AddStructureItemCommand(psd, _root, this);
 
@@ -45,41 +50,57 @@ namespace psdPH
             addTphItem.CommandParameter = new TextLeafEditorConfig(null);
             addSub.CommandParameter = new BlobEditorConfig(null);
         }
-        protected string InitializeParameters(ref PhotoshopWrapper psd, ref CompositionEditorConfig config)
+
+        ///<summary>
+        ///Конструктор для открытия документа. Выход из документа без сохранения
+        ///</summary>
+        public BlobEditorWindow(CompositionEditorConfig config)
+
         {
-            //1. psd = object, config = object : в открытом документе открыть смарт-объект
-            //2. psd = object, config = 0 : в открытом документе выбрать слой, затем открыть смарт объект
-            //3. psd = 0, config = object : открыть документ по пути
-            string psd_path;
-            if (psd == null) //3
+            Blob blob = config.Composition as Blob;
+            if (blob.Mode != BlobMode.Path)
+                throw new ArgumentException();
+            PhotoshopWrapper psd = new PhotoshopWrapper();
+            psd.OpenDocument(blob.Path);
+        }
+        ///<summary>
+        ///Конструктор для выбора смарт-объекта для создания блоба в данном документе. Выход из документа без сохранения
+        ///</summary>
+        public BlobEditorWindow(PhotoshopDocumentWrapper doc)
+        {
+
+        }
+
+
+        protected string InitializeParameters(PhotoshopDocumentWrapper doc, ref CompositionEditorConfig config)
+        {
+            //1. doc = object, config = object : в открытом документе открыть смарт-объект
+            //2. doc = object, config = 0 : в открытом документе выбрать слой, затем открыть смарт объект
+            //3. doc = 0, config = object : открыть документ по пути, потом 1
+            if (doc == null)
             {
-                psd = new PhotoshopWrapper();
-                psd_path = (config.Composition as Blob).Path;
-                _root = config.Composition;
+                if (config?.Composition == null)
+                    throw new ArgumentNullException();
+                if (config)
+                PhotoshopWrapper
             }
-            else
-                if (config?.Composition == null) //2
+
+            if (config?.Composition == null) //2
             {
-                string[] layer_names = PSDLayer.GetLayersNames(
-                    psd.GetLayersByKinds(config.Kinds));
+                string[] layer_names = PhotoshopDocumentWrapper.GetLayersNames(doc.GetLayersByKinds(config.Kinds));
                 var lc_w = new LayerChoiceWindow(layer_names);
                 lc_w.ShowDialog();
                 string ln = lc_w.getResultString();
-                if (ln == "") {
+                if (ln == "")
                     return "";
-                };
-                
-                //---
-                int id = psd.GetLayerByName(ln).id;
-                psd_path = psd.ExtractSmartObject(id);
-                config = new BlobEditorConfig(new Blob(ln, psd_path));
+                int id = doc.GetLayerByName(ln).id;
+                config = new BlobEditorConfig(new Blob(ln, BlobMode.Layer));
             }
             else //1
             {
-                int id = psd.GetLayerByName(((Blob)config.Composition).LayerName).id;
-                psd_path = psd.ExtractSmartObject(id);
+                int id = doc.GetLayerByName(((Blob)config.Composition).Name).id;
             }
-            return psd_path;
+            return "psd_path";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -111,15 +132,15 @@ namespace psdPH
         public class AddStructureItemCommand
         {
             private Composition _root_composition;
-            private PhotoshopWrapper _psd;
+            private PhotoshopDocumentWrapper _doc;
             private BlobEditorWindow _tew;
 
             public ICommand MyCommand { get; set; }
 
-            public AddStructureItemCommand(PhotoshopWrapper psd, Composition composition, BlobEditorWindow tew)
+            public AddStructureItemCommand(PhotoshopDocumentWrapper doc, Composition composition, BlobEditorWindow tew)
             {
                 _root_composition = composition;
-                _psd = psd;
+                _doc = doc;
                 _tew = tew;
                 MyCommand = new RelayCommand(ExecuteCommand, CanExecuteCommand);
             }
@@ -127,7 +148,7 @@ namespace psdPH
             private void ExecuteCommand(object parameter)
             {
                 var config = parameter as CompositionEditorConfig;
-                ICompositionGenerator cle_w = config.Factory.CreateCompositionEditorWindow(_psd, config);
+                ICompositionGenerator cle_w = config.Factory.CreateCompositionEditorWindow(_doc, config);
                 cle_w.ShowDialog();
                 _root_composition.addChild(cle_w.getResultComposition());
                 _tew.refreshCompositionStack();
