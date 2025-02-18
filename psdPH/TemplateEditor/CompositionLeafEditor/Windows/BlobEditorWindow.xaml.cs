@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH;
 using psdPH.Logic;
 using psdPH.TemplateEditor;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
@@ -17,6 +18,10 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PsApp= Photoshop.Application;
+using PsWr = psdPH.PhotoshopWrapper;
+using PsDocWr = psdPH.Logic.PhotoshopDocumentWrapper;
+using System.ComponentModel;
 
 namespace psdPH
 {
@@ -24,83 +29,53 @@ namespace psdPH
     /// Логика взаимодействия для TemplateEditor.xaml
     /// </summary>
 
-    public partial class BlobEditorWindow : Window, ICompositionGenerator
+    public partial class BlobEditorWindow : Window, ICompositionEditor
     {
         Composition _root;
         AddStructureItemCommand _addStructureItemCommand;
-
-        ///<summary>
-        ///Конструктор для открытия смарт-объекта в данном документе. Выход из документа без сохранения
-        ///</summary>
-        public BlobEditorWindow(PhotoshopDocumentWrapper doc, CompositionEditorConfig config)
-        {   
-            string psd_path = InitializeParameters(doc, ref config);
-            InitializeComponent();
-            if (psd_path == "")
-            {
-                this.Close();
-                return;
-            }
-            doc.OpenSmartLayer(psd_path);
-            _root = config.Composition;
-            _addStructureItemCommand = new AddStructureItemCommand(psd, _root, this);
-
+        void InitializeElements()
+        {
             addTphItem.Command = _addStructureItemCommand.MyCommand;
             addSub.Command = _addStructureItemCommand.MyCommand;
             addTphItem.CommandParameter = new TextLeafEditorConfig(null);
             addSub.CommandParameter = new BlobEditorConfig(null);
         }
+        public static BlobEditorWindow CreateWithinDocument(Document doc, CompositionEditorConfig config)
+        {
+            string[] layer_names = PsDocWr.GetLayersNames(new PsDocWr(doc).GetLayersByKinds(config.Kinds));
+            var lc_w = new LayerChoiceWindow(layer_names);
+            lc_w.ShowDialog();
+            string ln = lc_w.getResultString();
+            if (ln == "")
+                return null;
+            config.Composition = new Blob(ln, BlobMode.Layer);
 
-        ///<summary>
-        ///Конструктор для открытия документа. Выход из документа без сохранения
-        ///</summary>
-        public BlobEditorWindow(CompositionEditorConfig config)
-
+            return new BlobEditorWindow(doc, config);
+        }
+        public static BlobEditorWindow OpenInDocument(Document doc, CompositionEditorConfig config)
+        {
+            Blob blob = config.Composition as Blob;
+            if (blob.Mode != BlobMode.Layer)
+                throw new ArgumentException();
+            PsDocWr docWr= new PsDocWr(doc);
+            Document new_doc = docWr.OpenSmartLayer(blob.LayerName);
+            return new BlobEditorWindow(new_doc, config);
+        }
+        public static BlobEditorWindow OpenFromDisk(CompositionEditorConfig config)
         {
             Blob blob = config.Composition as Blob;
             if (blob.Mode != BlobMode.Path)
                 throw new ArgumentException();
-            PhotoshopWrapper psd = new PhotoshopWrapper();
-            psd.OpenDocument(blob.Path);
+            PsApp psApp = PsWr.GetPhotoshopApplication();
+            psApp.Open(blob.Path);
+            Document doc = psApp.ActiveDocument;
+            return new BlobEditorWindow(doc, config);
         }
-        ///<summary>
-        ///Конструктор для выбора смарт-объекта для создания блоба в данном документе. Выход из документа без сохранения
-        ///</summary>
-        public BlobEditorWindow(PhotoshopDocumentWrapper doc)
+        BlobEditorWindow(Document doc, CompositionEditorConfig config)
         {
+            _root = config.Composition;
+            _addStructureItemCommand = new AddStructureItemCommand(doc, _root, this);
 
-        }
-
-
-        protected string InitializeParameters(PhotoshopDocumentWrapper doc, ref CompositionEditorConfig config)
-        {
-            //1. doc = object, config = object : в открытом документе открыть смарт-объект
-            //2. doc = object, config = 0 : в открытом документе выбрать слой, затем открыть смарт объект
-            //3. doc = 0, config = object : открыть документ по пути, потом 1
-            if (doc == null)
-            {
-                if (config?.Composition == null)
-                    throw new ArgumentNullException();
-                if (config)
-                PhotoshopWrapper
-            }
-
-            if (config?.Composition == null) //2
-            {
-                string[] layer_names = PhotoshopDocumentWrapper.GetLayersNames(doc.GetLayersByKinds(config.Kinds));
-                var lc_w = new LayerChoiceWindow(layer_names);
-                lc_w.ShowDialog();
-                string ln = lc_w.getResultString();
-                if (ln == "")
-                    return "";
-                int id = doc.GetLayerByName(ln).id;
-                config = new BlobEditorConfig(new Blob(ln, BlobMode.Layer));
-            }
-            else //1
-            {
-                int id = doc.GetLayerByName(((Blob)config.Composition).Name).id;
-            }
-            return "psd_path";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -116,42 +91,45 @@ namespace psdPH
         void refreshCompositionStack()
         {
             stackPanel.Children.Clear();
-            foreach (var child in _root.getChildren())
+            foreach (Composition child in _root.getChildren())
             {
-                var button = new Button();
-                button.Height = 28;
                 var grid = new Grid();
-                button.Content = grid;
                 grid.Children.Add(new Label() { Content = child.UIName, Foreground = SystemColors.ActiveBorderBrush, HorizontalAlignment = HorizontalAlignment.Left });
                 grid.Children.Add(new Label() { Content = child.ObjName, Foreground = SystemColors.ActiveCaptionTextBrush, HorizontalAlignment = HorizontalAlignment.Center });
-                stackPanel.Children.Add(button);
                 grid.Width = stackPanel.Width;
+                var button = new Button();
+                button.Height = 28;
+                button.Content = grid;
+                button.Command = _addStructureItemCommand.MyCommand;
+                Type type = CompositionConfigDictionary.GetConfigType(child.GetType());
+                button.CommandParameter = Activator.CreateInstance(type, new object[] {child}); 
+                stackPanel.Children.Add(button);
             }
         }
 
         public class AddStructureItemCommand
         {
             private Composition _root_composition;
-            private PhotoshopDocumentWrapper _doc;
-            private BlobEditorWindow _tew;
+            private Document _doc;
+            private BlobEditorWindow _editor;
 
             public ICommand MyCommand { get; set; }
 
-            public AddStructureItemCommand(PhotoshopDocumentWrapper doc, Composition composition, BlobEditorWindow tew)
+            public AddStructureItemCommand(Document doc, Composition composition, BlobEditorWindow tew)
             {
                 _root_composition = composition;
                 _doc = doc;
-                _tew = tew;
+                _editor = tew;
                 MyCommand = new RelayCommand(ExecuteCommand, CanExecuteCommand);
             }
 
             private void ExecuteCommand(object parameter)
             {
                 var config = parameter as CompositionEditorConfig;
-                ICompositionGenerator cle_w = config.Factory.CreateCompositionEditorWindow(_doc, config);
+                ICompositionEditor cle_w = config.Factory.CreateCompositionEditorWindow(_doc, config);
                 cle_w.ShowDialog();
                 _root_composition.addChild(cle_w.getResultComposition());
-                _tew.refreshCompositionStack();
+                _editor.refreshCompositionStack();
             }
 
             private bool CanExecuteCommand(object parameter)

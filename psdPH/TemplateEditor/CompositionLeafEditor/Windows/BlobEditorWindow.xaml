@@ -5,21 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:psdPH"
         mc:Ignorable="d"
-        Title="TemplateEditor" Height="450" Width="800"
+        Title="TemplateEditor" Height="450" Width="365"
         >
     <Grid>
 
-        <TabControl>
+        <TabControl Margin="0,0,0,0">
             <TabItem Header="Структура">
-                <Grid Background="#FFE5E5E5">
-                    <StackPanel x:Name="stackPanel" HorizontalAlignment="Left" Height="248" Margin="10,50,0,0" VerticalAlignment="Top" Width="335">
-                        <StackPanel.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black"/>
-                                <GradientStop Color="#FF985555" Offset="1"/>
-                            </LinearGradientBrush>
-                        </StackPanel.Background>
-                    </StackPanel>
+                <Grid Background="#FFE5E5E5" Margin="0,0,0,0">
+                    <StackPanel x:Name="stackPanel" HorizontalAlignment="Left" Height="248" Margin="10,50,0,0" VerticalAlignment="Top" Width="335" Grid.ColumnSpan="2"/>
                     <Button Content="+" HorizontalAlignment="Left" Height="24" Margin="10,21,0,0" VerticalAlignment="Top" Width="27" Click="Button_Click">
                         <Button.ContextMenu>
                             <ContextMenu x:Name="DropdownMenu" >
@@ -33,8 +26,9 @@
                     </Button>
                 </Grid>
             </TabItem>
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem Header="Правила" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58">
+                <Grid Background="#FFE5E5E5">
+                </Grid>
             </TabItem>
         </TabControl>
 

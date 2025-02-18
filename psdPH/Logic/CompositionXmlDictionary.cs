@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace psdPH.Logic
 {
     class CompositionXmlDictionary
     {
+        static Dictionary<string, Type> StoT = new Dictionary<string, Type> { };
         class KV
         {
             public static KeyValuePair<string, Type> NewKV(string xmlname, Type type)
             {
                 return new KeyValuePair<string, Type>(xmlname, type);
             }
-            public static KeyValuePair<string, Type> NewKV(Type c)
+            public static KeyValuePair<string, Type> NewKV(Type type)
             {
-
-                return NewKV(c.GetProperty("XmlName").GetValue(null) as string, c);
+                XmlRootAttribute rootAttribute = (XmlRootAttribute)Attribute.GetCustomAttribute(type,typeof(XmlRootAttribute));
+                return NewKV(rootAttribute.ElementName, type);
             }
         }
-        static Dictionary<string, Type> StoT = new Dictionary<string, Type>
-        { };
+        
         public static void InitializeDictionary()
         {
             KeyValuePair<string, Type>[] pairs =

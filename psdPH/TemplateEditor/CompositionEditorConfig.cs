@@ -4,25 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PsApp = Photoshop.Application;
 
 namespace psdPH.TemplateEditor
 {
     public interface ICompositionEditorWindowFactory
     {
-        ICompositionGenerator CreateCompositionEditorWindow(PhotoshopWrapper psd, CompositionEditorConfig config);
+        ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config);
     };
     public class TextLeafEditorWindowFactory : ICompositionEditorWindowFactory
     {
-        public ICompositionGenerator CreateCompositionEditorWindow(PhotoshopWrapper psd, CompositionEditorConfig config)
+        public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config)
         {
-            return new TextLeafEditorWindow(psd, config as TextLeafEditorConfig);
+            return new TextLeafEditorWindow(doc, config as TextLeafEditorConfig);
         }
     }
     public class BlobEditorWindowFactory : ICompositionEditorWindowFactory
     {
-        public ICompositionGenerator CreateCompositionEditorWindow(PhotoshopWrapper psd, CompositionEditorConfig config)
+        public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config)
         {
-            return new BlobEditorWindow(psd, config);
+            ICompositionEditor result;
+            if (doc == null)
+                result = BlobEditorWindow.OpenFromDisk(config);
+            else if (config.Composition == null)
+                result = BlobEditorWindow.CreateWithinDocument(doc,config);
+            else
+                result = BlobEditorWindow.OpenInDocument(doc, config);
+            return result;
         }
     }
 
@@ -38,6 +46,7 @@ namespace psdPH.TemplateEditor
     }
     public class TextLeafEditorConfig : CompositionEditorConfig
     {
+
         public TextLeafEditorConfig(TextLeaf textLeaf)
         {
             Kinds = new PsLayerKind[] { PsLayerKind.psTextLayer };

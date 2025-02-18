@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace psdPH
 {
@@ -105,7 +106,7 @@ namespace psdPH
     {
         private string _text;
         private string _layer_name;
-
+        public string LayerName => _layer_name;
         public override string ObjName => _layer_name;
 
         override public void apply(XmlDocument xmlDoc, XmlElement root_elem)
@@ -179,10 +180,12 @@ namespace psdPH
             }
         }
     }
+    [XmlRoot("pph")]
     public class PlaceholderLeaf : Composition
     {
         
         private string _layer_name;
+        private Blob _prototype;
         public string LayerName => _layer_name;
         public override string ObjName => throw new NotImplementedException();
         public PlaceholderLeaf(string layername)

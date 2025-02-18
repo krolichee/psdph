@@ -7,12 +7,12 @@ using System.Windows;
 
 namespace psdPH
 {
-    public interface ICompositionGenerator
+    public interface ICompositionEditor
     {
         Composition getResultComposition();
         bool? ShowDialog();
     }
-    abstract public partial class CompositionEditorWindowProvider : ICompositionGenerator
+    abstract public partial class CompositionEditorWindowProvider : ICompositionEditor
     {
         abstract public Composition getResultComposition();
 

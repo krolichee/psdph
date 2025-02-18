@@ -13,6 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Photoshop;
 using psdPH.TemplateEditor;
+using PsApp = Photoshop.Application;
+using PsWr = psdPH.PhotoshopWrapper;
+using PsDocWr = psdPH.Logic.PhotoshopDocumentWrapper;
+
 
 namespace psdPH
 {
@@ -20,7 +24,7 @@ namespace psdPH
     /// Логика взаимодействия для EditCompositionWindow.xaml
     /// </summary>
 
-    public partial class TextLeafEditorWindow : Window, ICompositionGenerator
+    public partial class TextLeafEditorWindow : Window, ICompositionEditor
     {
 
         private Composition _composition;
@@ -28,16 +32,16 @@ namespace psdPH
         {
             return _composition;
         }
-        public TextLeafEditorWindow(PhotoshopWrapper psd, TextLeafEditorConfig config)
+        public TextLeafEditorWindow(Document doc, TextLeafEditorConfig config)
         {
             InitializeComponent();
             _composition = config.Composition;
-            var layers = psd.GetLayers().ToArray();
-            layers = PSDLayer.FilterByKinds(layers, config.Kinds);
-            string[] layer_names = layers.Select(l=>l.name).ToArray();
-            foreach (var name in layer_names)
+            ArtLayer[] layers = new PsDocWr(doc).GetLayersByKinds(config.Kinds);
+            string[] layer_names = PsDocWr.GetLayersNames(layers);
+            foreach (string name in layer_names)
                 comboBox.Items.Add(name);
-            comboBox.SelectedIndex = 0;
+            if (config.Composition!=null)
+                comboBox.SelectedItem = (config.Composition as TextLeaf).LayerName;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

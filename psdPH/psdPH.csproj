@@ -74,8 +74,10 @@
     <Compile Include="CollectionEditor\Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logic\CompositionConfigDictionary.cs" />
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
     <Compile Include="Logic\PhotoshopDocumentWrapper.cs" />
+    <Compile Include="Logic\Rules.cs" />
     <Compile Include="TemplateEditor\CompositionEditorConfig.cs" />
     <Compile Include="TemplateEditor\CompositionEditorWindowProvider.cs" />
     <Compile Include="Logic\PhotoshopWrapper.cs" />

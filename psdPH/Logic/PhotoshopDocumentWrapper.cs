@@ -38,7 +38,7 @@ namespace psdPH.Logic
             return layers.ToArray();
         }
 
-        private void ProcessLayerSet(dynamic layerSet, List<ArtLayer> layers)
+        private static void ProcessLayerSet(dynamic layerSet, List<ArtLayer> layers)
         {
             foreach (ArtLayer layer in layerSet.ArtLayers)
             {
@@ -74,9 +74,9 @@ namespace psdPH.Logic
             return GetArtLayers().Where(filter).ToArray();
         }
 
-        private dynamic FindLayerById(int layerId, LayerListing listing = LayerListing.OnlyHere)
+        private ArtLayer FindLayerById(int layerId, LayerListing listing = LayerListing.OnlyHere)
         {
-            ArtLayer[] layers = GetArtLayers(listing);
+            ArtLayer[] layers = this.GetArtLayers(listing);
             return layers.Where(l => l.id == layerId).ToArray()[0];
         }
         public ArtLayer GetLayerByName(string layerName, LayerListing listing = LayerListing.OnlyHere)
@@ -84,13 +84,18 @@ namespace psdPH.Logic
             ArtLayer[] layers = GetArtLayers(listing);
             return layers.Where(l => l.Name == layerName).ToArray()[0];
         }
-
-        public PhotoshopDocumentWrapper OpenSmartLayer(string layername)
+        public Document OpenSmartLayer(string layername)
         {
-            dynamic layer = GetLayerByName(layername);
-            _doc.ActiveLayer = layer;
-            _doc.Application.DoAction("b", "a");
-            return new PhotoshopDocumentWrapper( _doc.Application.ActiveDocument);
+            ArtLayer layer = GetLayerByName(layername);
+            return OpenSmartLayer(_doc,layer);
+        }
+        public static Document OpenSmartLayer(Document doc, ArtLayer layer)
+        {
+            Application psApp = doc.Application;
+            psApp.ActiveDocument = doc;
+            doc.ActiveLayer = layer;
+            psApp.DoAction("b", "a");
+            return psApp.ActiveDocument;
         }
     }
 }

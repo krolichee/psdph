@@ -21,7 +21,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     /// <summary>
     /// Логика взаимодействия для BlobPathEditorWindow.xaml
     /// </summary>
-    public partial class BlobPathEditorWindow : Window,ICompositionGenerator
+    public partial class BlobPathEditorWindow : Window,ICompositionEditor
     {
         // Приватные поля для хранения пути к файлу и имени
         private string _filePath;

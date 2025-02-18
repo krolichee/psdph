@@ -24,8 +24,7 @@ using psdPH.TemplateEditor;
 using System.Xml;
 using System.Collections;
 using psdPH.Logic;
-//using Aspose.PSD.Xmp.Schemas.Photoshop;
-//using Aspose.PSD.Xmp.Schemas.Photoshop;
+
 
 namespace psdPH
 {
@@ -40,7 +39,6 @@ namespace psdPH
     {
         //Dictionary<string,Type>
         CropperWindow cropper = new CropperWindow(new System.Windows.Size(300, 500));
-        PhotoshopWrapper _pw;
         void OpenProject(string path)
         {
             Directory.SetCurrentDirectory(path);
@@ -48,7 +46,6 @@ namespace psdPH
         public MainWindow()
         {
             CompositionXmlDictionary.InitializeDictionary();
-
             OpenProject("C:\\Users\\Puziko\\source\\repos\\psdPH\\psdPH\\Projects\\test");
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load("template.xml");
@@ -59,12 +56,10 @@ namespace psdPH
             string filePath = "template.psd";
             string absolutePath = System.IO.Path.GetFullPath(filePath);
 
-            _pw = new PhotoshopWrapper();
-
             InitializeComponent();
 
             var config = new BlobEditorConfig(new Blob(filePath, BlobMode.Path));
-            BlobEditorWindow editor = new BlobEditorWindow(null, config);
+            BlobEditorWindow editor = BlobEditorWindow.OpenFromDisk(config);
             editor.ShowDialog();
         }
         void test_ps(string absolutePath)
