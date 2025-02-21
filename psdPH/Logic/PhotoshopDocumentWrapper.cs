@@ -65,13 +65,13 @@ namespace psdPH.Logic
             return GetArtLayers(listing).Select(l => l.Name).ToArray();
         }
 
-        public ArtLayer[] GetLayersByKinds(PsLayerKind[] kinds)
+        public ArtLayer[] GetLayersByKinds(PsLayerKind[] kinds, LayerListing listing = LayerListing.OnlyHere)
         {
             bool filter(ArtLayer layer)
             {
                 return kinds.Contains(layer.Kind);
             }
-            return GetArtLayers().Where(filter).ToArray();
+            return GetArtLayers(listing).Where(filter).ToArray();
         }
 
         private ArtLayer FindLayerById(int layerId, LayerListing listing = LayerListing.OnlyHere)
@@ -79,14 +79,14 @@ namespace psdPH.Logic
             ArtLayer[] layers = this.GetArtLayers(listing);
             return layers.Where(l => l.id == layerId).ToArray()[0];
         }
-        public ArtLayer GetLayerByName(string layerName, LayerListing listing = LayerListing.OnlyHere)
+        public ArtLayer GetLayerByName(string layerName, LayerListing listing = LayerListing.OnlyHere) 
         {
             ArtLayer[] layers = GetArtLayers(listing);
             return layers.Where(l => l.Name == layerName).ToArray()[0];
         }
-        public Document OpenSmartLayer(string layername)
+        public Document OpenSmartLayer(string layername, LayerListing listing = LayerListing.OnlyHere)
         {
-            ArtLayer layer = GetLayerByName(layername);
+            ArtLayer layer = GetLayerByName(layername, listing);
             return OpenSmartLayer(_doc,layer);
         }
         public static Document OpenSmartLayer(Document doc, ArtLayer layer)

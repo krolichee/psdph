@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:psdPH"
         mc:Ignorable="d"
-        Title="TemplateEditor" Height="450" Width="365"
+        Title="TemplateEditor" Height="450" Width="365" Closed="Window_Closed"
         >
     <Grid>
 
@@ -16,11 +16,13 @@
                     <Button Content="+" HorizontalAlignment="Left" Height="24" Margin="10,21,0,0" VerticalAlignment="Top" Width="27" Click="Button_Click">
                         <Button.ContextMenu>
                             <ContextMenu x:Name="DropdownMenu" >
-                                <MenuItem x:Name="addFlagItem" Header="Флаг" Command=""/>
+                                <MenuItem x:Name="addFlagItem" Header="Флаг"/>
                                 <MenuItem x:Name="addTphItem" Header="Текстовое поле" />
                                 <MenuItem x:Name="addImageItem" Header="Поле изображения" />
                                 <MenuItem x:Name="addVisItem" Header="Видимость слоя" />
-                                <MenuItem x:Name="addSub" Header="Поддокумент" />
+                                <MenuItem x:Name="addBlob" Header="Поддокумент" />
+                                <MenuItem x:Name="addPhItem" Header="Плейсхолдер" />
+                                <MenuItem x:Name="addProtoItem" Header="Прототип" />
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>

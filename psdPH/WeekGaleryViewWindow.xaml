@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="psdPH.WeekGalery"
+﻿<Window x:Class="psdPH.WeekGaleryViewWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,6 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <StackPanel Orientation="Horizontal" Margin="100,284,0,50" Height="100" Width="700">
+            <Button Width="100" Height="100"></Button>
+            <Button Width="100" Height="100"></Button>
+        </StackPanel>
+
     </Grid>
-</UserControl>
+</Window>

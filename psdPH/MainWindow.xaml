@@ -10,16 +10,13 @@
         <Button Content="Button" HorizontalAlignment="Left" Margin="656,31,0,0" VerticalAlignment="Top" Click="Button_Click"/>
         <Menu VerticalAlignment="Top">
             <!-- Пункт меню "Файл" -->
-            <MenuItem Header="Файл">
+            <MenuItem Header="Проект" >
                 <!-- Подменю -->
-                <MenuItem Header="Новый" />
-                <MenuItem Header="Открыть" />
+                <MenuItem Header="Новый" Click="NewProjectMenuItem_Click" />
+                <MenuItem x:Name="openMenuItem" Header="Открыть" Click="openMenuItem_Click" />
                 <Separator/>
-                <!-- Разделитель -->
-                <MenuItem Header="Сохранить" />
-                <MenuItem Header="Сохранить как..." />
-                <Separator/>
-                <MenuItem Header="Выход" />
+                <MenuItem x:Name="templateMenuItem" Header="Редактировать шаблон" Click="templateMenuItem_Click" />
+                <MenuItem x:Name="weekkViewMenuItem" Header="Недельный вид" Click="weekkViewMenuItem_Click" />
             </MenuItem>
 
             <!-- Пункт меню "Правка" -->
@@ -34,56 +31,5 @@
                 <MenuItem Header="О программе" />
             </MenuItem>
         </Menu>
-        <TabControl HorizontalAlignment="Left" Height="342" Margin="10,0,0,0" VerticalAlignment="Center" Width="401">
-            <TabItem Header="Структура">
-                <Grid x:Name="structure_grid">
-                    <ToolBar HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="520">
-                        <ToolBar.Background>
-                            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
-                        </ToolBar.Background>
-                        <Button Content="+" HorizontalAlignment="Left" Width="24" BorderBrush="Black" Click="Button_Click_1" x:Name="addButton">
-                            <Button.ContextMenu>
-                                <ContextMenu x:Name="DropdownMenu" >
-                                    <MenuItem x:Name="addFlagItem" Header="Флаг" />
-                                    <MenuItem x:Name="addTphItem" Header="Текстовое поле" />
-                                    <MenuItem x:Name="addImageItem" Header="Поле изображения" />
-                                    <MenuItem x:Name="addVis" Header="Видимость слоя" />
-                                </ContextMenu>
-                            </Button.ContextMenu>
-                        </Button>
-                        <Menu/>
-                    </ToolBar>
-                    <ScrollViewer Margin="0,26,0,0">
-                        <StackPanel x:Name="stackPanel">
-                            <Button x:Name="button" Margin="0,1,0,0" >
-                                <Button.Background>
-                                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.InactiveBorderColorKey}}"/>
-                                </Button.Background>
-                                <Button.BorderBrush>
-                                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
-                                </Button.BorderBrush>
-                                <Grid Height="25" Width="368" HorizontalAlignment="Center">
-                                    <Label HorizontalAlignment="Left" Foreground="#FF848484" Content="Флаг"/>
-                                    <Label Content="Label" HorizontalAlignment="Left" Margin="83,0,0,0" VerticalAlignment="Center"/>
-                                </Grid>
-                            </Button>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Правила">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="19*"/>
-                        <ColumnDefinition Width="241*"/>
-                    </Grid.ColumnDefinitions>
-                </Grid>
-            </TabItem>
-        </TabControl>
-        <ComboBox HorizontalAlignment="Left" Margin="580,146,0,0" VerticalAlignment="Top" Width="120" IsReadOnly="True">
-            <ComboBoxItem Content="1"/>
-            <ComboBoxItem Content="2"/>
-            <ComboBoxItem Content="3"/>
-        </ComboBox>
     </Grid>
 </Window>

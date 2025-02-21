@@ -70,6 +70,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DayTile.xaml.cs">
+      <DependentUpon>DayTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DowPlaceholderMatchWindow.xaml.cs">
+      <DependentUpon>DowPlaceholderMatchWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Logic\Composition.cs" />
     <Compile Include="CollectionEditor\Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
@@ -78,27 +84,48 @@
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
     <Compile Include="Logic\PhotoshopDocumentWrapper.cs" />
     <Compile Include="Logic\Rules.cs" />
-    <Compile Include="TemplateEditor\CompositionEditorConfig.cs" />
-    <Compile Include="TemplateEditor\CompositionEditorWindowProvider.cs" />
-    <Compile Include="Logic\PhotoshopWrapper.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\BlobPathEditorWindow.xaml.cs">
-      <DependentUpon>BlobPathEditorWindow.xaml</DependentUpon>
+    <Compile Include="PsdTemplateDropWindow.xaml.cs">
+      <DependentUpon>PsdTemplateDropWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TemplateEditor\CompositionEditorConfig.cs" />
+    <Compile Include="Logic\PhotoshopWrapper.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionButtonGrid.xaml.cs">
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\LayerChoiceWindow.xaml.cs">
-      <DependentUpon>LayerChoiceWindow.xaml</DependentUpon>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\FlagEditorWindow.xaml.cs">
+      <DependentUpon>FlagEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\ICompositionEditor.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\PrototypeEditorWindow.xaml.cs">
+      <DependentUpon>PrototypeEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml.cs">
+      <DependentUpon>StringChoiceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceWindow.xaml.cs">
+      <DependentUpon>StringChoiceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml.cs">
       <DependentUpon>BlobEditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\PlaceholderLeafEditorWindow.xaml.cs">
+      <DependentUpon>PlaceholderLeafEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TextLeafEditorWindow.xaml.cs">
       <DependentUpon>TextLeafEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WeekGalery.xaml.cs">
-      <DependentUpon>WeekGalery.xaml</DependentUpon>
+    <Compile Include="WeekGaleryViewWindow.xaml.cs">
+      <DependentUpon>WeekGaleryViewWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="DayTile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DowPlaceholderMatchWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -115,7 +142,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\BlobPathEditorWindow.xaml">
+    <Page Include="PsdTemplateDropWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -123,7 +150,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\LayerChoiceWindow.xaml">
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\FlagEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\PrototypeEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -131,11 +170,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\PlaceholderLeafEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TemplateEditor\CompositionLeafEditor\Windows\TextLeafEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WeekGalery.xaml">
+    <Page Include="WeekGaleryViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

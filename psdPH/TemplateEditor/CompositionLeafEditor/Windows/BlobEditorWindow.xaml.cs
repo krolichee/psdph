@@ -18,7 +18,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using PsApp= Photoshop.Application;
+using PsApp = Photoshop.Application;
 using PsWr = psdPH.PhotoshopWrapper;
 using PsDocWr = psdPH.Logic.PhotoshopDocumentWrapper;
 using System.ComponentModel;
@@ -33,32 +33,71 @@ namespace psdPH
     {
         Composition _root;
         AddStructureItemCommand _addStructureItemCommand;
+        Document _doc;
         void InitializeElements()
         {
-            addTphItem.Command = _addStructureItemCommand.MyCommand;
-            addSub.Command = _addStructureItemCommand.MyCommand;
+            /*
+             * <MenuItem x:Name="addFlagItem" Header="Флаг"/>
+                <MenuItem x:Name="addTphItem" Header="Текстовое поле" />
+                <MenuItem x:Name="addImageItem" Header="Поле изображения" />
+                <MenuItem x:Name="addVisItem" Header="Видимость слоя" />
+                <MenuItem x:Name="addSub" Header="Поддокумент" />
+                <MenuItem x:Name="addPhItem" Header="Плейсхолдер" />
+                <MenuItem x:Name="addProtoItem" Header="Прототип" />
+             */
+            foreach (MenuItem item in DropdownMenu.Items)
+            {
+                item.Command = _addStructureItemCommand.MyCommand;
+            }
+            addFlagItem.CommandParameter = new FlagEditorConfig(null);
             addTphItem.CommandParameter = new TextLeafEditorConfig(null);
-            addSub.CommandParameter = new BlobEditorConfig(null);
+            addImageItem.CommandParameter = new ImageEditorConfig(null);
+            addVisItem.CommandParameter = new VisEditorConfig(null);
+            addBlob.CommandParameter = new BlobEditorConfig(null);
+            addPhItem.CommandParameter = new PlaceholderEditorConfig(null);
+            addProtoItem.CommandParameter = new ProtoEditorConfig(null);
+        }
+        static string ChooseLayer(Document doc, CompositionEditorConfig config)
+        {
+            PsDocWr docWr = new PsDocWr(doc);
+
+            string[] layer_names = PsDocWr.GetLayersNames(docWr.GetLayersByKinds(config.Kinds, LayerListing.Recursive));
+            StringChoiceWindow lc_w = new StringChoiceWindow(layer_names, "Выбор слоя поддокумента");
+            return lc_w.getResultString();
+
         }
         public static BlobEditorWindow CreateWithinDocument(Document doc, CompositionEditorConfig config)
         {
-            string[] layer_names = PsDocWr.GetLayersNames(new PsDocWr(doc).GetLayersByKinds(config.Kinds));
-            var lc_w = new LayerChoiceWindow(layer_names);
+            string[] layer_names = PsDocWr.GetLayersNames(new PsDocWr(doc).GetLayersByKinds(config.Kinds, LayerListing.Recursive));
+            var lc_w = new StringChoiceWindow(layer_names, "Выбор слоя поддокумента");
             lc_w.ShowDialog();
             string ln = lc_w.getResultString();
             if (ln == "")
                 return null;
-            config.Composition = new Blob(ln, BlobMode.Layer);
-
-            return new BlobEditorWindow(doc, config);
+            CompositionEditorConfig new_config = new BlobEditorConfig(new Blob(ln, BlobMode.Layer));
+            return OpenInDocument(doc, new_config);
         }
         public static BlobEditorWindow OpenInDocument(Document doc, CompositionEditorConfig config)
         {
             Blob blob = config.Composition as Blob;
             if (blob.Mode != BlobMode.Layer)
                 throw new ArgumentException();
-            PsDocWr docWr= new PsDocWr(doc);
-            Document new_doc = docWr.OpenSmartLayer(blob.LayerName);
+            PsDocWr docWr = new PsDocWr(doc);
+            Document new_doc;
+            while (true)
+                try
+                {
+                    new_doc = docWr.OpenSmartLayer(blob.LayerName, LayerListing.Recursive);
+                    break;
+                }
+                catch
+                {
+                    string ln;
+                    MessageBox.Show("Нет такого слоя. Возможно, документ был изменён. Исправьте имя слоя");
+                    ln = ChooseLayer(doc, config);
+                    blob.LayerName = ln;
+                }
+
             return new BlobEditorWindow(new_doc, config);
         }
         public static BlobEditorWindow OpenFromDisk(CompositionEditorConfig config)
@@ -67,15 +106,17 @@ namespace psdPH
             if (blob.Mode != BlobMode.Path)
                 throw new ArgumentException();
             PsApp psApp = PsWr.GetPhotoshopApplication();
-            psApp.Open(blob.Path);
-            Document doc = psApp.ActiveDocument;
+            Document doc = psApp.Open(blob.Path);
             return new BlobEditorWindow(doc, config);
         }
         BlobEditorWindow(Document doc, CompositionEditorConfig config)
         {
             _root = config.Composition;
             _addStructureItemCommand = new AddStructureItemCommand(doc, _root, this);
-
+            _doc = doc;
+            InitializeComponent();
+            InitializeElements();
+            RefreshCompositionStack();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -88,7 +129,7 @@ namespace psdPH
             return _root;
         }
 
-        void refreshCompositionStack()
+        void RefreshCompositionStack()
         {
             stackPanel.Children.Clear();
             foreach (Composition child in _root.getChildren())
@@ -102,7 +143,7 @@ namespace psdPH
                 button.Content = grid;
                 button.Command = _addStructureItemCommand.MyCommand;
                 Type type = CompositionConfigDictionary.GetConfigType(child.GetType());
-                button.CommandParameter = Activator.CreateInstance(type, new object[] {child}); 
+                button.CommandParameter = Activator.CreateInstance(type, new object[] { child });
                 stackPanel.Children.Add(button);
             }
         }
@@ -126,10 +167,14 @@ namespace psdPH
             private void ExecuteCommand(object parameter)
             {
                 var config = parameter as CompositionEditorConfig;
-                ICompositionEditor cle_w = config.Factory.CreateCompositionEditorWindow(_doc, config);
-                cle_w.ShowDialog();
-                _root_composition.addChild(cle_w.getResultComposition());
-                _editor.refreshCompositionStack();
+                ICompositionEditor ce_w = config.Factory.CreateCompositionEditorWindow(_doc, config, _root_composition);
+                if (ce_w == null)
+                    return;
+                ce_w.ShowDialog();
+                Composition result = ce_w.getResultComposition();
+                if (result != null)
+                    _root_composition.addChild(result);
+                _editor.RefreshCompositionStack();
             }
 
             private bool CanExecuteCommand(object parameter)
@@ -164,6 +209,13 @@ namespace psdPH
                 add { CommandManager.RequerySuggested += value; }
                 remove { CommandManager.RequerySuggested -= value; }
             }
+
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (_doc.Application.ActiveDocument == _doc)
+                _doc.Close(PsSaveOptions.psDoNotSaveChanges);
         }
     }
 }

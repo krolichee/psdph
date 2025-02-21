@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace psdPH
 {
     /// <summary>
-    /// Логика взаимодействия для WeekGalery.xaml
+    /// Логика взаимодействия для DayTile.xaml
     /// </summary>
-    public partial class WeekGalery : UserControl
+    public partial class DayTile : UserControl
     {
-        public WeekGalery()
+        public DayTile()
         {
             InitializeComponent();
         }

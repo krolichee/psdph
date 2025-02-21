@@ -24,6 +24,9 @@ using psdPH.TemplateEditor;
 using System.Xml;
 using System.Collections;
 using psdPH.Logic;
+using System.Xml.Serialization;
+using Path = System.IO.Path;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 
 
 namespace psdPH
@@ -37,96 +40,58 @@ namespace psdPH
 
     public partial class MainWindow : Window
     {
+        string currentProject;
         //Dictionary<string,Type>
         CropperWindow cropper = new CropperWindow(new System.Windows.Size(300, 500));
-        void OpenProject(string path)
+        void OpenProject(string projectName)
         {
-            Directory.SetCurrentDirectory(path);
+            Directory.SetCurrentDirectory(Path.Combine(Directory.GetCurrentDirectory(),"Projects",projectName));
+            currentProject = projectName;
         }
+        void NewProject()
+        {
+            new PsdTemplateDropWindow().ShowDialog();
+        }
+
         public MainWindow()
         {
             CompositionXmlDictionary.InitializeDictionary();
+            InitializeComponent();
+            LoadFoldersIntoMenu();
+
+        }
+        void test_xml()
+        {
             OpenProject("C:\\Users\\Puziko\\source\\repos\\psdPH\\psdPH\\Projects\\test");
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load("template.xml");
-            XmlNode root = xmlDoc.LastChild;
-            if (root.Name != CompositionXmlDictionary.GetXmlName(typeof(Blob)))
+            XmlNode rootNode = xmlDoc.LastChild;
+            if (rootNode.Name != CompositionXmlDictionary.GetXmlName(typeof(Blob)))
                 throw new Exception();
 
             string filePath = "template.psd";
             string absolutePath = System.IO.Path.GetFullPath(filePath);
 
-            InitializeComponent();
-
-            var config = new BlobEditorConfig(new Blob(filePath, BlobMode.Path));
+            
+            Blob blob = new Blob(absolutePath, BlobMode.Path);
+            blob.addChild(new Blob("asd", BlobMode.Layer));
+            blob.addChild(new TextLeaf("someLayer"));
+            var config = new BlobEditorConfig(blob);
             BlobEditorWindow editor = BlobEditorWindow.OpenFromDisk(config);
             editor.ShowDialog();
+            XmlSerializer serializer = new XmlSerializer(typeof(Composition), CompositionXmlDictionary.StoT.Values.ToArray());
+            StringWriter writer = new StringWriter();
+            serializer.Serialize(writer, blob);
+            string xml = writer.ToString();
+            Console.WriteLine("Сериализованный XML:");
+            Console.WriteLine(xml);
+            TextReader reader = new StringReader(xml);
+            Blob deserializedObject = (Blob)serializer.Deserialize(reader);
+
+            // Десериализуем XML обратно в объект
+            //TextLeaf deserializedTextLeaf = Composition.DeserializeFromXml<TextLeaf>(xml);
+            //Console.WriteLine($"Десериализованный объект: {deserializedTextLeaf.ObjName}");
         }
-        void test_ps(string absolutePath)
-        {
-
-            try
-            {
-                // Создаем экземпляр Photoshop
-                Type psType = Type.GetTypeFromProgID("Photoshop.Application");
-                dynamic psApp = Activator.CreateInstance(psType);
-
-                // Делаем Photoshop видимым
-                psApp.Visible = true;
-
-                // Открываем PSD файл
-                dynamic doc = psApp.Open(absolutePath);
-
-                // Получаем имена слоев и их типы
-                GetLayerNamesAndTypes(doc);
-                doc.SaveAs(@"C:\\Users\\Puziko\\Desktop\\p\\output.png", new PNGSaveOptions(), true, PsExtensionType.psLowercase);
-
-                // Закрываем документ без сохранения
-                doc.Close(PsSaveOptions.psDoNotSaveChanges);
-
-
-                // Закрываем Photoshop
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(psApp);
-                psApp = null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка: {ex.Message}");
-            }
-        }
-
-        static void GetLayerNamesAndTypes(dynamic doc)
-        {
-            // Обрабатываем обычные слои (ArtLayers)
-            foreach (dynamic layer in doc.ArtLayers)
-            {
-                Console.WriteLine($"Слой: {layer.Name}, Тип: {(PsLayerKind)layer.Kind}");
-            }
-
-            // Обрабатываем группы слоев (LayerSets)
-            foreach (dynamic layerSet in doc.LayerSets)
-            {
-                Console.WriteLine($"Группа слоев: {layerSet.Name}, Тип: LayerSet");
-                ProcessLayerSet(layerSet); // Рекурсивно обрабатываем вложенные слои
-            }
-        }
-
-        static void ProcessLayerSet(dynamic layerSet)
-        {
-            // Обрабатываем обычные слои внутри группы
-            foreach (dynamic layer in layerSet.ArtLayers)
-            {
-                Console.WriteLine($"Слой: {layer.Name}, Тип: {(PsLayerKind)layer.Kind} (в группе {layerSet.Name})");
-            }
-
-            // Обрабатываем вложенные группы слоев
-            foreach (dynamic nestedLayerSet in layerSet.LayerSets)
-            {
-                Console.WriteLine($"Группа слоев: {nestedLayerSet.Name}, Тип: LayerSet (в группе {layerSet.Name})");
-                ProcessLayerSet(nestedLayerSet); // Рекурсивный вызов для вложенных групп
-            }
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             cropper.ShowDialog();
@@ -137,15 +102,121 @@ namespace psdPH
 
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void LoadFoldersIntoMenu()
         {
+            string directoryPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Projects"); // Укажите путь к директории
 
+            try
+            {
+                if (Directory.Exists(directoryPath))
+                {
+                    // Получаем все подпапки в указанной директории
+                    string[] folders = Directory.GetDirectories(directoryPath);
+
+                    foreach (string folder in folders)
+                    {
+                        // Создаем новый MenuItem для каждой папки
+                        MenuItem folderMenuItem = new MenuItem
+                        {
+                            Header = System.IO.Path.GetFileName(folder)
+                        };
+
+                        // Добавляем обработчик события для клика по элементу меню
+                        folderMenuItem.Click += FolderMenuItem_Click;
+
+                        // Добавляем MenuItem в главное меню
+                        openMenuItem.Items.Add(folderMenuItem);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Указанная директория не существует.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке папок: {ex.Message}");
+            }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void openMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            DropdownMenu.IsOpen = true;
+        }
+        private void FolderMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            // Обработка клика по элементу меню
+            MenuItem clickedMenuItem = sender as MenuItem;
+            if (clickedMenuItem != null)
+            {
+                string folderName = clickedMenuItem.Header.ToString();
+                MessageBox.Show($"Вы выбрали папку: {folderName}");
+                OpenProject(folderName);
+            }
+        }
 
+        private void NewProjectMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            NewProject();
+        }
+
+        private void templateMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(Blob), CompositionXmlDictionary.StoT.Values.ToArray());
+            Blob blob;
+            string xmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.xml");
+            string psdFilePatg = Path.Combine(Directory.GetCurrentDirectory(), "template.psd");
+            if (File.Exists(xmlFilePath))
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load("template.xml");
+                XmlNode rootNode = xmlDoc.LastChild;
+                if (rootNode.Name != CompositionXmlDictionary.GetXmlName(typeof(Blob)))
+                    throw new Exception();
+
+
+
+                FileStream readFileStream = new FileStream(Path.GetFullPath("template.xml"), FileMode.Open);
+
+                blob = serializer.Deserialize(readFileStream) as Blob;
+                readFileStream.Close();
+                blob.restoreParents();
+            }
+            else
+                blob = new Blob(psdFilePatg,BlobMode.Path);
+            BlobEditorConfig bec = new BlobEditorConfig(blob);
+            ICompositionEditor editor = bec.Factory.CreateCompositionEditorWindow(null, bec, blob);
+            editor.ShowDialog();
+            FileStream wrileFileStream = new FileStream(xmlFilePath, FileMode.Create);
+            serializer.Serialize(wrileFileStream,blob);
+            wrileFileStream.Close();
+        }
+
+
+        private void weekkViewMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(Blob), CompositionXmlDictionary.StoT.Values.ToArray());
+            Blob blob;
+            string xmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.xml");
+            string psdFilePatg = Path.Combine(Directory.GetCurrentDirectory(), "template.psd");
+            if (File.Exists(xmlFilePath))
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(xmlFilePath);
+                XmlNode rootNode = xmlDoc.LastChild;
+                if (rootNode.Name != CompositionXmlDictionary.GetXmlName(typeof(Blob)))
+                    throw new Exception();
+
+
+
+                FileStream readFileStream = new FileStream(xmlFilePath, FileMode.Open);
+
+                blob = serializer.Deserialize(readFileStream) as Blob;
+                readFileStream.Close();
+                blob.restoreParents();
+            }
+            else
+                blob = new Blob(psdFilePatg, BlobMode.Path);
+            new WeekGaleryViewWindow(blob).ShowDialog();
         }
     }
 }

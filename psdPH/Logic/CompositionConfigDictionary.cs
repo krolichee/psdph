@@ -12,6 +12,9 @@ namespace psdPH.Logic
         static Dictionary<Type, Type> StoC = new Dictionary<Type, Type>
         {{typeof(Blob),typeof(BlobEditorConfig) },
             {typeof(TextLeaf),typeof(TextLeafEditorConfig) },
+
+            {typeof(PlaceholderLeaf),typeof(PlaceholderEditorConfig) },
+            {typeof(PrototypeLeaf),typeof(ProtoEditorConfig) }
             //{typeof(PlaceholderLeaf),typeof(PlaceholderLeafEditorConfig) },
         };
         public static Type GetConfigType(Type type)

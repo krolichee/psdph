@@ -16,6 +16,7 @@ using psdPH.TemplateEditor;
 using PsApp = Photoshop.Application;
 using PsWr = psdPH.PhotoshopWrapper;
 using PsDocWr = psdPH.Logic.PhotoshopDocumentWrapper;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 
 
 namespace psdPH
@@ -26,8 +27,10 @@ namespace psdPH
 
     public partial class TextLeafEditorWindow : Window, ICompositionEditor
     {
+        private EditorMode _mode = EditorMode.Create;
+        protected StringChoiceControl scc;
 
-        private Composition _composition;
+        private TextLeaf _composition;
         public Composition getResult()
         {
             return _composition;
@@ -35,18 +38,26 @@ namespace psdPH
         public TextLeafEditorWindow(Document doc, TextLeafEditorConfig config)
         {
             InitializeComponent();
-            _composition = config.Composition;
+            _composition = config.Composition as TextLeaf;
             ArtLayer[] layers = new PsDocWr(doc).GetLayersByKinds(config.Kinds);
             string[] layer_names = PsDocWr.GetLayersNames(layers);
-            foreach (string name in layer_names)
-                comboBox.Items.Add(name);
-            if (config.Composition!=null)
-                comboBox.SelectedItem = (config.Composition as TextLeaf).LayerName;
+            scc = new StringChoiceControl(layer_names, "Выбор слоя");
+            stackPanel.Children.Insert(0, scc);
+            if (config.Composition != null)
+            {
+                _mode = EditorMode.Edit;
+                scc.Select((config.Composition as TextLeaf).LayerName);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _composition = new TextLeaf(textBox.Text, comboBox.Text);
+            if (_mode == EditorMode.Create)
+                _composition = new TextLeaf(scc.getResultString());
+            else
+            {
+                _composition.LayerName = scc.getResultString();
+            }
             Close();
         }
 

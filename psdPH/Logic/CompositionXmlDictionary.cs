@@ -9,7 +9,7 @@ namespace psdPH.Logic
 {
     class CompositionXmlDictionary
     {
-        static Dictionary<string, Type> StoT = new Dictionary<string, Type> { };
+        public static Dictionary<string, Type> StoT = new Dictionary<string, Type> { };
         class KV
         {
             public static KeyValuePair<string, Type> NewKV(string xmlname, Type type)
@@ -32,6 +32,7 @@ namespace psdPH.Logic
                     KV.NewKV(typeof(ImageLeaf)),
                     KV.NewKV(typeof(FlagLeaf)),
                     KV.NewKV(typeof(VisLeaf)),
+                    KV.NewKV(typeof(TextLeaf)),
                 };
             foreach (var pair in pairs)
                 StoT.Add(pair.Key, pair.Value);

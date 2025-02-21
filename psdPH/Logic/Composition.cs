@@ -1,4 +1,5 @@
-﻿using System;
+﻿using psdPH.Logic;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
@@ -11,55 +12,66 @@ using System.Xml.Serialization;
 
 namespace psdPH
 {
-    public class CompositeRule
-    {
-
-    }
-    public class CopyingRule:CompositeRule { }
-    public class RuleSet
-    {
-
-    }
     public abstract class Composition
     {
-        protected static string _xmlTag = "";
         protected static string _uiTag = "";
-        public string XmlName { get { return _xmlTag; } }
+        public string XmlName
+        {
+            get
+            {
+                Type type = this.GetType();
+                XmlRootAttribute rootAttribute = (XmlRootAttribute)Attribute.GetCustomAttribute(type, typeof(XmlRootAttribute));
+                return rootAttribute.ElementName;
+            }
+        }
         public string UIName { get { return _uiTag; } }
         abstract public string ObjName { get; }
-        private Composition _parent = null;
-        public Composition getParent()
-        {
-            return _parent;
-        }
+        [XmlIgnore]
+        virtual public Composition Parent { get; set; }
         virtual public void apply(XmlDocument xmlDoc, XmlElement xmlEl) { }
         virtual public void addChild(Composition child) { }
         virtual public void removeChild(Composition child) { }
-        virtual public List<Composition> getChildren() { return null; }
+        virtual public void restoreParents(Composition parent = null)
+        {
+            if (parent != null)
+                Parent = parent;
+            if (getChildren() != null)
+                foreach (var item in getChildren())
+                    item.restoreParents(this);
+        }
+        virtual public Composition[] getChildren() { return null; }
+        virtual public Composition[] getChildren(Type type) { return null; }
         public RuleSet getRules() { return null; }
 
         public Composition() { }
     }
+    [Serializable]
+    [XmlRoot("Flag")]
     public class FlagLeaf : Composition
     {
-        private bool _toggle;
-        private string _name;
-        public override string ObjName => _name;
+        public bool Toggle;
+        public string Name;
+        public override string ObjName => Name;
 
         override public void apply(XmlDocument xmlDoc, XmlElement root_elem)
         {
 
             XmlElement flag = xmlDoc.CreateElement(XmlName);
-            flag.SetAttribute("name", _name);
-            flag.SetAttribute("is", _toggle.ToString());
+            flag.SetAttribute("name", Name);
+            flag.SetAttribute("is", Toggle.ToString());
             root_elem.AppendChild(flag);
+        }
+        public FlagLeaf(string name)
+        {
+            Name = name;
         }
         public FlagLeaf()
         {
-            _xmlTag = "flag";
             _uiTag = "Флаг";
         }
     }
+    [Serializable]
+    [XmlRoot("Image")]
     public class ImageLeaf : Composition
     {
         private string _path;
@@ -70,7 +82,7 @@ namespace psdPH
 
         override public void apply(XmlDocument xmlDoc, XmlElement root_elem)
         {
-            
+
             XmlElement img = xmlDoc.CreateElement(XmlName);
             img.SetAttribute("ln", _layer_name);
             img.SetAttribute("path", _path.ToString());
@@ -78,11 +90,12 @@ namespace psdPH
         }
         public ImageLeaf()
         {
-            _xmlTag = "tph";
             _uiTag = "Изобр.";
         }
     }
-    class VisLeaf : Composition
+    [Serializable]
+    [XmlRoot("Visibility")]
+    public class VisLeaf : Composition
     {
         private bool _toggle;
         private string _layer_name;
@@ -97,33 +110,35 @@ namespace psdPH
         }
         public VisLeaf()
         {
-            _xmlTag = "vis";
             _uiTag = "Видим.";
 
         }
+
     }
+    [Serializable]
+    [XmlRoot("Text")]
     public class TextLeaf : Composition
     {
-        private string _text;
-        private string _layer_name;
-        public string LayerName => _layer_name;
-        public override string ObjName => _layer_name;
+        public string Text;
+        public string LayerName;
+        public override string ObjName => LayerName;
 
         override public void apply(XmlDocument xmlDoc, XmlElement root_elem)
         {
-            
-            XmlElement tph = xmlDoc.CreateElement(_xmlTag);
-            tph.SetAttribute("ln", _layer_name);
+
+            XmlElement tph = xmlDoc.CreateElement(XmlName);
+            tph.SetAttribute("ln", LayerName);
             XmlElement text = xmlDoc.CreateElement("text");
-            text.InnerText = _text;
+            text.InnerText = Text;
             root_elem.AppendChild(tph);
         }
-        public TextLeaf(string text, string layer_name)
+        public TextLeaf(string layer_name) : this()
         {
-            _xmlTag = "tph";
+            LayerName = layer_name;
+        }
+        public TextLeaf()
+        {
             _uiTag = "Текст";
-            _text = text;
-            _layer_name = layer_name;
         }
     }
     public enum BlobMode
@@ -131,66 +146,104 @@ namespace psdPH
         Layer,
         Path
     }
+
+    [Serializable]
+    [XmlRoot("Blob")]
     public class Blob : Composition
     {
-        private string _name = "";
-        private string _psd_path;
-        private string _layer_name;
-        private BlobMode _mode;
-        List<Composition> children = new List<Composition>();
-        RuleSet ruleset = null;
 
-        public override string ObjName => _name;
-        public string Name { get { return _name; } set { _name = value; } }
-        public string LayerName => _layer_name;
-        public string Path { get { return _psd_path; } set { _psd_path = value; } }
-        public BlobMode Mode => _mode;
+        public BlobMode Mode;
+        [XmlArray("Children")]
+        public Composition[] Children = new Composition[0];
+        public string Name;
+        public string LayerName;
+        public string Path;
+
+        public override string ObjName => Name;
 
         override public void apply(XmlDocument xmlDoc, XmlElement root_elem)
         {
             XmlElement blobEl = xmlDoc.CreateElement(XmlName);
-            blobEl.SetAttribute("path", _name);
+            blobEl.SetAttribute("path", Name);
             root_elem.AppendChild(blobEl);
-            foreach (var child in children)
+            foreach (var child in Children)
             {
                 child.apply(xmlDoc, blobEl);
             }
 
         }
-        override public void addChild(Composition child) => children.Add(child);
-        override public void removeChild(Composition child) { children.Remove(child); }
-        override public List<Composition> getChildren() { return children; }
-        public Blob(string indiv, BlobMode mode)
+        override public void addChild(Composition child)
         {
-            //----static----
-            _xmlTag = "blob";
-            _uiTag = "Подфайл";
+            var children = Children.ToHashSet();
+            children.Add(child);
+            Children = children.ToArray();
+        }
+        override public void removeChild(Composition child)
+        {
+            var children = Children.ToHashSet();
+            children.Remove(child);
+            Children = children.ToArray();
+        }
+        override public Composition[] getChildren()
+        {
+            return Children;
+        }
+        override public Composition[] getChildren(Type type)
+        {
+
+            return Children.Where(l => l.GetType() == type).ToArray();
+        }
+        public Blob(string indiv, BlobMode mode) : this()
+        {
             //--------------
-            _mode = mode;
-            if (_mode == BlobMode.Layer) {
-                _name = System.IO.Path.GetFileNameWithoutExtension(indiv);
-                _layer_name = indiv;
-                _psd_path = null;
-            }
-            if (_mode == BlobMode.Path)
+            Mode = mode;
+            if (Mode == BlobMode.Layer)
             {
-                _name = System.IO.Path.GetFileNameWithoutExtension(indiv);
-                _layer_name = null;
-                _psd_path = indiv;
+                Name = indiv;
+                LayerName = indiv;
+                Path = null;
+            }
+            if (Mode == BlobMode.Path)
+            {
+                Name = System.IO.Path.GetFileNameWithoutExtension(indiv);
+                LayerName = null;
+                Path = indiv;
             }
         }
+        public Blob()
+        {
+            _uiTag = "Подфайл";
+        }
     }
-    [XmlRoot("pph")]
+    [Serializable]
+    [XmlRoot("Placeholder")]
     public class PlaceholderLeaf : Composition
     {
-        
-        private string _layer_name;
-        private Blob _prototype;
-        public string LayerName => _layer_name;
-        public override string ObjName => throw new NotImplementedException();
+        public string LayerName;
+        public string PrototypeLayerName;
+        public override string ObjName => LayerName;
         public PlaceholderLeaf(string layername)
         {
-            _layer_name = layername;
+            LayerName = layername;
+        }
+        public PlaceholderLeaf() { }
+    }
+    [Serializable]
+    [XmlRoot("Prototype")]
+    public class PrototypeLeaf : Composition
+    {
+        public string LayerName;
+        public string RelativeLayerName;
+        public override string ObjName => LayerName;
+        public PrototypeLeaf(string layername, string rel_layer_name)
+        {
+            LayerName = layername;
+            RelativeLayerName = rel_layer_name;
+        }
+        public PrototypeLeaf()
+        {
+            _uiTag = "Прототип";
         }
     }
 }
+

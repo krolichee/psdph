@@ -1,4 +1,5 @@
-﻿using System;
+﻿using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,16 +18,15 @@ namespace psdPH
     /// <summary>
     /// Логика взаимодействия для LayerChoiceWindow.xaml
     /// </summary>
-    public partial class LayerChoiceWindow : Window
+    public partial class StringChoiceWindow : Window,IStringEditor
     {
         protected string _result = "";
-        public LayerChoiceWindow(string[] items)
+        protected StringChoiceControl scc;
+        public StringChoiceWindow(string[] items,string annotation)
         {
-           
             InitializeComponent();
-            foreach (var item in items)
-                comboBox.Items.Add(item);
-            comboBox.SelectedIndex = 0;
+            scc = new StringChoiceControl(items, annotation);
+            stackPanel.Children.Insert(0,scc);
         }
 
         public string getResultString()
@@ -34,9 +34,14 @@ namespace psdPH
             return _result;
         }
 
+        public bool Select(string variant)
+        {
+           return scc.Select(variant);
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _result = comboBox.Text;
+            _result = scc.getResultString();
             Close();
         }
     }
