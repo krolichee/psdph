@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:psdPH"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Button Content="Button" HorizontalAlignment="Left" Margin="656,31,0,0" VerticalAlignment="Top" Click="Button_Click"/>
         <Menu VerticalAlignment="Top">
             <!-- Пункт меню "Файл" -->
@@ -31,5 +31,8 @@
                 <MenuItem Header="О программе" />
             </MenuItem>
         </Menu>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Height="25" Margin="345,234,0,0" VerticalAlignment="Top" Width="160"/>
+
+
     </Grid>
 </Window>

@@ -27,6 +27,9 @@ using psdPH.Logic;
 using System.Xml.Serialization;
 using Path = System.IO.Path;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using System.Runtime.Remoting.Metadata;
+using System.Linq.Expressions;
+using Condition =psdPH.Logic.Rules.Condition;
 
 
 namespace psdPH
@@ -40,6 +43,11 @@ namespace psdPH
 
     public partial class MainWindow : Window
     {
+        public static string GetFieldName<T>(Expression<Func<T>> expression)
+        {
+            var body = (MemberExpression)expression.Body;
+            return body.Member.Name;
+        }
         string currentProject;
         //Dictionary<string,Type>
         CropperWindow cropper = new CropperWindow(new System.Windows.Size(300, 500));
@@ -55,42 +63,14 @@ namespace psdPH
 
         public MainWindow()
         {
+            Console.WriteLine(GetFieldName(() => comboBox.DisplayMemberPath));
             CompositionXmlDictionary.InitializeDictionary();
             InitializeComponent();
             LoadFoldersIntoMenu();
-
-        }
-        void test_xml()
-        {
-            OpenProject("C:\\Users\\Puziko\\source\\repos\\psdPH\\psdPH\\Projects\\test");
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load("template.xml");
-            XmlNode rootNode = xmlDoc.LastChild;
-            if (rootNode.Name != CompositionXmlDictionary.GetXmlName(typeof(Blob)))
-                throw new Exception();
-
-            string filePath = "template.psd";
-            string absolutePath = System.IO.Path.GetFullPath(filePath);
-
-            
-            Blob blob = new Blob(absolutePath, BlobMode.Path);
-            blob.addChild(new Blob("asd", BlobMode.Layer));
-            blob.addChild(new TextLeaf("someLayer"));
-            var config = new BlobEditorConfig(blob);
-            BlobEditorWindow editor = BlobEditorWindow.OpenFromDisk(config);
-            editor.ShowDialog();
-            XmlSerializer serializer = new XmlSerializer(typeof(Composition), CompositionXmlDictionary.StoT.Values.ToArray());
-            StringWriter writer = new StringWriter();
-            serializer.Serialize(writer, blob);
-            string xml = writer.ToString();
-            Console.WriteLine("Сериализованный XML:");
-            Console.WriteLine(xml);
-            TextReader reader = new StringReader(xml);
-            Blob deserializedObject = (Blob)serializer.Deserialize(reader);
-
-            // Десериализуем XML обратно в объект
-            //TextLeaf deserializedTextLeaf = Composition.DeserializeFromXml<TextLeaf>(xml);
-            //Console.WriteLine($"Десериализованный объект: {deserializedTextLeaf.ObjName}");
+            Blob blob = Blob.LayerBlob("111");
+            blob.addChild(new TextLeaf("1sd"));
+            blob.addChild(new TextLeaf("2sd"));
+            MainGrid.Children.Add(new RuleControl(blob));
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -104,7 +84,7 @@ namespace psdPH
 
         private void LoadFoldersIntoMenu()
         {
-            string directoryPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Projects"); // Укажите путь к директории
+            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "Projects"); // Укажите путь к директории
 
             try
             {
@@ -118,7 +98,7 @@ namespace psdPH
                         // Создаем новый MenuItem для каждой папки
                         MenuItem folderMenuItem = new MenuItem
                         {
-                            Header = System.IO.Path.GetFileName(folder)
+                            Header = Path.GetFileName(folder)
                         };
 
                         // Добавляем обработчик события для клика по элементу меню
@@ -182,13 +162,13 @@ namespace psdPH
                 blob.restoreParents();
             }
             else
-                blob = new Blob(psdFilePatg,BlobMode.Path);
+                blob = Blob.LayerBlob(psdFilePatg);
             BlobEditorConfig bec = new BlobEditorConfig(blob);
             ICompositionEditor editor = bec.Factory.CreateCompositionEditorWindow(null, bec, blob);
             editor.ShowDialog();
-            FileStream wrileFileStream = new FileStream(xmlFilePath, FileMode.Create);
-            serializer.Serialize(wrileFileStream,blob);
-            wrileFileStream.Close();
+            FileStream writeFileStream = new FileStream(xmlFilePath, FileMode.Create);
+            serializer.Serialize(writeFileStream,blob);
+            writeFileStream.Close();
         }
 
 
@@ -197,7 +177,7 @@ namespace psdPH
             XmlSerializer serializer = new XmlSerializer(typeof(Blob), CompositionXmlDictionary.StoT.Values.ToArray());
             Blob blob;
             string xmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.xml");
-            string psdFilePatg = Path.Combine(Directory.GetCurrentDirectory(), "template.psd");
+            string psdFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.psd");
             if (File.Exists(xmlFilePath))
             {
                 XmlDocument xmlDoc = new XmlDocument();
@@ -215,8 +195,15 @@ namespace psdPH
                 blob.restoreParents();
             }
             else
-                blob = new Blob(psdFilePatg, BlobMode.Path);
+                blob = Blob.LayerBlob(psdFilePath);
             new WeekGaleryViewWindow(blob).ShowDialog();
         }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        
     }
 }

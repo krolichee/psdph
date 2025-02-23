@@ -76,14 +76,22 @@
     <Compile Include="DowPlaceholderMatchWindow.xaml.cs">
       <DependentUpon>DowPlaceholderMatchWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Localization.cs" />
     <Compile Include="Logic\Composition.cs" />
     <Compile Include="CollectionEditor\Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\CompositionConfigDictionary.cs" />
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
+    <Compile Include="Logic\IParameterable.cs" />
     <Compile Include="Logic\PhotoshopDocumentWrapper.cs" />
-    <Compile Include="Logic\Rules.cs" />
+    <Compile Include="Logic\Rules\Conditions.cs" />
+    <Compile Include="RuleEditor\RuleControl.xaml.cs">
+      <DependentUpon>RuleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RuleEditor\Parameter.cs" />
+    <Compile Include="Logic\Rules\Rules.cs" />
+    <Compile Include="NumericTextBox.cs" />
     <Compile Include="PsdTemplateDropWindow.xaml.cs">
       <DependentUpon>PsdTemplateDropWindow.xaml</DependentUpon>
     </Compile>
@@ -123,6 +131,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DowPlaceholderMatchWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RuleEditor\RuleControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,8 +214,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="Projects\test\input.psd" />
-    <None Include="Projects\test\template.psd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -252,9 +262,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="TODO.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Projects\test\template.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

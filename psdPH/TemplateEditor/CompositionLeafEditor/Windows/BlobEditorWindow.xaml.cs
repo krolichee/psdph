@@ -32,7 +32,7 @@ namespace psdPH
     public partial class BlobEditorWindow : Window, ICompositionEditor
     {
         Composition _root;
-        AddStructureItemCommand _addStructureItemCommand;
+        EditCommand _addStructureItemCommand;
         Document _doc;
         void InitializeElements()
         {
@@ -47,7 +47,7 @@ namespace psdPH
              */
             foreach (MenuItem item in DropdownMenu.Items)
             {
-                item.Command = _addStructureItemCommand.MyCommand;
+                item.Command = _addStructureItemCommand.Command;
             }
             addFlagItem.CommandParameter = new FlagEditorConfig(null);
             addTphItem.CommandParameter = new TextLeafEditorConfig(null);
@@ -74,7 +74,7 @@ namespace psdPH
             string ln = lc_w.getResultString();
             if (ln == "")
                 return null;
-            CompositionEditorConfig new_config = new BlobEditorConfig(new Blob(ln, BlobMode.Layer));
+            CompositionEditorConfig new_config = new BlobEditorConfig(Blob.LayerBlob(ln));
             return OpenInDocument(doc, new_config);
         }
         public static BlobEditorWindow OpenInDocument(Document doc, CompositionEditorConfig config)
@@ -112,11 +112,11 @@ namespace psdPH
         BlobEditorWindow(Document doc, CompositionEditorConfig config)
         {
             _root = config.Composition;
-            _addStructureItemCommand = new AddStructureItemCommand(doc, _root, this);
+            _addStructureItemCommand = EditCommand.StructureCommand(doc, _root, this);
             _doc = doc;
             InitializeComponent();
             InitializeElements();
-            RefreshCompositionStack();
+            RefreshSctuctureStack();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -129,7 +129,7 @@ namespace psdPH
             return _root;
         }
 
-        void RefreshCompositionStack()
+        void RefreshSctuctureStack()
         {
             stackPanel.Children.Clear();
             foreach (Composition child in _root.getChildren())
@@ -137,34 +137,44 @@ namespace psdPH
                 var grid = new Grid();
                 grid.Children.Add(new Label() { Content = child.UIName, Foreground = SystemColors.ActiveBorderBrush, HorizontalAlignment = HorizontalAlignment.Left });
                 grid.Children.Add(new Label() { Content = child.ObjName, Foreground = SystemColors.ActiveCaptionTextBrush, HorizontalAlignment = HorizontalAlignment.Center });
-                grid.Width = stackPanel.Width;
+                grid.Width = stackPanel.RenderSize.Width;
                 var button = new Button();
                 button.Height = 28;
                 button.Content = grid;
-                button.Command = _addStructureItemCommand.MyCommand;
+                button.Command = _addStructureItemCommand.Command;
                 Type type = CompositionConfigDictionary.GetConfigType(child.GetType());
                 button.CommandParameter = Activator.CreateInstance(type, new object[] { child });
                 stackPanel.Children.Add(button);
             }
         }
 
-        public class AddStructureItemCommand
+        public class EditCommand
         {
             private Composition _root_composition;
             private Document _doc;
             private BlobEditorWindow _editor;
 
-            public ICommand MyCommand { get; set; }
-
-            public AddStructureItemCommand(Document doc, Composition composition, BlobEditorWindow tew)
+            public ICommand Command { get; set; }
+            public static EditCommand StructureCommand(Document doc, Composition root, BlobEditorWindow editor)
             {
-                _root_composition = composition;
-                _doc = doc;
-                _editor = tew;
-                MyCommand = new RelayCommand(ExecuteCommand, CanExecuteCommand);
+                var result = new EditCommand(doc, root, editor, null);
+                result.Command = new RelayCommand(result.EditStructureExecuteCommand, result.CanExecuteCommand);
+                return result;
+                
             }
-
-            private void ExecuteCommand(object parameter)
+            public EditCommand RuleCommand(Document doc, Composition root, BlobEditorWindow editor)
+            {
+                var result = new EditCommand(doc, root, editor, null);
+                result.Command = new RelayCommand(result.EditRuleExecuteCommand, result.CanExecuteCommand);
+                return result;
+            }
+            protected EditCommand(Document doc, Composition root, BlobEditorWindow editor, ICommand command)
+            {
+                _root_composition = root;
+                _doc = doc;
+                _editor = editor;
+            }
+            private void EditStructureExecuteCommand(object parameter)
             {
                 var config = parameter as CompositionEditorConfig;
                 ICompositionEditor ce_w = config.Factory.CreateCompositionEditorWindow(_doc, config, _root_composition);
@@ -174,13 +184,19 @@ namespace psdPH
                 Composition result = ce_w.getResultComposition();
                 if (result != null)
                     _root_composition.addChild(result);
-                _editor.RefreshCompositionStack();
+                _editor.RefreshSctuctureStack();
+            }
+            private void EditRuleExecuteCommand(object parameter)
+            {
+                var config = parameter as CompositionEditorConfig;
+                //_root_composition.getRules().rules.Add();
             }
 
             private bool CanExecuteCommand(object parameter)
             {
                 return true; // Здесь можно добавить логику для определения, может ли команда быть выполнена
             }
+
         }
         public class RelayCommand : ICommand
         {
@@ -216,6 +232,11 @@ namespace psdPH
         {
             if (_doc.Application.ActiveDocument == _doc)
                 _doc.Close(PsSaveOptions.psDoNotSaveChanges);
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            RefreshSctuctureStack();
         }
     }
 }

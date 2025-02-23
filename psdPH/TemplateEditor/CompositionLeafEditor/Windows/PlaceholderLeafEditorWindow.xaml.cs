@@ -34,17 +34,12 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
                 this.Activated += (object _, EventArgs __)=>  { Close(); };
                 return;
             }
-            List<string> pn = new List<string>();
-            foreach (var item in prototypes)
-            {
-                pn.Add(item.LayerName);
-            }
-            string[] prototype_names = pn.ToArray();
+            string[] prototype_names = prototypes.Select(p=>p.LayerName).ToArray();
             string[] layer_names = new PhotoshopDocumentWrapper(doc).GetLayersNames(LayerListing.Recursive);
             foreach (var item in prototype_names)
                 prototypeCB.Items.Add(item);
             foreach (var item in layer_names)
-                prototypeCB.Items.Add(item);
+                layerCB.Items.Add(item);
 
         }
 

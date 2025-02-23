@@ -29,7 +29,7 @@ namespace psdPH
                 weekGaleryConfig = new WeekGaleryConfig();
 
                 //Выбор прототипа
-                PrototypeLeaf[] prototypes = root.getChildren(typeof(PrototypeLeaf)).Cast<PrototypeLeaf>().ToArray();
+                PrototypeLeaf[] prototypes = root.getChildren<PrototypeLeaf>().Cast<PrototypeLeaf>().ToArray();
                 string[] prototypes_names = prototypes.Select(l => l.LayerName).ToArray();
                 StringChoiceWindow pscc_w = new StringChoiceWindow(prototypes_names.ToArray(),"Выбор прототип для дня");
                 pscc_w.ShowDialog();
@@ -40,7 +40,7 @@ namespace psdPH
                 dwp_w.ShowDialog();
 
                 //Превью текстовое поле
-                PrototypeLeaf[] textLeafs = root.getChildren(typeof(PrototypeLeaf)).Cast<PrototypeLeaf>().ToArray();
+                TextLeaf[] textLeafs = root.getChildren<TextLeaf>();
                 string[] textLeafs_names = textLeafs.Select(l => l.LayerName).ToArray();
                 StringChoiceWindow prev_scc_w = new StringChoiceWindow(textLeafs_names, "Выбор текста для предпросмотра");
                 prev_scc_w.ShowDialog();

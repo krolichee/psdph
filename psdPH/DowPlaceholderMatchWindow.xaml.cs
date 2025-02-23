@@ -26,7 +26,7 @@ namespace psdPH
             Blob root = prot.Parent as Blob;
             InitializeComponent();            
             List<PlaceholderLeaf> placeholders = new List<PlaceholderLeaf>();
-            foreach (PlaceholderLeaf cmp in root.getChildren(typeof(PlaceholderLeaf)))
+            foreach (PlaceholderLeaf cmp in root.getChildren<PlaceholderLeaf>())
                 if (cmp.PrototypeLayerName == prot.LayerName)
                     placeholders.Add(cmp as PlaceholderLeaf);
             List<string> ph_names = new List<string>();

@@ -55,6 +55,14 @@ namespace psdPH.TemplateEditor
             return new PrototypeEditorWindow(doc, config, root);
         }
     }
+    
+        public class ImageEditorWindowFactory : ICompositionEditorWindowFactory
+    {
+        public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config, Composition root)
+        {
+            return new PrototypeEditorWindow(doc, config, root);
+        }
+    }
 
 
     /// <summary>
@@ -118,7 +126,7 @@ namespace psdPH.TemplateEditor
         public ImageEditorConfig(Blob pph)
         {
             Kinds = new PsLayerKind[] { PsLayerKind.psNormalLayer };
-            Factory = new BlobEditorWindowFactory();
+            Factory = new ImageEditorWindowFactory();
             Composition = pph;
         }
     }

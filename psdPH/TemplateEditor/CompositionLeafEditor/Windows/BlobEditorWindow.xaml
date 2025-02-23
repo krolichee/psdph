@@ -5,14 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:psdPH"
         mc:Ignorable="d"
-        Title="TemplateEditor" Height="450" Width="365" Closed="Window_Closed"
+        Title="TemplateEditor" Height="450" Width="365" Closed="Window_Closed" Activated="Window_Activated"
         >
     <Grid>
 
         <TabControl Margin="0,0,0,0">
             <TabItem Header="Структура">
                 <Grid Background="#FFE5E5E5" Margin="0,0,0,0">
-                    <StackPanel x:Name="stackPanel" HorizontalAlignment="Left" Height="248" Margin="10,50,0,0" VerticalAlignment="Top" Width="335" Grid.ColumnSpan="2"/>
+                    <ScrollViewer Margin="0,62,0,0">
+                        <StackPanel x:Name="stackPanel"/>
+                    </ScrollViewer>
                     <Button Content="+" HorizontalAlignment="Left" Height="24" Margin="10,21,0,0" VerticalAlignment="Top" Width="27" Click="Button_Click">
                         <Button.ContextMenu>
                             <ContextMenu x:Name="DropdownMenu" >
@@ -30,6 +32,7 @@
             </TabItem>
             <TabItem Header="Правила" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58">
                 <Grid Background="#FFE5E5E5">
+                    <StackPanel Margin="0,32,0,0"/>
                 </Grid>
             </TabItem>
         </TabControl>

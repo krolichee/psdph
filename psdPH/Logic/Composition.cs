@@ -1,4 +1,5 @@
-﻿using psdPH.Logic;
+﻿using Photoshop;
+using psdPH.Logic;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -6,15 +7,17 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Shapes;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace psdPH
 {
     public abstract class Composition
     {
-        protected static string _uiTag = "";
         public string XmlName
         {
             get
@@ -24,11 +27,15 @@ namespace psdPH
                 return rootAttribute.ElementName;
             }
         }
-        public string UIName { get { return _uiTag; } }
+        public virtual string UIName { get { return ""; } }
         abstract public string ObjName { get; }
+        public override string ToString()
+        {
+            return ObjName;
+        }
         [XmlIgnore]
         virtual public Composition Parent { get; set; }
-        virtual public void apply(XmlDocument xmlDoc, XmlElement xmlEl) { }
+        virtual public void apply(XmlDocument xmlDoc, XmlElement root_elem) { }
         virtual public void addChild(Composition child) { }
         virtual public void removeChild(Composition child) { }
         virtual public void restoreParents(Composition parent = null)
@@ -40,7 +47,7 @@ namespace psdPH
                     item.restoreParents(this);
         }
         virtual public Composition[] getChildren() { return null; }
-        virtual public Composition[] getChildren(Type type) { return null; }
+        virtual public T[] getChildren<T>() { return null; }
         public RuleSet getRules() { return null; }
 
         public Composition() { }
@@ -49,6 +56,7 @@ namespace psdPH
     [XmlRoot("Flag")]
     public class FlagLeaf : Composition
     {
+        public override string UIName => "Флаг";
         public bool Toggle;
         public string Name;
         public override string ObjName => Name;
@@ -67,7 +75,6 @@ namespace psdPH
         }
         public FlagLeaf()
         {
-            _uiTag = "Флаг";
         }
     }
     [Serializable]
@@ -76,7 +83,7 @@ namespace psdPH
     {
         private string _path;
         private string _layer_name;
-
+        public override string UIName => "Изобр.";
 
         public override string ObjName => _layer_name;
 
@@ -90,13 +97,13 @@ namespace psdPH
         }
         public ImageLeaf()
         {
-            _uiTag = "Изобр.";
         }
     }
     [Serializable]
     [XmlRoot("Visibility")]
     public class VisLeaf : Composition
     {
+        public override string UIName => "Видим.";
         private bool _toggle;
         private string _layer_name;
         public override string ObjName => _layer_name;
@@ -110,7 +117,6 @@ namespace psdPH
         }
         public VisLeaf()
         {
-            _uiTag = "Видим.";
 
         }
 
@@ -119,6 +125,7 @@ namespace psdPH
     [XmlRoot("Text")]
     public class TextLeaf : Composition
     {
+        public override string UIName => "Текст";
         public string Text;
         public string LayerName;
         public override string ObjName => LayerName;
@@ -138,7 +145,6 @@ namespace psdPH
         }
         public TextLeaf()
         {
-            _uiTag = "Текст";
         }
     }
     public enum BlobMode
@@ -151,7 +157,7 @@ namespace psdPH
     [XmlRoot("Blob")]
     public class Blob : Composition
     {
-
+        public override string UIName => "Подфайл";
         public BlobMode Mode;
         [XmlArray("Children")]
         public Composition[] Children = new Composition[0];
@@ -188,37 +194,45 @@ namespace psdPH
         {
             return Children;
         }
-        override public Composition[] getChildren(Type type)
+        override public T[] getChildren<T>()
         {
 
-            return Children.Where(l => l.GetType() == type).ToArray();
+            return Children.Where(l => l.GetType() == typeof(T)).Cast<T>().ToArray();
         }
-        public Blob(string indiv, BlobMode mode) : this()
+        public static Blob PathBlob(string path)
         {
-            //--------------
+            return new Blob(
+                BlobMode.Path,
+                System.IO.Path.GetFileNameWithoutExtension(path),
+                null,
+                path
+                );
+        }
+        public static Blob LayerBlob(string layername)
+        {
+            return new Blob(
+                BlobMode.Layer,
+                layername,
+                layername,
+                null
+                );
+        }
+        Blob(BlobMode mode,string name,string layername,string path)
+        {
             Mode = mode;
-            if (Mode == BlobMode.Layer)
-            {
-                Name = indiv;
-                LayerName = indiv;
-                Path = null;
-            }
-            if (Mode == BlobMode.Path)
-            {
-                Name = System.IO.Path.GetFileNameWithoutExtension(indiv);
-                LayerName = null;
-                Path = indiv;
-            }
+            Name = name;
+            LayerName = layername;
+            Path = path;
         }
         public Blob()
         {
-            _uiTag = "Подфайл";
         }
     }
     [Serializable]
     [XmlRoot("Placeholder")]
     public class PlaceholderLeaf : Composition
     {
+        public override string UIName => "Плейс.";
         public string LayerName;
         public string PrototypeLayerName;
         public override string ObjName => LayerName;
@@ -232,6 +246,7 @@ namespace psdPH
     [XmlRoot("Prototype")]
     public class PrototypeLeaf : Composition
     {
+        public override string UIName => "Прототип";
         public string LayerName;
         public string RelativeLayerName;
         public override string ObjName => LayerName;
@@ -242,7 +257,6 @@ namespace psdPH
         }
         public PrototypeLeaf()
         {
-            _uiTag = "Прототип";
         }
     }
 }
