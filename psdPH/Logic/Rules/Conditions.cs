@@ -10,7 +10,6 @@ namespace psdPH.Logic.Rules
 {
     public abstract class Condition : IParameterable
     {
-        public virtual string UIName { get; }
         public abstract Parameter[] Parameters { get; }
 
         public abstract bool IsValid();
@@ -60,13 +59,13 @@ namespace psdPH.Logic.Rules
 
     public class MaxRowCountCondition : TextCondition
     {
-        public override string UIName => "количество строк";
+        public override string ToString()  => "количество строк";
 
         public override Parameter[] Parameters
         {
             get
             {
-                List<Parameter> result = new List<Parameter>().Concat(base.Parameters).ToList();
+                List<Parameter> result = base.Parameters.ToList();
                 var RowCountConfig = new ParameterConfig(this, nameof(this.RowCount), "превышает");
                 result.Add(Parameter.IntInput(RowCountConfig));
                 return result.ToArray();
@@ -76,6 +75,7 @@ namespace psdPH.Logic.Rules
         public int RowCount;
 
         public MaxRowCountCondition(Composition composition) : base(composition) { }
+        public MaxRowCountCondition() : base(null) { }
 
         public override bool IsValid()
         {
@@ -85,13 +85,13 @@ namespace psdPH.Logic.Rules
 
     public class MaxRowLenCondition : TextCondition
     {
-        public override string UIName => "максимальная длина строки\n среди строк";
+        public override string ToString() => "максимальная длина строки\n среди строк";
 
         public override Parameter[] Parameters
         {
             get
             {
-                List<Parameter> result = new List<Parameter>().Concat(base.Parameters).ToList();
+                List<Parameter> result = base.Parameters.ToList();
                 var RowLenghtConfig = new ParameterConfig(this, nameof(this.RowLength), "превышает");
                 result.Add(Parameter.IntInput(RowLenghtConfig));
                 return result.ToArray();

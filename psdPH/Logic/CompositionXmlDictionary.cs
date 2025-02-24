@@ -33,6 +33,8 @@ namespace psdPH.Logic
                     KV.NewKV(typeof(FlagLeaf)),
                     KV.NewKV(typeof(VisLeaf)),
                     KV.NewKV(typeof(TextLeaf)),
+                    KV.NewKV(typeof(LayerLeaf)),
+                    KV.NewKV(typeof(PrototypeLeaf)),
                 };
             foreach (var pair in pairs)
                 StoT.Add(pair.Key, pair.Value);

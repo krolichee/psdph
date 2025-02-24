@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic.Rules;
+using psdPH.RuleEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,11 @@ namespace psdPH.Logic
     /// <summary>
     /// Логика взаимодействия для RuleControl.xaml
     /// </summary>
-    public partial class RuleControl : UserControl
+    public partial class RuleControl : UserControl, IRuleEditor
     {
         ConditionRule _result;
         Condition _condition;
+        List<Parameter> _parameters = new List<Parameter>();
         public RuleControl(Composition composition)
         {
             InitializeComponent();
@@ -32,24 +34,53 @@ namespace psdPH.Logic
                 new MaxRowCountCondition(composition),
                 new MaxRowLenCondition(composition)
             };
-            comboBox.DisplayMemberPath = nameof(Condition.UIName);
-            comboBox.ItemsSource = conditions;
-            var rules = new Rule[]
+            conditionsComboBox.ItemsSource = conditions;
+            var rules = new ConditionRule[]
             {
                 new TextFontSizeRule(composition),
                 new TextAnchorRule(composition),
+                new TranslateRule(composition)
             };
+            ruleComboBox.ItemsSource = rules;
+
         }
 
-        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void conditionsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _condition = comboBox.SelectedItem as Condition;
+            _condition = conditionsComboBox.SelectedItem as Condition;
             conditionParametersStack.Children.Clear();
-            foreach (var item in _condition.Parameters)
+            var parameters = _condition.Parameters;
+            _parameters.AddRange(parameters);
+            foreach (var item in parameters)
             {
                 conditionParametersStack.Children.Add(item.Stack);
             }
+        }
+        private void ruleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _result = ruleComboBox.SelectedItem as ConditionRule;
+            ruleParametersStack.Children.Clear();
+            var parameters = _result.Parameters;
+            _parameters.AddRange(parameters);
+            foreach (var item in parameters)
+            {
+                ruleParametersStack.Children.Add(item.Stack);
+            }
 
+        }
+        void acceptParameters()
+        {
+            foreach (var item in _parameters)
+            {
+                item.Accept();
+            }
+        }
+
+        public ConditionRule GetResultRule()
+        {
+            acceptParameters();
+            _result.Condition = _condition;
+            return _result;
         }
     }
 }

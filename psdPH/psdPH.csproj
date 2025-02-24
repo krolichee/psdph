@@ -83,9 +83,10 @@
     </Compile>
     <Compile Include="Logic\CompositionConfigDictionary.cs" />
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
-    <Compile Include="Logic\IParameterable.cs" />
+    <Compile Include="RuleEditor\IParameterable.cs" />
     <Compile Include="Logic\PhotoshopDocumentWrapper.cs" />
     <Compile Include="Logic\Rules\Conditions.cs" />
+    <Compile Include="RuleEditor\IRuleEditor.cs" />
     <Compile Include="RuleEditor\RuleControl.xaml.cs">
       <DependentUpon>RuleControl.xaml</DependentUpon>
     </Compile>
@@ -94,6 +95,13 @@
     <Compile Include="NumericTextBox.cs" />
     <Compile Include="PsdTemplateDropWindow.xaml.cs">
       <DependentUpon>PsdTemplateDropWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RuleEditor\RuleControlWindow.xaml.cs">
+      <DependentUpon>RuleControlWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RuleEditor\RuleTextBlock.cs" />
+    <Compile Include="RuleEditor\RuleViewControl.xaml.cs">
+      <DependentUpon>RuleViewControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionEditorConfig.cs" />
     <Compile Include="Logic\PhotoshopWrapper.cs" />
@@ -155,6 +163,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PsdTemplateDropWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RuleEditor\RuleControlWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RuleEditor\RuleViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

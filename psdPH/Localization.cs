@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace psdPH
 {
     using Photoshop;
+    using psdPH.Logic;
     using System;
     using System.Collections.Generic;
     using System.Windows;
@@ -17,25 +18,24 @@ namespace psdPH
         private static readonly Dictionary<Type, Dictionary<object, string>> Localizations = new Dictionary<Type, Dictionary<object, string>>()
     {
         {
-            typeof(Status), new Dictionary<object, string>
+            typeof(PsJustification), new Dictionary<object, string>
             {
-                { Status.NotStarted, "Не начат" },
-                { Status.InProgress, "В процессе" },
-                { Status.Completed, "Завершён" }
+                { PsJustification.psLeft, "слева" },
+                { PsJustification.psCenter, "по центру" },
+                { PsJustification.psRight, "справа" }
             }
         },
         {
-            typeof(Priority), new Dictionary<object, string>
+            typeof(ChangeMode), new Dictionary<object, string>
             {
-                { Priority.Low, "Низкий" },
-                { Priority.Medium, "Средний" },
-                { Priority.High, "Высокий" }
+                { ChangeMode.Abs, "изменить на" },
+                { ChangeMode.Rel, "установить" }
             }
-        }
+        },
     };
         public static string GetLocalizedDescription<TEnum>(TEnum value) where TEnum : Enum
         {
-            var enumType = typeof(TEnum);
+            Type enumType = value.GetType();
 
             if (Localizations.TryGetValue(enumType, out var localization) &&
                 localization.TryGetValue(value, out var description))

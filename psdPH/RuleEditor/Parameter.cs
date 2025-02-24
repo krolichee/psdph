@@ -7,6 +7,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Markup;
 using static psdPH.Logic.Parameter;
 using Condition = psdPH.Logic.Rules.Condition;
 
@@ -14,54 +15,59 @@ namespace psdPH.Logic
 {
     public class ParameterConfig
     {
-        object Rule;
+        object Obj;
         public string FieldName;
         public string Desc;
-        public Type GetTypeOfRule()
+        public Type GetTypeOfObj()
         {
-            return Rule.GetType();
+            return Obj.GetType();
         }
-        public void SetValue(object value) {
-            FieldInfo fieldInfo = GetTypeOfRule().GetField(FieldName);
+        public void SetValue(object value)
+        {
+            Type objType = GetTypeOfObj();
+            FieldInfo fieldInfo = objType.GetField(FieldName);
+            PropertyInfo propertyInfo = objType.GetProperty(FieldName);
 
-            // Устанавливаем значение поля
             if (fieldInfo != null)
-            {
-                fieldInfo.SetValue(Rule, value); // Устанавливаем значение 42
-            }
+                fieldInfo.SetValue(Obj, value);
+            else if (propertyInfo != null)
+                propertyInfo.SetValue(Obj, value);
+            else
+                throw new ArgumentException($"Поле или свойство с именем '{FieldName}' не найдено в объекте типа '{objType.Name}'.");
         }
-        public static ParameterConfig CreateConfig<T>(Rule rule, Expression<Func<T>> field, string desc)
+
+        public object GetValue()
         {
-            return new ParameterConfig(rule, GetFieldName(field), desc);
+            Type objType = GetTypeOfObj();
+            FieldInfo fieldInfo = objType.GetField(FieldName);
+            PropertyInfo propertyInfo = objType.GetProperty(FieldName);
+
+            if (fieldInfo != null)
+                return fieldInfo.GetValue(Obj);
+            else if (propertyInfo != null)
+                return propertyInfo.GetValue(Obj);
+            else
+                throw new ArgumentException($"Поле или свойство с именем '{FieldName}' не найдено в объекте типа '{objType.Name}'.");
         }
-        public ParameterConfig(object rule, string fieldname, string desc)
+        public ParameterConfig(object obj, string fieldname, string desc)
         {
-            this.Rule = rule;
+            this.Obj = obj;
             this.FieldName = fieldname;
             this.Desc = desc;
-        }
-        public static string GetFieldName<T>(Expression<Func<T>> expression)
-        {
-            var body = (MemberExpression)expression.Body;
-            return body.Member.Name;
         }
     }
     
     public class Parameter
     {
-        
-        enum ParameterType
-        {
-
-            StringInput,
-            StringChoose
-        }
         StackPanel _stack;
         Func<bool> accept;
+        private ParameterConfig _config;
+
+        public ParameterConfig Config => _config; 
 
         public static Parameter Choose(ParameterConfig config, object[] options)
         {
-            var result = new Parameter();
+            var result = new Parameter(config);
             var stack = result._stack = new StackPanel()
             {
                 Orientation = Orientation.Horizontal
@@ -74,7 +80,7 @@ namespace psdPH.Logic
         }
         public static Parameter StringInput(ParameterConfig config)
         {
-            var result = new Parameter();
+            var result = new Parameter(config);
             var stack = result._stack = new StackPanel()
             {
                 Orientation = Orientation.Horizontal
@@ -87,7 +93,7 @@ namespace psdPH.Logic
         }
         public static Parameter IntInput(ParameterConfig config)
         {
-            var result = new Parameter();
+            var result = new Parameter(config);
             var stack = result._stack = new StackPanel()
             {
                 Orientation = Orientation.Horizontal
@@ -118,7 +124,7 @@ namespace psdPH.Logic
             {
                 options.Add(new EnumWrapper(item));
             }
-            var result = new Parameter();
+            var result = new Parameter(config);
             var stack = result._stack = new StackPanel()
             {
                 Orientation = Orientation.Horizontal
@@ -129,9 +135,13 @@ namespace psdPH.Logic
             result.accept = () => { config.SetValue((cb.SelectedValue as EnumWrapper).Value); return true; };
             return result;
         }
-        Parameter()
+        Parameter(ParameterConfig config)
         {
-
+            _config = config;
+        }
+        public void Accept()
+        {
+            accept();
         }
         public StackPanel Stack => _stack;
 

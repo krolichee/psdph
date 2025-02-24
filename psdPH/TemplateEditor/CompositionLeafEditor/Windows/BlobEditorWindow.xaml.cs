@@ -22,6 +22,8 @@ using PsApp = Photoshop.Application;
 using PsWr = psdPH.PhotoshopWrapper;
 using PsDocWr = psdPH.Logic.PhotoshopDocumentWrapper;
 using System.ComponentModel;
+using psdPH.RuleEditor;
+using psdPH.Logic.Rules;
 
 namespace psdPH
 {
@@ -114,9 +116,11 @@ namespace psdPH
             _root = config.Composition;
             _addStructureItemCommand = EditCommand.StructureCommand(doc, _root, this);
             _doc = doc;
+            _root.RuleSet.Rules.Add(new TextAnchorRule(_root) { Condition = new MaxRowCountCondition(_root) { RowCount = 10, TextLeafLayerName = "MudryBatyaVtuber" }, TextLeafLayerName = "MudryBatyaVtuber" });
             InitializeComponent();
             InitializeElements();
-            RefreshSctuctureStack();
+            refreshSctuctureStack();
+            refreshRuleStack();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -128,23 +132,32 @@ namespace psdPH
         {
             return _root;
         }
-
-        void RefreshSctuctureStack()
+        void refreshRuleStack()
         {
-            stackPanel.Children.Clear();
+            ConditionRule[] rules = _root.RuleSet.Rules.Cast<ConditionRule>().ToArray();
+            foreach (var rule in rules)
+            {
+                rulesStackPanel.Children.Add(new RuleTextBlock(rule));
+            }
+
+        }
+        void refreshSctuctureStack()
+        {
+            _root.restoreParents();
+            structuresStackPanel.Children.Clear();
             foreach (Composition child in _root.getChildren())
             {
                 var grid = new Grid();
                 grid.Children.Add(new Label() { Content = child.UIName, Foreground = SystemColors.ActiveBorderBrush, HorizontalAlignment = HorizontalAlignment.Left });
                 grid.Children.Add(new Label() { Content = child.ObjName, Foreground = SystemColors.ActiveCaptionTextBrush, HorizontalAlignment = HorizontalAlignment.Center });
-                grid.Width = stackPanel.RenderSize.Width;
+                grid.Width = structuresStackPanel.RenderSize.Width;
                 var button = new Button();
                 button.Height = 28;
                 button.Content = grid;
                 button.Command = _addStructureItemCommand.Command;
                 Type type = CompositionConfigDictionary.GetConfigType(child.GetType());
                 button.CommandParameter = Activator.CreateInstance(type, new object[] { child });
-                stackPanel.Children.Add(button);
+                structuresStackPanel.Children.Add(button);
             }
         }
 
@@ -160,7 +173,7 @@ namespace psdPH
                 var result = new EditCommand(doc, root, editor, null);
                 result.Command = new RelayCommand(result.EditStructureExecuteCommand, result.CanExecuteCommand);
                 return result;
-                
+
             }
             public EditCommand RuleCommand(Document doc, Composition root, BlobEditorWindow editor)
             {
@@ -184,12 +197,11 @@ namespace psdPH
                 Composition result = ce_w.getResultComposition();
                 if (result != null)
                     _root_composition.addChild(result);
-                _editor.RefreshSctuctureStack();
+                _editor.refreshSctuctureStack();
             }
             private void EditRuleExecuteCommand(object parameter)
             {
-                var config = parameter as CompositionEditorConfig;
-                //_root_composition.getRules().rules.Add();
+                throw new NotImplementedException();
             }
 
             private bool CanExecuteCommand(object parameter)
@@ -236,7 +248,15 @@ namespace psdPH
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            RefreshSctuctureStack();
+            refreshSctuctureStack();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var rc_window = new RuleControlWindow(_root);
+            rc_window.ShowDialog();
+            _root.RuleSet.Rules.Add(rc_window.GetResultRule());
+            refreshRuleStack();
         }
     }
 }

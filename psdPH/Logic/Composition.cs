@@ -16,6 +16,7 @@ using System.Xml.Serialization;
 
 namespace psdPH
 {
+    
     public abstract class Composition
     {
         public string XmlName
@@ -48,9 +49,15 @@ namespace psdPH
         }
         virtual public Composition[] getChildren() { return null; }
         virtual public T[] getChildren<T>() { return null; }
-        public RuleSet getRules() { return null; }
+        private RuleSet ruleSet = new RuleSet();
+        public RuleSet RuleSet => ruleSet;
 
         public Composition() { }
+    }
+    public abstract class LayerComposition:Composition
+    {
+        public string LayerName;
+        public override string ObjName => LayerName;
     }
     [Serializable]
     [XmlRoot("Flag")]
@@ -79,19 +86,16 @@ namespace psdPH
     }
     [Serializable]
     [XmlRoot("Image")]
-    public class ImageLeaf : Composition
+    public class ImageLeaf : LayerComposition
     {
         private string _path;
-        private string _layer_name;
         public override string UIName => "Изобр.";
-
-        public override string ObjName => _layer_name;
 
         override public void apply(XmlDocument xmlDoc, XmlElement root_elem)
         {
 
             XmlElement img = xmlDoc.CreateElement(XmlName);
-            img.SetAttribute("ln", _layer_name);
+            img.SetAttribute("ln", LayerName);
             img.SetAttribute("path", _path.ToString());
             root_elem.AppendChild(img);
         }
@@ -101,18 +105,16 @@ namespace psdPH
     }
     [Serializable]
     [XmlRoot("Visibility")]
-    public class VisLeaf : Composition
+    public class VisLeaf : LayerComposition
     {
         public override string UIName => "Видим.";
-        private bool _toggle;
-        private string _layer_name;
-        public override string ObjName => _layer_name;
+        public bool Toggle;
 
         override public void apply(XmlDocument xmlDoc, XmlElement root_elem)
         {
             XmlElement img = xmlDoc.CreateElement(XmlName);
-            img.SetAttribute("ln", _layer_name);
-            img.SetAttribute("is", _toggle.ToString());
+            img.SetAttribute("ln", LayerName);
+            img.SetAttribute("is", Toggle.ToString());
             root_elem.AppendChild(img);
         }
         public VisLeaf()
@@ -123,12 +125,10 @@ namespace psdPH
     }
     [Serializable]
     [XmlRoot("Text")]
-    public class TextLeaf : Composition
+    public class TextLeaf : LayerComposition
     {
         public override string UIName => "Текст";
         public string Text;
-        public string LayerName;
-        public override string ObjName => LayerName;
 
         override public void apply(XmlDocument xmlDoc, XmlElement root_elem)
         {
@@ -155,14 +155,14 @@ namespace psdPH
 
     [Serializable]
     [XmlRoot("Blob")]
-    public class Blob : Composition
+    public class Blob : LayerComposition
     {
         public override string UIName => "Подфайл";
         public BlobMode Mode;
         [XmlArray("Children")]
         public Composition[] Children = new Composition[0];
         public string Name;
-        public string LayerName;
+        
         public string Path;
 
         public override string ObjName => Name;
@@ -196,8 +196,7 @@ namespace psdPH
         }
         override public T[] getChildren<T>()
         {
-
-            return Children.Where(l => l.GetType() == typeof(T)).Cast<T>().ToArray();
+            return Children.Where(l => l is T).Cast<T>().ToArray();
         }
         public static Blob PathBlob(string path)
         {
@@ -229,20 +228,6 @@ namespace psdPH
         }
     }
     [Serializable]
-    [XmlRoot("Placeholder")]
-    public class PlaceholderLeaf : Composition
-    {
-        public override string UIName => "Плейс.";
-        public string LayerName;
-        public string PrototypeLayerName;
-        public override string ObjName => LayerName;
-        public PlaceholderLeaf(string layername)
-        {
-            LayerName = layername;
-        }
-        public PlaceholderLeaf() { }
-    }
-    [Serializable]
     [XmlRoot("Prototype")]
     public class PrototypeLeaf : Composition
     {
@@ -258,6 +243,51 @@ namespace psdPH
         public PrototypeLeaf()
         {
         }
+    }
+    [Serializable]
+    [XmlRoot("Placeholder")]
+    public class PlaceholderLeaf : Composition
+    {
+
+        public override string UIName => "Плейс.";
+        public string LayerName;
+        public string PrototypeLayerName;
+        DerivedLayerLeaf derived;
+        public override string ObjName => LayerName;
+        
+        public PlaceholderLeaf(string layername,string prototypeLayername)
+        {
+            LayerName = layername;
+            PrototypeLayerName = prototypeLayername;
+        }
+        public PlaceholderLeaf() { }
+        public override void restoreParents(Composition parent = null)
+        {
+            base.restoreParents(parent);
+            if (derived == null)
+                parent.addChild(derived=new DerivedLayerLeaf($"{PrototypeLayerName}_{LayerName}"));
+        }
+    }
+    public class DerivedLayerLeaf:LayerLeaf
+    {
+        public override string UIName => "Произв.";
+        public DerivedLayerLeaf(string layername)
+        {
+            LayerName = layername;
+        }
+    }
+
+    [Serializable]
+    [XmlRoot("Layer")]
+    public class LayerLeaf : LayerComposition
+    {
+        public override string UIName => "Слой";
+        
+        public LayerLeaf(string layername)
+        {
+            LayerName = layername;
+        }
+        public LayerLeaf() { }
     }
 }
 

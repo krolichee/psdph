@@ -67,10 +67,6 @@ namespace psdPH
             CompositionXmlDictionary.InitializeDictionary();
             InitializeComponent();
             LoadFoldersIntoMenu();
-            Blob blob = Blob.LayerBlob("111");
-            blob.addChild(new TextLeaf("1sd"));
-            blob.addChild(new TextLeaf("2sd"));
-            MainGrid.Children.Add(new RuleControl(blob));
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -144,7 +140,7 @@ namespace psdPH
             XmlSerializer serializer = new XmlSerializer(typeof(Blob), CompositionXmlDictionary.StoT.Values.ToArray());
             Blob blob;
             string xmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.xml");
-            string psdFilePatg = Path.Combine(Directory.GetCurrentDirectory(), "template.psd");
+            string psdFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.psd");
             if (File.Exists(xmlFilePath))
             {
                 XmlDocument xmlDoc = new XmlDocument();
@@ -162,7 +158,7 @@ namespace psdPH
                 blob.restoreParents();
             }
             else
-                blob = Blob.LayerBlob(psdFilePatg);
+                blob = Blob.PathBlob(psdFilePath);
             BlobEditorConfig bec = new BlobEditorConfig(blob);
             ICompositionEditor editor = bec.Factory.CreateCompositionEditorWindow(null, bec, blob);
             editor.ShowDialog();
