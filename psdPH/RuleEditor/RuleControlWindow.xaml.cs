@@ -24,7 +24,7 @@ namespace psdPH.RuleEditor
         {
             InitializeComponent();
             SizeToContent = SizeToContent.WidthAndHeight;
-            Content = new RuleControl(composition);
+            StackPanel. new RuleControl(composition);
         }
 
         public ConditionRule GetResultRule()

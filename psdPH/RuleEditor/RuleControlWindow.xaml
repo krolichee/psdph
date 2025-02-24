@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:psdPH.RuleEditor"
         mc:Ignorable="d"
         Title="RuleControlWindow" HorizontalAlignment="Left" VerticalAlignment="Top" >
-    <Grid x:Name="mainGrid">
-        
-    </Grid>
+    <StackPanel>
+        <Grid x:Name="mainGrid">
+
+        </Grid>
+        <Button Width="40" Height="25" Margin="0,5,0,0" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            Ok
+        </Button>
+    </StackPanel>
 </Window>

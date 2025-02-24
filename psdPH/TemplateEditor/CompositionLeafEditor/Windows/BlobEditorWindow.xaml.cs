@@ -116,7 +116,7 @@ namespace psdPH
             _root = config.Composition;
             _addStructureItemCommand = EditCommand.StructureCommand(doc, _root, this);
             _doc = doc;
-            _root.RuleSet.Rules.Add(new TextAnchorRule(_root) { Condition = new MaxRowCountCondition(_root) { RowCount = 10, TextLeafLayerName = "MudryBatyaVtuber" }, TextLeafLayerName = "MudryBatyaVtuber" });
+            //_root.RuleSet.Rules.Add(new TextAnchorRule(_root) { Condition = new MaxRowCountCondition(_root) { RowCount = 10, TextLeafLayerName = "MudryBatyaVtuber" }, TextLeafLayerName = "MudryBatyaVtuber" });
             InitializeComponent();
             InitializeElements();
             refreshSctuctureStack();
