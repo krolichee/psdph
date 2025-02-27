@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="100" Width="100" Height="99">
     <Grid Background="#FFECE9E9">
-        <Label x:Name="previewLabel" Content="Label" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="#FFBBADAD" FontSize="24" FontFamily="Arial Black"/>
+        <TextBlock HorizontalAlignment="Center" Height="35" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </UserControl>

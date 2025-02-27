@@ -54,7 +54,7 @@ namespace psdPH.RuleEditor
             {
                 var config = parameter.Config;
                 parts.Add(config.Desc);
-                parts.Add(config.GetValue().ToString());
+                parts.Add(UIName.ToString(config.GetValue()));
             }
             return string.Join(" ",parts);
 

@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
 using System.Xml.Serialization;
+using static psdPH.Logic.Parameter;
 using Condition = psdPH.Logic.Rules.Condition;
 
 namespace psdPH.Logic
@@ -31,7 +34,20 @@ namespace psdPH.Logic
                 item.apply(doc);
             }
         }
+
+        internal void restoreLinks(Composition composition)
+        {
+            foreach (var rule in Rules)
+            {
+                rule.restoreComposition(composition);
+            }
+        }
     }
+    [XmlInclude(typeof(ConditionRule))]
+    [XmlInclude(typeof(ChangingRule))]
+    [XmlInclude(typeof(TextRule))]
+    [XmlInclude(typeof(TextAnchorRule))]
+    [XmlInclude(typeof(TextFontSizeRule))]
     public abstract class Rule : IParameterable
     {
         [XmlIgnore]
@@ -43,16 +59,27 @@ namespace psdPH.Logic
         [XmlIgnore]
         public RuleSet ruleSet;
         abstract public void apply(Document doc);
+
+        public virtual void restoreComposition(Composition composition)
+        {
+            Composition = composition;
+        }
+
         [XmlIgnore]
         public abstract Parameter[] Parameters { get; }
     }
-    
 
+    [XmlInclude(typeof(Condition))]
     public abstract class ConditionRule : Rule
     {
         public Condition Condition;
 
         protected ConditionRule(Composition composition) : base(composition){}
+        public override void restoreComposition(Composition composition)
+        {
+            base.restoreComposition(composition);
+            Condition.Composition = composition;
+        }
 
         abstract protected void _apply(Document doc);
         public override void apply(Document doc)
@@ -97,7 +124,7 @@ namespace psdPH.Logic
                 LeafLayerName = value.LayerName;
             }
         }
-
+        [XmlIgnore]
         public override Parameter[] Parameters
         {
             get
@@ -108,7 +135,7 @@ namespace psdPH.Logic
                 var yConfig = new ParameterConfig(this, nameof(this.Y), "y");
                 var layerNameConfig = new ParameterConfig(this,nameof(this.LayerName),"слоя");
                 Composition.getChildren();
-                result.Add(Parameter.Choose(layerNameConfig, Composition.getChildren<LayerComposition>()));
+                result.Add(Parameter.Choose(layerNameConfig, Composition.getChildren<LayerComposition>().Select(l=>l.LayerName).ToArray()));
                 result.Add(Parameter.EnumChoose(modeConfig, typeof(ChangeMode)));
                 result.Add(Parameter.IntInput(xConfig));
                 result.Add(Parameter.IntInput(yConfig));
@@ -120,8 +147,7 @@ namespace psdPH.Logic
         protected override void _apply(Document doc)
         {
            // PsLayerKind.
-            PhotoshopDocumentWrapper docWr = new PhotoshopDocumentWrapper(doc);
-            docWr.GetLayerByName(LayerName);
+            doc.GetLayerByName(LayerName);
             (doc.ActiveLayer as ArtLayer).Translate(Shift.X, Shift.Y);
         }
         public TranslateRule():base(null) { }
@@ -130,6 +156,7 @@ namespace psdPH.Logic
     {
         
         public string TextLeafLayerName;
+        [XmlIgnore]
         public override Parameter[] Parameters
         {
             get
@@ -169,6 +196,7 @@ namespace psdPH.Logic
         {
         }
         public TextFontSizeRule() : base(null) { }
+        [XmlIgnore]
         public override Parameter[] Parameters
         {
             get
@@ -199,6 +227,7 @@ namespace psdPH.Logic
 
         public TextAnchorRule(Composition composition) : base(composition){}
         public TextAnchorRule() : base(null) { }
+        [XmlIgnore]
         public override Parameter[] Parameters
         {
             get
@@ -209,7 +238,7 @@ namespace psdPH.Logic
                     PsJustification.psRight,
                     PsJustification.psLeft,
                     PsJustification.psCenter
-                }.Cast<object>().ToArray()));
+                }.Select(o=>new EnumWrapper(o)).ToArray(),(o)=>(o as EnumWrapper).Value));
                 return result.ToArray();
             }
         }
@@ -220,12 +249,23 @@ namespace psdPH.Logic
             (doc.ActiveLayer as ArtLayer).TextItem.Justification = Justification;
         }
     }
+    public static class UIName
+    {
+        public static string ToString(object value)
+        {
+            return value.ToString();
+        }
+    }
     //------------------
     public static class EnumExtensions
     {
-        public static string GetDescription<TEnum>(this TEnum value) where TEnum:Enum
+        public static string GetDescription(this Enum value)
         {
             return EnumLocalization.GetLocalizedDescription(value);
+        }
+        public static string ToString(this Enum value)
+        {
+            return value.GetDescription();
         }
     }
 

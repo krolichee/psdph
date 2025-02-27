@@ -70,6 +70,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
+      <DependentUpon>CollectionEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CollectionEditor\PsdPHApplicationDirectory.cs" />
     <Compile Include="DayTile.xaml.cs">
       <DependentUpon>DayTile.xaml</DependentUpon>
     </Compile>
@@ -77,14 +81,16 @@
       <DependentUpon>DowPlaceholderMatchWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Localization.cs" />
-    <Compile Include="Logic\Composition.cs" />
+    <Compile Include="Logic\Compositions\Compositions.cs" />
     <Compile Include="CollectionEditor\Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\CompositionConfigDictionary.cs" />
+    <Compile Include="Logic\Compositions\Compositions.Fields.cs" />
+    <Compile Include="Logic\Compositions\Compositions.UINames.cs" />
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
     <Compile Include="RuleEditor\IParameterable.cs" />
-    <Compile Include="Logic\PhotoshopDocumentWrapper.cs" />
+    <Compile Include="Logic\PhotoshopDocumentExtension.cs" />
     <Compile Include="Logic\Rules\Conditions.cs" />
     <Compile Include="RuleEditor\IRuleEditor.cs" />
     <Compile Include="RuleEditor\RuleControl.xaml.cs">
@@ -134,6 +140,10 @@
     <Compile Include="WeekGaleryViewWindow.xaml.cs">
       <DependentUpon>WeekGaleryViewWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="CollectionEditor\CollectionEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DayTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

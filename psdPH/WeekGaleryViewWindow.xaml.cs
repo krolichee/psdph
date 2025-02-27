@@ -1,6 +1,8 @@
-﻿using System;
+﻿using psdPH.Logic;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 
 namespace psdPH
 {
@@ -48,31 +51,34 @@ namespace psdPH
                 //Выбор текстового поля недели
                 StringChoiceWindow dow_scc_w = new StringChoiceWindow(textLeafs_names, "Выбор текстового поля дня недели");
                 dow_scc_w.ShowDialog();
-
                 weekGaleryConfig.DowLayerDictionary = dwp_w.getResultDict();
                 weekGaleryConfig.PrototypeName = prototype.LayerName;
                 weekGaleryConfig.TilePreviewTextLeaf = prev_scc_w.getResultString();
-                weekGaleryConfig.DowLabelTextLeaf = dow_scc_w.getResultString();
-
+                weekGaleryConfig.DowLabelTextLeafLayerName = dow_scc_w.getResultString();
             }
             InitializeComponent();
+
         }
     }
-    public class WeekGaleryConfig
+    public class WeekGaleryConfig:IParameterable
     {
-        public static Dictionary<DayOfWeek, string> RuNames = new Dictionary<DayOfWeek, string>()
-        {
-            { DayOfWeek.Monday, "Пн"},
-            { DayOfWeek.Tuesday, "Вт"},
-            { DayOfWeek.Wednesday, "Ср"},
-            { DayOfWeek.Thursday, "Чт"},
-            { DayOfWeek.Friday, "Пт"},
-            { DayOfWeek.Saturday, "Сб"},
-            { DayOfWeek.Sunday, "Вс"},
-        };
+        
         public Dictionary<DayOfWeek, string> DowLayerDictionary = new Dictionary<DayOfWeek, string>();
         public string TilePreviewTextLeaf;
-        public string DowLabelTextLeaf;
+        public string DowLabelTextLeafLayerName;
         public string PrototypeName;
+        [XmlIgnore]
+        public Composition Composition;
+        public WeekGaleryConfig()
+        {
+
+        }
+        public Parameter[] Parameters { get {
+                PrototypeLeaf[] prototypes = Composition.getChildren<PrototypeLeaf>();
+                var result = new List<Parameter>();
+                var textLeafConfig = new ParameterConfig(this, nameof(this.Composition), "Прототип дня");
+                result.Add(Parameter.Choose(textLeafConfig, prototypes));
+                return result.ToArray();
+            } }
     }
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Xml.Serialization;
 using static psdPH.Logic.Parameter;
 using Condition = psdPH.Logic.Rules.Condition;
 
@@ -62,12 +63,14 @@ namespace psdPH.Logic
         StackPanel _stack;
         Func<bool> accept;
         private ParameterConfig _config;
-
         public ParameterConfig Config => _config; 
-
-        public static Parameter Choose(ParameterConfig config, object[] options)
+        
+        public static Parameter Choose(ParameterConfig config, object[] options,Func<object,object> fieldFunc = null)
         {
+            if (fieldFunc == null)
+                fieldFunc = o => o;
             var result = new Parameter(config);
+            
             var stack = result._stack = new StackPanel()
             {
                 Orientation = Orientation.Horizontal
@@ -75,7 +78,7 @@ namespace psdPH.Logic
             stack.Children.Add(new Label() { Content = config.Desc });
             var cb = new ComboBox() { ItemsSource = options };
             stack.Children.Add(cb);
-            result.accept = () => { config.SetValue(cb.SelectedValue); return true; };
+            result.accept = () => { config.SetValue(fieldFunc(cb.SelectedValue)); return true; };
             return result;
         }
         public static Parameter StringInput(ParameterConfig config)
@@ -85,6 +88,7 @@ namespace psdPH.Logic
             {
                 Orientation = Orientation.Horizontal
             };
+            
             stack.Children.Add(new Label() { Content = config.Desc });
             var tb = new TextBox() {};
             stack.Children.Add(tb);
@@ -118,27 +122,15 @@ namespace psdPH.Logic
 
         public static Parameter EnumChoose(ParameterConfig config, Type @enum)
         {
-            var enumValues = Enum.GetValues(@enum).Cast<Enum>().ToArray();
-            var options = new List<EnumWrapper>();
-            foreach (var item in enumValues)
-            {
-                options.Add(new EnumWrapper(item));
-            }
-            var result = new Parameter(config);
-            var stack = result._stack = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal
-            };
-            stack.Children.Add(new Label() { Content = config.Desc });
-            var cb = new ComboBox() { ItemsSource = options };
-            stack.Children.Add(cb);
-            result.accept = () => { config.SetValue((cb.SelectedValue as EnumWrapper).Value); return true; };
-            return result;
+            var enumValues = Enum.GetValues(@enum).Cast<Enum>();
+            var options = enumValues.Select(e => new EnumWrapper(e)).ToArray();
+            return Parameter.Choose(config, options, (o) => (o as EnumWrapper).Value);
         }
         Parameter(ParameterConfig config)
         {
             _config = config;
         }
+        public Parameter() : this(null) { }
         public void Accept()
         {
             accept();

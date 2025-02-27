@@ -8,24 +8,21 @@ using System.Xml.Serialization;
 
 namespace psdPH.Logic.Rules
 {
+    [XmlInclude(typeof(TextCondition))]
+    [XmlInclude(typeof(MaxRowCountCondition))]
+    [XmlInclude(typeof(MaxRowLenCondition))]
     public abstract class Condition : IParameterable
     {
+        [XmlIgnore]
+        public Composition Composition;
+        [XmlIgnore]
         public abstract Parameter[] Parameters { get; }
 
         public abstract bool IsValid();
     }
-    public class SampleCondition : Condition
-    {
-        public override Parameter[] Parameters => throw new NotImplementedException();
-
-        public override bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
-    }
     public abstract class TextCondition : Condition
     {
-        public Composition Composition;
+        
         //public ConditionRule rule;
         public string TextLeafLayerName;
         [XmlIgnore]
@@ -60,7 +57,7 @@ namespace psdPH.Logic.Rules
     public class MaxRowCountCondition : TextCondition
     {
         public override string ToString()  => "количество строк";
-
+        [XmlIgnore]
         public override Parameter[] Parameters
         {
             get
@@ -86,7 +83,7 @@ namespace psdPH.Logic.Rules
     public class MaxRowLenCondition : TextCondition
     {
         public override string ToString() => "максимальная длина строки\n среди строк";
-
+        [XmlIgnore]
         public override Parameter[] Parameters
         {
             get
@@ -101,6 +98,7 @@ namespace psdPH.Logic.Rules
         public int RowLength;
 
         public MaxRowLenCondition(Composition composition) : base(composition) { }
+        public MaxRowLenCondition() : base(null) { }
 
         public override bool IsValid()
         {

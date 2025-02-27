@@ -134,11 +134,18 @@ namespace psdPH
         {
             NewProject();
         }
-
-        private void templateMenuItem_Click(object sender, RoutedEventArgs e)
+        private void saveBlob(Blob blob)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Blob), CompositionXmlDictionary.StoT.Values.ToArray());
+            XmlSerializer serializer = new XmlSerializer(typeof(Composition));
+            string xmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.xml");
+            FileStream writeFileStream = new FileStream(xmlFilePath, FileMode.Create);
+            serializer.Serialize(writeFileStream, blob);
+            writeFileStream.Close();
+        }
+        private Blob openMainBlob()
+        {
             Blob blob;
+            XmlSerializer serializer = new XmlSerializer(typeof(Composition));
             string xmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.xml");
             string psdFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.psd");
             if (File.Exists(xmlFilePath))
@@ -146,8 +153,8 @@ namespace psdPH
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load("template.xml");
                 XmlNode rootNode = xmlDoc.LastChild;
-                if (rootNode.Name != CompositionXmlDictionary.GetXmlName(typeof(Blob)))
-                    throw new Exception();
+                //if (rootNode.Name != CompositionXmlDictionary.GetXmlName(typeof(Blob)))
+                //    throw new Exception();
 
 
 
@@ -155,43 +162,26 @@ namespace psdPH
 
                 blob = serializer.Deserialize(readFileStream) as Blob;
                 readFileStream.Close();
-                blob.restoreParents();
+                blob.restore();
             }
             else
                 blob = Blob.PathBlob(psdFilePath);
+            return blob;
+        }
+
+        private void templateMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Blob blob = openMainBlob();
             BlobEditorConfig bec = new BlobEditorConfig(blob);
             ICompositionEditor editor = bec.Factory.CreateCompositionEditorWindow(null, bec, blob);
             editor.ShowDialog();
-            FileStream writeFileStream = new FileStream(xmlFilePath, FileMode.Create);
-            serializer.Serialize(writeFileStream,blob);
-            writeFileStream.Close();
+            saveBlob(blob);
         }
 
 
         private void weekkViewMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Blob), CompositionXmlDictionary.StoT.Values.ToArray());
-            Blob blob;
-            string xmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.xml");
-            string psdFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.psd");
-            if (File.Exists(xmlFilePath))
-            {
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(xmlFilePath);
-                XmlNode rootNode = xmlDoc.LastChild;
-                if (rootNode.Name != CompositionXmlDictionary.GetXmlName(typeof(Blob)))
-                    throw new Exception();
-
-
-
-                FileStream readFileStream = new FileStream(xmlFilePath, FileMode.Open);
-
-                blob = serializer.Deserialize(readFileStream) as Blob;
-                readFileStream.Close();
-                blob.restoreParents();
-            }
-            else
-                blob = Blob.LayerBlob(psdFilePath);
+            Blob blob = openMainBlob();
             new WeekGaleryViewWindow(blob).ShowDialog();
         }
 

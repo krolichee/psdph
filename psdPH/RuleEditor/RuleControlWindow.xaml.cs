@@ -20,16 +20,25 @@ namespace psdPH.RuleEditor
     /// </summary>
     public partial class RuleControlWindow : Window, IRuleEditor
     {
+        ConditionRule _result;
+        RuleControl _rc;
         public RuleControlWindow(Composition composition)
         {
             InitializeComponent();
             SizeToContent = SizeToContent.WidthAndHeight;
-            StackPanel. new RuleControl(composition);
+            _rc = new RuleControl(composition);
+            mainGrid.Children.Add(_rc);
         }
 
         public ConditionRule GetResultRule()
         {
-            return (Content as RuleControl).GetResultRule();
+            return _result;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            _result = _rc.GetResultRule();
+            Close();
         }
     }
 }

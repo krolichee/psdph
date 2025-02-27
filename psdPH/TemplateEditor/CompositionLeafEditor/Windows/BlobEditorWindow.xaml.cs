@@ -20,7 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using PsApp = Photoshop.Application;
 using PsWr = psdPH.PhotoshopWrapper;
-using PsDocWr = psdPH.Logic.PhotoshopDocumentWrapper;
+using PsDocWr = psdPH.Logic.PhotoshopDocumentExtension;
 using System.ComponentModel;
 using psdPH.RuleEditor;
 using psdPH.Logic.Rules;
@@ -35,6 +35,7 @@ namespace psdPH
     {
         Composition _root;
         EditCommand _addStructureItemCommand;
+        EditCommand _deleteStructureCommand;
         Document _doc;
         void InitializeElements()
         {
@@ -61,16 +62,14 @@ namespace psdPH
         }
         static string ChooseLayer(Document doc, CompositionEditorConfig config)
         {
-            PsDocWr docWr = new PsDocWr(doc);
-
-            string[] layer_names = PsDocWr.GetLayersNames(docWr.GetLayersByKinds(config.Kinds, LayerListing.Recursive));
+            string[] layer_names = PsDocWr.GetLayersNames(doc.GetLayersByKinds(config.Kinds));
             StringChoiceWindow lc_w = new StringChoiceWindow(layer_names, "Выбор слоя поддокумента");
             return lc_w.getResultString();
 
         }
         public static BlobEditorWindow CreateWithinDocument(Document doc, CompositionEditorConfig config)
         {
-            string[] layer_names = PsDocWr.GetLayersNames(new PsDocWr(doc).GetLayersByKinds(config.Kinds, LayerListing.Recursive));
+            string[] layer_names = PsDocWr.GetLayersNames(doc.GetLayersByKinds(config.Kinds));
             var lc_w = new StringChoiceWindow(layer_names, "Выбор слоя поддокумента");
             lc_w.ShowDialog();
             string ln = lc_w.getResultString();
@@ -84,12 +83,11 @@ namespace psdPH
             Blob blob = config.Composition as Blob;
             if (blob.Mode != BlobMode.Layer)
                 throw new ArgumentException();
-            PsDocWr docWr = new PsDocWr(doc);
             Document new_doc;
             while (true)
                 try
                 {
-                    new_doc = docWr.OpenSmartLayer(blob.LayerName, LayerListing.Recursive);
+                    new_doc = doc.OpenSmartLayer(blob.LayerName);
                     break;
                 }
                 catch
@@ -115,6 +113,7 @@ namespace psdPH
         {
             _root = config.Composition;
             _addStructureItemCommand = EditCommand.StructureCommand(doc, _root, this);
+            _deleteStructureCommand = EditCommand.DeleteStructureCommand(doc,_root,this);
             _doc = doc;
             //_root.RuleSet.Rules.Add(new TextAnchorRule(_root) { Condition = new MaxRowCountCondition(_root) { RowCount = 10, TextLeafLayerName = "MudryBatyaVtuber" }, TextLeafLayerName = "MudryBatyaVtuber" });
             InitializeComponent();
@@ -134,6 +133,7 @@ namespace psdPH
         }
         void refreshRuleStack()
         {
+            rulesStackPanel.Children.Clear();
             ConditionRule[] rules = _root.RuleSet.Rules.Cast<ConditionRule>().ToArray();
             foreach (var rule in rules)
             {
@@ -143,13 +143,14 @@ namespace psdPH
         }
         void refreshSctuctureStack()
         {
-            _root.restoreParents();
+            _root.restore();
             structuresStackPanel.Children.Clear();
             foreach (Composition child in _root.getChildren())
             {
                 var grid = new Grid();
                 grid.Children.Add(new Label() { Content = child.UIName, Foreground = SystemColors.ActiveBorderBrush, HorizontalAlignment = HorizontalAlignment.Left });
                 grid.Children.Add(new Label() { Content = child.ObjName, Foreground = SystemColors.ActiveCaptionTextBrush, HorizontalAlignment = HorizontalAlignment.Center });
+                grid.Children.Add(new Button() { Content = "X", Foreground = new SolidColorBrush(Color.FromRgb(124, 0, 0)), HorizontalAlignment = HorizontalAlignment.Right, Command = _deleteStructureCommand.Command, CommandParameter = child });
                 grid.Width = structuresStackPanel.RenderSize.Width;
                 var button = new Button();
                 button.Height = 28;
@@ -175,10 +176,16 @@ namespace psdPH
                 return result;
 
             }
-            public EditCommand RuleCommand(Document doc, Composition root, BlobEditorWindow editor)
+            public static EditCommand RuleCommand(Document doc, Composition root, BlobEditorWindow editor)
             {
                 var result = new EditCommand(doc, root, editor, null);
                 result.Command = new RelayCommand(result.EditRuleExecuteCommand, result.CanExecuteCommand);
+                return result;
+            }
+            public static EditCommand DeleteStructureCommand(Document doc, Composition root, BlobEditorWindow editor)
+            {
+                var result = new EditCommand(doc, root, editor, null);
+                result.Command = new RelayCommand(result.DeleteStructureExecuteCommand, result.CanExecuteCommand);
                 return result;
             }
             protected EditCommand(Document doc, Composition root, BlobEditorWindow editor, ICommand command)
@@ -203,7 +210,11 @@ namespace psdPH
             {
                 throw new NotImplementedException();
             }
-
+            private void DeleteStructureExecuteCommand(object parameter)
+            {
+                _root_composition.removeChild(parameter as Composition);
+                _editor.refreshSctuctureStack();
+            }
             private bool CanExecuteCommand(object parameter)
             {
                 return true; // Здесь можно добавить логику для определения, может ли команда быть выполнена
@@ -244,6 +255,8 @@ namespace psdPH
         {
             if (_doc.Application.ActiveDocument == _doc)
                 _doc.Close(PsSaveOptions.psDoNotSaveChanges);
+            else
+                throw new Exception();
         }
 
         private void Window_Activated(object sender, EventArgs e)

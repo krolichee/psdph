@@ -11,7 +11,7 @@ namespace psdPH
     using System;
     using System.Collections.Generic;
     using System.Windows;
-
+    using System.Windows.Controls;
 
     public static class EnumLocalization
     {
@@ -32,20 +32,40 @@ namespace psdPH
                 { ChangeMode.Rel, "установить" }
             }
         },
-    };
-        public static string GetLocalizedDescription<TEnum>(TEnum value) where TEnum : Enum
         {
-            Type enumType = value.GetType();
-
-            if (Localizations.TryGetValue(enumType, out var localization) &&
-                localization.TryGetValue(value, out var description))
+            typeof(DayOfWeek), new Dictionary<object, string>
             {
-                return description;
+                { DayOfWeek.Monday, "Пн"},
+                { DayOfWeek.Tuesday, "Вт"},
+                { DayOfWeek.Wednesday, "Ср"},
+                { DayOfWeek.Thursday, "Чт"},
+                { DayOfWeek.Friday, "Пт"},
+                { DayOfWeek.Saturday, "Сб"},
+                { DayOfWeek.Sunday, "Вс"},
             }
-
-            // Если локализация не найдена, возвращаем строковое представление значения
-            return value.ToString();
+        },
+        {
+            typeof(Composition), new Dictionary<object, string>
+            {
+                {typeof(FlagLeaf), "Флаг"},
+                {typeof(TextLeaf), "Текст" }
+            
+            }
         }
-        
+    };
+    public static string GetLocalizedDescription<TEnum>(TEnum value)
+    {
+        Type enumType = value.GetType();
+
+        if (Localizations.TryGetValue(enumType, out var localization) &&
+            localization.TryGetValue(value, out var description))
+        {
+            return description;
+        }
+
+        // Если локализация не найдена, возвращаем строковое представление значения
+        return value.ToString();
     }
+
+}
 }

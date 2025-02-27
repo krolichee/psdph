@@ -34,14 +34,13 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             this.config = config;
             this.root = root;
             InitializeComponent();
-            PhotoshopDocumentWrapper docWrapper = new PhotoshopDocumentWrapper(doc);
-            string[] layers_names = PhotoshopDocumentWrapper.GetLayersNames(
-                docWrapper.GetLayersByKinds(config.Kinds, LayerListing.Recursive));
+            string[] layers_names = PhotoshopDocumentExtension.GetLayersNames(
+                doc.GetLayersByKinds(config.Kinds));
             stackPanel.Children.Add(ln_sc_w = new StringChoiceControl(layers_names, "Выберите слой прототипа"));
 
 
-            string[] rel_layers_names = PhotoshopDocumentWrapper.GetLayersNames(
-                docWrapper.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psNormalLayer, PsLayerKind.psSolidFillLayer }, LayerListing.Recursive));
+            string[] rel_layers_names = PhotoshopDocumentExtension.GetLayersNames(
+                doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psNormalLayer, PsLayerKind.psSolidFillLayer }));
             stackPanel.Children.Add(rln_sc_w = new StringChoiceControl(rel_layers_names, "Выберите опорный слой"));
             _result = config.Composition as PrototypeLeaf;
         }

@@ -34,8 +34,9 @@ namespace psdPH
                 ph_names.Add(item.LayerName);
             List<DayOfWeek> days = (Enum.GetValues(typeof(DayOfWeek)) as DayOfWeek[]).ToList();
             foreach (DayOfWeek day in days)
-                stackPanel.Children.Add(new StringChoiceControl(ph_names.ToArray(), $"{WeekGaleryConfig.RuNames[day]} заполнитель") { Tag = day});
+                stackPanel.Children.Add(new StringChoiceControl(ph_names.ToArray(), $"{day.ToString()} заполнитель") { Tag = day});
         }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

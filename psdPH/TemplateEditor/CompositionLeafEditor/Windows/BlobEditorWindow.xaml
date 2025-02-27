@@ -34,10 +34,7 @@
                 <Grid Background="#FFE5E5E5">
                     <Button Content="+" HorizontalAlignment="Left" Height="24" Margin="10,21,0,0" VerticalAlignment="Top" Width="27" Click="Button_Click_1"/>
                     <ScrollViewer Margin="0,62,0,0">
-                        <StackPanel x:Name="rulesStackPanel">
-                            <TextBlock TextWrapping="Wrap"><Run Text="fsafasfsafaaaaaaaaa aaafffffffffffffffffffffffffff "/><LineBreak/><Run Text="ffffffffffffff fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffsfas"/></TextBlock>
-                            <Button Content="Button"/>
-                        </StackPanel>
+                        <StackPanel x:Name="rulesStackPanel"/>
                     </ScrollViewer>
                 </Grid>
             </TabItem>

@@ -15,8 +15,9 @@ using Photoshop;
 using psdPH.TemplateEditor;
 using PsApp = Photoshop.Application;
 using PsWr = psdPH.PhotoshopWrapper;
-using PsDocWr = psdPH.Logic.PhotoshopDocumentWrapper;
+using PsDocWr = psdPH.Logic.PhotoshopDocumentExtension;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.Logic;
 
 
 namespace psdPH
@@ -39,8 +40,8 @@ namespace psdPH
         {
             InitializeComponent();
             _composition = config.Composition as TextLeaf;
-            ArtLayer[] layers = new PsDocWr(doc).GetLayersByKinds(config.Kinds);
-            string[] layer_names = PsDocWr.GetLayersNames(layers);
+            ArtLayer[] layers = doc.GetLayersByKinds(config.Kinds);
+            string[] layer_names = doc.GetLayersNames(layers);
             scc = new StringChoiceControl(layer_names, "Выбор слоя");
             stackPanel.Children.Insert(0, scc);
             if (config.Composition != null)
