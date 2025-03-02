@@ -8,7 +8,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
     public interface ICompositionEditor
     {
-        Composition getResultComposition();
+        Composition GetResultComposition();
         bool? ShowDialog();
     }
     

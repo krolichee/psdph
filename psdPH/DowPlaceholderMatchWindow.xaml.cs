@@ -21,22 +21,18 @@ namespace psdPH
     public partial class DowPlaceholderMatchWindow : Window
     {
         Dictionary<DayOfWeek, string> dowLayerDictionary = new Dictionary<DayOfWeek, string>();
-        public DowPlaceholderMatchWindow(PrototypeLeaf prot)
+        public DowPlaceholderMatchWindow(Prototype prot)
         {
+            InitializeComponent();
             Blob root = prot.Parent as Blob;
-            InitializeComponent();            
-            List<PlaceholderLeaf> placeholders = new List<PlaceholderLeaf>();
-            foreach (PlaceholderLeaf cmp in root.getChildren<PlaceholderLeaf>())
-                if (cmp.PrototypeLayerName == prot.LayerName)
-                    placeholders.Add(cmp as PlaceholderLeaf);
-            List<string> ph_names = new List<string>();
-            foreach (var item in placeholders)
-                ph_names.Add(item.LayerName);
-            List<DayOfWeek> days = (Enum.GetValues(typeof(DayOfWeek)) as DayOfWeek[]).ToList();
-            foreach (DayOfWeek day in days)
-                stackPanel.Children.Add(new StringChoiceControl(ph_names.ToArray(), $"{day.ToString()} заполнитель") { Tag = day});
+            var placeholders = root.getChildren<PlaceholderLeaf>()
+            .Where(cmp => cmp.PrototypeLayerName == prot.LayerName);
+            var phNames = placeholders.Select(p => p.LayerName).ToArray();
+            var days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Skip(1).Append(DayOfWeek.Sunday);
+            int i = 0;
+            foreach (var day in days)
+                stackPanel.Children.Add(new StringChoiceControl(phNames, $"{day} заполнитель", i++) { Tag = day });
         }
-
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -44,7 +40,7 @@ namespace psdPH
                 dowLayerDictionary.Add((DayOfWeek)scc.Tag, scc.getResultString());
             Close();
         }
-        public Dictionary<DayOfWeek, string> getResultDict()
+        public Dictionary<DayOfWeek, string> GetResultDict()
         {
             return dowLayerDictionary;
         }

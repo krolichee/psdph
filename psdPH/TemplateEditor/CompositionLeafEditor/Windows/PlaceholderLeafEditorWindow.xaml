@@ -7,10 +7,11 @@
         mc:Ignorable="d"
         Title="PlaceholderLeafEditorWindow" Height="215" Width="270">
     <Grid>
-        <ComboBox x:Name="prototypeCB" HorizontalAlignment="Left" Margin="65,44,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="prototypeCB" HorizontalAlignment="Left" Margin="65,44,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="prototypeCB_SelectionChanged"/>
         <Label Content="Прототип" HorizontalAlignment="Left" Margin="62,10,0,0" VerticalAlignment="Top" Width="103"/>
-        <ComboBox x:Name="layerCB" HorizontalAlignment="Left" Margin="70,119,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="layerCB" HorizontalAlignment="Left" Margin="70,119,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="layerCB_SelectionChanged"/>
         <Label Content="Слой" HorizontalAlignment="Left" Margin="70,93,0,0" VerticalAlignment="Top"/>
+        <Button Content="Ok" HorizontalAlignment="Left" Height="20" Margin="87,169,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click"/>
 
     </Grid>
 </Window>

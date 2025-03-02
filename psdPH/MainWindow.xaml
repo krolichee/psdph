@@ -31,7 +31,9 @@
                 <MenuItem Header="О программе" />
             </MenuItem>
         </Menu>
-        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Height="25" Margin="345,234,0,0" VerticalAlignment="Top" Width="160"/>
+        <Label Content="Текущий проект:" HorizontalAlignment="Left" Margin="10,28,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="projectNameLabel" Content="" HorizontalAlignment="Left" Margin="117,28,0,0" VerticalAlignment="Top"/>
+
 
 
     </Grid>

@@ -55,6 +55,7 @@ namespace psdPH
         {
             Directory.SetCurrentDirectory(Path.Combine(Directory.GetCurrentDirectory(),"Projects",projectName));
             currentProject = projectName;
+            projectNameLabel.Content = currentProject;
         }
         void NewProject()
         {
@@ -63,7 +64,6 @@ namespace psdPH
 
         public MainWindow()
         {
-            Console.WriteLine(GetFieldName(() => comboBox.DisplayMemberPath));
             CompositionXmlDictionary.InitializeDictionary();
             InitializeComponent();
             LoadFoldersIntoMenu();
@@ -125,7 +125,6 @@ namespace psdPH
             if (clickedMenuItem != null)
             {
                 string folderName = clickedMenuItem.Header.ToString();
-                MessageBox.Show($"Вы выбрали папку: {folderName}");
                 OpenProject(folderName);
             }
         }
@@ -172,12 +171,11 @@ namespace psdPH
         private void templateMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Blob blob = openMainBlob();
-            BlobEditorConfig bec = new BlobEditorConfig(blob);
+            BlobEditorConfig bec = new BlobEditorConfig() { Composition = blob };
             ICompositionEditor editor = bec.Factory.CreateCompositionEditorWindow(null, bec, blob);
             editor.ShowDialog();
             saveBlob(blob);
         }
-
 
         private void weekkViewMenuItem_Click(object sender, RoutedEventArgs e)
         {

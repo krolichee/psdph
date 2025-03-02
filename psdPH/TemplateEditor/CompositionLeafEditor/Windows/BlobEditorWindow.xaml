@@ -21,7 +21,6 @@
                                 <MenuItem x:Name="addFlagItem" Header="Флаг"/>
                                 <MenuItem x:Name="addTphItem" Header="Текстовое поле" />
                                 <MenuItem x:Name="addImageItem" Header="Поле изображения" />
-                                <MenuItem x:Name="addVisItem" Header="Видимость слоя" />
                                 <MenuItem x:Name="addBlob" Header="Поддокумент" />
                                 <MenuItem x:Name="addPhItem" Header="Плейсхолдер" />
                                 <MenuItem x:Name="addProtoItem" Header="Прототип" />

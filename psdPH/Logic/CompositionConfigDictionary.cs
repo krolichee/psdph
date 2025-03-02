@@ -10,16 +10,18 @@ namespace psdPH.Logic
     class CompositionConfigDictionary
     {
         static Dictionary<Type, Type> StoC = new Dictionary<Type, Type>
-        {{typeof(Blob),typeof(BlobEditorConfig) },
+        {
+            {typeof(Blob),typeof(BlobEditorConfig) },
             {typeof(TextLeaf),typeof(TextLeafEditorConfig) },
-
             {typeof(PlaceholderLeaf),typeof(PlaceholderEditorConfig) },
-            {typeof(PrototypeLeaf),typeof(ProtoEditorConfig) }
+            {typeof(Prototype),typeof(PrototypeEditorConfig) },
+            {typeof(FlagLeaf),typeof(FlagEditorConfig) }
             //{typeof(PlaceholderLeaf),typeof(PlaceholderLeafEditorConfig) },
         };
         public static Type GetConfigType(Type type)
         {
-            return StoC[type];
+                return StoC[type];
+            
         }
     }
 }

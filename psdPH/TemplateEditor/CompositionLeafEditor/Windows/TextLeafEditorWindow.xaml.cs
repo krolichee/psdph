@@ -68,7 +68,7 @@ namespace psdPH
             return base.ShowDialog();
         }
 
-        public Composition getResultComposition()
+        public Composition GetResultComposition()
         {
             return _composition;
         }

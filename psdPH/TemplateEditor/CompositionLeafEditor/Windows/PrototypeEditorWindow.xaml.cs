@@ -21,7 +21,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     /// </summary>
     public partial class PrototypeEditorWindow : Window, ICompositionEditor
     {
-        PrototypeLeaf _result;
+        Prototype _result;
         private Document doc;
         private CompositionEditorConfig config;
         private Composition root;
@@ -34,18 +34,17 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             this.config = config;
             this.root = root;
             InitializeComponent();
-            string[] layers_names = PhotoshopDocumentExtension.GetLayersNames(
-                doc.GetLayersByKinds(config.Kinds));
-            stackPanel.Children.Add(ln_sc_w = new StringChoiceControl(layers_names, "Выберите слой прототипа"));
 
+            string[] blobs_names = root.getChildren<Blob>().Select(b => b.LayerName).ToArray();
+            stackPanel.Children.Add(ln_sc_w = new StringChoiceControl(blobs_names, "Выберите поддокумент прототипа"));
 
             string[] rel_layers_names = PhotoshopDocumentExtension.GetLayersNames(
                 doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psNormalLayer, PsLayerKind.psSolidFillLayer }));
             stackPanel.Children.Add(rln_sc_w = new StringChoiceControl(rel_layers_names, "Выберите опорный слой"));
-            _result = config.Composition as PrototypeLeaf;
+            _result = config.Composition as Prototype;
         }
 
-        public Composition getResultComposition()
+        public Composition GetResultComposition()
         {
             return _result;
         }
@@ -53,22 +52,22 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            _result = new Prototype() { Parent = root };
             string rel_layer_name = rln_sc_w.getResultString();
             string layer_name = ln_sc_w.getResultString();
-                if (_result == null)
-                    _result = new PrototypeLeaf(layer_name, rel_layer_name);
-                else
-                {
-                    _result.LayerName = layer_name;
-                    _result.RelativeLayerName = rel_layer_name;
-                }
-            _result = new PrototypeLeaf(layer_name, rel_layer_name);
+
+            _result.LayerName = layer_name;
+            _result.RelativeLayerName = rel_layer_name;
             Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
         }
     }
 }

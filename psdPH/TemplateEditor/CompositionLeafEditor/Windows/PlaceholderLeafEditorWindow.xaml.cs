@@ -25,8 +25,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         public PlaceholderLeafEditorWindow(Document doc,CompositionEditorConfig config, Composition root)
         {
             InitializeComponent();
-            PrototypeLeaf[] prototypes = root.getChildren().Where(
-                c=>c.GetType()==typeof(PrototypeLeaf)).Cast<PrototypeLeaf>().ToArray();
+            Prototype[] prototypes = root.getChildren().Where(
+                c=>c.GetType()==typeof(Prototype)).Cast<Prototype>().ToArray();
             if (prototypes.Length == 0)
             {
                 MessageBox.Show("В документе нет прототипов!", "Ошибка");
@@ -35,16 +35,34 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
                 return;
             }
             string[] prototype_names = prototypes.Select(p=>p.LayerName).ToArray();
-            string[] layer_names = doc.GetLayersNames(LayerListing.Recursive);
+            string[] layer_names = doc.GetLayersNames();
             foreach (var item in prototype_names)
                 prototypeCB.Items.Add(item);
             foreach (var item in layer_names)
                 layerCB.Items.Add(item);
         }
 
-        public Composition getResultComposition()
+        public Composition GetResultComposition()
         {
             return _result;
+        }
+
+        private void prototypeCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void layerCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            _result = new PlaceholderLeaf();
+            _result.PrototypeLayerName = prototypeCB.SelectedItem as string;
+            _result.LayerName = layerCB.SelectedItem as string;
+            Close();
         }
     }
 }

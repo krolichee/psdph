@@ -57,6 +57,17 @@ namespace psdPH.Logic
             this.Desc = desc;
         }
     }
+    public class FieldFunctions
+    {
+        public Func<object, object> PullFunction = (o) => (o);
+        public Func<object, object> PushFunction = (o) => (o);
+
+        public static FieldFunctions EnumWrapperFunctions => new FieldFunctions()
+        {
+            PushFunction = (o => new EnumWrapper(o as Enum)),
+            PullFunction = (o) => (o as EnumWrapper).Value
+        };
+    }
     
     public class Parameter
     {
@@ -65,32 +76,24 @@ namespace psdPH.Logic
         private ParameterConfig _config;
         public ParameterConfig Config => _config; 
         
-        public static Parameter Choose(ParameterConfig config, object[] options,Func<object,object> fieldFunc = null)
+        public static Parameter Choose(ParameterConfig config, object[] options, FieldFunctions fieldFunctions = null)
         {
-            if (fieldFunc == null)
-                fieldFunc = o => o;
+            if (fieldFunctions == null)
+                fieldFunctions = new FieldFunctions();
             var result = new Parameter(config);
-            
-            var stack = result._stack = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal
-            };
-            stack.Children.Add(new Label() { Content = config.Desc });
-            var cb = new ComboBox() { ItemsSource = options };
+            var stack = result._stack;
+            var cb = new ComboBox() { ItemsSource = options.Select(fieldFunctions.PushFunction) };
+            cb.SelectedValue = 
             stack.Children.Add(cb);
-            result.accept = () => { config.SetValue(fieldFunc(cb.SelectedValue)); return true; };
+            result.accept = () => { config.SetValue(fieldFunctions.PullFunction(cb.SelectedValue)); return true; };
             return result;
         }
         public static Parameter StringInput(ParameterConfig config)
         {
             var result = new Parameter(config);
-            var stack = result._stack = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal
-            };
-            
-            stack.Children.Add(new Label() { Content = config.Desc });
-            var tb = new TextBox() {};
+            var stack = result._stack;
+            var tb = new TextBox() {Width = 40};
+            tb.Text = config.GetValue().ToString();
             stack.Children.Add(tb);
             result.accept = () => { config.SetValue(tb.Text); return true; };
             return result;
@@ -98,14 +101,21 @@ namespace psdPH.Logic
         public static Parameter IntInput(ParameterConfig config)
         {
             var result = new Parameter(config);
-            var stack = result._stack = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal
-            };
-            stack.Children.Add(new Label() { Content = config.Desc });
+            var stack = result._stack;
             var ntb = new NumericTextBox();
+            ntb.Text = config.GetValue().ToString();
             stack.Children.Add(ntb);
             result.accept = () => { config.SetValue(ntb.GetNumber()); return true; };
+            return result;
+        }
+        public static Parameter Check(ParameterConfig config)
+        {
+            var result = new Parameter(config);
+            var stack = result._stack;
+            var chb = new CheckBox();
+            chb.IsChecked = (bool)config.GetValue();
+            stack.Children.Add(chb);
+            result.accept = () => { config.SetValue(chb.IsChecked); return true; };
             return result;
         }
         public class EnumWrapper
@@ -122,12 +132,18 @@ namespace psdPH.Logic
 
         public static Parameter EnumChoose(ParameterConfig config, Type @enum)
         {
+
             var enumValues = Enum.GetValues(@enum).Cast<Enum>();
             var options = enumValues.Select(e => new EnumWrapper(e)).ToArray();
-            return Parameter.Choose(config, options, (o) => (o as EnumWrapper).Value);
+            return Parameter.Choose(config, options, FieldFunctions.EnumWrapperFunctions);
         }
         Parameter(ParameterConfig config)
         {
+            _stack = new StackPanel()
+            {
+                Orientation = Orientation.Horizontal
+            };
+            _stack.Children.Add(new Label() { Content = config.Desc });
             _config = config;
         }
         public Parameter() : this(null) { }

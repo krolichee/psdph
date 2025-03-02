@@ -30,7 +30,7 @@ namespace psdPH.Logic.Rules
         {
             get
             {
-                return Composition.getChildren<TextLeaf>().Where(t => t.LayerName == TextLeafLayerName).ToArray()[0];
+                return Composition.getChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName);
             }
             set
             {

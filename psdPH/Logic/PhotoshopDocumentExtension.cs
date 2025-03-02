@@ -76,12 +76,12 @@ namespace psdPH.Logic
         private static ArtLayer FindLayerById(this Document doc, int layerId, LayerListing listing = DefaultListing)
         {
             ArtLayer[] layers = doc.GetArtLayers(listing);
-            return layers.Where(l => l.id == layerId).ToArray()[0];
+            return layers.First(l => l.id == layerId);
         }
         public static ArtLayer GetLayerByName(this Document doc, string layerName, LayerListing listing = DefaultListing) 
         {
             ArtLayer[] layers = doc.GetArtLayers(listing);
-            return layers.Where(l => l.Name == layerName).ToArray()[0];
+            return layers.First(l => l.Name == layerName);
         }
         public static Document OpenSmartLayer(this Document doc, string layername, LayerListing listing = DefaultListing )
         {

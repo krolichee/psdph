@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Shapes;
@@ -19,14 +20,13 @@ namespace psdPH
 {
     [XmlInclude(typeof(FlagLeaf))]
     [XmlInclude(typeof(ImageLeaf))]
-    [XmlInclude(typeof(VisLeaf))]
     [XmlInclude(typeof(TextLeaf))]
     [XmlInclude(typeof(Blob))]
-    [XmlInclude(typeof(PrototypeLeaf))]
+    [XmlInclude(typeof(Prototype))]
     [XmlInclude(typeof(PlaceholderLeaf))]
     [XmlInclude(typeof(LayerLeaf))]
     [XmlInclude(typeof(Rule))]
-    public abstract class Composition
+    public abstract class Composition : IParameterable
     {
         public string XmlName
         {
@@ -45,6 +45,9 @@ namespace psdPH
         }
         [XmlIgnore]
         virtual public Composition Parent { get; set; }
+
+        public abstract Parameter[] Parameters {get;}
+
         virtual public void apply(Document doc) { }
         virtual public void addChild(Composition child) { }
         virtual public void removeChild(Composition child) { }
@@ -80,10 +83,21 @@ namespace psdPH
     [XmlRoot("Flag")]
     public partial class FlagLeaf : Composition
     {
-        public override string UIName => EnumLocalization.GetLocalizedDescription(this.GetType());
+        public override string UIName => "Флаг";
         public bool Toggle;
         public string Name;
         public override string ObjName => Name;
+
+        public override Parameter[] Parameters
+        {
+            get
+            {
+                var result = new List<Parameter>();
+                var toggleConfig = new ParameterConfig(this, nameof(this.Toggle), Name);
+                result.Add(Parameter.Check(toggleConfig));
+                return result.ToArray();
+            }
+        }
 
         public FlagLeaf(string name)
         {
@@ -98,6 +112,19 @@ namespace psdPH
     public class ImageLeaf : LayerComposition
     {
         public override string UIName => "Изобр.";
+        public string Path;
+
+        public override Parameter[] Parameters
+        {
+            get
+            {
+                var result = new List<Parameter>();
+                var toggleConfig = new ParameterConfig(this, nameof(this.Path), LayerName);
+                ///TODO
+                result.Add(Parameter.Choose(toggleConfig, new object[] { } ));
+                return result.ToArray();
+            }
+        }
 
         override public void apply(Document doc)
         {
@@ -108,27 +135,29 @@ namespace psdPH
         }
     }
     [Serializable]
-    [XmlRoot("Visibility")]
-    public class VisLeaf : LayerComposition
-    {
-        public override string UIName => "Видим.";
-        public bool Toggle;
-        public VisLeaf()
-        {
-
-        }
-
-    }
-    [Serializable]
     [XmlRoot("Text")]
     public class TextLeaf : LayerComposition
     {
-        public override string UIName => EnumLocalization.GetLocalizedDescription(this.GetType());
+        public override string UIName => "Текст";
         public string Text;
+
+        public override Parameter[] Parameters
+        {
+            get
+            {
+                var result = new List<Parameter>();
+                var toggleConfig = new ParameterConfig(this, nameof(this.Text), LayerName);
+                ///TODO
+                result.Add(Parameter.StringInput(toggleConfig));
+                return result.ToArray();
+            }
+        }
+
+        
 
         override public void apply(Document doc)
         {
-            ArtLayer layer =  doc.GetLayerByName(LayerName, LayerListing.Recursive);
+            ArtLayer layer = doc.GetLayerByName(LayerName, LayerListing.Recursive);
             layer.TextItem.Contents = Text;
         }
         public TextLeaf(string layer_name) : this()
@@ -149,12 +178,21 @@ namespace psdPH
     [XmlRoot("Blob")]
     public class Blob : LayerComposition
     {
+        public override Parameter[] Parameters
+        {
+            get
+            {
+                var result = new List<Parameter>();
+                foreach (var item in Children)
+                    result.AddRange(item.Parameters);
+                return result.ToArray();
+            }
+        }
         public override string UIName => "Подфайл";
         public BlobMode Mode;
         [XmlArray("Children")]
         public Composition[] Children = new Composition[0];
         public string Name;
-
         public string Path;
 
         public override string ObjName => Name;
@@ -163,6 +201,8 @@ namespace psdPH
             Document cur_doc;
             if (Mode == BlobMode.Layer)
                 cur_doc = doc.OpenSmartLayer(LayerName);
+            else if (Mode == BlobMode.Path)
+                cur_doc = doc;
             foreach (var item in Children)
             {
                 item.apply(doc);
@@ -213,41 +253,69 @@ namespace psdPH
             LayerName = layername;
             Path = path;
         }
+        public Blob Clone()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(Composition));
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+            serializer.Serialize(sw, this);
+            StringReader sr = new StringReader(sb.ToString());
+            Blob result = serializer.Deserialize(sr) as Blob;
+            result.restore();
+            return result;
+        }
         public Blob()
         {
         }
     }
     [Serializable]
     [XmlRoot("Prototype")]
-    public class PrototypeLeaf : Composition
+    public class Prototype : Composition
     {
-        public override string UIName => "Прототип";
+        Blob blob;
         [XmlIgnore]
-        public Blob Blob;
-        public string LayerName;
+        public Blob Blob { get { if (blob == null) blob = Parent.getChildren<Blob>().First(b => b.LayerName == LayerName); return blob; } }
+        public override string UIName => "Прототип";
         public string RelativeLayerName;
-        public override string ObjName => LayerName;
-        public PrototypeLeaf(string layername, string rel_layer_name)
+        public string LayerName;
+        public Point GetRelativeLayerShift(Document doc)
         {
-            LayerName = layername;
+            ArtLayer relativeLayer = doc.GetLayerByName(RelativeLayerName);
+            ArtLayer prototypeLayer = doc.GetLayerByName(Blob.LayerName);
+            return new Point(
+                prototypeLayer.Bounds[0] - relativeLayer.Bounds[0],
+                prototypeLayer.Bounds[1] - relativeLayer.Bounds[1]
+                );
+        }
+        public override Parameter[] Parameters => new Parameter[0];
+        public override string ObjName => Blob.LayerName;
+        public override void apply(Document doc)
+        {
+            base.apply(doc);
+            doc.GetLayerByName(Blob.LayerName).Opacity = 0;
+        }
+        public Prototype(Blob blob,string rel_layer_name)
+        {
+            this.blob = blob;
+            LayerName = blob.LayerName;
             RelativeLayerName = rel_layer_name;
         }
-        public PrototypeLeaf()
-        {
-        }
+        public Prototype(){}
     }
     [Serializable]
     [XmlRoot("Placeholder")]
     public class PlaceholderLeaf : Composition
     {
-
         public override string UIName => "Плейс.";
         public string LayerName;
         [XmlIgnore]
-        public PrototypeLeaf PrototypeLeaf {
+        public Blob ActualBlob;
+        [XmlIgnore]
+        public Prototype Prototype
+        {
             get
             {
-                return Parent.getChildren<PrototypeLeaf>().Where(p => p.LayerName == PrototypeLayerName).ToArray()[0];
+                return Parent.getChildren<Prototype>().First(p => p.LayerName == PrototypeLayerName);
             }
             set
             {
@@ -258,6 +326,8 @@ namespace psdPH
         DerivedLayerLeaf derived;
         public override string ObjName => LayerName;
 
+        public override Parameter[] Parameters => new Parameter[0];
+
         public PlaceholderLeaf(string layername, string prototypeLayername)
         {
             LayerName = layername;
@@ -267,8 +337,16 @@ namespace psdPH
         public override void restoreParents(Composition parent = null)
         {
             base.restoreParents(parent);
-            if (derived == null)
-                parent.addChild(derived = new DerivedLayerLeaf($"{PrototypeLayerName}_{LayerName}"));
+        }
+        public void applyFiller(Document doc, Blob blob)
+        {
+            Parent.addChild(derived = new DerivedLayerLeaf($"{PrototypeLayerName}_{LayerName}"));
+            doc.ArtLayers.Add();
+            (doc.ActiveLayer as ArtLayer).Name = derived.LayerName;
+            doc.GetLayerByName(LayerName).Opacity = 0;
+            var clone_blob = blob.Clone();
+            clone_blob.LayerName = derived.LayerName;
+            clone_blob.apply(doc);
         }
     }
     public class DerivedLayerLeaf : LayerLeaf
@@ -285,6 +363,8 @@ namespace psdPH
     public class LayerLeaf : LayerComposition
     {
         public override string UIName => "Слой";
+
+        public override Parameter[] Parameters => new Parameter[0];
 
         public LayerLeaf(string layername)
         {

@@ -6,9 +6,11 @@
              xmlns:local="clr-namespace:psdPH"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="100" Width="100" Height="99">
-    <Grid Background="#FFECE9E9">
-        <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="#FFBBADAD" FontSize="24" FontFamily="Arial Black"/>
-        <TextBlock HorizontalAlignment="Center" Height="35" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="100"/>
+    <Button x:Name="button" Click="button_Click">
+        <Grid Background="#FFECE9E9" Width="{Binding ActualWidth, ElementName=button, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=button, Mode=OneWay}">
+            <Label x:Name="dowLabel" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="#FFBBADAD" FontSize="24" FontFamily="Arial Black"/>
+            <TextBlock x:Name="previewTextBlock" HorizontalAlignment="Left" Height="35" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="100"/>
 
-    </Grid>
+        </Grid>
+    </Button>
 </UserControl>

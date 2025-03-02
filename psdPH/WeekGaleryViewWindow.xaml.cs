@@ -24,61 +24,79 @@ namespace psdPH
     /// </summary>
     public partial class WeekGaleryViewWindow : Window
     {
-        
+
         public WeekGaleryViewWindow(Blob root, WeekGaleryConfig weekGaleryConfig = null)
         {
+            Prototype prototype;
             if (weekGaleryConfig == null)
             {
-                weekGaleryConfig = new WeekGaleryConfig();
+
+                
 
                 //Выбор прототипа
-                PrototypeLeaf[] prototypes = root.getChildren<PrototypeLeaf>().Cast<PrototypeLeaf>().ToArray();
+                Prototype[] prototypes = root.getChildren<Prototype>().Cast<Prototype>().ToArray();
                 string[] prototypes_names = prototypes.Select(l => l.LayerName).ToArray();
-                StringChoiceWindow pscc_w = new StringChoiceWindow(prototypes_names.ToArray(),"Выбор прототип для дня");
+                StringChoiceWindow pscc_w = new StringChoiceWindow(prototypes_names.ToArray(), "Выбор прототип для дня");
                 pscc_w.ShowDialog();
-                PrototypeLeaf prototype = prototypes.Where(l => l.LayerName == pscc_w.getResultString()).ToArray()[0];
+                prototype = prototypes.First(l => l.LayerName == pscc_w.getResultString());
+
+                TextLeaf[] textLeafs = prototype.Blob.getChildren<TextLeaf>();
+                string[] textLeafs_names = textLeafs.Select(l => l.LayerName).ToArray();
 
                 //Сопоставление плейсхолдеров дням недели
-                DowPlaceholderMatchWindow dwp_w = new DowPlaceholderMatchWindow(prototype);
-                dwp_w.ShowDialog();
-
-                //Превью текстовое поле
-                TextLeaf[] textLeafs = root.getChildren<TextLeaf>();
-                string[] textLeafs_names = textLeafs.Select(l => l.LayerName).ToArray();
-                StringChoiceWindow prev_scc_w = new StringChoiceWindow(textLeafs_names, "Выбор текста для предпросмотра");
-                prev_scc_w.ShowDialog();
+                DowPlaceholderMatchWindow dwpm_w = new DowPlaceholderMatchWindow(prototype);
+                dwpm_w.ShowDialog();
 
                 //Выбор текстового поля недели
                 StringChoiceWindow dow_scc_w = new StringChoiceWindow(textLeafs_names, "Выбор текстового поля дня недели");
                 dow_scc_w.ShowDialog();
-                weekGaleryConfig.DowLayerDictionary = dwp_w.getResultDict();
-                weekGaleryConfig.PrototypeName = prototype.LayerName;
-                weekGaleryConfig.TilePreviewTextLeaf = prev_scc_w.getResultString();
-                weekGaleryConfig.DowLabelTextLeafLayerName = dow_scc_w.getResultString();
+
+                //Превью текстовое поле
+                StringChoiceWindow prev_scc_w = new StringChoiceWindow(textLeafs_names, "Выбор текста для предпросмотра");
+                prev_scc_w.ShowDialog();
+
+                weekGaleryConfig = new WeekGaleryConfig
+                {
+                    DowLayerDictionary = dwpm_w.GetResultDict(),
+                    PrototypeName = prototype.LayerName,
+                    TilePreviewTextLeafName = prev_scc_w.getResultString(),
+                    DowLabelTextLeafLayerName = dow_scc_w.getResultString()
+                };
             }
+            else
+                prototype = weekGaleryConfig.Prototype;
             InitializeComponent();
+            foreach (KeyValuePair<DayOfWeek, string> item in weekGaleryConfig.DowLayerDictionary)
+            {
+                daysStackPanel.Children.Add(new DayTile(weekGaleryConfig, item.Key, prototype.Blob.Clone()));
+            }
 
         }
     }
-    public class WeekGaleryConfig:IParameterable
+    public class WeekGaleryConfig : IParameterable
     {
-        
         public Dictionary<DayOfWeek, string> DowLayerDictionary = new Dictionary<DayOfWeek, string>();
-        public string TilePreviewTextLeaf;
+        public string TilePreviewTextLeafName;
         public string DowLabelTextLeafLayerName;
         public string PrototypeName;
+        [XmlIgnore]
+        public Prototype Prototype;
         [XmlIgnore]
         public Composition Composition;
         public WeekGaleryConfig()
         {
 
         }
-        public Parameter[] Parameters { get {
-                PrototypeLeaf[] prototypes = Composition.getChildren<PrototypeLeaf>();
+        public Parameter[] Parameters
+        {
+            get
+            {
+                Prototype[] prototypes = Composition.getChildren<Prototype>();
                 var result = new List<Parameter>();
                 var textLeafConfig = new ParameterConfig(this, nameof(this.Composition), "Прототип дня");
                 result.Add(Parameter.Choose(textLeafConfig, prototypes));
                 return result.ToArray();
-            } }
+            }
+        }
     }
 }

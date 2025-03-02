@@ -52,13 +52,12 @@ namespace psdPH
             {
                 item.Command = _addStructureItemCommand.Command;
             }
-            addFlagItem.CommandParameter = new FlagEditorConfig(null);
-            addTphItem.CommandParameter = new TextLeafEditorConfig(null);
-            addImageItem.CommandParameter = new ImageEditorConfig(null);
-            addVisItem.CommandParameter = new VisEditorConfig(null);
-            addBlob.CommandParameter = new BlobEditorConfig(null);
-            addPhItem.CommandParameter = new PlaceholderEditorConfig(null);
-            addProtoItem.CommandParameter = new ProtoEditorConfig(null);
+            addFlagItem.CommandParameter = new FlagEditorConfig();
+            addTphItem.CommandParameter = new TextLeafEditorConfig();
+            addImageItem.CommandParameter = new ImageEditorConfig();
+            addBlob.CommandParameter = new BlobEditorConfig();
+            addPhItem.CommandParameter = new PlaceholderEditorConfig();
+            addProtoItem.CommandParameter = new PrototypeEditorConfig();
         }
         static string ChooseLayer(Document doc, CompositionEditorConfig config)
         {
@@ -75,7 +74,7 @@ namespace psdPH
             string ln = lc_w.getResultString();
             if (ln == "")
                 return null;
-            CompositionEditorConfig new_config = new BlobEditorConfig(Blob.LayerBlob(ln));
+            CompositionEditorConfig new_config = new BlobEditorConfig() { Composition = Blob.LayerBlob(ln) };
             return OpenInDocument(doc, new_config);
         }
         public static BlobEditorWindow OpenInDocument(Document doc, CompositionEditorConfig config)
@@ -127,7 +126,7 @@ namespace psdPH
             (sender as Button).ContextMenu.IsOpen = true;
         }
 
-        public Composition getResultComposition()
+        public Composition GetResultComposition()
         {
             return _root;
         }
@@ -157,7 +156,9 @@ namespace psdPH
                 button.Content = grid;
                 button.Command = _addStructureItemCommand.Command;
                 Type type = CompositionConfigDictionary.GetConfigType(child.GetType());
-                button.CommandParameter = Activator.CreateInstance(type, new object[] { child });
+                CompositionEditorConfig config = Activator.CreateInstance(type) as CompositionEditorConfig;
+                config.Composition = child;
+                button.CommandParameter = config;
                 structuresStackPanel.Children.Add(button);
             }
         }
@@ -201,7 +202,7 @@ namespace psdPH
                 if (ce_w == null)
                     return;
                 ce_w.ShowDialog();
-                Composition result = ce_w.getResultComposition();
+                Composition result = ce_w.GetResultComposition();
                 if (result != null)
                     _root_composition.addChild(result);
                 _editor.refreshSctuctureStack();

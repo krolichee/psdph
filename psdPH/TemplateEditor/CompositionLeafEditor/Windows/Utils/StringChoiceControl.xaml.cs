@@ -21,12 +21,12 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     public partial class StringChoiceControl : UserControl, IStringEditor
     {
         protected string _result = "";
-        public StringChoiceControl(string[] items, string annotation)
+        public StringChoiceControl(string[] items, string annotation, int default_index=0)
         {
             InitializeComponent();
             foreach (var item in items)
                 comboBox.Items.Add(item);
-            comboBox.SelectedIndex = 0;
+            comboBox.SelectedIndex = default_index;
             annLabel.Content = annotation;
         }
 

@@ -25,7 +25,7 @@ namespace psdPH.Logic
 
         [XmlIgnore]
         public Composition composition;
-        public List<Rule> Rules = new List<Rule>()  ;
+        public List<Rule> Rules = new List<Rule>();
 
         public void apply(Document doc)
         {
@@ -74,7 +74,7 @@ namespace psdPH.Logic
     {
         public Condition Condition;
 
-        protected ConditionRule(Composition composition) : base(composition){}
+        protected ConditionRule(Composition composition) : base(composition) { }
         public override void restoreComposition(Composition composition)
         {
             base.restoreComposition(composition);
@@ -94,12 +94,13 @@ namespace psdPH.Logic
         Rel,
         Abs
     }
+
     public abstract class ChangingRule : ConditionRule
     {
         public ChangeMode Mode;
         public string LayerName;
 
-        protected ChangingRule(Composition composition) : base(composition) {}
+        protected ChangingRule(Composition composition) : base(composition) { }
     };
     [Serializable]
     [XmlRoot("TranslateRule")]
@@ -107,7 +108,7 @@ namespace psdPH.Logic
     {
         public Point Shift;
 
-        public TranslateRule(Composition composition) : base(composition){}
+        public TranslateRule(Composition composition) : base(composition) { }
 
         public int X { get => (int)Shift.X; set { Shift.X = (double)value; } }
         public int Y { get => (int)Shift.Y; set { Shift.Y = (double)value; } }
@@ -117,7 +118,7 @@ namespace psdPH.Logic
         {
             get
             {
-                return Composition.getChildren<TextLeaf>().Where(t => t.LayerName == LeafLayerName).ToArray()[0];
+                return Composition.getChildren<TextLeaf>().First(t => t.LayerName == LeafLayerName);
             }
             set
             {
@@ -133,28 +134,43 @@ namespace psdPH.Logic
                 var modeConfig = new ParameterConfig(this, nameof(this.Mode), "");
                 var xConfig = new ParameterConfig(this, nameof(this.X), "x");
                 var yConfig = new ParameterConfig(this, nameof(this.Y), "y");
-                var layerNameConfig = new ParameterConfig(this,nameof(this.LayerName),"слоя");
+                var layerNameConfig = new ParameterConfig(this, nameof(this.LayerName), "слоя");
                 Composition.getChildren();
-                result.Add(Parameter.Choose(layerNameConfig, Composition.getChildren<LayerComposition>().Select(l=>l.LayerName).ToArray()));
+                result.Add(Parameter.Choose(layerNameConfig, Composition.getChildren<LayerComposition>().Select(l => l.LayerName).ToArray()));
                 result.Add(Parameter.EnumChoose(modeConfig, typeof(ChangeMode)));
                 result.Add(Parameter.IntInput(xConfig));
                 result.Add(Parameter.IntInput(yConfig));
                 return result.ToArray();
             }
         }
-        public override string ToString() =>"положение";
+        public override string ToString() => "положение";
 
         protected override void _apply(Document doc)
         {
-           // PsLayerKind.
+            ///TODO
             doc.GetLayerByName(LayerName);
             (doc.ActiveLayer as ArtLayer).Translate(Shift.X, Shift.Y);
         }
-        public TranslateRule():base(null) { }
+        public TranslateRule() : base(null) { }
+    }
+    public class VisibleRule : ChangingRule
+    {
+        public VisibleRule(Composition composition) : base(composition) { }
+
+        public override Parameter[] Parameters => throw new NotImplementedException();
+        public override void apply(Document doc)
+        {
+            ///TODO
+            base.apply(doc);
+        }
+        protected override void _apply(Document doc)
+        {
+            doc.GetLayerByName(LayerName);
+        }
     }
     public abstract class TextRule : ChangingRule
     {
-        
+
         public string TextLeafLayerName;
         [XmlIgnore]
         public override Parameter[] Parameters
@@ -169,21 +185,21 @@ namespace psdPH.Logic
             }
         }
 
-        protected TextRule(Composition composition) : base(composition){}
+        protected TextRule(Composition composition) : base(composition) { }
 
         [XmlIgnore]
         public TextLeaf TextLeaf
         {
             get
             {
-                return Composition.getChildren<TextLeaf>().Where(t => t.LayerName == TextLeafLayerName).ToArray()[0];
+                return Composition.getChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName);
             }
             set
             {
                 TextLeafLayerName = value.LayerName;
             }
         }
-        
+
     };
     [Serializable]
     [XmlRoot("TextFontSizeRule")]
@@ -204,7 +220,7 @@ namespace psdPH.Logic
                 List<Parameter> result = base.Parameters.ToList();
                 var modeConfig = new ParameterConfig(this, nameof(this.Mode), "");
                 var fontSizeConfig = new ParameterConfig(this, nameof(this.FontSize), "");
-                result.Add(Parameter.EnumChoose(modeConfig,typeof(ChangeMode)));
+                result.Add(Parameter.EnumChoose(modeConfig, typeof(ChangeMode)));
                 result.Add(Parameter.IntInput(fontSizeConfig));
                 return result.ToArray();
             }
@@ -222,10 +238,10 @@ namespace psdPH.Logic
     [XmlRoot("TextAnchorRule")]
     public class TextAnchorRule : TextRule
     {
-        
+
         public PsJustification Justification;
 
-        public TextAnchorRule(Composition composition) : base(composition){}
+        public TextAnchorRule(Composition composition) : base(composition) { }
         public TextAnchorRule() : base(null) { }
         [XmlIgnore]
         public override Parameter[] Parameters
@@ -234,11 +250,11 @@ namespace psdPH.Logic
             {
                 List<Parameter> result = base.Parameters.ToList();
                 var justificationConfig = new ParameterConfig(this, nameof(this.Justification), "установить");
-                result.Add(Parameter.Choose(justificationConfig, new PsJustification[] { 
+                result.Add(Parameter.Choose(justificationConfig, new PsJustification[] {
                     PsJustification.psRight,
                     PsJustification.psLeft,
                     PsJustification.psCenter
-                }.Select(o=>new EnumWrapper(o)).ToArray(),(o)=>(o as EnumWrapper).Value));
+                }.Cast<object>().ToArray(), FieldFunctions.EnumWrapperFunctions));
                 return result.ToArray();
             }
         }

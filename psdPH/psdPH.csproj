@@ -74,6 +74,9 @@
       <DependentUpon>CollectionEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="CollectionEditor\PsdPHApplicationDirectory.cs" />
+    <Compile Include="DataInputWindow.xaml.cs">
+      <DependentUpon>DataInputWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DayTile.xaml.cs">
       <DependentUpon>DayTile.xaml</DependentUpon>
     </Compile>
@@ -111,7 +114,8 @@
     </Compile>
     <Compile Include="TemplateEditor\CompositionEditorConfig.cs" />
     <Compile Include="Logic\PhotoshopWrapper.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionButtonGrid.xaml.cs">
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TinyEditors.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\FlagEditorWindow.xaml.cs">
@@ -122,6 +126,9 @@
       <DependentUpon>PrototypeEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StackOkWindow.xaml.cs">
+      <DependentUpon>StackOkWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml.cs">
       <DependentUpon>StringChoiceControl.xaml</DependentUpon>
     </Compile>
@@ -141,6 +148,10 @@
       <DependentUpon>WeekGaleryViewWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="CollectionEditor\CollectionEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataInputWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -184,7 +195,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionButtonGrid.xaml">
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -193,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TemplateEditor\CompositionLeafEditor\Windows\PrototypeEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StackOkWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

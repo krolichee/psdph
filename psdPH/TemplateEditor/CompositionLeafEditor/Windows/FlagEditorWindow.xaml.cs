@@ -20,7 +20,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     /// </summary>
     public partial class FlagEditorWindow : Window, ICompositionEditor
     {
-        Composition _result;
+        FlagLeaf _result;
         EditorMode _mode;
 
         public FlagEditorWindow()
@@ -41,7 +41,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             }
         }
 
-        public Composition getResultComposition()
+        public Composition GetResultComposition()
         {
             return _result;
         }
@@ -51,7 +51,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             if (_mode == EditorMode.Create)
                 _result = new FlagLeaf(flagNameTB.Text);
             else
-                (_result as FlagLeaf).Name = flagNameTB.Text;
+                _result.Name = flagNameTB.Text;
             Close();
         }
     }
