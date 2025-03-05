@@ -1,0 +1,37 @@
+﻿using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+
+namespace psdPH
+{
+    /// <summary>
+    /// Логика взаимодействия для DataInputWindow.xaml
+    /// </summary>
+    public partial class DataInputWindow
+    {
+        ParametersWindow parametersWindow;
+        public DataInputWindow(Blob blob)
+        {
+            var parameters = blob.Parameters;
+            parametersWindow = new ParametersWindow(parameters);
+            InitializeComponent();
+        }
+        public bool? ShowDialog()
+        {
+            return parametersWindow.ShowDialog();
+        }
+
+    }
+}

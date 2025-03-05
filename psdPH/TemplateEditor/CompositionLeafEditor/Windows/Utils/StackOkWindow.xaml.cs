@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Globalization;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
 {
@@ -30,9 +31,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
                 parameters = value;
                 foreach (var p in parameters)
                     stack.Children.Add(p.Stack);
-
             }
-            get { return parameters; }
+            get => parameters;
         }
         public ParametersWindow(Parameter[] parameters,string title="")
         {
@@ -40,13 +40,31 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             Title = title;
             stack = new StackPanel();
             Parameters = parameters;
+            foreach (var item in parameters)
+            {
+                item.Stack.Orientation = Orientation.Vertical;
+                item.Control.HorizontalAlignment = HorizontalAlignment.Left;
+                item.Stack.Margin = new Thickness(0,0,0,10);
+            }
             MainGrid.Children.Insert(0, stack);
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        static int GetGlobalWeekNumber(DateTime date)
         {
-            foreach (var item in parameters)
-                item.Accept();
+            DateTime epoch = new DateTime(1970, 1, 1); // Начало отсчета
+            TimeSpan diff = date - epoch;
+            return (int)(diff.TotalDays / 7) + 1; // Номер недели с 1 января 1970 года
+        }
+        static int GetWeekOfYear(DateTime date)
+        {
+            CultureInfo culture = CultureInfo.CurrentCulture;
+            System.Globalization.Calendar calendar = culture.Calendar;
+            return calendar.GetWeekOfYear(date, culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek);
+        }
+        private void Button_Click(object sender, RoutedEventArgs e)
+
+        {
+            foreach (var par in parameters)
+                par.Accept();
             applied = true;
             Close();
         }

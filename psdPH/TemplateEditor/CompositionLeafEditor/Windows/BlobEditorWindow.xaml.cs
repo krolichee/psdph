@@ -142,7 +142,7 @@ namespace psdPH
         }
         void refreshSctuctureStack()
         {
-            _root.restore();
+            _root.Restore();
             structuresStackPanel.Children.Clear();
             foreach (Composition child in _root.getChildren())
             {
@@ -162,95 +162,7 @@ namespace psdPH
                 structuresStackPanel.Children.Add(button);
             }
         }
-
-        public class EditCommand
-        {
-            private Composition _root_composition;
-            private Document _doc;
-            private BlobEditorWindow _editor;
-
-            public ICommand Command { get; set; }
-            public static EditCommand StructureCommand(Document doc, Composition root, BlobEditorWindow editor)
-            {
-                var result = new EditCommand(doc, root, editor, null);
-                result.Command = new RelayCommand(result.EditStructureExecuteCommand, result.CanExecuteCommand);
-                return result;
-
-            }
-            public static EditCommand RuleCommand(Document doc, Composition root, BlobEditorWindow editor)
-            {
-                var result = new EditCommand(doc, root, editor, null);
-                result.Command = new RelayCommand(result.EditRuleExecuteCommand, result.CanExecuteCommand);
-                return result;
-            }
-            public static EditCommand DeleteStructureCommand(Document doc, Composition root, BlobEditorWindow editor)
-            {
-                var result = new EditCommand(doc, root, editor, null);
-                result.Command = new RelayCommand(result.DeleteStructureExecuteCommand, result.CanExecuteCommand);
-                return result;
-            }
-            protected EditCommand(Document doc, Composition root, BlobEditorWindow editor, ICommand command)
-            {
-                _root_composition = root;
-                _doc = doc;
-                _editor = editor;
-            }
-            private void EditStructureExecuteCommand(object parameter)
-            {
-                var config = parameter as CompositionEditorConfig;
-                ICompositionEditor ce_w = config.Factory.CreateCompositionEditorWindow(_doc, config, _root_composition);
-                if (ce_w == null)
-                    return;
-                ce_w.ShowDialog();
-                Composition result = ce_w.GetResultComposition();
-                if (result != null)
-                    _root_composition.addChild(result);
-                _editor.refreshSctuctureStack();
-            }
-            private void EditRuleExecuteCommand(object parameter)
-            {
-                throw new NotImplementedException();
-            }
-            private void DeleteStructureExecuteCommand(object parameter)
-            {
-                _root_composition.removeChild(parameter as Composition);
-                _editor.refreshSctuctureStack();
-            }
-            private bool CanExecuteCommand(object parameter)
-            {
-                return true; // Здесь можно добавить логику для определения, может ли команда быть выполнена
-            }
-
-        }
-        public class RelayCommand : ICommand
-        {
-
-            private readonly Action<object> _execute;
-            private readonly Func<object, bool> _canExecute;
-
-            public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
-            {
-                _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-                _canExecute = canExecute;
-            }
-
-            public bool CanExecute(object parameter)
-            {
-                return _canExecute == null || _canExecute(parameter);
-            }
-
-            public void Execute(object parameter)
-            {
-                _execute(parameter);
-            }
-
-            public event EventHandler CanExecuteChanged
-            {
-                add { CommandManager.RequerySuggested += value; }
-                remove { CommandManager.RequerySuggested -= value; }
-            }
-
-        }
+        
 
         private void Window_Closed(object sender, EventArgs e)
         {

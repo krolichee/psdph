@@ -71,6 +71,7 @@ namespace psdPH.Logic
     
     public class Parameter
     {
+        public Control Control;
         StackPanel _stack;
         Func<bool> accept;
         private ParameterConfig _config;
@@ -83,7 +84,7 @@ namespace psdPH.Logic
             var result = new Parameter(config);
             var stack = result._stack;
             var cb = new ComboBox() { ItemsSource = options.Select(fieldFunctions.PushFunction) };
-            cb.SelectedValue = 
+            result.Control = cb;
             stack.Children.Add(cb);
             result.accept = () => { config.SetValue(fieldFunctions.PullFunction(cb.SelectedValue)); return true; };
             return result;
@@ -93,9 +94,11 @@ namespace psdPH.Logic
             var result = new Parameter(config);
             var stack = result._stack;
             var tb = new TextBox() {Width = 40};
+            result.Control = tb;
             tb.Text = config.GetValue().ToString();
             stack.Children.Add(tb);
-            result.accept = () => { config.SetValue(tb.Text); return true; };
+            result.accept = () => { 
+                config.SetValue(tb.Text); return true; };
             return result;
         }
         public static Parameter IntInput(ParameterConfig config)
@@ -103,6 +106,7 @@ namespace psdPH.Logic
             var result = new Parameter(config);
             var stack = result._stack;
             var ntb = new NumericTextBox();
+            result.Control = ntb;
             ntb.Text = config.GetValue().ToString();
             stack.Children.Add(ntb);
             result.accept = () => { config.SetValue(ntb.GetNumber()); return true; };
@@ -113,6 +117,7 @@ namespace psdPH.Logic
             var result = new Parameter(config);
             var stack = result._stack;
             var chb = new CheckBox();
+            result.Control = chb;
             chb.IsChecked = (bool)config.GetValue();
             stack.Children.Add(chb);
             result.accept = () => { config.SetValue(chb.IsChecked); return true; };
@@ -145,6 +150,7 @@ namespace psdPH.Logic
             };
             _stack.Children.Add(new Label() { Content = config.Desc });
             _config = config;
+            _stack.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
         }
         public Parameter() : this(null) { }
         public void Accept()

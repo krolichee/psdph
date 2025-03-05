@@ -30,6 +30,7 @@ using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using System.Runtime.Remoting.Metadata;
 using System.Linq.Expressions;
 using Condition =psdPH.Logic.Rules.Condition;
+using static psdPH.WeekViewWindow;
 
 
 namespace psdPH
@@ -43,19 +44,25 @@ namespace psdPH
 
     public partial class MainWindow : Window
     {
+        static class Directories
+        {
+            public static string BaseDirectory;
+            public static string ProjectsDirectory => Path.Combine(BaseDirectory, "Projects");
+            public static string ProjectDirectory => Path.Combine(ProjectsDirectory, MainWindow.CurrentProjectName);
+            public static string ViewsDirectory => Path.Combine(ProjectDirectory, "Views");
+        }
         public static string GetFieldName<T>(Expression<Func<T>> expression)
         {
             var body = (MemberExpression)expression.Body;
             return body.Member.Name;
         }
-        string currentProject;
+        public static string CurrentProjectName;
         //Dictionary<string,Type>
         CropperWindow cropper = new CropperWindow(new System.Windows.Size(300, 500));
         void OpenProject(string projectName)
         {
-            Directory.SetCurrentDirectory(Path.Combine(Directory.GetCurrentDirectory(),"Projects",projectName));
-            currentProject = projectName;
-            projectNameLabel.Content = currentProject;
+            CurrentProjectName = projectName;
+            projectNameLabel.Content = CurrentProjectName;
         }
         void NewProject()
         {
@@ -64,6 +71,17 @@ namespace psdPH
 
         public MainWindow()
         {
+            //XmlSerializer serializer = new XmlSerializer(typeof(List<KeyValuePair< DayOfWeek, string >>));
+            //var obj = new Dictionary<DayOfWeek, string>() { { DayOfWeek.Friday, "dasd" }, { DayOfWeek.Monday, "dasd" } };
+            //var obj_list = obj.ToList();
+            //FileStream fs = new FileStream("test.xml", FileMode.Create);
+            //serializer.Serialize(fs, obj.ToList());
+            //var dsr_obj_list = new List<KeyValuePair<DayOfWeek, string>>();
+            //fs.Close();
+            //fs = new FileStream("test.xml", FileMode.Open);
+            //dsr_obj_list = (List<KeyValuePair<DayOfWeek, string>>)serializer.Deserialize(fs);
+            //var dsr_obj = dsr_obj_list.ToDictionary(pair => pair.Key, pair => pair.Value); ;
+            Directories.BaseDirectory = Directory.GetCurrentDirectory();
             CompositionXmlDictionary.InitializeDictionary();
             InitializeComponent();
             LoadFoldersIntoMenu();
@@ -136,7 +154,7 @@ namespace psdPH
         private void saveBlob(Blob blob)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Composition));
-            string xmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.xml");
+            string xmlFilePath = Path.Combine(Directories.ProjectDirectory, "template.xml");
             FileStream writeFileStream = new FileStream(xmlFilePath, FileMode.Create);
             serializer.Serialize(writeFileStream, blob);
             writeFileStream.Close();
@@ -145,23 +163,19 @@ namespace psdPH
         {
             Blob blob;
             XmlSerializer serializer = new XmlSerializer(typeof(Composition));
-            string xmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.xml");
-            string psdFilePath = Path.Combine(Directory.GetCurrentDirectory(), "template.psd");
+            string xmlFilePath = Path.Combine(Directories.ProjectDirectory, "template.xml");
+            string psdFilePath = Path.Combine(Directories.ProjectDirectory, "template.psd");
             if (File.Exists(xmlFilePath))
             {
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load("template.xml");
-                XmlNode rootNode = xmlDoc.LastChild;
                 //if (rootNode.Name != CompositionXmlDictionary.GetXmlName(typeof(Blob)))
                 //    throw new Exception();
 
 
-
-                FileStream readFileStream = new FileStream(Path.GetFullPath("template.xml"), FileMode.Open);
+                FileStream readFileStream = new FileStream(xmlFilePath, FileMode.Open);
 
                 blob = serializer.Deserialize(readFileStream) as Blob;
                 readFileStream.Close();
-                blob.restore();
+                blob.Restore();
             }
             else
                 blob = Blob.PathBlob(psdFilePath);
@@ -180,7 +194,43 @@ namespace psdPH
         private void weekkViewMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Blob blob = openMainBlob();
-            new WeekGaleryViewWindow(blob).ShowDialog();
+            WeekConfig weekConfig = null;
+            WeekListData weeksListData = null;
+            XmlSerializer configSerializer = new XmlSerializer(typeof(WeekConfig));
+            XmlSerializer dataSerializer = new XmlSerializer(typeof(WeekListData));
+            FileStream fileStream;
+            string configPath = Path.Combine(Directories.ViewsDirectory, "WeekView", "config.xml");
+            if (File.Exists(configPath))
+            {
+                fileStream = new FileStream(configPath, FileMode.Open);
+                weekConfig = (WeekConfig)configSerializer.Deserialize(fileStream);
+                //weekDowsConfig.Restore(blob);
+                fileStream.Close();
+            }
+            string dataPath = Path.Combine(Directories.ViewsDirectory, "WeekView", "data.xml");
+            if (File.Exists(dataPath))
+            {
+                fileStream = new FileStream(dataPath, FileMode.Open);
+                weeksListData = (WeekListData)dataSerializer.Deserialize(fileStream);
+                weeksListData.Restore();
+                weeksListData.RootBlob = blob;
+                //weekDowsConfig.Restore(blob);
+                fileStream.Close();
+            }
+            var wgv_w = new WeekViewWindow(blob, weekConfig, weeksListData);
+            wgv_w.ShowDialog();
+            {
+                fileStream = new FileStream(configPath, FileMode.Create);
+                weekConfig = wgv_w.WeekDowsConfig;
+                configSerializer.Serialize(fileStream, weekConfig);
+                fileStream.Close();
+            }
+            {
+                fileStream = new FileStream(dataPath, FileMode.Create);
+                weeksListData = wgv_w.WeekListData;
+                dataSerializer.Serialize(fileStream, weeksListData);
+                fileStream.Close();
+            }
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

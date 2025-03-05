@@ -3,9 +3,11 @@ using psdPH.Logic;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
@@ -17,10 +19,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             protected ParametersWindow p_w;
             public Composition GetResultComposition()
             {
-                if (p_w.Applied)
-                    return result as Composition;
-                else
-                    return null;
+                return p_w.Applied ? result: null;
             }
             public bool? ShowDialog()
             {
@@ -48,10 +47,35 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         {
             public PlaceholderLeafEditor(Document doc, CompositionEditorConfig config,Composition root) :base(config){
                 var prototype_pconfig = new ParameterConfig(result, nameof(result.PrototypeLayerName), "Прототип");
-                var rel_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Опорный слой");
+                var rel_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой вставки");
                 var prototype_parameter = Parameter.Choose(prototype_pconfig,root.getChildren<Prototype>().Select(p=>p.LayerName).ToArray());
-                var rel_parameter = Parameter.Choose(rel_pconfig, doc.GetLayersNames( doc.GetLayersByKinds(config.Kinds)));
+                var rel_parameter = Parameter.Choose(rel_pconfig, doc.GetLayersNames());
                 p_w = new ParametersWindow(new[] { prototype_parameter, rel_parameter });
+            }
+        }
+        public class TextLeafEditor : TinyEditor<TextLeaf>
+        {
+            public TextLeafEditor(Document doc, CompositionEditorConfig config) : base(config)
+            {
+                result.LayerName = "";
+                var ln_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой");
+                string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(config.Kinds));
+                p_w = new ParametersWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
+            }
+        }
+        public class PrototypeEditor : TinyEditor<Prototype>
+        {
+            public PrototypeEditor(Document doc, CompositionEditorConfig config,Composition root) : base(config)
+            {
+                string[] blobs_names = root.getChildren<Blob>().Select(b => b.LayerName).ToArray();
+                var bn_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Поддокумент");
+                var bn_parameter = Parameter.Choose(bn_pconfig,blobs_names);
+
+                string[] rel_layers_names = PhotoshopDocumentExtension.GetLayersNames(
+                    doc.GetLayersByKinds(config.Kinds));
+                var rel_pconfig = new ParameterConfig(result, nameof(result.RelativeLayerName), "Опорный слой");
+                var rel_parameter = Parameter.Choose(bn_pconfig, rel_layers_names);
+                p_w = new ParametersWindow(new[] { bn_parameter, rel_parameter });
             }
         }
     }

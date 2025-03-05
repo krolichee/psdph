@@ -1,5 +1,4 @@
-﻿using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,21 +10,26 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace psdPH
 {
     /// <summary>
-    /// Логика взаимодействия для DataInputWindow.xaml
+    /// Логика взаимодействия для WeekTile.xaml
     /// </summary>
-    public partial class DataInputWindow : Window
+    public partial class WeekTile : UserControl
     {
-        public DataInputWindow(Blob blob)
+        Blob blob;
+        public WeekTile(WeekData data)
         {
-            var parameters = blob.Parameters;
-            var w = new ParametersWindow(parameters);
-            w.ShowDialog();
+            blob = data.MainBlob;
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            new DataInputWindow(blob).ShowDialog();
         }
     }
 }

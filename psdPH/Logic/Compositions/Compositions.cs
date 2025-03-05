@@ -23,6 +23,7 @@ namespace psdPH
     [XmlInclude(typeof(TextLeaf))]
     [XmlInclude(typeof(Blob))]
     [XmlInclude(typeof(Prototype))]
+
     [XmlInclude(typeof(PlaceholderLeaf))]
     [XmlInclude(typeof(LayerLeaf))]
     [XmlInclude(typeof(Rule))]
@@ -46,14 +47,14 @@ namespace psdPH
         [XmlIgnore]
         virtual public Composition Parent { get; set; }
 
-        public abstract Parameter[] Parameters {get;}
+        public abstract Parameter[] Parameters { get; }
 
         virtual public void apply(Document doc) { }
         virtual public void addChild(Composition child) { }
         virtual public void removeChild(Composition child) { }
-        public void restore()
+        public void Restore(Blob parent = null)
         {
-            restoreParents();
+            restoreParents(parent);
             restoreRuleLinks();
         }
         virtual public void restoreParents(Composition parent = null)
@@ -121,7 +122,7 @@ namespace psdPH
                 var result = new List<Parameter>();
                 var toggleConfig = new ParameterConfig(this, nameof(this.Path), LayerName);
                 ///TODO
-                result.Add(Parameter.Choose(toggleConfig, new object[] { } ));
+                result.Add(Parameter.Choose(toggleConfig, new object[] { }));
                 return result.ToArray();
             }
         }
@@ -139,7 +140,7 @@ namespace psdPH
     public class TextLeaf : LayerComposition
     {
         public override string UIName => "Текст";
-        public string Text;
+        public string Text = string.Empty;
 
         public override Parameter[] Parameters
         {
@@ -153,7 +154,7 @@ namespace psdPH
             }
         }
 
-        
+
 
         override public void apply(Document doc)
         {
@@ -183,8 +184,9 @@ namespace psdPH
             get
             {
                 var result = new List<Parameter>();
-                foreach (var item in Children)
-                    result.AddRange(item.Parameters);
+                if (!IsPrototyped())
+                    foreach (var item in Children)
+                        result.AddRange(item.Parameters);
                 return result.ToArray();
             }
         }
@@ -194,7 +196,14 @@ namespace psdPH
         public Composition[] Children = new Composition[0];
         public string Name;
         public string Path;
-
+        public bool IsPrototyped()
+        {
+            if (Parent == null)
+                return false;
+            var prototypes = Parent.getChildren<Prototype>();
+            bool result = prototypes.Any(p => p.Blob == this);
+            return result;
+        }
         public override string ObjName => Name;
         override public void apply(Document doc)
         {
@@ -261,7 +270,8 @@ namespace psdPH
             serializer.Serialize(sw, this);
             StringReader sr = new StringReader(sb.ToString());
             Blob result = serializer.Deserialize(sr) as Blob;
-            result.restore();
+            result.Parent = Parent;
+            result.Restore();
             return result;
         }
         public Blob()
@@ -294,13 +304,13 @@ namespace psdPH
             base.apply(doc);
             doc.GetLayerByName(Blob.LayerName).Opacity = 0;
         }
-        public Prototype(Blob blob,string rel_layer_name)
+        public Prototype(Blob blob, string rel_layer_name)
         {
             this.blob = blob;
             LayerName = blob.LayerName;
             RelativeLayerName = rel_layer_name;
         }
-        public Prototype(){}
+        public Prototype() { }
     }
     [Serializable]
     [XmlRoot("Placeholder")]

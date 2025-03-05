@@ -19,7 +19,7 @@ namespace psdPH.TemplateEditor
     {
         public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config, Composition root)
         {
-            return new TextLeafEditorWindow(doc, config as TextLeafEditorConfig);
+            return new TextLeafEditor(doc, config as TextLeafEditorConfig);
         }
     }
     public class BlobEditorWindowFactory : ICompositionEditorWindowFactory
@@ -55,7 +55,7 @@ namespace psdPH.TemplateEditor
         public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config, Composition root)
         {
             if (config.Composition == null)
-                return new PrototypeEditorWindow(doc, config, root);
+                return new PrototypeEditor(doc, config, root);
             else
                 return BlobEditorWindow.OpenInDocument(doc, new BlobEditorConfig() { Composition = (config.Composition as Prototype).Blob});
         }
@@ -65,7 +65,8 @@ namespace psdPH.TemplateEditor
     {
         public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config, Composition root)
         {
-            return new PrototypeEditorWindow(doc, config, root);
+            throw new NotImplementedException();
+            return new PrototypeEditor(doc, config, root);
         }
     }
 

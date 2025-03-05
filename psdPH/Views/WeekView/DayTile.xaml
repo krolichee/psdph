@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:psdPH"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="100" Width="100" Height="99">
+             d:DesignHeight="100" d:DesignWidth="100" Width="100" Height="100">
     <Button x:Name="button" Click="button_Click">
         <Grid Background="#FFECE9E9" Width="{Binding ActualWidth, ElementName=button, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=button, Mode=OneWay}">
             <Label x:Name="dowLabel" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="#FFBBADAD" FontSize="24" FontFamily="Arial Black"/>

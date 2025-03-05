@@ -1,0 +1,71 @@
+﻿using Photoshop;
+using psdPH.TemplateEditor;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using System;
+using System.Windows.Input;
+
+namespace psdPH
+{
+    public partial class BlobEditorWindow
+    {
+        public class EditCommand
+        {
+            private Composition _root_composition;
+            private Document _doc;
+            private BlobEditorWindow _editor;
+
+            public ICommand Command { get; set; }
+            public static EditCommand StructureCommand(Document doc, Composition root, BlobEditorWindow editor)
+            {
+                var result = new EditCommand(doc, root, editor, null);
+                result.Command = new RelayCommand(result.EditStructureExecuteCommand, result.CanExecuteCommand);
+                return result;
+
+            }
+            public static EditCommand RuleCommand(Document doc, Composition root, BlobEditorWindow editor)
+            {
+                var result = new EditCommand(doc, root, editor, null);
+                result.Command = new RelayCommand(result.EditRuleExecuteCommand, result.CanExecuteCommand);
+                return result;
+            }
+            public static EditCommand DeleteStructureCommand(Document doc, Composition root, BlobEditorWindow editor)
+            {
+                var result = new EditCommand(doc, root, editor, null);
+                result.Command = new RelayCommand(result.DeleteStructureExecuteCommand, result.CanExecuteCommand);
+                return result;
+            }
+            protected EditCommand(Document doc, Composition root, BlobEditorWindow editor, ICommand command)
+            {
+                _root_composition = root;
+                _doc = doc;
+                _editor = editor;
+            }
+            private void EditStructureExecuteCommand(object parameter)
+            {
+                var config = parameter as CompositionEditorConfig;
+                ICompositionEditor ce_w = config.Factory.CreateCompositionEditorWindow(_doc, config, _root_composition);
+                if (ce_w == null)
+                    return;
+                ce_w.ShowDialog();
+                Composition result = ce_w.GetResultComposition();
+                if (result != null)
+                    _root_composition.addChild(result);
+                _editor.refreshSctuctureStack();
+            }
+            private void EditRuleExecuteCommand(object parameter)
+            {
+                throw new NotImplementedException();
+            }
+            private void DeleteStructureExecuteCommand(object parameter)
+            {
+                _root_composition.removeChild(parameter as Composition);
+                _editor.refreshSctuctureStack();
+            }
+            private bool CanExecuteCommand(object parameter)
+            {
+                return true; // Здесь можно добавить логику для определения, может ли команда быть выполнена
+            }
+
+        }
+    }
+}

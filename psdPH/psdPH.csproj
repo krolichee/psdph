@@ -74,16 +74,17 @@
       <DependentUpon>CollectionEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="CollectionEditor\PsdPHApplicationDirectory.cs" />
-    <Compile Include="DataInputWindow.xaml.cs">
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RelayCommand.cs" />
+    <Compile Include="Utils\DataInputWindow.xaml.cs">
       <DependentUpon>DataInputWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DayTile.xaml.cs">
+    <Compile Include="Views\WeekView\DayTile.xaml.cs">
       <DependentUpon>DayTile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DowPlaceholderMatchWindow.xaml.cs">
+    <Compile Include="Views\WeekView\DowPlaceholderMatchWindow.xaml.cs">
       <DependentUpon>DowPlaceholderMatchWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Localization.cs" />
+    <Compile Include="Utils\Localization.cs" />
     <Compile Include="Logic\Compositions\Compositions.cs" />
     <Compile Include="CollectionEditor\Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
@@ -101,7 +102,7 @@
     </Compile>
     <Compile Include="RuleEditor\Parameter.cs" />
     <Compile Include="Logic\Rules\Rules.cs" />
-    <Compile Include="NumericTextBox.cs" />
+    <Compile Include="Utils\NumericTextBox.cs" />
     <Compile Include="PsdTemplateDropWindow.xaml.cs">
       <DependentUpon>PsdTemplateDropWindow.xaml</DependentUpon>
     </Compile>
@@ -114,17 +115,12 @@
     </Compile>
     <Compile Include="TemplateEditor\CompositionEditorConfig.cs" />
     <Compile Include="Logic\PhotoshopWrapper.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\EditCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TinyEditors.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\FlagEditorWindow.xaml.cs">
-      <DependentUpon>FlagEditorWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\ICompositionEditor.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\PrototypeEditorWindow.xaml.cs">
-      <DependentUpon>PrototypeEditorWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StackOkWindow.xaml.cs">
       <DependentUpon>StackOkWindow.xaml</DependentUpon>
@@ -138,28 +134,36 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml.cs">
       <DependentUpon>BlobEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\PlaceholderLeafEditorWindow.xaml.cs">
-      <DependentUpon>PlaceholderLeafEditorWindow.xaml</DependentUpon>
+    <Compile Include="Views\WeekView\Logic\WeekConfig.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekData.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekTime.cs" />
+    <Compile Include="Views\WeekView\RenderCommand.cs" />
+    <Compile Include="Views\WeekView\WeekConfigEditor.xaml.cs">
+      <DependentUpon>WeekConfigEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TextLeafEditorWindow.xaml.cs">
-      <DependentUpon>TextLeafEditorWindow.xaml</DependentUpon>
+    <Compile Include="Views\WeekView\WeekViewWindow.xaml.cs">
+      <DependentUpon>WeekViewWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WeekGaleryViewWindow.xaml.cs">
-      <DependentUpon>WeekGaleryViewWindow.xaml</DependentUpon>
+    <Compile Include="Views\WeekView\Logic\WeekListData.cs" />
+    <Compile Include="Views\WeekView\WeekRow.xaml.cs">
+      <DependentUpon>WeekRow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WeekView\WeekTile.xaml.cs">
+      <DependentUpon>WeekTile.xaml</DependentUpon>
     </Compile>
     <Page Include="CollectionEditor\CollectionEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DataInputWindow.xaml">
+    <Page Include="Utils\DataInputWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DayTile.xaml">
+    <Page Include="Views\WeekView\DayTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DowPlaceholderMatchWindow.xaml">
+    <Page Include="Views\WeekView\DowPlaceholderMatchWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -199,14 +203,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\FlagEditorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\PrototypeEditorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StackOkWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -223,15 +219,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\PlaceholderLeafEditorWindow.xaml">
+    <Page Include="Views\WeekView\WeekConfigEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\TextLeafEditorWindow.xaml">
+    <Page Include="Views\WeekView\WeekViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WeekGaleryViewWindow.xaml">
+    <Page Include="Views\WeekView\WeekRow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WeekView\WeekTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -264,10 +264,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="sobolcoin phonk.png" />
+    <Resource Include="testResources\sobolcoin phonk.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="European_Brown_Bear.jpg" />
+    <Resource Include="testResources\European_Brown_Bear.jpg" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Photoshop">
