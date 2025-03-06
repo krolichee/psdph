@@ -159,8 +159,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-<<<<<<< HEAD
-=======
     <Page Include="CollectionImageSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -169,11 +167,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utils\DataInputWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
->>>>>>> 2ec1b28133615752daf371feaa53ca12aca31cc3
     <Page Include="Views\WeekView\DayTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
