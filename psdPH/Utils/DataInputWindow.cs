@@ -19,14 +19,13 @@ namespace psdPH
     /// <summary>
     /// Логика взаимодействия для DataInputWindow.xaml
     /// </summary>
-    public partial class DataInputWindow
+    public class DataInputWindow
     {
         ParametersWindow parametersWindow;
         public DataInputWindow(Blob blob)
         {
             var parameters = blob.Parameters;
             parametersWindow = new ParametersWindow(parameters);
-            InitializeComponent();
         }
         public bool? ShowDialog()
         {

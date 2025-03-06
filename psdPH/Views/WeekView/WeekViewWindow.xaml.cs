@@ -3,6 +3,7 @@ using psdPH.Views.WeekView;
 using psdPH.Views.WeekView.Logic;
 using System;
 using System.CodeDom;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace psdPH
     /// </summary>
     public partial class WeekViewWindow : Window
     {
-        public WeekConfig WeekDowsConfig;
+        public WeekConfig WeekConfig;
         public WeekListData WeekListData;
         Document doc;
         public WeekViewWindow(Blob root, WeekConfig weekDowsConfig = null, WeekListData weekListData = null)
@@ -45,33 +46,45 @@ namespace psdPH
 
                 weekListData = new WeekListData() { RootBlob = root };
             }
-            WeekDowsConfig = weekDowsConfig;
+            WeekConfig = weekDowsConfig;
             WeekListData = weekListData;
             InitializeComponent();
             refreshWeekStack();
         }
-        void applyWeek()
+        void renderWeek(WeekData weekData)
         {
-
+            PlaceholderLeaf[] prototypes = weekData.MainBlob.getChildren<PlaceholderLeaf>();
+            Dictionary<DayOfWeek, PlaceholderLeaf> dowPlaceholderList = prototypes.ToDictionary(p=>WeekConfig.DowPrototypeLayernameList.First(dp=>dp.Layername==p.LayerName).Dow,p=>p);
+            foreach (var dowBlob in weekData.DowBlobList)
+            {
+                var ph = dowPlaceholderList[dowBlob.Dow];
+                ph.ReplaceWithFiller(doc,dowBlob.Blob);
+            }
+            weekData.MainBlob.apply(doc);
         }
 
         void refreshWeekStack()
         {
             weeksStack.Children.Clear();
-            var rowStack = new StackPanel();
-            rowStack.Children.Add(new Button() { Command = });
-            weeksStack.Children.Add();
+            //var rowStack = new StackPanel();
+            //rowStack.Children.Add(new Button() { Command = });
+            //weeksStack.Children.Add();
             long unixTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             int currentWeek = WeekTime.GetCurrentWeekFromUnixTime(unixTime);
             foreach (var weekData in WeekListData.Weeks)
                 if (weekData.Week >= currentWeek)
-                    weeksStack.Children.Add(new WeekRow(WeekDowsConfig, weekData));
+                    weeksStack.Children.Add(new WeekRow(WeekConfig, weekData));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            WeekListData.NewWeek(WeekDowsConfig, WeekListData.RootBlob);
+            WeekListData.NewWeek(WeekConfig, WeekListData.RootBlob);
             refreshWeekStack();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            renderWeek(WeekListData.Weeks[0]);
         }
     }
 }

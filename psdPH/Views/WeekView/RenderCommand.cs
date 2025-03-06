@@ -20,6 +20,7 @@ namespace psdPH.Views.WeekView
         public ICommand Command { get; set; }
         public RenderCommand(Document doc)
         {
+            (_doc.ActiveLayer as ArtLayer).Duplicate();
             Command = new RelayCommand(RenderExecuteCommand, CanExecuteCommand);
         }
         private void RenderExecuteCommand(object parameter)

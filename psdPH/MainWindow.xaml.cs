@@ -31,6 +31,7 @@ using System.Runtime.Remoting.Metadata;
 using System.Linq.Expressions;
 using Condition =psdPH.Logic.Rules.Condition;
 using static psdPH.WeekViewWindow;
+using PhotoshopTypeLibrary;
 
 
 namespace psdPH
@@ -71,6 +72,14 @@ namespace psdPH
 
         public MainWindow()
         {
+            var psApp = PhotoshopWrapper.GetPhotoshopApplication();
+
+            var doc = psApp.ActiveDocument;
+            var initialState = doc.HistoryStates[1];
+            
+            (doc.ActiveLayer as ArtLayer).Duplicate();
+
+            //doc.ActiveHistoryState = initialState;
             //XmlSerializer serializer = new XmlSerializer(typeof(List<KeyValuePair< DayOfWeek, string >>));
             //var obj = new Dictionary<DayOfWeek, string>() { { DayOfWeek.Friday, "dasd" }, { DayOfWeek.Monday, "dasd" } };
             //var obj_list = obj.ToList();
@@ -221,7 +230,7 @@ namespace psdPH
             wgv_w.ShowDialog();
             {
                 fileStream = new FileStream(configPath, FileMode.Create);
-                weekConfig = wgv_w.WeekDowsConfig;
+                weekConfig = wgv_w.WeekConfig;
                 configSerializer.Serialize(fileStream, weekConfig);
                 fileStream.Close();
             }

@@ -49,7 +49,7 @@ namespace psdPH
 
         public abstract Parameter[] Parameters { get; }
 
-        virtual public void apply(Document doc) { }
+        abstract public void apply(Document doc);
         virtual public void addChild(Composition child) { }
         virtual public void removeChild(Composition child) { }
         public void Restore(Blob parent = null)
@@ -107,6 +107,8 @@ namespace psdPH
         public FlagLeaf()
         {
         }
+
+        public override void apply(Document doc){ }
     }
     [Serializable]
     [XmlRoot("Image")]
@@ -119,20 +121,16 @@ namespace psdPH
         {
             get
             {
-                var result = new List<Parameter>();
-                var toggleConfig = new ParameterConfig(this, nameof(this.Path), LayerName);
-                ///TODO
-                result.Add(Parameter.Choose(toggleConfig, new object[] { }));
-                return result.ToArray();
+                throw new NotImplementedException();
             }
-        }
-
-        override public void apply(Document doc)
-        {
-
         }
         public ImageLeaf()
         {
+        }
+
+        public override void apply(Document doc)
+        {
+            throw new NotImplementedException();
         }
     }
     [Serializable]
@@ -210,12 +208,10 @@ namespace psdPH
             Document cur_doc;
             if (Mode == BlobMode.Layer)
                 cur_doc = doc.OpenSmartLayer(LayerName);
-            else if (Mode == BlobMode.Path)
+            else
                 cur_doc = doc;
             foreach (var item in Children)
-            {
-                item.apply(doc);
-            }
+                item.apply(cur_doc);
         }
         override public void addChild(Composition child)
         {
@@ -301,9 +297,11 @@ namespace psdPH
         public override string ObjName => Blob.LayerName;
         public override void apply(Document doc)
         {
-            base.apply(doc);
             doc.GetLayerByName(Blob.LayerName).Opacity = 0;
         }
+
+        
+
         public Prototype(Blob blob, string rel_layer_name)
         {
             this.blob = blob;
@@ -348,16 +346,18 @@ namespace psdPH
         {
             base.restoreParents(parent);
         }
-        public void applyFiller(Document doc, Blob blob)
+        internal void ReplaceWithFiller(Document doc, Blob blob)
         {
-            Parent.addChild(derived = new DerivedLayerLeaf($"{PrototypeLayerName}_{LayerName}"));
-            doc.ArtLayers.Add();
-            (doc.ActiveLayer as ArtLayer).Name = derived.LayerName;
-            doc.GetLayerByName(LayerName).Opacity = 0;
-            var clone_blob = blob.Clone();
-            clone_blob.LayerName = derived.LayerName;
-            clone_blob.apply(doc);
+            derived = new DerivedLayerLeaf($"{PrototypeLayerName}_{LayerName}");
+            ArtLayer ph_layer = doc.GetLayerByName(LayerName);
+            ArtLayer new_layer = doc.GetLayerByName(PrototypeLayerName).Duplicate();
+            ph_layer.Delete();
+            new_layer.Name = blob.LayerName = derived.LayerName;
+            Parent.addChild(blob);
+            Parent.removeChild(this);
         }
+
+        public override void apply(Document doc){ }
     }
     public class DerivedLayerLeaf : LayerLeaf
     {
@@ -381,6 +381,8 @@ namespace psdPH
             LayerName = layername;
         }
         public LayerLeaf() { }
+
+        public override void apply(Document doc){}
     }
 }
 

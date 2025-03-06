@@ -66,7 +66,6 @@ namespace psdPH.TemplateEditor
         public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config, Composition root)
         {
             throw new NotImplementedException();
-            return new PrototypeEditor(doc, config, root);
         }
     }
 
