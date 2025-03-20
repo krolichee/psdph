@@ -24,6 +24,8 @@ using PsDocWr = psdPH.Logic.PhotoshopDocumentExtension;
 using System.ComponentModel;
 using psdPH.RuleEditor;
 using psdPH.Logic.Rules;
+using psdPH.Logic.Compositions;
+using System.Runtime.Remoting.Messaging;
 
 namespace psdPH
 {
@@ -37,27 +39,22 @@ namespace psdPH
         EditCommand _addStructureItemCommand;
         EditCommand _deleteStructureCommand;
         Document _doc;
+        MenuItem CreateMenuItem(Type type)
+        {
+            Type configType = CompositionConfigDictionary.GetConfigType(type);
+            return new MenuItem()
+            {
+                Header = TypeLocalization.GetLocalizedDescription(type),
+                Command = _addStructureItemCommand.Command,
+                CommandParameter = Activator.CreateInstance(configType)
+            };
+        }
         void InitializeElements()
         {
-            /*
-             * <MenuItem x:Name="addFlagItem" Header="Флаг"/>
-                <MenuItem x:Name="addTphItem" Header="Текстовое поле" />
-                <MenuItem x:Name="addImageItem" Header="Поле изображения" />
-                <MenuItem x:Name="addVisItem" Header="Видимость слоя" />
-                <MenuItem x:Name="addSub" Header="Поддокумент" />
-                <MenuItem x:Name="addPhItem" Header="Плейсхолдер" />
-                <MenuItem x:Name="addProtoItem" Header="Прототип" />
-             */
-            foreach (MenuItem item in DropdownMenu.Items)
-            {
-                item.Command = _addStructureItemCommand.Command;
-            }
-            addFlagItem.CommandParameter = new FlagEditorConfig();
-            addTphItem.CommandParameter = new TextLeafEditorConfig();
-            addImageItem.CommandParameter = new ImageEditorConfig();
-            addBlob.CommandParameter = new BlobEditorConfig();
-            addPhItem.CommandParameter = new PlaceholderEditorConfig();
-            addProtoItem.CommandParameter = new PrototypeEditorConfig();
+            List<MenuItem> items = new List<MenuItem>();
+            foreach (var comp_type in CompositionConfigDictionary.StoC.Keys)
+                items.Add(CreateMenuItem(comp_type));
+            DropdownMenu.ItemsSource = items;
         }
         static string ChooseLayer(Document doc, CompositionEditorConfig config)
         {
@@ -70,11 +67,10 @@ namespace psdPH
         {
             string[] layer_names = PsDocWr.GetLayersNames(doc.GetLayersByKinds(config.Kinds));
             var lc_w = new StringChoiceWindow(layer_names, "Выбор слоя поддокумента");
-            lc_w.ShowDialog();
-            string ln = lc_w.getResultString();
-            if (ln == "")
+            if(lc_w.ShowDialog()!=true)
                 return null;
-            CompositionEditorConfig new_config = new BlobEditorConfig() { Composition = Blob.LayerBlob(ln) };
+            string ln = lc_w.getResultString();
+            CompositionEditorConfig new_config = new BlobEditorCfg() { Composition = Blob.LayerBlob(ln) };
             return OpenInDocument(doc, new_config);
         }
         public static BlobEditorWindow OpenInDocument(Document doc, CompositionEditorConfig config)
@@ -83,19 +79,8 @@ namespace psdPH
             if (blob.Mode != BlobMode.Layer)
                 throw new ArgumentException();
             Document new_doc;
-            while (true)
-                try
-                {
-                    new_doc = doc.OpenSmartLayer(blob.LayerName);
-                    break;
-                }
-                catch
-                {
-                    string ln;
-                    MessageBox.Show("Нет такого слоя. Возможно, документ был изменён. Исправьте имя слоя");
-                    ln = ChooseLayer(doc, config);
-                    blob.LayerName = ln;
-                }
+
+            new_doc = doc.OpenSmartLayer(blob.LayerName);
 
             return new BlobEditorWindow(new_doc, config);
         }
@@ -110,12 +95,14 @@ namespace psdPH
         }
         BlobEditorWindow(Document doc, CompositionEditorConfig config)
         {
+            
             _root = config.Composition;
             _addStructureItemCommand = EditCommand.StructureCommand(doc, _root, this);
             _deleteStructureCommand = EditCommand.DeleteStructureCommand(doc,_root,this);
             _doc = doc;
             //_root.RuleSet.Rules.Add(new TextAnchorRule(_root) { Condition = new MaxRowCountCondition(_root) { RowCount = 10, TextLeafLayerName = "MudryBatyaVtuber" }, TextLeafLayerName = "MudryBatyaVtuber" });
             InitializeComponent();
+            Closing += (object sender, CancelEventArgs e) => DialogResult = true;
             InitializeElements();
             refreshSctuctureStack();
             refreshRuleStack();
@@ -130,13 +117,27 @@ namespace psdPH
         {
             return _root;
         }
+        void removeRule(Rule rule)
+        {
+            _root.RuleSet.Rules.Remove(rule);
+            refreshRuleStack();
+        }
         void refreshRuleStack()
         {
             rulesStackPanel.Children.Clear();
             ConditionRule[] rules = _root.RuleSet.Rules.Cast<ConditionRule>().ToArray();
             foreach (var rule in rules)
             {
-                rulesStackPanel.Children.Add(new RuleTextBlock(rule));
+                var rtb = new RuleTextBlock(rule);
+                rtb.ContextMenu = new ContextMenu();
+                rtb.ContextMenu.Items.Add(new MenuItem() { 
+                    Header = "Удалить",
+                    Command = new RelayCommand((object o)=>removeRule(o as Rule),(_)=>true),
+                    CommandParameter = rule,
+                Margin = new Thickness(0,0,0,10)}
+                    
+                    );
+                rulesStackPanel.Children.Add(rtb);
             }
 
         }
@@ -149,7 +150,7 @@ namespace psdPH
                 var grid = new Grid();
                 grid.Children.Add(new Label() { Content = child.UIName, Foreground = SystemColors.ActiveBorderBrush, HorizontalAlignment = HorizontalAlignment.Left });
                 grid.Children.Add(new Label() { Content = child.ObjName, Foreground = SystemColors.ActiveCaptionTextBrush, HorizontalAlignment = HorizontalAlignment.Center });
-                grid.Children.Add(new Button() { Content = "X", Foreground = new SolidColorBrush(Color.FromRgb(124, 0, 0)), HorizontalAlignment = HorizontalAlignment.Right, Command = _deleteStructureCommand.Command, CommandParameter = child });
+                grid.Children.Add(new Button() { Content = "X", Foreground = new SolidColorBrush(Color.FromRgb(124, 0, 0)), HorizontalAlignment = HorizontalAlignment.Right, Command = _deleteStructureCommand.Command, CommandParameter = child, Width = 20 });
                 grid.Width = structuresStackPanel.RenderSize.Width;
                 var button = new Button();
                 button.Height = 28;
@@ -180,7 +181,8 @@ namespace psdPH
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var rc_window = new RuleControlWindow(_root);
-            rc_window.ShowDialog();
+            if (rc_window.ShowDialog() != true)
+                return;
             _root.RuleSet.Rules.Add(rc_window.GetResultRule());
             refreshRuleStack();
         }

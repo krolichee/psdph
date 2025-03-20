@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic;
+using psdPH.Logic.Compositions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,8 +37,29 @@ namespace psdPH
         }
         public List<DowLayernamePair> DowPrototypeLayernameList = new List<DowLayernamePair>();
         public string TilePreviewTextLeafName;
-        public string DowLabelTextLeafLayerName;
         public string PrototypeLayerName;
+
+        public string WeekDatesTextLeafName;
+
+        public string TimeTextLeafLayerName;
+        public string DowTextLeafLayerName;
+        public string DateTextLeafLayerName;
+        internal TextLeaf GetWeekDatesTextLeaf(Blob blob)
+        {
+            return blob.getChildren<TextLeaf>().First(_ => _.LayerName == WeekDatesTextLeafName);
+        }
+        internal TextLeaf GetTimeTextLeaf(Blob blob)
+        {
+           return blob.getChildren<TextLeaf>().First(_=>_.LayerName== TimeTextLeafLayerName);
+        }
+        internal TextLeaf GetDateTextLeaf(Blob blob)
+        {
+            return blob.getChildren<TextLeaf>().First(_ => _.LayerName == DateTextLeafLayerName);
+        }
+        internal TextLeaf GetDowTextLeaf(Blob blob)
+        {
+            return blob.getChildren<TextLeaf>().First(_ => _.LayerName == DowTextLeafLayerName);
+        }
         //public void Restore(Prototype prototype)
         //{
         //    Prototype = prototype;

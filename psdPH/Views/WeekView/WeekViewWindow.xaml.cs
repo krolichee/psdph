@@ -1,10 +1,12 @@
 ﻿using Photoshop;
+using psdPH.Logic.Compositions;
 using psdPH.Views.WeekView;
 using psdPH.Views.WeekView.Logic;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +40,12 @@ namespace psdPH
             if (weekDowsConfig == null)
             {
                 WeekConfigEditor wce_w = new WeekConfigEditor(root);
-                wce_w.ShowDialog();
+
+                if (!wce_w.ShowDialog())
+                {
+                    Loaded += (object sender, RoutedEventArgs e) => Close();
+                    return;
+                }
                 weekDowsConfig = wce_w.GetResultConfig();
             }
             if (weekListData == null)
@@ -46,6 +53,7 @@ namespace psdPH
 
                 weekListData = new WeekListData() { RootBlob = root };
             }
+            Closing += (object sender, CancelEventArgs e) => DialogResult = true;
             WeekConfig = weekDowsConfig;
             WeekListData = weekListData;
             InitializeComponent();
@@ -53,14 +61,15 @@ namespace psdPH
         }
         void renderWeek(WeekData weekData)
         {
-            PlaceholderLeaf[] prototypes = weekData.MainBlob.getChildren<PlaceholderLeaf>();
+            WeekData new_weekData = weekData.Clone();
+            PlaceholderLeaf[] prototypes = new_weekData.MainBlob.getChildren<PlaceholderLeaf>();
             Dictionary<DayOfWeek, PlaceholderLeaf> dowPlaceholderList = prototypes.ToDictionary(p=>WeekConfig.DowPrototypeLayernameList.First(dp=>dp.Layername==p.LayerName).Dow,p=>p);
-            foreach (var dowBlob in weekData.DowBlobList)
+            foreach (var dowBlob in new_weekData.DowBlobList)
             {
                 var ph = dowPlaceholderList[dowBlob.Dow];
                 ph.ReplaceWithFiller(doc,dowBlob.Blob);
             }
-            weekData.MainBlob.apply(doc);
+            new_weekData.MainBlob.Apply(doc);
         }
 
         void refreshWeekStack()

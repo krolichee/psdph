@@ -19,7 +19,7 @@ namespace psdPH.TemplateEditor
     {
         public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config, Composition root)
         {
-            return new TextLeafEditor(doc, config as TextLeafEditorConfig);
+            return new TextLeafEditor(doc, config as TextLeafEditorCfg);
         }
     }
     public class BlobEditorWindowFactory : ICompositionEditorWindowFactory
@@ -57,15 +57,27 @@ namespace psdPH.TemplateEditor
             if (config.Composition == null)
                 return new PrototypeEditor(doc, config, root);
             else
-                return BlobEditorWindow.OpenInDocument(doc, new BlobEditorConfig() { Composition = (config.Composition as Prototype).Blob});
+                return BlobEditorWindow.OpenInDocument(doc, new BlobEditorCfg() { Composition = (config.Composition as PrototypeLeaf).Blob});
         }
     }
 
-    public class ImageEditorWindowFactory : ICompositionEditorWindowFactory
+    public class ImageLeafEditorWindowFactory : ICompositionEditorWindowFactory
     {
         public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config, Composition root)
         {
-            throw new NotImplementedException();
+            return new ImageLeafEditor(doc, config);
+        }
+    }public class LayerLeafEditorWindowFactory : ICompositionEditorWindowFactory
+    {
+        public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config, Composition root)
+        {
+            return new LayerLeafEditor(doc, config);
+        }
+    }public class GroupLeafEditorWindowFactory : ICompositionEditorWindowFactory
+    {
+        public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config, Composition root)
+        {
+            return new GroupLeafEditor(doc, config);
         }
     }
 
@@ -81,38 +93,49 @@ namespace psdPH.TemplateEditor
         public virtual ICompositionEditorWindowFactory Factory { get; }
     }
 
-    public class TextLeafEditorConfig : CompositionEditorConfig
+    public class TextLeafEditorCfg : CompositionEditorConfig
     {
         public override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psTextLayer };
         public override ICompositionEditorWindowFactory Factory => new TextLeafEditorWindowFactory();
     }
 
-    public class BlobEditorConfig : CompositionEditorConfig
+    public class BlobEditorCfg : CompositionEditorConfig
     {
         public override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psSmartObjectLayer };
         public override ICompositionEditorWindowFactory Factory => new BlobEditorWindowFactory();
     }
-    public class PlaceholderEditorConfig : CompositionEditorConfig
+    public class PlaceholderEditorCfg : CompositionEditorConfig
     {
         public override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psNormalLayer };
         public override ICompositionEditorWindowFactory Factory => new PlaceholderLeafWindowFactory();
     }
 
-    public class PrototypeEditorConfig : CompositionEditorConfig
+    public class PrototypeLeafEditorCfg : CompositionEditorConfig
     {
         public override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psNormalLayer };
         public override ICompositionEditorWindowFactory Factory => new PrototypeEditorWindowFactory();
     }
 
-    public class FlagEditorConfig : CompositionEditorConfig
+    public class FlagLeafEditorCfg : CompositionEditorConfig
     {
         public override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psNormalLayer };
         public override ICompositionEditorWindowFactory Factory => new FlagEditorWindowFactory();
     }
 
-    public class ImageEditorConfig : CompositionEditorConfig
+    public class ImageLeafEditorCfg : CompositionEditorConfig
     {
         public override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psNormalLayer };
-        public override ICompositionEditorWindowFactory Factory => new ImageEditorWindowFactory();
+        public override ICompositionEditorWindowFactory Factory => new ImageLeafEditorWindowFactory();
     }
+    public class LayerLeafEditorCfg : CompositionEditorConfig
+    {
+        public override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psNormalLayer, PsLayerKind.psSolidFillLayer, PsLayerKind.psSmartObjectLayer};
+        public override ICompositionEditorWindowFactory Factory => new LayerLeafEditorWindowFactory();
+    }public class GroupLeafEditorCfg : CompositionEditorConfig
+    {
+        public override PsLayerKind[] Kinds => new PsLayerKind[] { };
+        public override ICompositionEditorWindowFactory Factory => new GroupLeafEditorWindowFactory();
+    }
+
+
 }

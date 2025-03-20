@@ -1,4 +1,5 @@
-﻿using psdPH.Views.WeekView.Logic;
+﻿using psdPH.Logic.Compositions;
+using psdPH.Views.WeekView.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;

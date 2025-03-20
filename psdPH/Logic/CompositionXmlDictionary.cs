@@ -1,4 +1,5 @@
-﻿using System;
+﻿using psdPH.Logic.Compositions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,7 @@ namespace psdPH.Logic
                     KV.NewKV(typeof(FlagLeaf)),
                     KV.NewKV(typeof(TextLeaf)),
                     KV.NewKV(typeof(LayerLeaf)),
-                    KV.NewKV(typeof(Prototype)),
+                    KV.NewKV(typeof(PrototypeLeaf)),
                 };
             foreach (var pair in pairs)
                 StoT.Add(pair.Key, pair.Value);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using psdPH.Logic.Compositions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,16 +21,26 @@ namespace psdPH
     /// </summary>
     public partial class WeekTile : UserControl
     {
+        Composition[] exclude = new Composition[0];
         Blob blob;
-        public WeekTile(WeekData data)
+        Composition[] getExcludes(WeekConfig weekConfig, Blob blob)
+        {
+            return new Composition[] {
+                weekConfig.GetWeekDatesTextLeaf(blob)
+            };
+
+        }
+        public WeekTile(WeekData data,WeekConfig weekConfig)
         {
             blob = data.MainBlob;
+            exclude = getExcludes(weekConfig, blob);
             InitializeComponent();
+            weekDateLabel.Content = weekConfig.GetWeekDatesTextLeaf(blob).Text;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            new DataInputWindow(blob).ShowDialog();
+            new DataInputWindow(blob, exclude).ShowDialog();
         }
     }
 }

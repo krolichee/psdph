@@ -1,4 +1,5 @@
-﻿using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+﻿using psdPH.Logic.Compositions;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,15 @@ namespace psdPH
     /// </summary>
     public class DataInputWindow
     {
-        ParametersWindow parametersWindow;
-        public DataInputWindow(Blob blob)
+        ParametersInputWindow parametersWindow;
+
+        public DataInputWindow(Blob blob, Composition[] exclude = null,string title = "")
         {
-            var parameters = blob.Parameters;
-            parametersWindow = new ParametersWindow(parameters);
+            if (exclude == null)
+                exclude = new Composition[0];
+            var parameters = blob.Parameters.Where(p => !exclude.Contains(p.Config.Obj)).ToArray();
+
+            parametersWindow = new ParametersInputWindow(parameters, title);
         }
         public bool? ShowDialog()
         {

@@ -8,11 +8,38 @@ namespace psdPH
 {
     using Photoshop;
     using psdPH.Logic;
+    using psdPH.Logic.Compositions;
     using System;
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
 
+    public static class TypeLocalization
+    {
+        private static readonly Dictionary<Type, string> Localizations = new Dictionary<Type, string>
+        {
+                {typeof(Blob), "Поддокумент" },
+
+                {typeof(FlagLeaf), "Флаг"},
+                {typeof(PrototypeLeaf), "Прототип" },
+                {typeof(PlaceholderLeaf), "Плейсхолдер" },
+
+                {typeof(ImageLeaf), "Изображение" },
+                {typeof(TextLeaf), "Текст" },
+                {typeof(LayerLeaf), "Слой" },
+                {typeof(GroupLeaf), "Группа" }
+
+        };
+        public static string GetLocalizedDescription(Type type)
+        {
+            if (Localizations.TryGetValue(type, out var description))
+            {
+                return description;
+            }
+            // Если локализация не найдена, возвращаем строковое представление значения
+            return type.ToString();
+        }
+    }
     public static class EnumLocalization
     {
         private static readonly Dictionary<Type, Dictionary<object, string>> Localizations = new Dictionary<Type, Dictionary<object, string>>()
@@ -28,8 +55,8 @@ namespace psdPH
         {
             typeof(ChangeMode), new Dictionary<object, string>
             {
-                { ChangeMode.Abs, "изменить на" },
-                { ChangeMode.Rel, "установить" }
+                { ChangeMode.Abs, "установить" },
+                { ChangeMode.Rel, "изменить на" }
             }
         },
         {
@@ -44,15 +71,8 @@ namespace psdPH
                 { DayOfWeek.Sunday, "Вс"},
             }
         },
-        {
-            typeof(Composition), new Dictionary<object, string>
-            {
-                {typeof(FlagLeaf), "Флаг"},
-                {typeof(TextLeaf), "Текст" }
-            
-            }
-        }
     };
+
     public static string GetLocalizedDescription<TEnum>(TEnum value)
     {
         Type enumType = value.GetType();

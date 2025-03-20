@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace psdPH.Logic
 {
     public class ParameterConfig
     {
-        object Obj;
+        public object Obj;
         public string FieldName;
         public string Desc;
         public Type GetTypeOfObj()
@@ -59,49 +60,55 @@ namespace psdPH.Logic
     }
     public class FieldFunctions
     {
-        public Func<object, object> PullFunction = (o) => (o);
-        public Func<object, object> PushFunction = (o) => (o);
+        public Func<object, object> RevertFunction = (o) => (o);
+        public Func<object, object> ConvertFunction = (o) => (o);
 
         public static FieldFunctions EnumWrapperFunctions => new FieldFunctions()
         {
-            PushFunction = (o => new EnumWrapper(o as Enum)),
-            PullFunction = (o) => (o as EnumWrapper).Value
+            ConvertFunction = (o => new EnumWrapper(o as Enum)),
+            RevertFunction =(o) => (o as EnumWrapper).Value
         };
     }
-    
+
     public class Parameter
     {
         public Control Control;
+        FieldFunctions _fieldFunctions;
         StackPanel _stack;
         Func<bool> accept;
-        private ParameterConfig _config;
-        public ParameterConfig Config => _config; 
         
+        private ParameterConfig _config;
+        public ParameterConfig Config => _config;
+        public string ValueToString()
+        {
+            return _fieldFunctions.ConvertFunction(_config.GetValue()).ToString();
+        }
         public static Parameter Choose(ParameterConfig config, object[] options, FieldFunctions fieldFunctions = null)
         {
-            if (fieldFunctions == null)
-                fieldFunctions = new FieldFunctions();
-            var result = new Parameter(config);
+            var result = new Parameter(config,fieldFunctions);
+            fieldFunctions = result._fieldFunctions;
             var stack = result._stack;
-            var cb = new ComboBox() { ItemsSource = options.Select(fieldFunctions.PushFunction) };
+            var cb = new ComboBox() { ItemsSource = options.Select(fieldFunctions.ConvertFunction) };
             result.Control = cb;
             stack.Children.Add(cb);
-            result.accept = () => { config.SetValue(fieldFunctions.PullFunction(cb.SelectedValue)); return true; };
+            result.accept = () => { config.SetValue(fieldFunctions.RevertFunction(cb.SelectedValue)); return true; };
             return result;
         }
         public static Parameter StringInput(ParameterConfig config)
         {
             var result = new Parameter(config);
             var stack = result._stack;
-            var tb = new TextBox() {Width = 40};
+            var tb = new TextBox() { Width = 40 };
             result.Control = tb;
             tb.Text = config.GetValue().ToString();
             stack.Children.Add(tb);
-            result.accept = () => { 
-                config.SetValue(tb.Text); return true; };
+            result.accept = () =>
+            {
+                config.SetValue(tb.Text); return true;
+            };
             return result;
         }
-        public static Parameter IntInput(ParameterConfig config)
+        public static Parameter IntInput(ParameterConfig config, int? min = null, int? max = null)
         {
             var result = new Parameter(config);
             var stack = result._stack;
@@ -110,10 +117,12 @@ namespace psdPH.Logic
             ntb.Text = config.GetValue().ToString();
             stack.Children.Add(ntb);
             result.accept = () => { config.SetValue(ntb.GetNumber()); return true; };
+
             return result;
         }
         public static Parameter Check(ParameterConfig config)
         {
+            
             var result = new Parameter(config);
             var stack = result._stack;
             var chb = new CheckBox();
@@ -126,7 +135,8 @@ namespace psdPH.Logic
         public class EnumWrapper
         {
             public Enum Value;
-            public EnumWrapper(Enum value){
+            public EnumWrapper(Enum value)
+            {
                 Value = value;
             }
             public override string ToString()
@@ -139,11 +149,16 @@ namespace psdPH.Logic
         {
 
             var enumValues = Enum.GetValues(@enum).Cast<Enum>();
-            var options = enumValues.Select(e => new EnumWrapper(e)).ToArray();
+            var options = enumValues.ToArray();
             return Parameter.Choose(config, options, FieldFunctions.EnumWrapperFunctions);
         }
-        Parameter(ParameterConfig config)
+        Parameter(ParameterConfig config, FieldFunctions fieldFunctions = null)
         {
+            if (fieldFunctions == null)
+                fieldFunctions = new FieldFunctions();
+            else
+                ;
+            _fieldFunctions = fieldFunctions;
             _stack = new StackPanel()
             {
                 Orientation = Orientation.Horizontal
@@ -157,6 +172,7 @@ namespace psdPH.Logic
         {
             accept();
         }
+
         public StackPanel Stack => _stack;
 
     }

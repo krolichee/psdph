@@ -1,4 +1,5 @@
-﻿using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+﻿using psdPH.Logic.Compositions;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,10 @@ namespace psdPH
     public partial class DowPlaceholderMatchWindow : Window
     {
         Dictionary<DayOfWeek, string> dowLayerDictionary = new Dictionary<DayOfWeek, string>();
-        public DowPlaceholderMatchWindow(Prototype prot)
+        public DowPlaceholderMatchWindow(PrototypeLeaf prot)
         {
             InitializeComponent();
+            Closed += Window_Closed;
             Blob root = prot.Parent as Blob;
             var placeholders = root.getChildren<PlaceholderLeaf>()
             .Where(cmp => cmp.PrototypeLayerName == prot.LayerName);
@@ -33,9 +35,14 @@ namespace psdPH
             foreach (var day in days)
                 stackPanel.Children.Add(new StringChoiceControl(phNames, $"{day} заполнитель", i++) { Tag = day });
         }
-
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (DialogResult != true)
+                throw new UserInterruptedInputException();
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = true;
             foreach (StringChoiceControl scc in stackPanel.Children)
                 dowLayerDictionary.Add((DayOfWeek)scc.Tag, scc.getResultString());
             Close();
@@ -44,5 +51,6 @@ namespace psdPH
         {
             return dowLayerDictionary;
         }
+
     }
 }

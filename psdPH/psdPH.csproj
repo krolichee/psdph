@@ -80,8 +80,17 @@
     <Compile Include="ImageSelectorWindow.xaml.cs">
       <DependentUpon>ImageSelectorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logic\Compositions\Blob.cs" />
+    <Compile Include="Logic\Compositions\Compositions.cs" />
+    <Compile Include="Logic\Compositions\LayerCompositions.cs" />
+    <Compile Include="Logic\Rules\TextRules.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RelayCommand.cs" />
+    <Compile Include="Utils\UserInterruptedInputException.cs" />
     <Compile Include="Utils\DataInputWindow.cs" />
+    <Compile Include="Utils\XmlClone.cs" />
+    <Compile Include="Views\WeekView\DateFormatWindow.xaml.cs">
+      <DependentUpon>DateFormatWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WeekView\DayTile.xaml.cs">
       <DependentUpon>DayTile.xaml</DependentUpon>
     </Compile>
@@ -89,13 +98,10 @@
       <DependentUpon>DowPlaceholderMatchWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Localization.cs" />
-    <Compile Include="Logic\Compositions\Compositions.cs" />
     <Compile Include="CollectionEditor\Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\CompositionConfigDictionary.cs" />
-    <Compile Include="Logic\Compositions\Compositions.Fields.cs" />
-    <Compile Include="Logic\Compositions\Compositions.UINames.cs" />
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
     <Compile Include="RuleEditor\IParameterable.cs" />
     <Compile Include="Logic\PhotoshopDocumentExtension.cs" />
@@ -126,8 +132,8 @@
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\ICompositionEditor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StackOkWindow.xaml.cs">
-      <DependentUpon>StackOkWindow.xaml</DependentUpon>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\ParametersInputWindow.xaml.cs">
+      <DependentUpon>ParametersInputWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml.cs">
       <DependentUpon>StringChoiceControl.xaml</DependentUpon>
@@ -142,9 +148,7 @@
     <Compile Include="Views\WeekView\Logic\WeekData.cs" />
     <Compile Include="Views\WeekView\Logic\WeekTime.cs" />
     <Compile Include="Views\WeekView\RenderCommand.cs" />
-    <Compile Include="Views\WeekView\WeekConfigEditor.xaml.cs">
-      <DependentUpon>WeekConfigEditor.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\WeekView\WeekConfigEditor.cs" />
     <Compile Include="Views\WeekView\WeekViewWindow.xaml.cs">
       <DependentUpon>WeekViewWindow.xaml</DependentUpon>
     </Compile>
@@ -164,6 +168,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ImageSelectorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WeekView\DateFormatWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -211,7 +219,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StackOkWindow.xaml">
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\ParametersInputWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -224,10 +232,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WeekView\WeekConfigEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -262,6 +266,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Compile Include="Logic\PhotoshopDocumentExtension.Layers.cs" />
+    <Compile Include="Logic\PhotoshopDocumentExtenson.Layersets.cs" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

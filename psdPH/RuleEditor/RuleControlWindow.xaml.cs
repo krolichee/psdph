@@ -37,6 +37,7 @@ namespace psdPH.RuleEditor
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = true;
             _result = _rc.GetResultRule();
             Close();
         }

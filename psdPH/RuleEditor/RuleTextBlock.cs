@@ -17,9 +17,7 @@ namespace psdPH.RuleEditor
             {
                 var config = parameter.Config;
                 parts.Add(config.Desc);
-                object val = config.GetValue();
-                Type type = val.GetType();
-                parts.Add(Convert.ChangeType(val, type).ToString());
+                parts.Add(parameter.ValueToString());
             }
             return string.Join(" ", parts);
 

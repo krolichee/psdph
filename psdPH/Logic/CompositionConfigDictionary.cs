@@ -1,4 +1,5 @@
-﻿using psdPH.TemplateEditor;
+﻿using psdPH.Logic.Compositions;
+using psdPH.TemplateEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,19 @@ namespace psdPH.Logic
 {
     class CompositionConfigDictionary
     {
-        static Dictionary<Type, Type> StoC = new Dictionary<Type, Type>
+        public static readonly Dictionary<Type, Type> StoC = new Dictionary<Type, Type>
         {
-            {typeof(Blob),typeof(BlobEditorConfig) },
-            {typeof(TextLeaf),typeof(TextLeafEditorConfig) },
-            {typeof(PlaceholderLeaf),typeof(PlaceholderEditorConfig) },
-            {typeof(Prototype),typeof(PrototypeEditorConfig) },
-            {typeof(FlagLeaf),typeof(FlagEditorConfig) }
-            //{typeof(PlaceholderLeaf),typeof(PlaceholderLeafEditorConfig) },
+            {typeof(Blob),typeof(BlobEditorCfg) },
+
+            {typeof(FlagLeaf),typeof(FlagLeafEditorCfg) },
+            {typeof(PrototypeLeaf),typeof(PrototypeLeafEditorCfg) },
+            {typeof(PlaceholderLeaf),typeof(PlaceholderEditorCfg) },
+
+            {typeof(ImageLeaf),typeof(ImageLeafEditorCfg) },
+            {typeof(TextLeaf),typeof(TextLeafEditorCfg) },
+            {typeof(LayerLeaf),typeof(LayerLeafEditorCfg) },
+            {typeof(GroupLeaf),typeof(GroupLeafEditorCfg) },
+            
         };
         public static Type GetConfigType(Type type)
         {

@@ -1,4 +1,6 @@
 ﻿using Photoshop;
+using psdPH.Logic.Compositions;
+using psdPH.Logic.Rules;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Xml;
 using System.Xml.Serialization;
 using static psdPH.Logic.Parameter;
@@ -31,23 +34,25 @@ namespace psdPH.Logic
         {
             foreach (var item in Rules)
             {
-                item.apply(doc);
+                item.Apply(doc);
             }
         }
 
         internal void restoreLinks(Composition composition)
         {
+            this.composition = composition;
             foreach (var rule in Rules)
             {
                 rule.restoreComposition(composition);
             }
         }
     }
+    
     [XmlInclude(typeof(ConditionRule))]
-    [XmlInclude(typeof(ChangingRule))]
+
+    [XmlInclude(typeof(LayerRule))]
+
     [XmlInclude(typeof(TextRule))]
-    [XmlInclude(typeof(TextAnchorRule))]
-    [XmlInclude(typeof(TextFontSizeRule))]
     public abstract class Rule : IParameterable
     {
         [XmlIgnore]
@@ -58,11 +63,12 @@ namespace psdPH.Logic
         }
         [XmlIgnore]
         public RuleSet ruleSet;
-        abstract public void apply(Document doc);
+        abstract public void Apply(Document doc);
 
         public virtual void restoreComposition(Composition composition)
         {
             Composition = composition;
+
         }
 
         [XmlIgnore]
@@ -78,193 +84,163 @@ namespace psdPH.Logic
         public override void restoreComposition(Composition composition)
         {
             base.restoreComposition(composition);
-            Condition.Composition = composition;
+            Condition.restoreComposition(composition);
         }
 
         abstract protected void _apply(Document doc);
-        public override void apply(Document doc)
+        virtual protected void _else(Document doc) { }
+        public override void Apply(Document doc)
         {
             if (Condition.IsValid())
                 _apply(doc);
+            else
+                _else(doc);
         }
     };
-
+    public enum ELayerMode
+    {
+        ArtLayer,
+        LayerSet
+    }
     public enum ChangeMode
     {
         Rel,
         Abs
     }
 
-    public abstract class ChangingRule : ConditionRule
+    [XmlInclude(typeof(TranslateRule))]
+    [XmlInclude(typeof(OpacityRule))]
+    [XmlInclude(typeof(VisibleRule))]
+    public abstract class LayerRule : ConditionRule
     {
-        public ChangeMode Mode;
+        public ChangeMode ChangeMode= ChangeMode.Abs;
+        public ELayerMode LayerMode= ELayerMode.ArtLayer;
         public string LayerName;
-
-        protected ChangingRule(Composition composition) : base(composition) { }
+        public LayerComposition layerComposition;
+        [XmlIgnore]
+        public LayerComposition LayerComposition
+        {
+            get => layerComposition; set
+            {
+                if (value is GroupLeaf)
+                    LayerMode = ELayerMode.LayerSet;
+                else
+                    LayerMode = ELayerMode.ArtLayer;
+                layerComposition = value;
+                LayerName = value.LayerName;
+            }
+        }
+        protected Parameter getLayerParameter()
+        {
+            var layerNameConfig = new ParameterConfig(this, nameof(this.LayerComposition), "для слоя");
+            return Parameter.Choose(layerNameConfig, Composition.getChildren<LayerComposition>());
+        }
+        protected dynamic getProcessingLayer(Document doc)
+        {
+            dynamic layer;
+            if (LayerMode == ELayerMode.ArtLayer)
+                layer = doc.GetLayerByName(LayerName);
+            else
+                layer = doc.GetLayerSetByName(LayerName);
+            return layer;
+        }
+        protected LayerRule(Composition composition) : base(composition) { }
     };
     [Serializable]
     [XmlRoot("TranslateRule")]
-    public class TranslateRule : ChangingRule
+    public class TranslateRule : LayerRule
     {
+        public override string ToString() => "положение";
         public Point Shift;
-
         public TranslateRule(Composition composition) : base(composition) { }
 
         public int X { get => (int)Shift.X; set { Shift.X = (double)value; } }
         public int Y { get => (int)Shift.Y; set { Shift.Y = (double)value; } }
         public string LeafLayerName;
         [XmlIgnore]
-        public LayerComposition Leaf
-        {
-            get
-            {
-                return Composition.getChildren<TextLeaf>().First(t => t.LayerName == LeafLayerName);
-            }
-            set
-            {
-                LeafLayerName = value.LayerName;
-            }
-        }
-        [XmlIgnore]
         public override Parameter[] Parameters
         {
             get
             {
                 var result = new List<Parameter>();
-                var modeConfig = new ParameterConfig(this, nameof(this.Mode), "");
+                var modeConfig = new ParameterConfig(this, nameof(this.ChangeMode), "");
                 var xConfig = new ParameterConfig(this, nameof(this.X), "x");
                 var yConfig = new ParameterConfig(this, nameof(this.Y), "y");
-                var layerNameConfig = new ParameterConfig(this, nameof(this.LayerName), "слоя");
-                Composition.getChildren();
-                result.Add(Parameter.Choose(layerNameConfig, Composition.getChildren<LayerComposition>().Select(l => l.LayerName).ToArray()));
+                result.Add(getLayerParameter());
                 result.Add(Parameter.EnumChoose(modeConfig, typeof(ChangeMode)));
                 result.Add(Parameter.IntInput(xConfig));
                 result.Add(Parameter.IntInput(yConfig));
                 return result.ToArray();
             }
         }
-        public override string ToString() => "положение";
-
         protected override void _apply(Document doc)
         {
-            ///TODO
-            doc.GetLayerByName(LayerName);
-            (doc.ActiveLayer as ArtLayer).Translate(Shift.X, Shift.Y);
+            dynamic layer = getProcessingLayer(doc);
+            if (ChangeMode == ChangeMode.Rel)
+                layer.Translate(Shift.X, Shift.Y);
+            else
+                layer.Translate(Shift.X - layer.Bounds[0], Shift.Y - layer.Bounds[1]);
         }
         public TranslateRule() : base(null) { }
     }
-    public class VisibleRule : ChangingRule
+    public class OpacityRule : LayerRule
     {
-        public VisibleRule(Composition composition) : base(composition) { }
+        public override string ToString() => "прозрачность";
 
-        public override Parameter[] Parameters => throw new NotImplementedException();
-        public override void apply(Document doc)
-        {
-            ///TODO
-            base.apply(doc);
-        }
-        protected override void _apply(Document doc)
-        {
-            doc.GetLayerByName(LayerName);
-        }
-    }
-    public abstract class TextRule : ChangingRule
-    {
+        public int Opacity;
+        
 
-        public string TextLeafLayerName;
-        [XmlIgnore]
         public override Parameter[] Parameters
         {
             get
             {
-                TextLeaf[] textLeaves = Composition.getChildren<TextLeaf>();
                 var result = new List<Parameter>();
-                var textLeafConfig = new ParameterConfig(this, nameof(this.TextLeaf), "поля");
-                result.Add(Parameter.Choose(textLeafConfig, textLeaves));
-                return result.ToArray();
-            }
-        }
-
-        protected TextRule(Composition composition) : base(composition) { }
-
-        [XmlIgnore]
-        public TextLeaf TextLeaf
-        {
-            get
-            {
-                return Composition.getChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName);
-            }
-            set
-            {
-                TextLeafLayerName = value.LayerName;
-            }
-        }
-
-    };
-    [Serializable]
-    [XmlRoot("TextFontSizeRule")]
-    public class TextFontSizeRule : TextRule
-    {
-
-        public int FontSize;
-
-        public TextFontSizeRule(Composition composition) : base(composition)
-        {
-        }
-        public TextFontSizeRule() : base(null) { }
-        [XmlIgnore]
-        public override Parameter[] Parameters
-        {
-            get
-            {
-                List<Parameter> result = base.Parameters.ToList();
-                var modeConfig = new ParameterConfig(this, nameof(this.Mode), "");
-                var fontSizeConfig = new ParameterConfig(this, nameof(this.FontSize), "");
-                result.Add(Parameter.EnumChoose(modeConfig, typeof(ChangeMode)));
-                result.Add(Parameter.IntInput(fontSizeConfig));
+                var opacityConfig = new ParameterConfig(this, nameof(this.Opacity), "установить");
+                result.Add(getLayerParameter());
+                result.Add(Parameter.IntInput(opacityConfig, 0, 100));
                 return result.ToArray();
             }
         }
         protected override void _apply(Document doc)
         {
-            if (Mode == ChangeMode.Rel)
-                (doc.ActiveLayer as ArtLayer).TextItem.Size += FontSize;
-            else
-                (doc.ActiveLayer as ArtLayer).TextItem.Size = FontSize;
+            dynamic layer = getProcessingLayer(doc);
+            layer.Opacity = Opacity;
         }
-        public override string ToString() => "размер шрифта";
-    };
-    [Serializable]
-    [XmlRoot("TextAnchorRule")]
-    public class TextAnchorRule : TextRule
-    {
-
-        public PsJustification Justification;
-
-        public TextAnchorRule(Composition composition) : base(composition) { }
-        public TextAnchorRule() : base(null) { }
-        [XmlIgnore]
-        public override Parameter[] Parameters
-        {
-            get
-            {
-                List<Parameter> result = base.Parameters.ToList();
-                var justificationConfig = new ParameterConfig(this, nameof(this.Justification), "установить");
-                result.Add(Parameter.Choose(justificationConfig, new PsJustification[] {
-                    PsJustification.psRight,
-                    PsJustification.psLeft,
-                    PsJustification.psCenter
-                }.Cast<object>().ToArray(), FieldFunctions.EnumWrapperFunctions));
-                return result.ToArray();
-            }
-        }
-        public override string ToString() => "выравнивание шрифта";
-
-        protected override void _apply(Document doc)
-        {
-            (doc.ActiveLayer as ArtLayer).TextItem.Justification = Justification;
-        }
+        public OpacityRule(Composition composition) : base(composition) { }
+        public OpacityRule() : base(null) { }
     }
+
+    public class VisibleRule : LayerRule
+    {
+        public override string ToString() => "видимость";
+        public bool Toggle;
+        
+
+        public override Parameter[] Parameters
+        {
+            get
+            {
+                var result = new List<Parameter>();
+                var opacityConfig = new ParameterConfig(this, nameof(this.Toggle), "установить");
+                result.Add(getLayerParameter());
+                result.Add(Parameter.Check(opacityConfig));
+                return result.ToArray();
+            }
+        }
+        protected override void _else(Document doc)
+        {
+            dynamic layer = getProcessingLayer(doc);
+            layer.Visible = !Toggle;
+        }
+        protected override void _apply(Document doc)
+        {
+            dynamic layer = getProcessingLayer(doc);
+            layer.Visible = Toggle;
+        }
+        public VisibleRule(Composition composition) : base(composition) { }
+        public VisibleRule() : base(null) { }
+    }
+
     public static class UIName
     {
         public static string ToString(object value)

@@ -46,11 +46,15 @@ namespace psdPH
                 ICompositionEditor ce_w = config.Factory.CreateCompositionEditorWindow(_doc, config, _root_composition);
                 if (ce_w == null)
                     return;
-                ce_w.ShowDialog();
+                if (ce_w.ShowDialog() != true)
+                    return;
                 Composition result = ce_w.GetResultComposition();
-                if (result != null)
-                    _root_composition.addChild(result);
+                if (result == null)
+                    return;
+                _root_composition.addChild(result);
                 _editor.refreshSctuctureStack();
+
+
             }
             private void EditRuleExecuteCommand(object parameter)
             {

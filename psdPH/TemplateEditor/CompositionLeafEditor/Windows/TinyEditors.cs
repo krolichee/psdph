@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic;
+using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         public abstract class TinyEditor<T> : ICompositionEditor where T : Composition, new()
         {
             protected T result;
-            protected ParametersWindow p_w;
+            protected ParametersInputWindow p_w;
             public Composition GetResultComposition()
             {
                 return p_w.Applied ? result: null;
@@ -39,7 +40,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             {
                 result.Name = "";
                 var par_config = new ParameterConfig(result, nameof(result.Name), "Имя флага");
-                p_w = new ParametersWindow(new[] { Parameter.StringInput(par_config) });
+                p_w = new ParametersInputWindow(new[] { Parameter.StringInput(par_config) });
             }
             
         }
@@ -48,9 +49,9 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             public PlaceholderLeafEditor(Document doc, CompositionEditorConfig config,Composition root) :base(config){
                 var prototype_pconfig = new ParameterConfig(result, nameof(result.PrototypeLayerName), "Прототип");
                 var rel_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой вставки");
-                var prototype_parameter = Parameter.Choose(prototype_pconfig,root.getChildren<Prototype>().Select(p=>p.LayerName).ToArray());
+                var prototype_parameter = Parameter.Choose(prototype_pconfig,root.getChildren<PrototypeLeaf>().Select(p=>p.LayerName).ToArray());
                 var rel_parameter = Parameter.Choose(rel_pconfig, doc.GetLayersNames());
-                p_w = new ParametersWindow(new[] { prototype_parameter, rel_parameter });
+                p_w = new ParametersInputWindow(new[] { prototype_parameter, rel_parameter });
             }
         }
         public class TextLeafEditor : TinyEditor<TextLeaf>
@@ -60,10 +61,10 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
                 result.LayerName = "";
                 var ln_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой");
                 string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(config.Kinds));
-                p_w = new ParametersWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
+                p_w = new ParametersInputWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
             }
         }
-        public class PrototypeEditor : TinyEditor<Prototype>
+        public class PrototypeEditor : TinyEditor<PrototypeLeaf>
         {
             public PrototypeEditor(Document doc, CompositionEditorConfig config,Composition root) : base(config)
             {
@@ -74,8 +75,38 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
                 string[] rel_layers_names = PhotoshopDocumentExtension.GetLayersNames(
                     doc.GetLayersByKinds(config.Kinds));
                 var rel_pconfig = new ParameterConfig(result, nameof(result.RelativeLayerName), "Опорный слой");
-                var rel_parameter = Parameter.Choose(bn_pconfig, rel_layers_names);
-                p_w = new ParametersWindow(new[] { bn_parameter, rel_parameter });
+                var rel_parameter = Parameter.Choose(rel_pconfig, rel_layers_names);
+                p_w = new ParametersInputWindow(new[] { bn_parameter, rel_parameter });
+            }
+        }
+        public class ImageLeafEditor : TinyEditor<ImageLeaf>
+        {
+            public ImageLeafEditor(Document doc, CompositionEditorConfig config) : base(config)
+            {
+                result.LayerName = "";
+                var ln_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой");
+                string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(config.Kinds));
+                p_w = new ParametersInputWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
+            }
+        }
+        public class LayerLeafEditor : TinyEditor<LayerLeaf>
+        {
+            public LayerLeafEditor(Document doc, CompositionEditorConfig config) : base(config)
+            {
+                result.LayerName = "";
+                var ln_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой");
+                string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(config.Kinds));
+                p_w = new ParametersInputWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
+            }
+        }
+        public class GroupLeafEditor : TinyEditor<GroupLeaf>
+        {
+            public GroupLeafEditor(Document doc, CompositionEditorConfig config) : base(config)
+            {
+                result.LayerName = "";
+                var ln_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Группа");
+                string[] layers_names = doc.GetLayerSetsNames(doc.GetLayerSets());
+                p_w = new ParametersInputWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
             }
         }
     }

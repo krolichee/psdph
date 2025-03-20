@@ -20,7 +20,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
     /// <summary>
     /// Логика взаимодействия для StackOkWindow.xaml
     /// </summary>
-    public partial class ParametersWindow : Window
+    public partial class ParametersInputWindow : Window
     {
         bool applied = false;
         public bool Applied => applied;
@@ -34,7 +34,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             }
             get => parameters;
         }
-        public ParametersWindow(Parameter[] parameters,string title="")
+        public ParametersInputWindow(Parameter[] parameters,string title = "")
         {
             InitializeComponent();
             Title = title;
@@ -48,21 +48,10 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             }
             MainGrid.Children.Insert(0, stack);
         }
-        static int GetGlobalWeekNumber(DateTime date)
-        {
-            DateTime epoch = new DateTime(1970, 1, 1); // Начало отсчета
-            TimeSpan diff = date - epoch;
-            return (int)(diff.TotalDays / 7) + 1; // Номер недели с 1 января 1970 года
-        }
-        static int GetWeekOfYear(DateTime date)
-        {
-            CultureInfo culture = CultureInfo.CurrentCulture;
-            System.Globalization.Calendar calendar = culture.Calendar;
-            return calendar.GetWeekOfYear(date, culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek);
-        }
         private void Button_Click(object sender, RoutedEventArgs e)
-
         {
+            DialogResult = true;
+            applied = true;
             foreach (var par in parameters)
                 par.Accept();
             applied = true;

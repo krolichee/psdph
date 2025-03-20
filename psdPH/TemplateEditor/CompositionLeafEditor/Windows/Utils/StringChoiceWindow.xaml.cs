@@ -41,8 +41,11 @@ namespace psdPH
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = true;
             _result = scc.getResultString();
             Close();
         }
+
+        
     }
 }

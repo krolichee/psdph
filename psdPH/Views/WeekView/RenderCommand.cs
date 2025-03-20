@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static psdPH.BlobEditorWindow;
 using System.Windows.Input;
+using psdPH.Logic.Compositions;
 
 namespace psdPH.Views.WeekView
 {

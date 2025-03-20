@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic;
+using psdPH.Logic.Compositions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace psdPH
     /// </summary>
     public partial class DayTile : UserControl
     {
+        Composition[] exclude = new Composition[0];
         Blob blob;
         private WeekConfig weekGaleryConfig;
         public WeekConfig WeekGaleryConfig
@@ -30,7 +32,6 @@ namespace psdPH
             set
             {
                 weekGaleryConfig = value;
-               
             }
         }
 
@@ -48,18 +49,26 @@ namespace psdPH
         {
             previewTextBlock.Text = blob.getChildren<TextLeaf>().First(t => t.LayerName == WeekGaleryConfig.TilePreviewTextLeafName).Text;
         }
-        public DayTile(WeekConfig weekGaleryConfig, DayOfWeek key,Blob blob)
+        Composition[] getExcludes(WeekConfig weekConfig, Blob blob)
+        {
+            return new Composition[] { 
+                weekConfig.GetDowTextLeaf(blob),
+                weekConfig.GetDateTextLeaf(blob),
+            };
+
+        }
+        public DayTile(WeekConfig weekConfig, DayOfWeek key,Blob blob)
         {
             InitializeComponent();
-            this.WeekGaleryConfig = weekGaleryConfig;
+            this.WeekGaleryConfig = weekConfig;
             this.Key = key;
             this.blob = blob;
-
+            exclude = getExcludes(weekConfig,blob);
             refreshPreview();
         }
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            new DataInputWindow(blob).ShowDialog();
+            new DataInputWindow(blob,exclude).ShowDialog();
             refreshPreview();
         }
     }

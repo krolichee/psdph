@@ -1,9 +1,11 @@
-﻿using System;
+﻿using psdPH.Logic.Compositions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic.Rules
@@ -11,20 +13,35 @@ namespace psdPH.Logic.Rules
     [XmlInclude(typeof(TextCondition))]
     [XmlInclude(typeof(MaxRowCountCondition))]
     [XmlInclude(typeof(MaxRowLenCondition))]
+    [XmlInclude(typeof(FlagCondition))]
     public abstract class Condition : IParameterable
     {
         [XmlIgnore]
         public Composition Composition;
         [XmlIgnore]
         public abstract Parameter[] Parameters { get; }
-
         public abstract bool IsValid();
+
+        public void restoreComposition(Composition composition)
+        {
+            if (this is TextCondition)
+                ;
+            Composition = composition;
+        }
+
+        public Condition(Composition composition)
+        {
+            Composition = composition;
+        }
     }
     public abstract class TextCondition : Condition
     {
         
         //public ConditionRule rule;
         public string TextLeafLayerName;
+
+        protected TextCondition(Composition composition) : base(composition){}
+
         [XmlIgnore]
         public TextLeaf TextLeaf
         {
@@ -41,17 +58,15 @@ namespace psdPH.Logic.Rules
         {
             get
             {
-                TextLeaf[] textLeaves = Composition.getChildren<TextLeaf>();
+                
                 var result = new List<Parameter>();
                 var textLeafConfig = new ParameterConfig(this, nameof(this.TextLeaf), "поля");
+                TextLeaf[] textLeaves = Composition.getChildren<TextLeaf>();
                 result.Add(Parameter.Choose(textLeafConfig, textLeaves));
                 return result.ToArray();
             }
         }
-        public TextCondition(Composition composition)
-        {
-            Composition = composition;
-        }
+        
     }
 
     public class MaxRowCountCondition : TextCondition
@@ -104,5 +119,44 @@ namespace psdPH.Logic.Rules
         {
             return TextLeaf.Text.Split(@"\r".ToCharArray()).Select(s => s.Length).Max() > RowLength;
         }
+    }
+    public class FlagCondition : Condition
+    {
+        public override string ToString() => "установлен флаг";
+        public string FlagName;
+
+
+        
+
+        public override Parameter[] Parameters
+        {
+            get
+            {
+                List<Parameter> result = new List<Parameter>();
+                FlagLeaf[] flagLeaves = Composition.getChildren<FlagLeaf>();
+                var flagConfig = new ParameterConfig(this, nameof(this.FlagLeaf), "");
+                result.Add(Parameter.Choose(flagConfig, flagLeaves));
+                return result.ToArray();
+            }
+        }
+
+        [XmlIgnore]
+        public FlagLeaf FlagLeaf
+        {
+            get
+            {
+                return Composition.getChildren<FlagLeaf>().First(t => t.Name == FlagName);
+            }
+            set
+            {
+                FlagName = value.Name;
+            }
+        }
+        public override bool IsValid()
+        {
+            return FlagLeaf.Toggle;
+        }
+        public FlagCondition(Composition composition) : base(composition) { }
+        public FlagCondition() : base(null) { }
     }
 }
