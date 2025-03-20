@@ -83,9 +83,14 @@ namespace psdPH
         {
             var psApp = PhotoshopWrapper.GetPhotoshopApplication();
             var doc = psApp.ActiveDocument;
-            ArtLayer layer = doc.ActiveLayer;
-            layer.TextItem.Position= new object[] { 100, 40 };
-            layer.TextItem.Justification = PsJustification.psCenter;
+            Console.WriteLine((doc.ActiveLayer as ArtLayer).GetBoundsSize());
+            doc.FitTextLayer("textLayer", "Пн");
+            //ArtLayer layer = doc.ActiveLayer;
+            //layer.TextItem.Width = 100;
+            //Console.WriteLine(layer.TextItem.Width);
+            //layer.TextItem.Height = 100;
+            //Console.WriteLine(layer.TextItem.Height);
+            //layer.TextItem.Size -= 10;
 
             InitializeComponent();
             LoadFoldersIntoMenu();

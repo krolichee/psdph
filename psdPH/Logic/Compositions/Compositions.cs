@@ -25,11 +25,8 @@ namespace psdPH
     [XmlInclude(typeof(PrototypeLeaf))]
     [XmlInclude(typeof(PlaceholderLeaf))]
     
-    [XmlInclude(typeof(ImageLeaf))]
-    [XmlInclude(typeof(TextLeaf))]
-
-    [XmlInclude(typeof(LayerLeaf))]
-    [XmlInclude(typeof(GroupLeaf))]
+    [XmlInclude(typeof(LayerComposition))]
+    
 
     [XmlInclude(typeof(Rule))]
     public abstract class Composition : IParameterable
@@ -120,9 +117,9 @@ namespace psdPH
         public override string UIName => "Прототип";
         public string RelativeLayerName;
         public string LayerName;
-        public Point GetRelativeLayerCompensationShift(Document doc)
+        public Vector GetRelativeLayerAlightmentVector(Document doc)
         {
-            return doc.GetRelativeLayerShift(RelativeLayerName,LayerName);
+            return doc.GetAlightmentVector(RelativeLayerName,LayerName);
         }
         public override Parameter[] Parameters => new Parameter[0];
         public override string ObjName => Blob.LayerName;
@@ -187,15 +184,17 @@ namespace psdPH
         internal void ReplaceWithFiller(Document doc, Blob blob)
         {
             derivedLayerName = $"{PrototypeLayerName}_{LayerName}";
-            ArtLayer ph_layer = doc.GetLayerByName(LayerName);
-            ArtLayer new_layer = doc.CloneSmartLayer(PrototypeLayerName);
-            var prototypeCShift = Prototype.GetRelativeLayerCompensationShift(doc);
-            var cShift = doc.GetRelativeLayerShift(ph_layer, new_layer);
-            new_layer.Translate(cShift.X,cShift.Y);
-            new_layer.Translate(prototypeCShift.X, prototypeCShift.Y);
+            ArtLayer phLayer = doc.GetLayerByName(LayerName);
+            ArtLayer newLayer = doc.CloneSmartLayer(PrototypeLayerName);
+            var prototypeAVector = Prototype.GetRelativeLayerAlightmentVector(doc);
+
+            var phAVector = doc.GetAlightmentVector(phLayer, newLayer);
+
+            newLayer.Translate(phAVector);
+            newLayer.Translate(prototypeAVector);
             //ph_layer.Delete();
-            ph_layer.Opacity = 0;
-            new_layer.Name = blob.LayerName = derivedLayerName;
+            phLayer.Opacity = 0;
+            newLayer.Name = blob.LayerName = derivedLayerName;
             Parent.addChild(blob);
             Parent.removeChild(this);
         }

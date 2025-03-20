@@ -1,14 +1,26 @@
 ﻿using Photoshop;
+using psdPH.Logic.Rules;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Animation;
+using System.Windows.Navigation;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic.Compositions
 {
+    [XmlInclude(typeof(ImageLeaf))]
+    [XmlInclude(typeof(TextLeaf))]
+
+    [XmlInclude(typeof(LayerLeaf))]
+    [XmlInclude(typeof(GroupLeaf))]
+
+    [XmlInclude(typeof(TextAreaLeaf))]
+
     public abstract class LayerComposition : Composition
     {
         public string LayerName;
@@ -63,7 +75,7 @@ namespace psdPH.Logic.Compositions
             }
         }
 
-
+        public PsJustification Justification { get; set; }
 
         override public void Apply(Document doc)
         {
@@ -112,6 +124,48 @@ namespace psdPH.Logic.Compositions
         public GroupLeaf() { }
 
         public override void Apply(Document doc) { }
+    }
+    [Serializable]
+    [XmlRoot("TextArea")]
+    public class TextAreaLeaf : LayerComposition
+    {
+        [XmlIgnore]
+        public TextLeaf TextLeaf
+        {
+            get => Parent.getChildren<TextLeaf>().First(p => p.LayerName == TextLeafLayername); 
+            set => TextLeafLayername = value.LayerName;
+        }
+        public override string UIName => "Текст.поле";
+        public string TextLeafLayername;
+
+        public override Parameter[] Parameters => new Parameter[0];
+
+        Vector GetAlightmentVector(Rect targetRect,Rect dynamicRect)
+        {
+            targetRect
+        }
+        public override void Apply(Document doc)
+        {
+            var textLayer = doc.GetLayerByName(TextLeafLayername);
+            var areaLayer = doc.GetLayerByName(LayerName);
+
+
+            var initialAVector = doc.GetAlightmentVector(areaLayer,textLayer);
+
+            textLayer.Translate(initialAVector);
+            switch (TextLeaf.Justification)
+            {
+                case PsJustification.psCenter:
+                    GetAlightmentVector()
+            }
+
+
+
+            PhotoshopDocumentExtension.FitTextLayer(textLayer,areaLayer);
+
+
+            throw new NotImplementedException();
+        }
     }
 
 }

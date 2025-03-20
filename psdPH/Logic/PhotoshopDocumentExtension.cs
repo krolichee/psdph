@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using Application = Photoshop.Application;
 using psdPH.Logic;
 using psdPH.Logic.Rules;
+using System.Windows.Media;
 
 namespace psdPH.Logic
 {
@@ -20,24 +21,108 @@ namespace psdPH.Logic
     }
     public static partial class PhotoshopDocumentExtension
     {
+        public static void AlignLayer(this Document doc, ArtLayer targetLayer, ArtLayer dynamicLayer)
+        {
+            targetLayer.Translate(doc.GetAlightmentVector(targetLayer, dynamicLayer));
+        }
+        public static void FitTextLayer(ArtLayer textLayer, ArtLayer areaLayer)
+        {
+            bool isFits(Size fittable, Size area) => fittable.Width <= area.Width && fittable.Height <= area.Height;
+            bool isFitsWithToler(Size fittable, Size area, int toler,out bool fits)
+            {
+                fits = isFits(fittable, area);
+                double[] diffs = new double[] { area.Width - fittable.Width, area.Height - fittable.Height };
+                return fits && (diffs.Min() <= toler) && isFits(fittable, area);
+            }
+
+            var areaSize = areaLayer.GetBoundsSize();
+            double fontSizeShift = textLayer.TextItem.Size/2;
+
+            bool _fits;
+
+            while (!isFitsWithToler(textLayer.GetBoundsSize(), areaSize,3,out _fits))
+            {
+                if (_fits)
+                    textLayer.TextItem.Size += fontSizeShift;
+                else
+                    textLayer.TextItem.Size -= fontSizeShift;
+                fontSizeShift /= 2;
+            }
+        }
+        public static void FitTextLayer(this Document doc, string textLayerName, string areaLayerName)
+        {
+            FitTextLayer(
+                doc.GetLayerByName(textLayerName),
+                doc.GetLayerByName(areaLayerName)
+                );
+        }
         public static void Rollback(this Document doc)
         {
             var initialState = doc.HistoryStates[1];
             doc.ActiveHistoryState = initialState;
         }
         const LayerListing DefaultListing = LayerListing.Recursive;
-        public static Point GetRelativeLayerShift(this Document doc, ArtLayer currentLayer, ArtLayer relativeLayer)
+        public class Alignment
         {
-            return new Point(
-                currentLayer.Bounds[0] - relativeLayer.Bounds[0],
-                currentLayer.Bounds[1] - relativeLayer.Bounds[1]
+            public override int GetHashCode()=> (int)H*4 + (int)V;
+            public HorizontalAlignment H;
+            public VerticalAlignment V;
+            public Alignment(HorizontalAlignment horizontal,VerticalAlignment vertical)
+            {
+                H = horizontal;
+                V = vertical;
+            }
+        }
+        Vector GetAlightmentVector(Rect targetRect, Rect dynamicRect)
+        {
+            
+        }
+
+        public static Vector GetAlightmentVector(this Document doc, ArtLayer targetLayer, ArtLayer dynamicLayer,Alignment alignment=null)
+        {
+            if (alignment == null)
+                alignment = new Alignment(HorizontalAlignment.Left, VerticalAlignment.Top);
+            int x = 0;
+            switch (alignment.H)
+            {
+                case HorizontalAlignment.Left:
+                    x = targetLayer.Bounds[0] - dynamicLayer.Bounds[0];
+                    break;
+                case HorizontalAlignment.Right:
+                    x = targetLayer.Bounds[2] - dynamicLayer.Bounds[2];
+                    break;
+                case HorizontalAlignment.Center:
+                case HorizontalAlignment.Stretch:
+                    double t_w = targetLayer.GetBoundsSize().Width;
+                    double d_w = dynamicLayer.GetBoundsSize().Width;
+                    x = (targetLayer.Bounds[0]+t_w) - (dynamicLayer.Bounds[0]+d_w);
+                    break;
+            }
+            switch (alignment.V)
+            {
+                case VerticalAlignment.Top:
+                    x = targetLayer.Bounds[1] - dynamicLayer.Bounds[1];
+                    break;
+                case VerticalAlignment.Bottom:
+                    x = targetLayer.Bounds[3] - dynamicLayer.Bounds[3];
+                    break;
+                case VerticalAlignment.Center:
+                case VerticalAlignment.Stretch:
+                    double t_h = targetLayer.GetBoundsSize().Height;
+                    double d_h = dynamicLayer.GetBoundsSize().Height;
+                    x = (targetLayer.Bounds[1]+t_h) - (dynamicLayer.Bounds[1]+d_h);
+                    break;
+            }
+            return new Vector(
+                targetLayer.Bounds[0] - dynamicLayer.Bounds[0],
+                targetLayer.Bounds[1] - dynamicLayer.Bounds[1]
                 );
         }
-        public static Point GetRelativeLayerShift(this Document doc, string currentLayerName, string relativeLayerName)
+        public static Vector GetAlightmentVector(this Document doc, string targetLayerName, string dynamicLayerName)
         {
-            ArtLayer currentLayer = doc.GetLayerByName(currentLayerName);
-            ArtLayer relativeLayer = doc.GetLayerByName(relativeLayerName);
-            return doc.GetRelativeLayerShift(currentLayer, relativeLayer);
+            ArtLayer targetLayer = doc.GetLayerByName(targetLayerName);
+            ArtLayer dynamicLayer = doc.GetLayerByName(dynamicLayerName);
+            return doc.GetAlightmentVector(targetLayer, dynamicLayer);
         }
         public static ArtLayer CloneSmartLayer(this Document doc, string layername)
         {
