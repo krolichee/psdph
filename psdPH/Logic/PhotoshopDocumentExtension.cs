@@ -11,6 +11,7 @@ using Application = Photoshop.Application;
 using psdPH.Logic;
 using psdPH.Logic.Rules;
 using System.Windows.Media;
+using static psdPH.Logic.PhotoshopDocumentExtension;
 
 namespace psdPH.Logic
 {
@@ -25,7 +26,7 @@ namespace psdPH.Logic
         {
             targetLayer.Translate(doc.GetAlightmentVector(targetLayer, dynamicLayer));
         }
-        public static void FitTextLayer(ArtLayer textLayer, ArtLayer areaLayer)
+        public static void FitTextLayer(this Document doc, ArtLayer textLayer, ArtLayer areaLayer)
         {
             bool isFits(Size fittable, Size area) => fittable.Width <= area.Width && fittable.Height <= area.Height;
             bool isFitsWithToler(Size fittable, Size area, int toler,out bool fits)
@@ -51,7 +52,7 @@ namespace psdPH.Logic
         }
         public static void FitTextLayer(this Document doc, string textLayerName, string areaLayerName)
         {
-            FitTextLayer(
+            doc.FitTextLayer(
                 doc.GetLayerByName(textLayerName),
                 doc.GetLayerByName(areaLayerName)
                 );
@@ -73,50 +74,48 @@ namespace psdPH.Logic
                 V = vertical;
             }
         }
-        Vector GetAlightmentVector(Rect targetRect, Rect dynamicRect)
-        {
-            
-        }
-
-        public static Vector GetAlightmentVector(this Document doc, ArtLayer targetLayer, ArtLayer dynamicLayer,Alignment alignment=null)
+        public static Vector GetAlightmentVector(Rect targetRect, Rect dynamicRect, Alignment alignment = null)
         {
             if (alignment == null)
                 alignment = new Alignment(HorizontalAlignment.Left, VerticalAlignment.Top);
-            int x = 0;
+            double x = 0;
+            double y = 0;
             switch (alignment.H)
             {
                 case HorizontalAlignment.Left:
-                    x = targetLayer.Bounds[0] - dynamicLayer.Bounds[0];
+                    x = targetRect.Left - dynamicRect.Left;
                     break;
                 case HorizontalAlignment.Right:
-                    x = targetLayer.Bounds[2] - dynamicLayer.Bounds[2];
+                    x = targetRect.Right - dynamicRect.Right;
                     break;
                 case HorizontalAlignment.Center:
                 case HorizontalAlignment.Stretch:
-                    double t_w = targetLayer.GetBoundsSize().Width;
-                    double d_w = dynamicLayer.GetBoundsSize().Width;
-                    x = (targetLayer.Bounds[0]+t_w) - (dynamicLayer.Bounds[0]+d_w);
+                    double t_w = targetRect.Width;
+                    double d_w = dynamicRect.Width;
+                    x = (targetRect.Left + t_w) - (dynamicRect.Left + d_w);
                     break;
             }
             switch (alignment.V)
             {
                 case VerticalAlignment.Top:
-                    x = targetLayer.Bounds[1] - dynamicLayer.Bounds[1];
+                    y = targetRect.Top - dynamicRect.Top;
                     break;
                 case VerticalAlignment.Bottom:
-                    x = targetLayer.Bounds[3] - dynamicLayer.Bounds[3];
+                    y = targetRect.Bottom - dynamicRect.Bottom;
                     break;
                 case VerticalAlignment.Center:
                 case VerticalAlignment.Stretch:
-                    double t_h = targetLayer.GetBoundsSize().Height;
-                    double d_h = dynamicLayer.GetBoundsSize().Height;
-                    x = (targetLayer.Bounds[1]+t_h) - (dynamicLayer.Bounds[1]+d_h);
+                    double t_h = targetRect.Height;
+                    double d_h = dynamicRect.Height;
+                    y = (targetRect.Top + t_h) - (dynamicRect.Top + d_h);
                     break;
             }
-            return new Vector(
-                targetLayer.Bounds[0] - dynamicLayer.Bounds[0],
-                targetLayer.Bounds[1] - dynamicLayer.Bounds[1]
-                );
+            return new Vector(x, y);
+        }
+
+        public static Vector GetAlightmentVector(this Document doc, ArtLayer targetLayer, ArtLayer dynamicLayer,Alignment alignment=null)
+        {
+            return GetAlightmentVector(targetLayer.GetBoundRect(), dynamicLayer.GetBoundRect(),alignment);
         }
         public static Vector GetAlightmentVector(this Document doc, string targetLayerName, string dynamicLayerName)
         {

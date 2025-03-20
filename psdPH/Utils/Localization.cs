@@ -27,7 +27,8 @@ namespace psdPH
                 {typeof(ImageLeaf), "Изображение" },
                 {typeof(TextLeaf), "Текст" },
                 {typeof(LayerLeaf), "Слой" },
-                {typeof(GroupLeaf), "Группа" }
+                {typeof(GroupLeaf), "Группа" },
+                {typeof(TextAreaLeaf),"Поле для текста" }
 
         };
         public static string GetLocalizedDescription(Type type)
@@ -36,7 +37,6 @@ namespace psdPH
             {
                 return description;
             }
-            // Если локализация не найдена, возвращаем строковое представление значения
             return type.ToString();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using System;
 using System.Collections.Generic;
@@ -73,11 +74,19 @@ namespace psdPH.TemplateEditor
         {
             return new LayerLeafEditor(doc, config);
         }
-    }public class GroupLeafEditorWindowFactory : ICompositionEditorWindowFactory
+    }
+    public class GroupLeafEditorWindowFactory : ICompositionEditorWindowFactory
     {
         public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config, Composition root)
         {
             return new GroupLeafEditor(doc, config);
+        }
+    }
+    public class TextAreaEditorWindowFactory : ICompositionEditorWindowFactory
+    {
+        public ICompositionEditor CreateCompositionEditorWindow(Document doc, CompositionEditorConfig config, Composition root)
+        {
+            return new TextAreaLeafEditor(doc, config,root as Blob);
         }
     }
 
@@ -131,11 +140,18 @@ namespace psdPH.TemplateEditor
     {
         public override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psNormalLayer, PsLayerKind.psSolidFillLayer, PsLayerKind.psSmartObjectLayer};
         public override ICompositionEditorWindowFactory Factory => new LayerLeafEditorWindowFactory();
-    }public class GroupLeafEditorCfg : CompositionEditorConfig
+    }
+    public class GroupLeafEditorCfg : CompositionEditorConfig
     {
         public override PsLayerKind[] Kinds => new PsLayerKind[] { };
         public override ICompositionEditorWindowFactory Factory => new GroupLeafEditorWindowFactory();
     }
+    public class TextAreaLeafEditorCfg : CompositionEditorConfig
+    {
+        public override PsLayerKind[] Kinds => new PsLayerKind[] { };
+        public override ICompositionEditorWindowFactory Factory => new TextAreaEditorWindowFactory();
+    }
+    
 
 
 }

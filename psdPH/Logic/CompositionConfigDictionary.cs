@@ -22,7 +22,8 @@ namespace psdPH.Logic
             {typeof(TextLeaf),typeof(TextLeafEditorCfg) },
             {typeof(LayerLeaf),typeof(LayerLeafEditorCfg) },
             {typeof(GroupLeaf),typeof(GroupLeafEditorCfg) },
-            
+            {typeof(TextAreaLeaf),typeof(TextAreaLeafEditorCfg) },
+
         };
         public static Type GetConfigType(Type type)
         {

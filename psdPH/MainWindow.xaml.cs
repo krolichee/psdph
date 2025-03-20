@@ -35,6 +35,7 @@ using PhotoshopTypeLibrary;
 using psdPH.Logic.Compositions;
 using System.IO.Pipes;
 using psdPH.Views.WeekView;
+using psdPH.Utils;
 
 
 namespace psdPH
@@ -81,17 +82,18 @@ namespace psdPH
         }
         public MainWindow()
         {
-            var psApp = PhotoshopWrapper.GetPhotoshopApplication();
-            var doc = psApp.ActiveDocument;
-            Console.WriteLine((doc.ActiveLayer as ArtLayer).GetBoundsSize());
-            doc.FitTextLayer("textLayer", "Пн");
+           // Получаем типы из сборки
+            //var psApp = PhotoshopWrapper.GetPhotoshopApplication();
+            //var doc = psApp.ActiveDocument;
+            //Console.WriteLine((doc.ActiveLayer as ArtLayer).GetBoundsSize());
+            //doc.FitTextLayer("textLayer", "Пн");
             //ArtLayer layer = doc.ActiveLayer;
             //layer.TextItem.Width = 100;
             //Console.WriteLine(layer.TextItem.Width);
             //layer.TextItem.Height = 100;
             //Console.WriteLine(layer.TextItem.Height);
             //layer.TextItem.Size -= 10;
-
+            InitializeMiscellanious();
             InitializeComponent();
             LoadFoldersIntoMenu();
         }
@@ -99,55 +101,24 @@ namespace psdPH
         {
             cropper.ShowDialog();
         }
-
-        private void CalendarDayButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void LoadFoldersIntoMenu()
         {
-            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "Projects"); // Укажите путь к директории
+            string directoryPath = Directories.ProjectsDirectory; // Укажите путь к директории
 
-            try
-            {
-                if (Directory.Exists(directoryPath))
+                string[] folders = Directory.GetDirectories(directoryPath);
+                foreach (string folder in folders)
                 {
-                    // Получаем все подпапки в указанной директории
-                    string[] folders = Directory.GetDirectories(directoryPath);
-
-                    foreach (string folder in folders)
+                    MenuItem folderMenuItem = new MenuItem
                     {
-                        // Создаем новый MenuItem для каждой папки
-                        MenuItem folderMenuItem = new MenuItem
-                        {
-                            Header = Path.GetFileName(folder)
-                        };
-
-                        // Добавляем обработчик события для клика по элементу меню
-                        folderMenuItem.Click += FolderMenuItem_Click;
-
-                        // Добавляем MenuItem в главное меню
-                        openMenuItem.Items.Add(folderMenuItem);
-                    }
+                        Header = Path.GetFileName(folder)
+                    };
+                    folderMenuItem.Click += FolderMenuItem_Click;
+                    openMenuItem.Items.Add(folderMenuItem);
                 }
-                else
-                {
-                    MessageBox.Show("Указанная директория не существует.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при загрузке папок: {ex.Message}");
-            }
-        }
 
-        private void openMenuItem_Click(object sender, RoutedEventArgs e)
-        {
         }
         private void FolderMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            // Обработка клика по элементу меню
             MenuItem clickedMenuItem = sender as MenuItem;
             if (clickedMenuItem != null)
             {
@@ -160,37 +131,7 @@ namespace psdPH
         {
             NewProject();
         }
-        private void saveBlob(Blob blob)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(Composition));
-            string xmlFilePath = Path.Combine(Directories.ProjectDirectory, "template.xml");
-            FileStream writeFileStream = new FileStream(xmlFilePath, FileMode.Create);
-            serializer.Serialize(writeFileStream, blob);
-            writeFileStream.Close();
-        }
-        private Blob openMainBlob()
-        {
-            Blob blob;
-            XmlSerializer serializer = new XmlSerializer(typeof(Composition));
-            string xmlFilePath = Path.Combine(Directories.ProjectDirectory, "template.xml");
-            string psdFilePath = Path.Combine(Directories.ProjectDirectory, "template.psd");
-            if (File.Exists(xmlFilePath))
-            {
-                //if (rootNode.Name != CompositionXmlDictionary.GetXmlName(typeof(Blob)))
-                //    throw new Exception();
-
-
-                FileStream readFileStream = new FileStream(xmlFilePath, FileMode.Open);
-
-                blob = serializer.Deserialize(readFileStream) as Blob;
-                readFileStream.Close();
-                blob.Restore();
-            }
-            else
-                blob = Blob.PathBlob(psdFilePath);
-            return blob;
-        }
-
+        
         private void templateMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Blob blob = openMainBlob();
@@ -199,28 +140,7 @@ namespace psdPH
             editor.ShowDialog();
             saveBlob(blob);
         }
-        T openXml<T>(string path)
-        {
-            T result = default(T);
-            FileStream fileStream;
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
-            if (File.Exists(path))
-            {
-                fileStream = new FileStream(path, FileMode.Open);
-                result = (T)serializer.Deserialize(fileStream);
-                fileStream.Close();
-            }
-            return result;
-        }
-
-        void saveXml<T>(string path, T obj)
-        {
-            FileStream fileStream;
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
-            fileStream = new FileStream(path, FileMode.Create);
-            serializer.Serialize(fileStream, obj);
-            fileStream.Close();
-        }
+        
 
         private void weekkViewMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -229,10 +149,10 @@ namespace psdPH
             WeekListData weeksListData = null;
 
             string configPath = Path.Combine(Directories.ViewsDirectory, "WeekView", "config.xml");
-            weekConfig = openXml<WeekConfig>(configPath);
+            weekConfig = DiskOperations.openXml<WeekConfig>(configPath);
 
             string dataPath = Path.Combine(Directories.ViewsDirectory, "WeekView", "data.xml");
-            weeksListData = openXml<WeekListData>(dataPath);
+            weeksListData = DiskOperations.openXml<WeekListData>(dataPath);
             if (weeksListData != null)
             {
                 weeksListData.Restore();
@@ -240,15 +160,13 @@ namespace psdPH
             }
 
             var wv_w = new WeekViewWindow(blob, weekConfig, weeksListData);
-            if (wv_w.ShowDialog()==true)
+            if (wv_w.ShowDialog() == true)
             {
                 weekConfig = wv_w.WeekConfig;
                 weeksListData = wv_w.WeekListData;
-                saveXml(configPath, weekConfig);
-                saveXml(dataPath, weeksListData);
+                DiskOperations.saveXml(configPath, weekConfig);
+                DiskOperations.saveXml(dataPath, weeksListData);
             }
-            
-
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -256,17 +174,9 @@ namespace psdPH
             PhotoshopWrapper.Dispose();
         }
 
-        private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Paragraph item in (sender as RichTextBox).Document.Blocks)
-            {
-                
-                item.Margin = new Thickness(0, 0, 0, 0);
-                foreach (Run item1 in item.Inlines)
-                {
-                    Console.WriteLine(item1.Text);
-                }
-            }
+            LoadFoldersIntoMenu();
         }
     }
 }

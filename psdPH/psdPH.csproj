@@ -85,8 +85,9 @@
     <Compile Include="Logic\Compositions\LayerCompositions.cs" />
     <Compile Include="Logic\PhotoshopLayerExtension.cs" />
     <Compile Include="Logic\Rules\TextRules.cs" />
+    <Compile Include="MainWindow.Disk.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RelayCommand.cs" />
-    <Compile Include="Utils\UserInterruptedInputException.cs" />
+    <Compile Include="Utils\DiskOperations.cs" />
     <Compile Include="Utils\DataInputWindow.cs" />
     <Compile Include="Utils\XmlClone.cs" />
     <Compile Include="Views\WeekView\DateFormatWindow.xaml.cs">

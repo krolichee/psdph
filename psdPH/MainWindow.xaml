@@ -10,12 +10,13 @@
         <Button Content="Button" HorizontalAlignment="Left" Margin="360,31,0,0" VerticalAlignment="Top" Click="Button_Click"/>
         <Menu VerticalAlignment="Top">
             <!-- Пункт меню "Файл" -->
-            <MenuItem Header="Проект" >
+            <MenuItem Header="Проект" Click="MenuItem_Click" >
                 <!-- Подменю -->
                 <MenuItem Header="Новый" Click="NewProjectMenuItem_Click" />
-                <MenuItem x:Name="openMenuItem" Header="Открыть" Click="openMenuItem_Click" />
+                <MenuItem x:Name="openMenuItem" Header="Открыть" />
                 <Separator/>
                 <MenuItem x:Name="templateMenuItem" Header="Редактировать шаблон" Click="templateMenuItem_Click" />
+                <Separator/>
                 <MenuItem x:Name="weekkViewMenuItem" Header="Недельный вид" Click="weekkViewMenuItem_Click" />
             </MenuItem>
 
@@ -33,13 +34,6 @@
         </Menu>
         <Label Content="Текущий проект:" HorizontalAlignment="Left" Margin="10,28,0,0" VerticalAlignment="Top"/>
         <Label x:Name="projectNameLabel" Content="" HorizontalAlignment="Left" Margin="117,28,0,0" VerticalAlignment="Top"/>
-        <RichTextBox Margin="445,204,205,140" TextChanged="RichTextBox_TextChanged">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text="RichTextBox"/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
 
 
 

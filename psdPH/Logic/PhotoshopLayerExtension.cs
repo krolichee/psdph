@@ -16,9 +16,11 @@ namespace psdPH.Logic
         }
         public static Size GetBoundsSize(this ArtLayer layer)
         {
-            var width = layer.Bounds[2] - layer.Bounds[0];
-            var height = layer.Bounds[3] - layer.Bounds[1];
-            return new Size(width,height);
+            return layer.GetBoundRect().Size;
+        }
+        public static Rect GetBoundRect(this ArtLayer layer)
+        {
+            return new Rect(new Point(layer.Bounds[0], layer.Bounds[1]), new Point(layer.Bounds[2], layer.Bounds[3]));
         }
         public static void OffStyle(this ArtLayer layer)
         {
@@ -28,5 +30,6 @@ namespace psdPH.Logic
         {
             layer.Application.DoAction("onFx", "psdPH");
         }
+        
     }
 }

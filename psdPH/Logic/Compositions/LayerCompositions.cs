@@ -7,9 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Xml.Serialization;
+using static psdPH.Logic.PhotoshopDocumentExtension;
 
 namespace psdPH.Logic.Compositions
 {
@@ -40,9 +42,6 @@ namespace psdPH.Logic.Compositions
                 throw new NotImplementedException();
             }
         }
-        public ImageLeaf()
-        {
-        }
 
         public override void Apply(Document doc)
         {
@@ -68,26 +67,19 @@ namespace psdPH.Logic.Compositions
             get
             {
                 var result = new List<Parameter>();
-                var toggleConfig = new ParameterConfig(this, nameof(this.Text), LayerName);
+                var textConfig = new ParameterConfig(this, nameof(this.Text), LayerName);
                 ///TODO
-                result.Add(Parameter.StringInput(toggleConfig));
+                result.Add(Parameter.RichStringInput(textConfig));
                 return result.ToArray();
             }
         }
 
-        public PsJustification Justification { get; set; }
+        public PsJustification Justification = PsJustification.psLeft;
 
         override public void Apply(Document doc)
         {
             ArtLayer layer = doc.GetLayerByName(LayerName, LayerListing.Recursive);
             layer.TextItem.Contents = Text;
-        }
-        public TextLeaf(string layer_name) : this()
-        {
-            LayerName = layer_name;
-        }
-        public TextLeaf()
-        {
         }
     }
 
@@ -98,12 +90,6 @@ namespace psdPH.Logic.Compositions
         public override string UIName => "Слой";
 
         public override Parameter[] Parameters => new Parameter[0];
-
-        public LayerLeaf(string layername)
-        {
-            LayerName = layername;
-        }
-        public LayerLeaf() { }
 
         public override void Apply(Document doc) { }
     }
@@ -138,33 +124,29 @@ namespace psdPH.Logic.Compositions
         public override string UIName => "Текст.поле";
         public string TextLeafLayername;
 
+        public bool SwitchStyle;
+
         public override Parameter[] Parameters => new Parameter[0];
 
-        Vector GetAlightmentVector(Rect targetRect,Rect dynamicRect)
-        {
-            targetRect
-        }
         public override void Apply(Document doc)
         {
             var textLayer = doc.GetLayerByName(TextLeafLayername);
             var areaLayer = doc.GetLayerByName(LayerName);
 
+            Alignment alignment = new Alignment(HorizontalAlignment.Left,VerticalAlignment.Center);
+            
+            doc.FitTextLayer(textLayer, areaLayer);
 
-            var initialAVector = doc.GetAlightmentVector(areaLayer,textLayer);
-
-            textLayer.Translate(initialAVector);
-            switch (TextLeaf.Justification)
+            alignment.H = new Dictionary<PsJustification, HorizontalAlignment>()
             {
-                case PsJustification.psCenter:
-                    GetAlightmentVector()
-            }
+                { PsJustification.psLeft,HorizontalAlignment.Left },
+                { PsJustification.psRight,HorizontalAlignment.Right },
+                { PsJustification.psCenter,HorizontalAlignment.Center },
+            }[TextLeaf.Justification];
 
+            var initialAVector = doc.GetAlightmentVector(areaLayer, textLayer,alignment);
+            textLayer.Translate(initialAVector);
 
-
-            PhotoshopDocumentExtension.FitTextLayer(textLayer,areaLayer);
-
-
-            throw new NotImplementedException();
         }
     }
 

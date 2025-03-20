@@ -4,10 +4,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Messaging;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Xml.Serialization;
 using static psdPH.Logic.Parameter;
@@ -66,7 +69,7 @@ namespace psdPH.Logic
         public static FieldFunctions EnumWrapperFunctions => new FieldFunctions()
         {
             ConvertFunction = (o => new EnumWrapper(o as Enum)),
-            RevertFunction =(o) => (o as EnumWrapper).Value
+            RevertFunction = (o) => (o as EnumWrapper).Value
         };
     }
 
@@ -76,7 +79,7 @@ namespace psdPH.Logic
         FieldFunctions _fieldFunctions;
         StackPanel _stack;
         Func<bool> accept;
-        
+
         private ParameterConfig _config;
         public ParameterConfig Config => _config;
         public string ValueToString()
@@ -85,13 +88,46 @@ namespace psdPH.Logic
         }
         public static Parameter Choose(ParameterConfig config, object[] options, FieldFunctions fieldFunctions = null)
         {
-            var result = new Parameter(config,fieldFunctions);
+            var result = new Parameter(config, fieldFunctions);
             fieldFunctions = result._fieldFunctions;
             var stack = result._stack;
             var cb = new ComboBox() { ItemsSource = options.Select(fieldFunctions.ConvertFunction) };
+            result.accept = () => { config.SetValue(fieldFunctions.RevertFunction(cb.SelectedValue)); return true; };
+
             result.Control = cb;
             stack.Children.Add(cb);
-            result.accept = () => { config.SetValue(fieldFunctions.RevertFunction(cb.SelectedValue)); return true; };
+            return result;
+        }
+        static string getRtbText(RichTextBox rtb, string lineSep = "\n")
+        {
+            string result = "";
+            foreach (Paragraph item in (rtb).Document.Blocks)
+                foreach (Run item1 in item.Inlines)
+                {
+                    result += item1.Text;
+                    result += lineSep;
+                }
+            return result;
+        }
+        public static Parameter RichStringInput(ParameterConfig config)
+        {
+            void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+            {
+                foreach (Paragraph item in (sender as RichTextBox).Document.Blocks)
+                    item.Margin = new Thickness(0, 0, 0, 0);
+            }
+            
+            var result = new Parameter(config);
+            var stack = result._stack;
+            var rtb = new RichTextBox() { Width = 70,Height = 30 };
+            rtb.TextChanged += RichTextBox_TextChanged;
+            result.accept = () =>
+            {
+                config.SetValue(getRtbText(rtb)); return true;
+            };
+
+            result.Control = rtb;
+            stack.Children.Add(rtb);
             return result;
         }
         public static Parameter StringInput(ParameterConfig config)
@@ -122,7 +158,7 @@ namespace psdPH.Logic
         }
         public static Parameter Check(ParameterConfig config)
         {
-            
+
             var result = new Parameter(config);
             var stack = result._stack;
             var chb = new CheckBox();
