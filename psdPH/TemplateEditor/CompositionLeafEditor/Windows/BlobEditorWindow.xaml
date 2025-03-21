@@ -17,7 +17,7 @@
                     </ScrollViewer>
                     <Button Content="+" HorizontalAlignment="Left" Height="24" Margin="10,21,0,0" VerticalAlignment="Top" Width="27" Click="Button_Click">
                         <Button.ContextMenu>
-                            <ContextMenu x:Name="DropdownMenu" >
+                            <ContextMenu x:Name="CreateDropdownMenu" >
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>

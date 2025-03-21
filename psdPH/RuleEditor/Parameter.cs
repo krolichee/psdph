@@ -1,4 +1,5 @@
-﻿using System;
+﻿using psdPH.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -63,8 +64,8 @@ namespace psdPH.Logic
     }
     public class FieldFunctions
     {
-        public Func<object, object> RevertFunction = (o) => (o);
         public Func<object, object> ConvertFunction = (o) => (o);
+        public Func<object, object> RevertFunction = (o) => (o);
 
         public static FieldFunctions EnumWrapperFunctions => new FieldFunctions()
         {
@@ -78,10 +79,15 @@ namespace psdPH.Logic
         public Control Control;
         FieldFunctions _fieldFunctions;
         StackPanel _stack;
-        Func<bool> accept;
+
+        Func<object> valueFunc;
 
         private ParameterConfig _config;
         public ParameterConfig Config => _config;
+        void accept()
+        {
+            _config.SetValue(valueFunc());
+        }
         public string ValueToString()
         {
             return _fieldFunctions.ConvertFunction(_config.GetValue()).ToString();
@@ -92,98 +98,80 @@ namespace psdPH.Logic
             fieldFunctions = result._fieldFunctions;
             var stack = result._stack;
             var cb = new ComboBox() { ItemsSource = options.Select(fieldFunctions.ConvertFunction) };
-            result.accept = () => { config.SetValue(fieldFunctions.RevertFunction(cb.SelectedValue)); return true; };
+            result.valueFunc = () => fieldFunctions.RevertFunction(cb.SelectedValue);
 
             result.Control = cb;
             stack.Children.Add(cb);
             return result;
         }
-        static string getRtbText(RichTextBox rtb, string lineSep = "\n")
-        {
-            string result = "";
-            foreach (Paragraph item in (rtb).Document.Blocks)
-                foreach (Run item1 in item.Inlines)
-                {
-                    result += item1.Text;
-                    result += lineSep;
-                }
-            return result;
-        }
+        
         public static Parameter RichStringInput(ParameterConfig config)
         {
+            var result = new Parameter(config);
+            var stack = result._stack;
+
+            var rtb = new RichTextBox() { Width = 70,Height = 30 };
+            rtb.TextChanged += RichTextBox_TextChanged;
+            result.valueFunc = () => getRtbText(rtb,"\r");
+            result.Control = rtb;
+            stack.Children.Add(rtb);
+            return result;
+
             void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
             {
                 foreach (Paragraph item in (sender as RichTextBox).Document.Blocks)
                     item.Margin = new Thickness(0, 0, 0, 0);
             }
-            
-            var result = new Parameter(config);
-            var stack = result._stack;
-            var rtb = new RichTextBox() { Width = 70,Height = 30 };
-            rtb.TextChanged += RichTextBox_TextChanged;
-            result.accept = () =>
+            string getRtbText(RichTextBox  _rtb, string lineSep = "\n")
             {
-                config.SetValue(getRtbText(rtb)); return true;
-            };
-
-            result.Control = rtb;
-            stack.Children.Add(rtb);
-            return result;
+                string _result = "";
+                foreach (Paragraph item in (_rtb).Document.Blocks)
+                    foreach (Run item1 in item.Inlines)
+                    {
+                        _result += item1.Text;
+                        _result += lineSep;
+                    }
+                return _result;
+            }
         }
         public static Parameter StringInput(ParameterConfig config)
         {
             var result = new Parameter(config);
             var stack = result._stack;
+
             var tb = new TextBox() { Width = 40 };
-            result.Control = tb;
             tb.Text = config.GetValue().ToString();
+            result.Control = tb;
             stack.Children.Add(tb);
-            result.accept = () =>
-            {
-                config.SetValue(tb.Text); return true;
-            };
+            result.valueFunc = () =>tb.Text;
             return result;
         }
         public static Parameter IntInput(ParameterConfig config, int? min = null, int? max = null)
         {
             var result = new Parameter(config);
             var stack = result._stack;
+
             var ntb = new NumericTextBox();
             result.Control = ntb;
             ntb.Text = config.GetValue().ToString();
             stack.Children.Add(ntb);
-            result.accept = () => { config.SetValue(ntb.GetNumber()); return true; };
-
+            result.valueFunc = () => ntb.GetNumber(); 
             return result;
         }
         public static Parameter Check(ParameterConfig config)
         {
-
             var result = new Parameter(config);
             var stack = result._stack;
+
             var chb = new CheckBox();
             result.Control = chb;
             chb.IsChecked = (bool)config.GetValue();
             stack.Children.Add(chb);
-            result.accept = () => { config.SetValue(chb.IsChecked); return true; };
+            result.valueFunc = () => chb.IsChecked;;
             return result;
         }
-        public class EnumWrapper
-        {
-            public Enum Value;
-            public EnumWrapper(Enum value)
-            {
-                Value = value;
-            }
-            public override string ToString()
-            {
-                return Value.GetDescription();
-            }
-        }
-
         public static Parameter EnumChoose(ParameterConfig config, Type @enum)
         {
-
             var enumValues = Enum.GetValues(@enum).Cast<Enum>();
             var options = enumValues.ToArray();
             return Parameter.Choose(config, options, FieldFunctions.EnumWrapperFunctions);
@@ -192,8 +180,6 @@ namespace psdPH.Logic
         {
             if (fieldFunctions == null)
                 fieldFunctions = new FieldFunctions();
-            else
-                ;
             _fieldFunctions = fieldFunctions;
             _stack = new StackPanel()
             {

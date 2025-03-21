@@ -33,74 +33,64 @@ namespace psdPH
     /// Логика взаимодействия для TemplateEditor.xaml
     /// </summary>
 
-    public partial class BlobEditorWindow : Window, ICompositionEditor
+    public partial class BlobEditorWindow : Window, ICompositionShapitor
     {
         Composition _root;
         EditCommand _addStructureItemCommand;
         EditCommand _deleteStructureCommand;
+        EditCommand _create_deleteStructureCommand;
         Document _doc;
         MenuItem CreateMenuItem(Type type)
         {
-            Type configType = CompositionConfigDictionary.GetConfigType(type);
             return new MenuItem()
             {
                 Header = TypeLocalization.GetLocalizedDescription(type),
                 Command = _addStructureItemCommand.Command,
-                CommandParameter = Activator.CreateInstance(configType)
+                CommandParameter = _root
             };
         }
         void InitializeElements()
         {
             List<MenuItem> items = new List<MenuItem>();
-            foreach (var comp_type in CompositionConfigDictionary.StoC.Keys)
+            foreach (var comp_type in StructureDicts.CreatorDict.Keys)
                 items.Add(CreateMenuItem(comp_type));
-            DropdownMenu.ItemsSource = items;
+            CreateDropdownMenu.ItemsSource = items;
         }
-        static string ChooseLayer(Document doc, CompositionEditorConfig config)
+        public static BlobEditorWindow CreateWithinDocument(Document doc,Blob root)
         {
-            string[] layer_names = PsDocWr.GetLayersNames(doc.GetLayersByKinds(config.Kinds));
-            StringChoiceWindow lc_w = new StringChoiceWindow(layer_names, "Выбор слоя поддокумента");
-            return lc_w.getResultString();
 
-        }
-        public static BlobEditorWindow CreateWithinDocument(Document doc, CompositionEditorConfig config)
-        {
-            string[] layer_names = PsDocWr.GetLayersNames(doc.GetLayersByKinds(config.Kinds));
+            string[] layer_names = PsDocWr.GetLayersNames(doc.GetLayersByKind(PsLayerKind.psSmartObjectLayer));
             var lc_w = new StringChoiceWindow(layer_names, "Выбор слоя поддокумента");
             if(lc_w.ShowDialog()!=true)
                 return null;
             string ln = lc_w.getResultString();
-            CompositionEditorConfig new_config = new BlobEditorCfg() { Composition = Blob.LayerBlob(ln) };
-            return OpenInDocument(doc, new_config);
+            var blob = Blob.LayerBlob(ln);
+            return OpenInDocument(doc, blob);
         }
-        public static BlobEditorWindow OpenInDocument(Document doc, CompositionEditorConfig config)
+        public static BlobEditorWindow OpenInDocument(Document doc, Blob blob)
         {
-            Blob blob = config.Composition as Blob;
             if (blob.Mode != BlobMode.Layer)
                 throw new ArgumentException();
             Document new_doc;
 
             new_doc = doc.OpenSmartLayer(blob.LayerName);
 
-            return new BlobEditorWindow(new_doc, config);
+            return new BlobEditorWindow(new_doc, blob);
         }
-        public static BlobEditorWindow OpenFromDisk(CompositionEditorConfig config)
+        public static BlobEditorWindow OpenFromDisk(Blob blob)
         {
-            Blob blob = config.Composition as Blob;
             if (blob.Mode != BlobMode.Path)
                 throw new ArgumentException();
             PsApp psApp = PsWr.GetPhotoshopApplication();
             Document doc = psApp.Open(blob.Path);
-            return new BlobEditorWindow(doc, config);
+            return new BlobEditorWindow(doc, blob);
         }
-        BlobEditorWindow(Document doc, CompositionEditorConfig config)
+        BlobEditorWindow(Document doc,Blob root)
         {
-            
-            _root = config.Composition;
+            _root = root;
             _addStructureItemCommand = EditCommand.StructureCommand(doc, _root, this);
             _deleteStructureCommand = EditCommand.DeleteStructureCommand(doc,_root,this);
             _doc = doc;
-            //_root.RuleSet.Rules.Add(new TextAnchorRule(_root) { Condition = new MaxRowCountCondition(_root) { RowCount = 10, TextLeafLayerName = "MudryBatyaVtuber" }, TextLeafLayerName = "MudryBatyaVtuber" });
             InitializeComponent();
             Closing += (object sender, CancelEventArgs e) => DialogResult = true;
             InitializeElements();
@@ -129,6 +119,7 @@ namespace psdPH
             foreach (var rule in rules)
             {
                 var rtb = new RuleTextBlock(rule);
+
                 rtb.ContextMenu = new ContextMenu();
                 rtb.ContextMenu.Items.Add(new MenuItem() { 
                     Header = "Удалить",
@@ -147,19 +138,8 @@ namespace psdPH
             structuresStackPanel.Children.Clear();
             foreach (Composition child in _root.getChildren())
             {
-                var grid = new Grid();
-                grid.Children.Add(new Label() { Content = child.UIName, Foreground = SystemColors.ActiveBorderBrush, HorizontalAlignment = HorizontalAlignment.Left });
-                grid.Children.Add(new Label() { Content = child.ObjName, Foreground = SystemColors.ActiveCaptionTextBrush, HorizontalAlignment = HorizontalAlignment.Center });
-                grid.Children.Add(new Button() { Content = "X", Foreground = new SolidColorBrush(Color.FromRgb(124, 0, 0)), HorizontalAlignment = HorizontalAlignment.Right, Command = _deleteStructureCommand.Command, CommandParameter = child, Width = 20 });
-                grid.Width = structuresStackPanel.RenderSize.Width;
-                var button = new Button();
-                button.Height = 28;
-                button.Content = grid;
-                button.Command = _addStructureItemCommand.Command;
-                Type type = CompositionConfigDictionary.GetConfigType(child.GetType());
-                CompositionEditorConfig config = Activator.CreateInstance(type) as CompositionEditorConfig;
-                config.Composition = child;
-                button.CommandParameter = config;
+                var button = new CompositionStackElement(child,_addStructureItemCommand.Command);
+                button.Width = structuresStackPanel.RenderSize.Width;
                 structuresStackPanel.Children.Add(button);
             }
         }

@@ -37,8 +37,6 @@ namespace psdPH
         }
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (DialogResult != true)
-                throw new UserInterruptedInputException();
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {

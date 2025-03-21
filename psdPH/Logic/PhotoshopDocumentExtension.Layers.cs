@@ -51,6 +51,15 @@ namespace psdPH.Logic
             }
             return GetArtLayers(doc, listing).Where(filter).ToArray();
         }
+        public static ArtLayer[] GetLayersByKind(this Document doc, PsLayerKind kind, LayerListing listing = DefaultListing)
+        {
+            bool filter(ArtLayer layer)
+            {
+                return kind==layer.Kind;
+            }
+            return GetArtLayers(doc, listing).Where(filter).ToArray();
+        }
+
         private static ArtLayer FindLayerById(this Document doc, int layerId, LayerListing listing = DefaultListing)
         {
             ArtLayer[] layers = doc.GetArtLayers(listing);

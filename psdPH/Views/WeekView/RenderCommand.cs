@@ -30,7 +30,7 @@ namespace psdPH.Views.WeekView
         }
         private bool CanExecuteCommand(object parameter)
         {
-            return true; // Здесь можно добавить логику для определения, может ли команда быть выполнена
+            return true;
         }
     }
 }

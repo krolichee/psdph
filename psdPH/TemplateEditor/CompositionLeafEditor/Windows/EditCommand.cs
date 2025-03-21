@@ -3,6 +3,7 @@ using psdPH.TemplateEditor;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using System;
 using System.Windows.Input;
+using static psdPH.TemplateEditor.StructureDicts;
 
 namespace psdPH
 {
@@ -40,10 +41,12 @@ namespace psdPH
                 _doc = doc;
                 _editor = editor;
             }
-            private void EditStructureExecuteCommand(object parameter)
+            private void CreateStructureExecuteCommand(object parameter)
             {
-                var config = parameter as CompositionEditorConfig;
-                ICompositionEditor ce_w = config.Factory.CreateCompositionEditorWindow(_doc, config, _root_composition);
+                Composition root = parameter as Composition;
+                CreateComposition ce_w_func;
+                StructureDicts.CreatorDict.TryGetValue(root.GetType(), out ce_w_func);
+                ICompositionShapitor ce_w = ce_w_func(_doc, root);
                 if (ce_w == null)
                     return;
                 if (ce_w.ShowDialog() != true)
@@ -53,8 +56,10 @@ namespace psdPH
                     return;
                 _root_composition.addChild(result);
                 _editor.refreshSctuctureStack();
-
-
+            }
+            private void EditStructureExecuteCommand(object parameter)
+            {
+                
             }
             private void EditRuleExecuteCommand(object parameter)
             {

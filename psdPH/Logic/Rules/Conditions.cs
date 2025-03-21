@@ -24,8 +24,6 @@ namespace psdPH.Logic.Rules
 
         public void restoreComposition(Composition composition)
         {
-            if (this is TextCondition)
-                ;
             Composition = composition;
         }
 

@@ -55,8 +55,6 @@ namespace psdPH.Logic.Compositions
         {
             if (IsPrototyped())
                 return;
-            if (this.LayerName == "Прототип дня")
-                ;
             Document cur_doc;
             if (Mode == BlobMode.Layer)
                 cur_doc = doc.OpenSmartLayer(LayerName);

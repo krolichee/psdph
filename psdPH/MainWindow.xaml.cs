@@ -135,8 +135,7 @@ namespace psdPH
         private void templateMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Blob blob = openMainBlob();
-            BlobEditorCfg bec = new BlobEditorCfg() { Composition = blob };
-            ICompositionEditor editor = bec.Factory.CreateCompositionEditorWindow(null, bec, blob);
+            ICompositionShapitor editor = BlobEditorWindow.OpenFromDisk(blob);
             editor.ShowDialog();
             saveBlob(blob);
         }

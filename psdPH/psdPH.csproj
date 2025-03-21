@@ -86,9 +86,11 @@
     <Compile Include="Logic\PhotoshopLayerExtension.cs" />
     <Compile Include="Logic\Rules\TextRules.cs" />
     <Compile Include="MainWindow.Disk.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionStackElement.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RelayCommand.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
     <Compile Include="Utils\DataInputWindow.cs" />
+    <Compile Include="Utils\EnumWrapper.cs" />
     <Compile Include="Utils\XmlClone.cs" />
     <Compile Include="Views\WeekView\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>
@@ -103,7 +105,6 @@
     <Compile Include="CollectionEditor\Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Logic\CompositionConfigDictionary.cs" />
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
     <Compile Include="RuleEditor\IParameterable.cs" />
     <Compile Include="Logic\PhotoshopDocumentExtension.cs" />
@@ -128,11 +129,11 @@
     <Compile Include="TemplateEditor\CompositionEditorConfig.cs" />
     <Compile Include="Logic\PhotoshopWrapper.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\EditCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TinyEditors.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionCreators.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\ICompositionEditor.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\ICompositionShapitor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\ParametersInputWindow.xaml.cs">
       <DependentUpon>ParametersInputWindow.xaml</DependentUpon>
