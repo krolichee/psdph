@@ -27,6 +27,8 @@ namespace psdPH.Logic.Compositions
     {
         public string LayerName;
         public override string ObjName => LayerName;
+        public LayerComposition(string layername) { LayerName = layername; }
+        public LayerComposition() { LayerName = string.Empty; }
     }
     [Serializable]
     [XmlRoot("Image")]
@@ -47,6 +49,7 @@ namespace psdPH.Logic.Compositions
         {
             throw new NotImplementedException();
         }
+
     }
     [Serializable]
     [XmlRoot("Text")]
@@ -56,7 +59,7 @@ namespace psdPH.Logic.Compositions
         Layer,
         Path
     }
-    
+
     public class TextLeaf : LayerComposition
     {
         public override string UIName => "Текст";
@@ -100,15 +103,7 @@ namespace psdPH.Logic.Compositions
         public override string UIName => "Группа";
 
         public override Parameter[] Parameters => new Parameter[0];
-
         public override string ObjName => LayerName;
-
-        public GroupLeaf(string layername)
-        {
-            LayerName = layername;
-        }
-        public GroupLeaf() { }
-
         public override void Apply(Document doc) { }
     }
     [Serializable]
@@ -118,7 +113,7 @@ namespace psdPH.Logic.Compositions
         [XmlIgnore]
         public TextLeaf TextLeaf
         {
-            get => Parent.getChildren<TextLeaf>().First(p => p.LayerName == TextLeafLayername); 
+            get => Parent.getChildren<TextLeaf>().First(p => p.LayerName == TextLeafLayername);
             set => TextLeafLayername = value.LayerName;
         }
         public override string UIName => "Текст.поле";
@@ -127,24 +122,26 @@ namespace psdPH.Logic.Compositions
         public bool SwitchStyle;
 
         public override Parameter[] Parameters => new Parameter[0];
-
-        public override void Apply(Document doc)
+        static Dictionary<PsJustification, HorizontalAlignment> JustificationMatchDict = new Dictionary<PsJustification, HorizontalAlignment>()
+            {
+                { PsJustification.psLeft,HorizontalAlignment.Left
+    },
+                { PsJustification.psRight,HorizontalAlignment.Right
+},
+                { PsJustification.psCenter,HorizontalAlignment.Center },
+            };
+public override void Apply(Document doc)
         {
             var textLayer = doc.GetLayerByName(TextLeafLayername);
             var areaLayer = doc.GetLayerByName(LayerName);
 
-            Alignment alignment = new Alignment(HorizontalAlignment.Left,VerticalAlignment.Center);
-            
+            Alignment alignment = new Alignment(HorizontalAlignment.Left, VerticalAlignment.Center);
+
             doc.FitTextLayer(textLayer, areaLayer);
 
-            alignment.H = new Dictionary<PsJustification, HorizontalAlignment>()
-            {
-                { PsJustification.psLeft,HorizontalAlignment.Left },
-                { PsJustification.psRight,HorizontalAlignment.Right },
-                { PsJustification.psCenter,HorizontalAlignment.Center },
-            }[TextLeaf.Justification];
+            alignment.H = JustificationMatchDict[TextLeaf.Justification];
 
-            var initialAVector = doc.GetAlightmentVector(areaLayer, textLayer,alignment);
+            var initialAVector = doc.GetAlightmentVector(areaLayer, textLayer, alignment);
             textLayer.Translate(initialAVector);
 
         }

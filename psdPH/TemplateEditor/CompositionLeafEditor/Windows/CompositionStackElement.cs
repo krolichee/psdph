@@ -14,22 +14,19 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
     class CompositionStackElement:Button
     {
-        public CompositionStackElement(Composition composition,ICommand command)
+        public CompositionStackElement(Composition composition,ICommand editCommand,ICommand deleteCommand)
         {
             var grid = new Grid();
-            grid.Children.Add(new Label() { Content = composition.UIName, Foreground = SystemColors.ActiveBorderBrush, HorizontalAlignment = HorizontalAlignment.Left });
-            grid.Children.Add(new Label() { Content = composition.ObjName, Foreground = SystemColors.ActiveCaptionTextBrush, HorizontalAlignment = HorizontalAlignment.Center });
+            grid.Children.Add(new Label() { Content = composition.UIName, 
+                Foreground = SystemColors.ActiveBorderBrush, HorizontalAlignment = HorizontalAlignment.Left });
+            grid.Children.Add(new Label() { Content = composition.ObjName, 
+                Foreground = SystemColors.ActiveCaptionTextBrush, HorizontalAlignment = HorizontalAlignment.Center });
             
-            var button = new Button();
-            button.Height = 28;
-            button.Content = grid;
-
-            //TODO
-            CreateComposition editor_func;
-            StructureDicts.EditorDict.TryGetValue(composition.GetType(),out editor_func);
-            ICompositionShapitor editor = editor_func();
-            button.Command = command;
-            button.CommandParameter = composition;
+            Height = 28;
+            Content = grid;
+            Command = editCommand;
+            (ContextMenu = new ContextMenu()).Items.Add(new MenuItem() { Command = deleteCommand, 
+                CommandParameter = composition, Header = "Удалить"});
         }
     }
 }

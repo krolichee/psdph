@@ -35,46 +35,33 @@ namespace psdPH
 
     public partial class BlobEditorWindow : Window, ICompositionShapitor
     {
-        Composition _root;
-        EditCommand _addStructureItemCommand;
-        EditCommand _deleteStructureCommand;
-        EditCommand _create_deleteStructureCommand;
+        Composition _composition;
+        CEDCommand _addStructureCommand;
+        CEDCommand _editStructureCommand;
+        CEDCommand _deleteStructureCommand;
         Document _doc;
-        MenuItem CreateMenuItem(Type type)
+        MenuItem CreateAddMenuItem(Type type)
         {
             return new MenuItem()
             {
                 Header = TypeLocalization.GetLocalizedDescription(type),
-                Command = _addStructureItemCommand.Command,
-                CommandParameter = _root
+                Command = _addStructureCommand.Command,
+                CommandParameter = _composition
             };
         }
-        void InitializeElements()
+        void InitializeAddDropDownMenu()
         {
             List<MenuItem> items = new List<MenuItem>();
             foreach (var comp_type in StructureDicts.CreatorDict.Keys)
-                items.Add(CreateMenuItem(comp_type));
+                items.Add(CreateAddMenuItem(comp_type));
             CreateDropdownMenu.ItemsSource = items;
-        }
-        public static BlobEditorWindow CreateWithinDocument(Document doc,Blob root)
-        {
-
-            string[] layer_names = PsDocWr.GetLayersNames(doc.GetLayersByKind(PsLayerKind.psSmartObjectLayer));
-            var lc_w = new StringChoiceWindow(layer_names, "Выбор слоя поддокумента");
-            if(lc_w.ShowDialog()!=true)
-                return null;
-            string ln = lc_w.getResultString();
-            var blob = Blob.LayerBlob(ln);
-            return OpenInDocument(doc, blob);
         }
         public static BlobEditorWindow OpenInDocument(Document doc, Blob blob)
         {
             if (blob.Mode != BlobMode.Layer)
                 throw new ArgumentException();
             Document new_doc;
-
             new_doc = doc.OpenSmartLayer(blob.LayerName);
-
             return new BlobEditorWindow(new_doc, blob);
         }
         public static BlobEditorWindow OpenFromDisk(Blob blob)
@@ -87,13 +74,16 @@ namespace psdPH
         }
         BlobEditorWindow(Document doc,Blob root)
         {
-            _root = root;
-            _addStructureItemCommand = EditCommand.StructureCommand(doc, _root, this);
-            _deleteStructureCommand = EditCommand.DeleteStructureCommand(doc,_root,this);
+            _composition = root;
+
+            _addStructureCommand = CEDCommand.CreateCommand(doc, _composition);
+            _editStructureCommand = CEDCommand.EditCommand(doc,_composition);
+            _deleteStructureCommand = CEDCommand.DeleteCommand(_composition);
             _doc = doc;
             InitializeComponent();
             Closing += (object sender, CancelEventArgs e) => DialogResult = true;
-            InitializeElements();
+            InitializeAddDropDownMenu();
+            _composition.ChildrenUpdatedEvent+=refreshSctuctureStack;
             refreshSctuctureStack();
             refreshRuleStack();
         }
@@ -105,17 +95,17 @@ namespace psdPH
 
         public Composition GetResultComposition()
         {
-            return _root;
+            return _composition;
         }
         void removeRule(Rule rule)
         {
-            _root.RuleSet.Rules.Remove(rule);
+            _composition.RuleSet.Rules.Remove(rule);
             refreshRuleStack();
         }
         void refreshRuleStack()
         {
             rulesStackPanel.Children.Clear();
-            ConditionRule[] rules = _root.RuleSet.Rules.Cast<ConditionRule>().ToArray();
+            ConditionRule[] rules = _composition.RuleSet.Rules.Cast<ConditionRule>().ToArray();
             foreach (var rule in rules)
             {
                 var rtb = new RuleTextBlock(rule);
@@ -134,17 +124,15 @@ namespace psdPH
         }
         void refreshSctuctureStack()
         {
-            _root.Restore();
+            _composition.Restore();
             structuresStackPanel.Children.Clear();
-            foreach (Composition child in _root.getChildren())
+            foreach (Composition child in _composition.getChildren())
             {
-                var button = new CompositionStackElement(child,_addStructureItemCommand.Command);
+                var button = new CompositionStackElement(child,_editStructureCommand.Command,_deleteStructureCommand.Command);
                 button.Width = structuresStackPanel.RenderSize.Width;
                 structuresStackPanel.Children.Add(button);
             }
         }
-        
-
         private void Window_Closed(object sender, EventArgs e)
         {
             if (_doc.Application.ActiveDocument == _doc)
@@ -152,7 +140,6 @@ namespace psdPH
             else
                 throw new Exception();
         }
-
         private void Window_Activated(object sender, EventArgs e)
         {
             refreshSctuctureStack();
@@ -160,10 +147,10 @@ namespace psdPH
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var rc_window = new RuleControlWindow(_root);
+            var rc_window = new RuleControlWindow(_composition);
             if (rc_window.ShowDialog() != true)
                 return;
-            _root.RuleSet.Rules.Add(rc_window.GetResultRule());
+            _composition.RuleSet.Rules.Add(rc_window.GetResultRule());
             refreshRuleStack();
         }
     }

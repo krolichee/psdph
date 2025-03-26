@@ -6,6 +6,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,6 +32,9 @@ namespace psdPH
     [XmlInclude(typeof(Rule))]
     public abstract class Composition : IParameterable
     {
+        public delegate void RulesetUpdated();
+        public delegate void ChildrenUpdated();
+        public event ChildrenUpdated ChildrenUpdatedEvent;
         public string XmlName
         {
             get
@@ -52,7 +56,11 @@ namespace psdPH
         public abstract Parameter[] Parameters { get; }
 
         abstract public void Apply(Document doc);
-        virtual public void addChild(Composition child) { }
+        protected void invokeChildrenEvent()
+        {
+            ChildrenUpdatedEvent?.Invoke();
+        }
+        virtual public void addChild(Composition child) {  }
         virtual public void removeChild(Composition child) { }
         public void Restore(Blob parent = null)
         {
@@ -71,7 +79,7 @@ namespace psdPH
         virtual public T[] getChildren<T>() { return null; }
         public RuleSet RuleSet = new RuleSet();
 
-        public Composition() { }
+        public Composition() { ChildrenUpdatedEvent+= ()=>Restore(); }
     }
     
     [Serializable]
@@ -98,9 +106,7 @@ namespace psdPH
         {
             Name = name;
         }
-        public FlagLeaf()
-        {
-        }
+        public FlagLeaf():base(){}
 
         public override void Apply(Document doc){ }
     }

@@ -3,6 +3,7 @@ using psdPH.Logic.Compositions;
 using psdPH.Logic.Rules;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -25,13 +26,14 @@ namespace psdPH.Logic
     [XmlRoot("Ruleset")]
     public class RuleSet
     {
-
+        public event Action Updated;
         [XmlIgnore]
         public Composition composition;
-        public List<Rule> Rules = new List<Rule>();
+        public ObservableCollection<Rule> Rules = new ObservableCollection<Rule>();
 
         public void apply(Document doc)
         {
+            
             foreach (var item in Rules)
             {
                 item.Apply(doc);
@@ -45,6 +47,11 @@ namespace psdPH.Logic
             {
                 rule.restoreComposition(composition);
             }
+            
+        }
+        public RuleSet()
+        {
+            Rules.CollectionChanged += (_, __) => Updated?.Invoke();
         }
     }
     
@@ -188,7 +195,6 @@ namespace psdPH.Logic
         public override string ToString() => "прозрачность";
 
         public int Opacity;
-        
 
         public override Parameter[] Parameters
         {

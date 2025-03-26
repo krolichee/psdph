@@ -16,11 +16,13 @@ namespace psdPH.TemplateEditor
     public static class StructureDicts
     {
         public delegate ICompositionShapitor CreateComposition(Document doc, Composition root);
-        public static Dictionary<Type, CreateComposition> 
+        public delegate ICompositionShapitor EditComposition(Document doc, Composition composition);
+
+        public static Dictionary<Type, CreateComposition>
             CreatorDict = new Dictionary<Type, CreateComposition>
             (){
         { typeof(Blob),(doc, root) =>
-                 BlobEditorWindow.CreateWithinDocument(doc,root as Blob)
+                 new BlobCreator(doc,root as Blob)
         },
 
         { typeof(FlagLeaf), (doc, root) =>
@@ -39,13 +41,13 @@ namespace psdPH.TemplateEditor
         { typeof(GroupLeaf),(doc, root) =>
             new GroupLeafCreator(doc)},
         { typeof(TextAreaLeaf),(doc, root) =>
-            new TextAreaLeafEditor(doc, root as Blob)}
+            new TextAreaLeafCreator(doc, root as Blob)}
     };
-        public static Dictionary<Type, CreateComposition>
-            EditorDict = new Dictionary<Type, CreateComposition>
+        public static Dictionary<Type, EditComposition>
+            EditorDict = new Dictionary<Type, EditComposition>
             ()
             {
-
+                { typeof(Blob),(doc,composition)=>BlobEditorWindow.OpenInDocument(doc,composition as Blob) }
             };
     }
 

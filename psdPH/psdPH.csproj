@@ -86,8 +86,16 @@
     <Compile Include="Logic\PhotoshopLayerExtension.cs" />
     <Compile Include="Logic\Rules\TextRules.cs" />
     <Compile Include="MainWindow.Disk.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStack.xaml.cs">
+      <DependentUpon>CEDStack.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackHandler.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionStackElement.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RelayCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RuleStackElement.xaml.cs">
+      <DependentUpon>RuleStackElement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateEditor\RuleDict.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
     <Compile Include="Utils\DataInputWindow.cs" />
     <Compile Include="Utils\EnumWrapper.cs" />
@@ -126,9 +134,9 @@
     <Compile Include="RuleEditor\RuleViewControl.xaml.cs">
       <DependentUpon>RuleViewControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionEditorConfig.cs" />
+    <Compile Include="TemplateEditor\StructureDicts.cs" />
     <Compile Include="Logic\PhotoshopWrapper.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\EditCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionCreators.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
@@ -171,6 +179,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ImageSelectorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStack.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\RuleStackElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
