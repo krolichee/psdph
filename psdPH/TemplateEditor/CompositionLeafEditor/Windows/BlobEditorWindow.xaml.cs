@@ -36,9 +36,6 @@ namespace psdPH
     public partial class BlobEditorWindow : Window, ICompositionShapitor
     {
         Composition _composition;
-        CEDCommand _addStructureCommand;
-        CEDCommand _editStructureCommand;
-        CEDCommand _deleteStructureCommand;
         Document _doc;
         MenuItem CreateAddMenuItem(Type type)
         {
@@ -75,17 +72,11 @@ namespace psdPH
         BlobEditorWindow(Document doc,Blob root)
         {
             _composition = root;
-
-            _addStructureCommand = CEDCommand.CreateCommand(doc, _composition);
-            _editStructureCommand = CEDCommand.EditCommand(doc,_composition);
-            _deleteStructureCommand = CEDCommand.DeleteCommand(_composition);
             _doc = doc;
             InitializeComponent();
             Closing += (object sender, CancelEventArgs e) => DialogResult = true;
             InitializeAddDropDownMenu();
             _composition.ChildrenUpdatedEvent+=refreshSctuctureStack;
-            refreshSctuctureStack();
-            refreshRuleStack();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -97,42 +88,6 @@ namespace psdPH
         {
             return _composition;
         }
-        void removeRule(Rule rule)
-        {
-            _composition.RuleSet.Rules.Remove(rule);
-            refreshRuleStack();
-        }
-        void refreshRuleStack()
-        {
-            rulesStackPanel.Children.Clear();
-            ConditionRule[] rules = _composition.RuleSet.Rules.Cast<ConditionRule>().ToArray();
-            foreach (var rule in rules)
-            {
-                var rtb = new RuleTextBlock(rule);
-
-                rtb.ContextMenu = new ContextMenu();
-                rtb.ContextMenu.Items.Add(new MenuItem() { 
-                    Header = "Удалить",
-                    Command = new RelayCommand((object o)=>removeRule(o as Rule),(_)=>true),
-                    CommandParameter = rule,
-                Margin = new Thickness(0,0,0,10)}
-                    
-                    );
-                rulesStackPanel.Children.Add(rtb);
-            }
-
-        }
-        void refreshSctuctureStack()
-        {
-            _composition.Restore();
-            structuresStackPanel.Children.Clear();
-            foreach (Composition child in _composition.getChildren())
-            {
-                var button = new CompositionStackElement(child,_editStructureCommand.Command,_deleteStructureCommand.Command);
-                button.Width = structuresStackPanel.RenderSize.Width;
-                structuresStackPanel.Children.Add(button);
-            }
-        }
         private void Window_Closed(object sender, EventArgs e)
         {
             if (_doc.Application.ActiveDocument == _doc)
@@ -142,7 +97,7 @@ namespace psdPH
         }
         private void Window_Activated(object sender, EventArgs e)
         {
-            refreshSctuctureStack();
+            
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -151,7 +106,6 @@ namespace psdPH
             if (rc_window.ShowDialog() != true)
                 return;
             _composition.RuleSet.Rules.Add(rc_window.GetResultRule());
-            refreshRuleStack();
         }
     }
 }

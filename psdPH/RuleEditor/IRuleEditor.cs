@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace psdPH.RuleEditor
 {
-    interface IRuleEditor
+    public interface IRuleEditor
     {
         ConditionRule GetResultRule();
     }

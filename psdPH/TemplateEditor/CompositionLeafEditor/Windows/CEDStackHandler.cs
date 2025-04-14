@@ -12,7 +12,7 @@ using System.Windows.Controls;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
-    abstract public class CEDStackHandler 
+    abstract public class CEDStackHandler
     {
         protected Document _doc;
         protected Composition _root;
@@ -31,17 +31,19 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             Stack.Children.Clear();
             foreach (Composition child in _root.getChildren())
             {
-                var button = new CompositionStackElement(child, StructureCommand.EditCommand(_doc,_root).Command, StructureCommand.DeleteCommand(_root).Command);
+                var button = new CompositionStackElement(child,
+                    StructureCommand.EditCommand(_doc, _root).Command,
+                    StructureCommand.DeleteCommand(_root).Command);
                 button.Width = Stack.RenderSize.Width;
                 Stack.Children.Add(button);
             }
         }
-        public StructureStackHandler(Document doc,Composition root):base(doc,root)
+        public StructureStackHandler(Document doc, Composition root) : base(doc, root)
         {
             _root.ChildrenUpdatedEvent += Refresh;
         }
     }
-    public class RuleStackHandler: CEDStackHandler
+    public class RuleStackHandler : CEDStackHandler
     {
         public RuleStackHandler(Document doc, Composition root) : base(doc, root)
         {
@@ -60,14 +62,13 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
                 rtb.ContextMenu.Items.Add(new MenuItem()
                 {
                     Header = "Удалить",
-                    Command = new RelayCommand((object o) => _root.RuleSet.Rules(o as Rule), (_) => true),
+                    Command = RuleCommand.EditCommand(_doc, rule.Composition).Command,
                     CommandParameter = rule,
                     Margin = new Thickness(0, 0, 0, 10)
                 }
-
                     );
                 Stack.Children.Add(rtb);
             }
         }
-
+    }
 }
