@@ -86,10 +86,10 @@
     <Compile Include="Logic\PhotoshopLayerExtension.cs" />
     <Compile Include="Logic\Rules\TextRules.cs" />
     <Compile Include="MainWindow.Disk.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStack.xaml.cs">
-      <DependentUpon>CEDStack.xaml</DependentUpon>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackUI.xaml.cs">
+      <DependentUpon>CEDStackUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackContainerControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionStackElement.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RelayCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RuleStackElement.xaml.cs">
@@ -182,7 +182,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStack.xaml">
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

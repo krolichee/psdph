@@ -20,6 +20,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace psdPH
 {
+    [Serializable]
     [XmlInclude(typeof(Blob))]
 
     [XmlInclude(typeof(FlagLeaf))]

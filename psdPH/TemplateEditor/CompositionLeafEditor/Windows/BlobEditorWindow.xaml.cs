@@ -26,6 +26,7 @@ using psdPH.RuleEditor;
 using psdPH.Logic.Rules;
 using psdPH.Logic.Compositions;
 using System.Runtime.Remoting.Messaging;
+using System.Runtime.InteropServices;
 
 namespace psdPH
 {
@@ -37,22 +38,6 @@ namespace psdPH
     {
         Composition _composition;
         Document _doc;
-        MenuItem CreateAddMenuItem(Type type)
-        {
-            return new MenuItem()
-            {
-                Header = TypeLocalization.GetLocalizedDescription(type),
-                Command = _addStructureCommand.Command,
-                CommandParameter = _composition
-            };
-        }
-        void InitializeAddDropDownMenu()
-        {
-            List<MenuItem> items = new List<MenuItem>();
-            foreach (var comp_type in StructureDicts.CreatorDict.Keys)
-                items.Add(CreateAddMenuItem(comp_type));
-            CreateDropdownMenu.ItemsSource = items;
-        }
         public static BlobEditorWindow OpenInDocument(Document doc, Blob blob)
         {
             if (blob.Mode != BlobMode.Layer)
@@ -75,8 +60,14 @@ namespace psdPH
             _doc = doc;
             InitializeComponent();
             Closing += (object sender, CancelEventArgs e) => DialogResult = true;
-            InitializeAddDropDownMenu();
-            _composition.ChildrenUpdatedEvent+=refreshSctuctureStack;
+            CEDStackUI structureStackUI = new CEDStackUI();
+            structureStackUI.handler = new StructureStackHandler(doc,root);
+            structureStackUI.handler.Initialize(structureStackUI);
+            structureTab.Content = structureStackUI;
+            CEDStackUI ruleStackUI = new CEDStackUI();
+            ruleStackUI.handler = new StructureStackHandler(doc, root);
+            ruleStackUI.handler.Initialize(ruleStackUI);
+            ruleTab.Content = ruleStackUI;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

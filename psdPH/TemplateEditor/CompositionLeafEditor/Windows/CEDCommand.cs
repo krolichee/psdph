@@ -16,27 +16,10 @@ namespace psdPH
     {
         protected Composition _root;
         protected Document _doc;
-        public ICommand Command { get; set; }
 
-        public static CEDCommand CreateCommand(Document doc, Composition root)
-        {
-            var result = new CEDCommand(doc, root);
-            result.Command = new RelayCommand(result.CreateExecuteCommand, result.IsEditableCommand);
-            return result;
-        }
-        public static CEDCommand EditCommand(Document doc, Composition root)
-        {
-            var result = new CEDCommand(doc, root);
-            result.Command = new RelayCommand(result.EditExecuteCommand, result.IsEditableCommand);
-            return result;
-
-        }
-        public static CEDCommand DeleteCommand(Composition root)
-        {
-            var result = new CEDCommand(null, root);
-            result.Command = new RelayCommand(result.DeleteExecuteCommand, result.IsEditableCommand);
-            return result;
-        }
+        public ICommand CreateCommand => new RelayCommand(CreateExecuteCommand, (_) => true);
+        public ICommand EditCommand=> new RelayCommand(EditExecuteCommand, IsEditableCommand);
+        public ICommand DeleteCommand=>new RelayCommand(DeleteExecuteCommand, (_) => true);
         protected virtual bool IsEditableCommand(object parameter) { return true; }
         protected virtual void CreateExecuteCommand(object parameter) { }
         protected virtual void EditExecuteCommand(object parameter) { }
@@ -49,15 +32,15 @@ namespace psdPH
     }
     public class StructureCommand : CEDCommand
     {
-        protected StructureCommand(Document doc, Composition root) : base(doc, root) { }
+        public StructureCommand(Document doc, Composition root) : base(doc, root) { }
         protected override bool IsEditableCommand(object parameter) => StructureDicts.EditorDict.ContainsKey(parameter.GetType());
         protected override void CreateExecuteCommand(object parameter)
         {
-            Composition root = parameter as Composition;
+            Type type = parameter as Type;
             CreateComposition creator_func;
-            if (!StructureDicts.CreatorDict.TryGetValue(root.GetType(), out creator_func))
+            if (!StructureDicts.CreatorDict.TryGetValue(type, out creator_func))
                 throw new ArgumentException();
-            ICompositionShapitor creator = creator_func(_doc, root);
+            ICompositionShapitor creator = creator_func(_doc, _root);
             if (creator.ShowDialog() != true)
                 return;
             Composition result = creator.GetResultComposition();
@@ -74,15 +57,15 @@ namespace psdPH
     }
     public class RuleCommand : CEDCommand
     {
-        protected RuleCommand(Document doc, Composition root) : base(doc, root) { }
+        public RuleCommand(Document doc, Composition root) : base(doc, root) { }
         protected override bool IsEditableCommand(object parameter) => StructureDicts.EditorDict.ContainsKey(parameter.GetType());
         protected override void CreateExecuteCommand(object parameter)
         {
-            Composition root = parameter as Composition;
+            Type type = parameter as Type;
             CreateRule creator_func;
-            if (!RuleDicts.CreatorDict.TryGetValue(root.GetType(), out creator_func))
+            if (!RuleDicts.CreatorDict.TryGetValue(type, out creator_func))
                 throw new ArgumentException();
-            IRuleEditor creator = creator_func(_doc, root);
+            IRuleEditor creator = creator_func(_doc, _root);
             if (creator.ShowDialog() != true)
                 return;
             Rule result = creator.GetResultRule();

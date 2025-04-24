@@ -21,7 +21,7 @@ namespace psdPH.Logic
     /// <summary>
     /// Логика взаимодействия для RuleControl.xaml
     /// </summary>
-    public partial class RuleControl : UserControl, IRuleEditor
+    public partial class RuleControl : UserControl
     {
         ConditionRule _result;
         Condition _condition;

@@ -10,7 +10,7 @@
     <Grid>
 
         <TabControl Margin="0,0,0,0">
-            <TabItem Header="Структура">
+            <TabItem x:Name="structureTab" Header="Структура">
                 <Grid Background="#FFE5E5E5" Margin="0,0,0,0">
                     <ScrollViewer Margin="0,62,0,0">
                         <StackPanel x:Name="structuresStackPanel"/>
@@ -23,7 +23,7 @@
                     </Button>
                 </Grid>
             </TabItem>
-            <TabItem Header="Правила" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58">
+            <TabItem x:Name="ruleTab" Header="Правила" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58">
                 <Grid Background="#FFE5E5E5">
                     <Button Content="+" HorizontalAlignment="Left" Height="24" Margin="10,21,0,0" VerticalAlignment="Top" Width="27" Click="Button_Click_1"/>
                     <ScrollViewer Margin="0,62,0,0">

@@ -18,17 +18,18 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     /// <summary>
     /// Логика взаимодействия для CEDStack.xaml
     /// </summary>
-    public partial class CEDStack : UserControl
+    public partial class CEDStackUI : UserControl
     {
-        CEDStackContainerControl handler;
-        public CEDStack(CEDStackContainerControl handler)
+        public CEDStackHandler handler;
+        public StackPanel StackPanel => stackPanel;
+        public Button AddButton => addButton;
+        public CEDStackUI()
         {
             InitializeComponent();
-            this.handler = handler;
         }
-        void a()
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
+            addButton.ContextMenu.IsOpen = true;
         }
     }
 }

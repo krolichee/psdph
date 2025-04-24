@@ -1,10 +1,13 @@
 ﻿using psdPH.Logic;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using Rule = psdPH.Logic.Rule;
 
 namespace psdPH.RuleEditor
 {
@@ -22,21 +25,29 @@ namespace psdPH.RuleEditor
             return string.Join(" ", parts);
 
         }
-        void textblockView(ConditionRule rule)
+        string[] getConditionParts(ConditionRule rule)
         {
-            Parameter[] conditionParameters = rule.Condition.Parameters;
-            Parameter[] ruleParameters = rule.Parameters;
             List<string> parts = new List<string>();
+            Logic.Rules.Condition condition = rule.Condition;
+            Parameter[] conditionParameters = condition.Parameters;
             parts.Add("Если");
-            parts.Add(rule.Condition.ToString());
+            parts.Add(condition.ToString());
             parts.Add(getText(conditionParameters));
             parts.Add(", то");
+            return parts.ToArray();
+        }
+        void textblockView(Rule rule)
+        {
+            Parameter[] ruleParameters = rule.Parameters;
+            List<string> parts = new List<string>();
+            if (rule is ConditionRule)
+                parts.AddRange(getConditionParts((ConditionRule)rule));
             parts.Add(rule.ToString());
             parts.Add(getText(ruleParameters));
             Text = string.Join(" ", parts);
             TextWrapping = System.Windows.TextWrapping.Wrap;
         }
-        public RuleTextBlock(ConditionRule rule)
+        public RuleTextBlock(Rule rule)
         {
             textblockView(rule);
         }
