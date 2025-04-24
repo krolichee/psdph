@@ -8,11 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static psdPH.TemplateEditor.RuleDict;
+using static psdPH.TemplateEditor.RuleDicts;
 
 namespace psdPH.TemplateEditor
 {
-    public static class RuleDict
+    public static class RuleDicts
     {
         public delegate IRuleEditor CreateRule(Document doc, Composition composition);
         public delegate IRuleEditor EditRule(Document doc, Rule rule);

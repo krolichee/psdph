@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
 using static psdPH.TemplateEditor.StructureDicts;
-using static psdPH.TemplateEditor.RuleDict;
+using static psdPH.TemplateEditor.RuleDicts;
 
 namespace psdPH
 {
@@ -50,7 +50,7 @@ namespace psdPH
     public class StructureCommand : CEDCommand
     {
         protected StructureCommand(Document doc, Composition root) : base(doc, root) { }
-        protected override bool IsEditableCommand(object parameter) => EditorDict.ContainsKey(parameter.GetType());
+        protected override bool IsEditableCommand(object parameter) => StructureDicts.EditorDict.ContainsKey(parameter.GetType());
         protected override void CreateExecuteCommand(object parameter)
         {
             Composition root = parameter as Composition;
@@ -65,7 +65,7 @@ namespace psdPH
         }
         protected override void EditExecuteCommand(object parameter)
         {
-            EditorDict[parameter.GetType()](_doc, parameter as Composition).ShowDialog();
+            StructureDicts.EditorDict[parameter.GetType()](_doc, parameter as Composition).ShowDialog();
         }
         protected override void DeleteExecuteCommand(object parameter)
         {
@@ -80,17 +80,17 @@ namespace psdPH
         {
             Composition root = parameter as Composition;
             CreateRule creator_func;
-            if (!StructureDicts.CreatorDict.TryGetValue(root.GetType(), out creator_func))
+            if (!RuleDicts.CreatorDict.TryGetValue(root.GetType(), out creator_func))
                 throw new ArgumentException();
             IRuleEditor creator = creator_func(_doc, root);
             if (creator.ShowDialog() != true)
                 return;
-            Composition result = creator.GetResultComposition();
-            _root.addChild(result);
+            Rule result = creator.GetResultRule();
+            _root.RuleSet.Rules.Add(result);
         }
         protected override void EditExecuteCommand(object parameter)
         {
-            EditorDict[parameter.GetType()](_doc, parameter as Composition).ShowDialog();
+            RuleDicts.EditorDict[parameter.GetType()](_doc, parameter as Rule).ShowDialog();
         }
         protected override void DeleteExecuteCommand(object parameter)
         {

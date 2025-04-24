@@ -20,8 +20,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     /// </summary>
     public partial class CEDStack : UserControl
     {
-        CEDStackHandler handler;
-        public CEDStack(CEDStackHandler handler)
+        CEDStackContainerControl handler;
+        public CEDStack(CEDStackContainerControl handler)
         {
             InitializeComponent();
             this.handler = handler;

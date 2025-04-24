@@ -89,13 +89,13 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStack.xaml.cs">
       <DependentUpon>CEDStack.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackHandler.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackContainerControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionStackElement.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RelayCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RuleStackElement.xaml.cs">
       <DependentUpon>RuleStackElement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\RuleDict.cs" />
+    <Compile Include="TemplateEditor\RuleDicts.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
     <Compile Include="Utils\DataInputWindow.cs" />
     <Compile Include="Utils\EnumWrapper.cs" />
