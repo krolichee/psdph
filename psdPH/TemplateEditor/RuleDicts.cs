@@ -20,7 +20,7 @@ namespace psdPH.TemplateEditor
         public static Dictionary<Type, CreateRule>
             CreatorDict = new Dictionary<Type, CreateRule>
             (){
-        { typeof(Blob),(doc, composition) =>
+        { typeof(Rule),(doc, composition) =>
                  new RuleControlWindow(composition)
         } };
     
@@ -28,7 +28,7 @@ namespace psdPH.TemplateEditor
             EditorDict = new Dictionary<Type, EditRule>
             ()
             {
-                { typeof(Blob),(doc,rule)=>new RuleControlWindow(rule.Composition) }
+                { typeof(Rule),(doc,rule)=>new RuleControlWindow(rule.Composition) }
             };
     }
 

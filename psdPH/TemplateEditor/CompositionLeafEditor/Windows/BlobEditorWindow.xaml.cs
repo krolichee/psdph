@@ -60,14 +60,10 @@ namespace psdPH
             _doc = doc;
             InitializeComponent();
             Closing += (object sender, CancelEventArgs e) => DialogResult = true;
-            CEDStackUI structureStackUI = new CEDStackUI();
-            structureStackUI.handler = new StructureStackHandler(doc,root);
-            structureStackUI.handler.Initialize(structureStackUI);
-            structureTab.Content = structureStackUI;
-            CEDStackUI ruleStackUI = new CEDStackUI();
-            ruleStackUI.handler = new StructureStackHandler(doc, root);
-            ruleStackUI.handler.Initialize(ruleStackUI);
-            ruleTab.Content = ruleStackUI;
+            structureTab.Content = CEDStackUI.CreateCEDStack(
+                new StructureStackHandler(doc, root));
+            ruleTab.Content = CEDStackUI.CreateCEDStack(
+                new RuleStackHandler(doc, root));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

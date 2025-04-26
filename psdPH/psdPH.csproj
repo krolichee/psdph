@@ -91,10 +91,8 @@
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionStackElement.cs" />
+    <Compile Include="Utils\PsdPhContext.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RelayCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RuleStackElement.xaml.cs">
-      <DependentUpon>RuleStackElement.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TemplateEditor\RuleDicts.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
     <Compile Include="Utils\DataInputWindow.cs" />
@@ -183,10 +181,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackUI.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\RuleStackElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -14,8 +14,7 @@ namespace psdPH
 {
     public class CEDCommand
     {
-        protected Composition _root;
-        protected Document _doc;
+        PsdPhContext context;
 
         public ICommand CreateCommand => new RelayCommand(CreateExecuteCommand, (_) => true);
         public ICommand EditCommand=> new RelayCommand(EditExecuteCommand, IsEditableCommand);

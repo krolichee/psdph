@@ -28,7 +28,9 @@ namespace psdPH
                 {typeof(TextLeaf), "Текст" },
                 {typeof(LayerLeaf), "Слой" },
                 {typeof(GroupLeaf), "Группа" },
-                {typeof(TextAreaLeaf),"Поле для текста" }
+                {typeof(TextAreaLeaf),"Поле для текста" },
+
+                {typeof(Rule), "Правило" },
 
         };
         public static string GetLocalizedDescription(Type type)

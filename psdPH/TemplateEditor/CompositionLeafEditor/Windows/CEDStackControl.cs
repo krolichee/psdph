@@ -12,14 +12,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Media3D;
+using static psdPH.TemplateEditor.CompositionLeafEditor.Windows.StructureStackHandler;
 using Rule = psdPH.Logic.Rule;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
     abstract public class CEDStackControl<T>:Button
     {
-        protected Document _doc;
-        protected Composition _root;
+        protected PsdPhContext context;
         abstract public ICommand DeleteCommand();
         abstract public ICommand EditCommand();
         protected void setMenu(FrameworkElement control, T @object)
@@ -33,17 +33,17 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             }
                 );
         }
+
     }
     class StructureStackControl : CEDStackControl<Composition>
     {
         public override ICommand DeleteCommand() =>
-            new StructureCommand(_doc, _root).DeleteCommand;
+            new StructureCommand(context).DeleteCommand;
         public override ICommand EditCommand()=>
-            new StructureCommand(_doc, _root).EditCommand;
-        public StructureStackControl(Composition composition,Document doc, Composition root)
+            new StructureCommand(context).EditCommand;
+        public StructureStackControl(Composition composition,PsdPhContext context)
         {
-            _doc = doc;
-            _root = root;
+            this.context = context;
             ICommand editCommand = EditCommand();
             ICommand deleteCommand = DeleteCommand();
             var grid = new Grid();
@@ -61,6 +61,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             });
             Height = 28;
             Content = grid;
+            CommandParameter = composition;
             Command = editCommand;
             setMenu(this, composition);
         }
@@ -72,7 +73,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         public StackPanel Stack;
         protected abstract void addControl(object item);
         protected abstract object[] getElements();
-        protected void Refresh() {
+        public void Refresh() {
             Stack.Children.Clear();
             object[] elements = getElements();
             foreach (object item in elements)
@@ -85,9 +86,15 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             InitializeAddDropDownMenu(cEDStackUI.AddButton);
             Stack = cEDStackUI.StackPanel;
         }
+        public CEDStackHandler(Document doc, Composition root)
+        {
+            _doc = doc;
+            _root = root;
+        }
     }
-    public class StructureStackHandler : CEDStackHandler
+    public partial class StructureStackHandler : CEDStackHandler
     {
+        
         override protected MenuItem CreateAddMenuItem(Type type)
         {
             return new MenuItem()
@@ -106,21 +113,19 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             contextMenu.ItemsSource = items;
             button.ContextMenu = contextMenu;
         }
-
         
         protected override void addControl(object item)
         {
-            var button = new StructureStackControl((Composition)item, _doc, _root);
-            button.Width = Stack.RenderSize.Width;
+            var context = new PsdPhContext(_doc, _root);
+            var button = new StructureStackControl((Composition)item, context);
+            //button.Width = Stack.RenderSize.Width;
             Stack.Children.Add(button);
         }
         protected override object[] getElements()=>
             _root.getChildren();
 
-        public StructureStackHandler(Document doc, Composition root)
+        public StructureStackHandler(Document doc, Composition root):base(doc,root)
         {
-            _doc = doc;
-            _root = root;
             _root.ChildrenUpdatedEvent += Refresh;
         }
     }
@@ -137,8 +142,9 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             ICommand editCommand = EditCommand();
             ICommand deleteCommand = DeleteCommand();
             var rtb = new RuleTextBlock((Rule)rule);
-            Height = 28;
+            //Height = 28;
             Content = rtb;
+            CommandParameter = rule;
             Command = editCommand;
             setMenu(this, rule);
         }
@@ -168,12 +174,12 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         override protected void addControl(object rule)
         {
             var button = new RuleStackControl((Rule)rule,_doc,_root);
-            button.Width = Stack.RenderSize.Width;
+            //button.Width = Stack.RenderSize.Width;
             Stack.Children.Add(button);
         }
         protected override object[] getElements() =>
             _root.RuleSet.Rules.Cast<Rule>().ToArray();
-        public RuleStackHandler(Document doc, Composition root)
+        public RuleStackHandler(Document doc, Composition root) : base(doc, root)
         {
             _root.RuleSet.Updated += Refresh;
         }
