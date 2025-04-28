@@ -54,7 +54,6 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             applied = true;
             foreach (var par in parameters)
                 par.Accept();
-            applied = true;
             Close();
         }
     }

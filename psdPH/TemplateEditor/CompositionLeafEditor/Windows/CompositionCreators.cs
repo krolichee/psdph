@@ -125,7 +125,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         public BlobCreator(Document doc, Blob root) : base()
         {
             result.LayerName = "";
-            string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer }));
+            string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psSmartObjectLayer }));
             var ln_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой");
             var ln_parameter = Parameter.Choose(ln_pconfig, layers_names);
             p_w = new ParametersInputWindow(new[] {ln_parameter});

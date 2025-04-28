@@ -7,17 +7,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Closed="Window_Closed">
     <Grid x:Name="MainGrid">
-        <Button Content="Button" HorizontalAlignment="Left" Margin="360,31,0,0" VerticalAlignment="Top" Click="Button_Click"/>
         <Menu VerticalAlignment="Top">
             <!-- Пункт меню "Файл" -->
             <MenuItem Header="Проект" Click="MenuItem_Click" >
                 <!-- Подменю -->
                 <MenuItem Header="Новый" Click="NewProjectMenuItem_Click" />
-                <MenuItem x:Name="openMenuItem" Header="Открыть" />
+                <MenuItem Header="Открыть" x:Name="openMenuItem" />
+                <MenuItem  Header="Закрыть" x:Name="closeProjectMenuItem"/>
                 <Separator/>
-                <MenuItem x:Name="templateMenuItem" Header="Редактировать шаблон" Click="templateMenuItem_Click" />
+                <MenuItem x:Name="templateMenuItem" Header="Редактировать шаблон" />
                 <Separator/>
-                <MenuItem x:Name="weekkViewMenuItem" Header="Недельный вид" Click="weekkViewMenuItem_Click" />
+                <MenuItem x:Name="weekkViewMenuItem" Header="Недельный вид" />
             </MenuItem>
 
             <!-- Пункт меню "Правка" -->

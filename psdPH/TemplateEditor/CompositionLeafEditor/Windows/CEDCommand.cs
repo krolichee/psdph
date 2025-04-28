@@ -9,13 +9,14 @@ using System.Windows;
 using System.Windows.Input;
 using static psdPH.TemplateEditor.StructureDicts;
 using static psdPH.TemplateEditor.RuleDicts;
+using psdPH.Utils;
 
 namespace psdPH
 {
-    public class CEDCommand
+    public abstract class CEDCommand
     {
-        PsdPhContext context;
-
+        protected Document _doc;
+        protected Composition _root;
         public ICommand CreateCommand => new RelayCommand(CreateExecuteCommand, (_) => true);
         public ICommand EditCommand=> new RelayCommand(EditExecuteCommand, IsEditableCommand);
         public ICommand DeleteCommand=>new RelayCommand(DeleteExecuteCommand, (_) => true);
@@ -23,6 +24,7 @@ namespace psdPH
         protected virtual void CreateExecuteCommand(object parameter) { }
         protected virtual void EditExecuteCommand(object parameter) { }
         protected virtual void DeleteExecuteCommand(object parameter) { }
+        protected CEDCommand(PsdPhContext context):this(context.doc,context.root){}
         protected CEDCommand(Document doc, Composition root)
         {
             _root = root;
@@ -31,7 +33,7 @@ namespace psdPH
     }
     public class StructureCommand : CEDCommand
     {
-        public StructureCommand(Document doc, Composition root) : base(doc, root) { }
+        public StructureCommand(PsdPhContext context) : base(context) { }
         protected override bool IsEditableCommand(object parameter) => StructureDicts.EditorDict.ContainsKey(parameter.GetType());
         protected override void CreateExecuteCommand(object parameter)
         {
@@ -56,7 +58,7 @@ namespace psdPH
     }
     public class RuleCommand : CEDCommand
     {
-        public RuleCommand(Document doc, Composition root) : base(doc, root) { }
+        public RuleCommand(PsdPhContext context) : base(context) { }
         protected override bool IsEditableCommand(object parameter) => StructureDicts.EditorDict.ContainsKey(parameter.GetType());
         protected override void CreateExecuteCommand(object parameter)
         {

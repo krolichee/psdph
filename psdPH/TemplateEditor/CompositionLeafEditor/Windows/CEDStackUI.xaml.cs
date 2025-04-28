@@ -21,6 +21,9 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     /// </summary>
     public partial class CEDStackUI : UserControl
     {
+        public CEDStackHandler handler;
+        public StackPanel StackPanel => stackPanel;
+        public Button AddButton => addButton;
         public static CEDStackUI CreateCEDStack(CEDStackHandler handler)
         {
             CEDStackUI result = new CEDStackUI(handler);
@@ -32,9 +35,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             this.handler = handler;
             InitializeComponent();
         }
-        public CEDStackHandler handler;
-        public StackPanel StackPanel => stackPanel;
-        public Button AddButton => addButton;
+        
         
         private void Button_Click(object sender, RoutedEventArgs e)
         {

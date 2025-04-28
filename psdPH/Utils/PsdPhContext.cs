@@ -1,9 +1,7 @@
 ﻿using Photoshop;
 
-namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
+namespace psdPH.Utils
 {
-    public partial class StructureStackHandler
-    {
         public struct PsdPhContext
         {
             public Document doc;
@@ -14,5 +12,4 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
                 this.root = root;
             }
         }
-    }
 }

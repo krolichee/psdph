@@ -1,25 +1,22 @@
 ﻿using Photoshop;
-using psdPH.Logic;
 using psdPH.RuleEditor;
+using psdPH.Utils;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Media3D;
-using static psdPH.TemplateEditor.CompositionLeafEditor.Windows.StructureStackHandler;
 using Rule = psdPH.Logic.Rule;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
     abstract public class CEDStackControl<T>:Button
     {
-        protected PsdPhContext context;
+        protected PsdPhContext Context => new PsdPhContext(_doc, _root);
+        protected Document _doc;
+        protected Composition _root;
         abstract public ICommand DeleteCommand();
         abstract public ICommand EditCommand();
         protected void setMenu(FrameworkElement control, T @object)
@@ -38,12 +35,15 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     class StructureStackControl : CEDStackControl<Composition>
     {
         public override ICommand DeleteCommand() =>
-            new StructureCommand(context).DeleteCommand;
+            new StructureCommand(Context).DeleteCommand;
         public override ICommand EditCommand()=>
-            new StructureCommand(context).EditCommand;
+            new StructureCommand(Context).EditCommand;
         public StructureStackControl(Composition composition,PsdPhContext context)
         {
-            this.context = context;
+            HorizontalAlignment = HorizontalAlignment.Stretch;
+            HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            _doc = context.doc;
+            _root = context.root;
             ICommand editCommand = EditCommand();
             ICommand deleteCommand = DeleteCommand();
             var grid = new Grid();
@@ -68,6 +68,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     }
     abstract public class CEDStackHandler
     {
+        protected PsdPhContext Context => new PsdPhContext(_doc, _root);
         protected Document _doc;
         protected Composition _root;
         public StackPanel Stack;
@@ -100,7 +101,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             return new MenuItem()
             {
                 Header = TypeLocalization.GetLocalizedDescription(type),
-                Command = new StructureCommand(_doc,_root).CreateCommand,
+                Command = new StructureCommand(Context).CreateCommand,
                 CommandParameter = type
             };
         }
@@ -132,13 +133,16 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     public class RuleStackControl: CEDStackControl<Rule>
     {
         public override ICommand DeleteCommand()=>
-            new RuleCommand(_doc, _root).DeleteCommand;
+            new RuleCommand(Context).DeleteCommand;
 
-        public override ICommand EditCommand() => new RuleCommand(_doc, _root).EditCommand;
+        public override ICommand EditCommand() => 
+            new RuleCommand(Context).EditCommand;
         public RuleStackControl(Rule rule, Document doc, Composition root)
         {
             _doc = doc;
             _root = root;
+            HorizontalAlignment = HorizontalAlignment.Stretch;
+            HorizontalContentAlignment = HorizontalAlignment.Stretch;
             ICommand editCommand = EditCommand();
             ICommand deleteCommand = DeleteCommand();
             var rtb = new RuleTextBlock((Rule)rule);
@@ -158,7 +162,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             return new MenuItem()
             {
                 Header = TypeLocalization.GetLocalizedDescription(type),
-                Command = new RuleCommand(_doc, _root).CreateCommand,
+                Command = new RuleCommand(Context).CreateCommand,
                 CommandParameter = type
             };
         }

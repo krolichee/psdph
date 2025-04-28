@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using Path = System.IO.Path;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
+using psdPH.Utils;
 
 namespace psdPH.CollectionEditor
 {
@@ -82,9 +83,7 @@ namespace psdPH.CollectionEditor
         }
         void openCollection(string collectionName)
         {
-            string app_path = PsdPHApplicationDirectory.Path;
-            string collections_dir = System.IO.Path.Combine(app_path, "Collections");
-            string collection_dir = Path.Combine(collections_dir, collectionName);
+            string collection_dir = Path.Combine(Directories.CollectionsDirectory, collectionName);
             
             currentCollection = new ImageCollection(collection_dir);
             foreach (var bitmapImage in currentCollection.CollectionImages)
@@ -103,9 +102,8 @@ namespace psdPH.CollectionEditor
         public CollectionEditor()
         {
             InitializeComponent();
-            occ =  new OpenCollectionCommand(this);
-            string app_path = PsdPHApplicationDirectory.Path;
-            string collections_path =  System.IO.Path.Combine(app_path,"Collections");
+            occ = new OpenCollectionCommand(this);
+            string collections_path = Directories.CollectionsDirectory;
             string[] collections_paths = Directory.EnumerateDirectories(collections_path).ToArray();
             foreach (var item in collections_paths)
             {

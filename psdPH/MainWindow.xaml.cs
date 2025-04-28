@@ -36,6 +36,7 @@ using psdPH.Logic.Compositions;
 using System.IO.Pipes;
 using psdPH.Views.WeekView;
 using psdPH.Utils;
+using System.Runtime.Remoting;
 
 
 namespace psdPH
@@ -49,40 +50,66 @@ namespace psdPH
 
     public partial class MainWindow : Window
     {
-        public static double K_PixToWidth = 0.7488;
-
-        public static double K_WidthToPix = 0.7488;
-        static class Directories
-        {
-            public static string BaseDirectory;
-            public static string ProjectsDirectory => Path.Combine(BaseDirectory, "Projects");
-            public static string ProjectDirectory => Path.Combine(ProjectsDirectory, MainWindow.CurrentProjectName);
-            public static string ViewsDirectory => Path.Combine(ProjectDirectory, "Views");
-        }
-        public static string GetFieldName<T>(Expression<Func<T>> expression)
-        {
-            var body = (MemberExpression)expression.Body;
-            return body.Member.Name;
-        }
-        public static string CurrentProjectName;
-        //Dictionary<string,Type>
-        CropperWindow cropper = new CropperWindow(new System.Windows.Size(300, 500));
+        public static string CurrentProjectName = "";
         void OpenProject(string projectName)
         {
             CurrentProjectName = projectName;
             projectNameLabel.Content = CurrentProjectName;
         }
+        void CloseProject(object _)
+        {
+            CurrentProjectName = "";
+        }
+        bool tryCreateProject(string templatePath,string projectName)
+        {
+            string projectDirectory = Path.Combine(Directories.ProjectsDirectory, projectName);
+            if (Directory.Exists(projectDirectory))
+            {
+                MessageBox.Show("Такой проект уже существует");
+                return false;
+            }
+            Directory.CreateDirectory(projectDirectory);
+            string destinationPath = Path.Combine(projectDirectory, "template.psd");
+            try
+            {
+                // Копируем файл в целевую директорию
+                File.Copy(templatePath, destinationPath, overwrite: true);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при копировании файла: {ex.Message}");
+                return false;
+            }
+        }
         void NewProject()
         {
-            new PsdTemplateDropWindow().ShowDialog();
+            MessageBoxResult result;
+            do
+            {
+                result = MessageBox.Show("Откройте шаблонируемый файл в Photoshop, затем нажмите 'Ок'", "", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+                if (result == MessageBoxResult.Cancel)
+                    return;
+            } while (!PhotoshopWrapper.HasOpenDocuments());
+            if (result == MessageBoxResult.Cancel)
+                return;
+            var si_w = new StringInputWindow("Введите название нового проекта");
+            if (si_w.ShowDialog() != true)
+                return;
+            var filePath = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument.FullName;
+            MessageBox.Show(filePath);
+            tryCreateProject(filePath,si_w.getResultString());
+            LoadFoldersIntoMenu();
         }
-        public void InitializeMiscellanious()
+        public void InitializeBaseDirectory()
         {
-            Directories.BaseDirectory = Directory.GetCurrentDirectory();
+            string path = Path.Combine("C","ProgramData","psdPH");
+            Directory.CreateDirectory(path);
+            Directories.BaseDirectory = path; //Directory.GetCurrentDirectory();
         }
         public MainWindow()
         {
-           // Получаем типы из сборки
+            // Получаем типы из сборки
             //var psApp = PhotoshopWrapper.GetPhotoshopApplication();
             //var doc = psApp.ActiveDocument;
             //Console.WriteLine((doc.ActiveLayer as ArtLayer).GetBoundsSize());
@@ -93,29 +120,39 @@ namespace psdPH
             //layer.TextItem.Height = 100;
             //Console.WriteLine(layer.TextItem.Height);
             //layer.TextItem.Size -= 10;
-            InitializeMiscellanious();
+            InitializeBaseDirectory();
             InitializeComponent();
             LoadFoldersIntoMenu();
+            templateMenuItem.Command = new RelayCommand(templateMenuItem_Click, isProjectOpen);
+            weekkViewMenuItem.Command = new RelayCommand(weekkViewMenuItem_Click, isProjectOpen);
+            openMenuItem.Command = new RelayCommand(noneCommand, isAnyProject);
+            closeProjectMenuItem.Command = new RelayCommand(CloseProject, isProjectOpen);
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void noneCommand(object _) { }
+        private bool isAnyProject(object _)
         {
-            cropper.ShowDialog();
+           return getProjectsFolders().Any();
+        }
+        private string[] getProjectsFolders()
+        {
+            string directoryPath = Directories.ProjectsDirectory;
+            return Directory.GetDirectories(directoryPath);
+        }
+        private MenuItem makeOpenProjectMenuItem(string folder)
+        {
+            MenuItem folderMenuItem = new MenuItem();
+            folderMenuItem.Header = Path.GetFileName(folder);
+            folderMenuItem.Click += FolderMenuItem_Click;
+            return folderMenuItem;
         }
         private void LoadFoldersIntoMenu()
         {
-            string directoryPath = Directories.ProjectsDirectory; // Укажите путь к директории
-
-                string[] folders = Directory.GetDirectories(directoryPath);
-                foreach (string folder in folders)
-                {
-                    MenuItem folderMenuItem = new MenuItem
-                    {
-                        Header = Path.GetFileName(folder)
-                    };
-                    folderMenuItem.Click += FolderMenuItem_Click;
-                    openMenuItem.Items.Add(folderMenuItem);
-                }
-
+            LoadFoldersIntoMenu(getProjectsFolders());
+        }
+        private void LoadFoldersIntoMenu(string[] folders)
+        {
+            MenuItem[] items = folders.Select(makeOpenProjectMenuItem).ToArray();
+            openMenuItem.ItemsSource = items;
         }
         private void FolderMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -131,26 +168,27 @@ namespace psdPH
         {
             NewProject();
         }
-        
-        private void templateMenuItem_Click(object sender, RoutedEventArgs e)
+        bool isProjectOpen(object _)
         {
-            Blob blob = openMainBlob();
+            return CurrentProjectName != "";
+        }
+        private void templateMenuItem_Click(object sender)
+        {
+            Blob blob = openMainBlob(CurrentProjectName);
             ICompositionShapitor editor = BlobEditorWindow.OpenFromDisk(blob);
             editor.ShowDialog();
-            saveBlob(blob);
+            saveBlob(blob, CurrentProjectName);
         }
-        
-
-        private void weekkViewMenuItem_Click(object sender, RoutedEventArgs e)
+        private void weekkViewMenuItem_Click(object _)
         {
-            Blob blob = openMainBlob();
+            Blob blob = openMainBlob(CurrentProjectName);
             WeekConfig weekConfig = null;
             WeekListData weeksListData = null;
 
-            string configPath = Path.Combine(Directories.ViewsDirectory, "WeekView", "config.xml");
+            string configPath = Path.Combine(Directories.ViewsDirectory(CurrentProjectName), "WeekView", "config.xml");
             weekConfig = DiskOperations.openXml<WeekConfig>(configPath);
 
-            string dataPath = Path.Combine(Directories.ViewsDirectory, "WeekView", "data.xml");
+            string dataPath = Path.Combine(Directories.ViewsDirectory(CurrentProjectName), "WeekView", "data.xml");
             weeksListData = DiskOperations.openXml<WeekListData>(dataPath);
             if (weeksListData != null)
             {

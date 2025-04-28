@@ -4,6 +4,6 @@
     {
         string getResultString();
 
-        bool Select(string variant);
+        bool? ShowDialog();
     }
 }

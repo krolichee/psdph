@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:psdPH"
         mc:Ignorable="d"
-        Title="EditCompositionWindow" Height="140" Width="225">
+        Title="Выбор строки" Height="140" Width="225">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25*"/>

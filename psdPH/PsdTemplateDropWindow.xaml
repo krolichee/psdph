@@ -8,14 +8,14 @@
         <Grid Margin="0,65,0,40">
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFE6E1E1" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="#FFE6E6E6" Offset="1"/>
+                    <GradientStop Color="White"/>
                 </LinearGradientBrush>
             </Grid.Background>
-            <TextBlock x:Name="labelDrop" Text="Перетащите файл сюда" 
+            <TextBlock x:Name="labelDrop" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
-                   FontSize="20"/>
+                   FontSize="20" Text="Перетащите файл .psd"/>
             <TextBox x:Name="projectNameTB" HorizontalAlignment="Left" Margin="183,-33,0,0" TextWrapping="Wrap" Text="Новый проект" VerticalAlignment="Top" Width="120"/>
             <Label Content="Ввод названия проекта" HorizontalAlignment="Left" Margin="40,-41,0,0" VerticalAlignment="Top"/>
 

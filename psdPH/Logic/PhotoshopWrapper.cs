@@ -40,5 +40,40 @@ namespace psdPH
             psApp.Open(filePath);
             return psApp.ActiveDocument;
         }
+        // Проверяет, открыто ли приложение Photoshop
+        public static bool IsPhotoshopRunning()
+        {
+            try
+            {
+                // Пытаемся получить запущенный экземпляр Photoshop
+                psApp = Marshal.GetActiveObject("Photoshop.Application") as Application;
+                return psApp != null;
+            }
+            catch (COMException)
+            {
+                // Photoshop не запущен
+                return false;
+            }
+        }
+
+        // Проверяет, есть ли открытые документы в Photoshop
+        public static bool HasOpenDocuments()
+        {
+            return HasOpenDocuments(GetPhotoshopApplication());
+        }
+        public static bool HasOpenDocuments(Application psApp)
+        {
+            if (psApp == null)
+                return false;
+
+            try
+            {
+                return psApp.Documents.Count > 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

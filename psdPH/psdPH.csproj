@@ -73,11 +73,11 @@
     <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
       <DependentUpon>CollectionEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CollectionEditor\PsdPHApplicationDirectory.cs" />
-    <Compile Include="CollectionImageSelector.xaml.cs">
-      <DependentUpon>CollectionImageSelector.xaml</DependentUpon>
+    <Compile Include="StringInputWindow.xaml.cs">
+      <DependentUpon>StringInputWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageSelectorWindow.xaml.cs">
+    <Compile Include="Utils\Directories.cs" />
+    <Compile Include="CollectionEditor\ImageSelectorWindow.xaml.cs">
       <DependentUpon>ImageSelectorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\Compositions\Blob.cs" />
@@ -85,14 +85,14 @@
     <Compile Include="Logic\Compositions\LayerCompositions.cs" />
     <Compile Include="Logic\PhotoshopLayerExtension.cs" />
     <Compile Include="Logic\Rules\TextRules.cs" />
-    <Compile Include="MainWindow.Disk.cs" />
+    <Compile Include="MainWindow.BlobSave.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackUI.xaml.cs">
       <DependentUpon>CEDStackUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionStackElement.cs" />
     <Compile Include="Utils\PsdPhContext.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RelayCommand.cs" />
+    <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="TemplateEditor\RuleDicts.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
     <Compile Include="Utils\DataInputWindow.cs" />
@@ -172,11 +172,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CollectionImageSelector.xaml">
+    <Page Include="CollectionEditor\ImageSelectorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImageSelectorWindow.xaml">
+    <Page Include="StringInputWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

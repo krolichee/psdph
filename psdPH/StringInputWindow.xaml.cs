@@ -16,31 +16,26 @@ using System.Windows.Shapes;
 namespace psdPH
 {
     /// <summary>
-    /// Логика взаимодействия для LayerChoiceWindow.xaml
+    /// Логика взаимодействия для StringInputWindow.xaml
     /// </summary>
-    public partial class StringChoiceWindow : Window,IStringEditor
+    public partial class StringInputWindow : Window, IStringEditor
     {
-        protected string _result = "";
-        protected StringChoiceControl scc;
-        public StringChoiceWindow(string[] items,string annotation)
+        public StringInputWindow(string annotation)
         {
             InitializeComponent();
-            scc = new StringChoiceControl(items, annotation);
-            stackPanel.Children.Insert(0,scc);
+            Title = annotation;
+            tb.Focus();
         }
-
         public string getResultString()
         {
-            return _result;
+            return tb.Text;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
-            _result = scc.getResultString();
+            if (tb.Text != "")
+                DialogResult = true;
             Close();
         }
-
-        
     }
 }
