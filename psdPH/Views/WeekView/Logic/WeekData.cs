@@ -17,7 +17,13 @@ namespace psdPH
         public Blob MainBlob;
         public List<DowBlobPair> DowBlobList=new List<DowBlobPair>();
         [XmlIgnore]
-        public Dictionary<DayOfWeek, Blob> DayBlobsDict
+        WeekListData weekListData;
+        [XmlIgnore]
+        public Blob RootBlob => weekListData.RootBlob;
+        [XmlIgnore]
+        public WeekConfig WeekConfig => weekListData.WeekConfig;
+        [XmlIgnore]
+        public Dictionary<DayOfWeek, Blob> DowBlobsDict
         {
             get => DowBlobList.ToDictionary(p => p.Dow, p => p.Blob); 
             set
@@ -32,11 +38,11 @@ namespace psdPH
         {
             
         }
-        public void Restore()
+        public void Restore(WeekListData weekListData)
         {
-            MainBlob.Restore();
+            this.weekListData = weekListData;
             foreach (var item in DowBlobList)
-                item.Blob.Restore(MainBlob);
+                item.Blob.Restore();
         }
         public WeekData Clone()
         {
@@ -46,37 +52,45 @@ namespace psdPH
             serializer.Serialize(sw, this);
             StringReader sr = new StringReader(sb.ToString());
             WeekData result = serializer.Deserialize(sr) as WeekData;
-            result.Restore();
+            result.Restore(weekListData);
             return result;
         }
-        string getWeekDatesString(int week)
+        public string getWeekDatesString(int week)
         {
+            string result="";
             DateTime monday = WeekTime.GetDateByWeekAndDay(week,DayOfWeek.Monday);
             DateTime sunday = WeekTime.GetDateByWeekAndDay(week,DayOfWeek.Sunday);
-            return monday.ToString("dd.MM") + " - " + sunday.ToString("dd.MM");
-
+            if (monday.Month != sunday.Month)
+                result = monday.ToString("dd MMMM") + " - " + sunday.ToString("dd MMMM");
+            else
+                result = monday.ToString("dd") + " - " + sunday.ToString("dd MMMM");
+            return result;
         }
-        void fillDateAndDow(Blob blob, DateTime dateTime, WeekConfig weekConfig)
+        void fillDateAndDow(Blob blob, DateTime dateTime)
         {
-            weekConfig.GetDateTextLeaf(blob).Text = dateTime.ToString("dd").ToLower();
-            weekConfig.GetDowTextLeaf(blob).Text = dateTime.ToString("ddd").ToLower();
+            var dateTextLeaf = WeekConfig.GetDateTextLeaf(blob);
+            var dowTextLeaf = WeekConfig.GetDowTextLeaf(blob);
+            dateTextLeaf.Text = dateTime.ToString("dd").ToLower();
+            dowTextLeaf.Text = dateTime.ToString("ddd").ToLower();
             
         }
-        public WeekData(int week, WeekConfig weekConfig, Blob mainBlobPrototype) {
+        public WeekData(int week,WeekListData weekListData) {
+            this.weekListData = weekListData;
             Week = week;
-            MainBlob = mainBlobPrototype.Clone();
-            weekConfig.GetWeekDatesTextLeaf(MainBlob).Text = getWeekDatesString(week);
-            PrototypeLeaf prototype = MainBlob.getChildren<PrototypeLeaf>().First(p => p.LayerName == weekConfig.PrototypeLayerName);
-            foreach (var item in weekConfig.DowPrototypeLayernameDict)
+            var mainBlobPrototype = weekListData.RootBlob;
+            Restore(weekListData);
+            
+            var mainBlob = mainBlobPrototype.Clone();
+            WeekConfig.GetWeekDatesTextLeaf(mainBlob).Text = getWeekDatesString(week);
+            PrototypeLeaf prototype = WeekConfig.GetDayPrototype(mainBlob);
+            foreach (var item in WeekConfig.DowPrototypeLayernameDict)
             {
                 var dayBlob = prototype.Blob.Clone();
-                fillDateAndDow(dayBlob, WeekTime.GetDateByWeekAndDay(week, item.Key), weekConfig);
+                fillDateAndDow(dayBlob, WeekTime.GetDateByWeekAndDay(week, item.Key));
                 DowBlobList.Add(new DowBlobPair(item.Key, dayBlob));
             }
         }
-        public WeekData()
-        {
-        }
+        public WeekData(){}
     }
     [Serializable]
     public class DowBlobPair

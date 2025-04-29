@@ -24,8 +24,8 @@ namespace psdPH
         {
             InitializeComponent();
             rowStack.Children.Add(new WeekTile(data, weekConfig));
-            foreach (KeyValuePair<DayOfWeek, Blob> item in data.DayBlobsDict)
-                rowStack.Children.Add(new DayTile(weekConfig, item.Key, data.DayBlobsDict[item.Key]));
+            foreach (KeyValuePair<DayOfWeek, Blob> item in data.DowBlobsDict)
+                rowStack.Children.Add(new DayTile(weekConfig, item.Key, data.DowBlobsDict[item.Key]));
         }
     }
 }

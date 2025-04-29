@@ -1,42 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using psdPH.Logic.Compositions;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.Utils;
+using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
-using System.Diagnostics;
-using Photoshop;
-using System.Xml.Linq;
-using psdPH.TemplateEditor;
-using System.Xml;
-using System.Collections;
-using psdPH.Logic;
-using System.Xml.Serialization;
 using Path = System.IO.Path;
-using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
-using System.Runtime.Remoting.Metadata;
-using System.Linq.Expressions;
-using Condition = psdPH.Logic.Rules.Condition;
-using static psdPH.WeekViewWindow;
-using PhotoshopTypeLibrary;
-using psdPH.Logic.Compositions;
-using System.IO.Pipes;
-using psdPH.Views.WeekView;
-using psdPH.Utils;
-using System.Runtime.Remoting;
 
 
 namespace psdPH
@@ -174,14 +144,14 @@ namespace psdPH
         }
         private void templateMenuItem_Click(object sender)
         {
-            Blob blob = openMainBlob(CurrentProjectName);
+            Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
             ICompositionShapitor editor = BlobEditorWindow.OpenFromDisk(blob);
             editor.ShowDialog();
-            saveBlob(blob, CurrentProjectName);
+            PsdPhProject.saveBlob(blob, CurrentProjectName);
         }
         private void weekkViewMenuItem_Click(object _)
         {
-            Blob blob = openMainBlob(CurrentProjectName);
+            Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
             WeekConfig weekConfig = null;
             WeekListData weeksListData = null;
 

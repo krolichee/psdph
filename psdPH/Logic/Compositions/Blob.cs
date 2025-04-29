@@ -28,7 +28,7 @@ namespace psdPH.Logic.Compositions
         public override string UIName => "Подфайл";
         public BlobMode Mode;
         [XmlArray("Children")]
-        public Composition[] Children = new Composition[0];
+        public  Composition[] Children = new Composition[0];
         public string Path;
         public bool IsPrototyped()
         {

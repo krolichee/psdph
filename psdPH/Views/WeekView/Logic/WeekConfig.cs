@@ -60,6 +60,10 @@ namespace psdPH
         {
             return blob.getChildren<TextLeaf>().First(_ => _.LayerName == DowTextLeafLayerName);
         }
+        internal PrototypeLeaf GetDayPrototype(Blob blob)
+        {
+            return blob.getChildren<PrototypeLeaf>().First(p => p.LayerName == PrototypeLayerName);
+        }
         //public void Restore(Prototype prototype)
         //{
         //    Prototype = prototype;

@@ -2,21 +2,10 @@
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Shapes;
-using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace psdPH
 {
@@ -36,6 +25,7 @@ namespace psdPH
         public delegate void RulesetUpdated();
         public delegate void ChildrenUpdated();
         public event ChildrenUpdated ChildrenUpdatedEvent;
+        public event RulesetUpdated RulesetUpdatedEvent;
         public string XmlName
         {
             get
@@ -80,7 +70,7 @@ namespace psdPH
         virtual public T[] getChildren<T>() { return null; }
         public RuleSet RuleSet = new RuleSet();
 
-        public Composition() { ChildrenUpdatedEvent+= ()=>Restore(); }
+        public Composition() { ChildrenUpdatedEvent+= ()=>Restore(); RuleSet.Updated += () => RulesetUpdatedEvent?.Invoke(); }
     }
     
     [Serializable]

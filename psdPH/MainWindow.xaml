@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:psdPH"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Closed="Window_Closed">
-    <Grid x:Name="MainGrid">
+        Title="MainWindow" Height="150" Width="270" Closed="Window_Closed">
+    <Grid x:Name="MainGrid" Margin="0,0,0,-6">
         <Menu VerticalAlignment="Top">
             <!-- Пункт меню "Файл" -->
             <MenuItem Header="Проект" Click="MenuItem_Click" >
@@ -34,8 +34,5 @@
         </Menu>
         <Label Content="Текущий проект:" HorizontalAlignment="Left" Margin="10,28,0,0" VerticalAlignment="Top"/>
         <Label x:Name="projectNameLabel" Content="" HorizontalAlignment="Left" Margin="117,28,0,0" VerticalAlignment="Top"/>
-
-
-
     </Grid>
 </Window>

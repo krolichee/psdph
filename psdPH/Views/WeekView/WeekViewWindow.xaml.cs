@@ -33,10 +33,8 @@ namespace psdPH
         Document doc;
         public WeekViewWindow(Blob root, WeekConfig weekDowsConfig = null, WeekListData weekListData = null)
         {
-
             var psApp = PhotoshopWrapper.GetPhotoshopApplication();
             doc = PhotoshopWrapper.OpenDocument(psApp, root.Path);
-
             if (weekDowsConfig == null)
             {
                 WeekConfigEditor wce_w = new WeekConfigEditor(root);
@@ -59,19 +57,6 @@ namespace psdPH
             InitializeComponent();
             refreshWeekStack();
         }
-        void renderWeek(WeekData weekData)
-        {
-            WeekData new_weekData = weekData.Clone();
-            PlaceholderLeaf[] prototypes = new_weekData.MainBlob.getChildren<PlaceholderLeaf>();
-            Dictionary<DayOfWeek, PlaceholderLeaf> dowPlaceholderList = prototypes.ToDictionary(p=>WeekConfig.DowPrototypeLayernameList.First(dp=>dp.Layername==p.LayerName).Dow,p=>p);
-            foreach (var dowBlob in new_weekData.DowBlobList)
-            {
-                var ph = dowPlaceholderList[dowBlob.Dow];
-                ph.ReplaceWithFiller(doc,dowBlob.Blob);
-            }
-            new_weekData.MainBlob.Apply(doc);
-        }
-
         void refreshWeekStack()
         {
             weeksStack.Children.Clear();
@@ -87,13 +72,13 @@ namespace psdPH
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            WeekListData.NewWeek(WeekConfig, WeekListData.RootBlob);
+            WeekListData.NewWeek();
             refreshWeekStack();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            renderWeek(WeekListData.Weeks[0]);
+            WeekRenderer.renderWeek(WeekListData.Weeks[0],doc);
         }
     }
 }
