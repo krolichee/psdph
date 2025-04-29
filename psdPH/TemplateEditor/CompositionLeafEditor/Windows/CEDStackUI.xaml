@@ -4,18 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:psdPH.TemplateEditor.CompositionLeafEditor.Windows"
-             mc:Ignorable="d" Width="320" Height="460" Loaded="UserControl_Loaded">
+             mc:Ignorable="d" MinWidth="320" MinHeight="459" Loaded="UserControl_Loaded">
     <Grid>
-        <Grid Background="#FFE5E5E5" Margin="0,0,0,0">
-            <ScrollViewer Margin="0,62,0,0">
+        <Grid Background="#FFE5E5E5" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="67*"/>
+                <RowDefinition Height="404*"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="1" Margin="0,1,0,0">
                 <StackPanel x:Name="stackPanel"/>
             </ScrollViewer>
-            <Button x:Name="addButton" Content="+" HorizontalAlignment="Left" Height="24" Margin="10,21,0,0" VerticalAlignment="Top" Width="27" Click="Button_Click">
+            <Button x:Name="addButton" Content="+" HorizontalAlignment="Left" Height="24" Margin="10,0,0,0" VerticalAlignment="Center" Width="27" Click="Button_Click">
                 <Button.ContextMenu>
                     <ContextMenu x:Name="CreateDropdownMenu" >
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
+            <Separator Margin="0,0,0,0" VerticalAlignment="Bottom" Background="#FFBDB0B0" Height="1"/>
         </Grid>
     </Grid>
 </UserControl>
