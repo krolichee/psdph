@@ -4,6 +4,7 @@ using psdPH;
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Rules;
+using psdPH.Views.WeekView;
 
 
 namespace psdPHTest.Automatic
@@ -11,20 +12,7 @@ namespace psdPHTest.Automatic
     [TestClass]
     public class DateFormat
     {
-        [TestClass]
-        public class sss
-        {
-            [TestMethod]
-            public void Default()
-            {
-                Console.WriteLine(new WeekData().getWeekDatesString(39));
-            }
-        }
-        [TestMethod]
-        public void Default()
-        {
-           Console.WriteLine(new WeekData().getWeekDatesString(39));
-        }
+        
     }
     [TestClass]
     public class CompositionTest
@@ -73,5 +61,5 @@ namespace psdPHTest.Automatic
 }
 namespace psdPHTest.Manual
 {
-    
+
 }

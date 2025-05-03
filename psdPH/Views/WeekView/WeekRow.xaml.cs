@@ -13,15 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace psdPH
+namespace psdPH.Views.WeekView
 {
     /// <summary>
     /// Логика взаимодействия для WeekRow.xaml
     /// </summary>
     public partial class WeekRow : UserControl
     {
-        public WeekRow(WeekConfig weekConfig, WeekData data)    
+        public WeekRow( WeekData data)    
         {
+            var weekConfig = data.WeekConfig;
             InitializeComponent();
             rowStack.Children.Add(new WeekTile(data, weekConfig));
             foreach (KeyValuePair<DayOfWeek, Blob> item in data.DowBlobsDict)

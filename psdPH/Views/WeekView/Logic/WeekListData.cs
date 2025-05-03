@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic.Compositions;
+using psdPH.Views.WeekView;
 using psdPH.Views.WeekView.Logic;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,13 @@ namespace psdPH
     [XmlInclude(typeof(Blob))]
     public class WeekListData
     {
+        public static WeekListData Create(WeekConfig weekConfig, Blob root)
+        {
+            var result = new WeekListData();
+            result.WeekConfig = weekConfig;
+            result.RootBlob = root;
+            return result;
+        }
         [XmlIgnore]
         public WeekConfig WeekConfig;
         public List<WeekData> Weeks = new List<WeekData>();

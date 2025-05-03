@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="psdPH.WeekRow"
+﻿<UserControl x:Class="psdPH.Views.WeekView.WeekRow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

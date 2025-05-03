@@ -1,6 +1,7 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.Utils;
+using psdPH.Views.WeekView;
 using System;
 using System.IO;
 using System.Linq;
@@ -73,9 +74,8 @@ namespace psdPH
         }
         public void InitializeBaseDirectory()
         {
-            string path = Path.Combine("C","ProgramData","psdPH");
-            Directory.CreateDirectory(path);
-            Directories.BaseDirectory = path; //Directory.GetCurrentDirectory();
+            string path = Path.Combine(@"C:\","ProgramData","psdPH");
+            Directories.SetBaseDirectory(path); //Directory.GetCurrentDirectory();
         }
         public MainWindow()
         {
@@ -152,27 +152,16 @@ namespace psdPH
         private void weekkViewMenuItem_Click(object _)
         {
             Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
-            WeekConfig weekConfig = null;
-            WeekListData weeksListData = null;
-
-            string configPath = Path.Combine(Directories.ViewsDirectory(CurrentProjectName), "WeekView", "config.xml");
-            weekConfig = DiskOperations.openXml<WeekConfig>(configPath);
-
-            string dataPath = Path.Combine(Directories.ViewsDirectory(CurrentProjectName), "WeekView", "data.xml");
-            weeksListData = DiskOperations.openXml<WeekListData>(dataPath);
-            if (weeksListData != null)
-            {
-                weeksListData.Restore();
-                weeksListData.RootBlob = blob;
-            }
-
-            var wv_w = new WeekViewWindow(blob, weekConfig, weeksListData);
+            var weekListData = WeekView.openOrCreateWeekListData(CurrentProjectName, blob);
+            if (weekListData == null)
+                return;
+            var wv_w = new WeekViewWindow(weekListData);
+            WeekView.saveWeekListData(projectName, weekListData);
             if (wv_w.ShowDialog() == true)
             {
                 weekConfig = wv_w.WeekConfig;
                 weeksListData = wv_w.WeekListData;
-                DiskOperations.saveXml(configPath, weekConfig);
-                DiskOperations.saveXml(dataPath, weeksListData);
+                
             }
         }
 

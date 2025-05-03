@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace psdPH
+namespace psdPH.Views.WeekView
 {
     [Serializable]
     public class WeekData
@@ -55,17 +55,7 @@ namespace psdPH
             result.Restore(weekListData);
             return result;
         }
-        public string getWeekDatesString(int week)
-        {
-            string result="";
-            DateTime monday = WeekTime.GetDateByWeekAndDay(week,DayOfWeek.Monday);
-            DateTime sunday = WeekTime.GetDateByWeekAndDay(week,DayOfWeek.Sunday);
-            if (monday.Month != sunday.Month)
-                result = monday.ToString("dd MMMM") + " - " + sunday.ToString("dd MMMM");
-            else
-                result = monday.ToString("dd") + " - " + sunday.ToString("dd MMMM");
-            return result;
-        }
+        
         void fillDateAndDow(Blob blob, DateTime dateTime)
         {
             var dateTextLeaf = WeekConfig.GetDateTextLeaf(blob);
@@ -81,7 +71,7 @@ namespace psdPH
             Restore(weekListData);
             
             var mainBlob = mainBlobPrototype.Clone();
-            WeekConfig.GetWeekDatesTextLeaf(mainBlob).Text = getWeekDatesString(week);
+            WeekConfig.GetWeekDatesTextLeaf(mainBlob).Text = WeekDatesStrings.getWeekDatesString(week);
             PrototypeLeaf prototype = WeekConfig.GetDayPrototype(mainBlob);
             foreach (var item in WeekConfig.DowPrototypeLayernameDict)
             {

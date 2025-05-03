@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
+namespace psdPH.Utils.CedStack
 {
     /// <summary>
     /// Логика взаимодействия для CEDStack.xaml
@@ -35,8 +35,11 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             this.handler = handler;
             InitializeComponent();
         }
-        
-        
+
+        public CEDStackUI()
+        {
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             addButton.ContextMenu.IsOpen = true;
