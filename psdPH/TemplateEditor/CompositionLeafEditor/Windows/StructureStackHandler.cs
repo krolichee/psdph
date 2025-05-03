@@ -1,5 +1,4 @@
-﻿using Photoshop;
-using psdPH.Utils;
+﻿using psdPH.Utils;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -35,7 +34,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         protected override object[] getElements() =>
             _root.getChildren();
 
-        public StructureStackHandler(Document doc, Composition root) : base(doc, root)
+        public StructureStackHandler(PsdPhContext context) : base(context)
         {
             _root.ChildrenUpdatedEvent += Refresh;
         }

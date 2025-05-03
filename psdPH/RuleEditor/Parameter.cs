@@ -1,21 +1,10 @@
 ﻿using psdPH.Utils;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Messaging;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Xml.Serialization;
-using static psdPH.Logic.Parameter;
-using Condition = psdPH.Logic.Rules.Condition;
 
 namespace psdPH.Logic
 {
@@ -104,15 +93,15 @@ namespace psdPH.Logic
             stack.Children.Add(cb);
             return result;
         }
-        
+
         public static Parameter RichStringInput(ParameterConfig config)
         {
             var result = new Parameter(config);
             var stack = result._stack;
 
-            var rtb = new RichTextBox() { Width = 70,Height = 30 };
+            var rtb = new RichTextBox() { Width = 70, Height = 30 };
             rtb.TextChanged += RichTextBox_TextChanged;
-            result.valueFunc = () => getRtbText(rtb,"\r");
+            result.valueFunc = () => getRtbText(rtb, "\r");
             result.Control = rtb;
             stack.Children.Add(rtb);
             return result;
@@ -122,7 +111,7 @@ namespace psdPH.Logic
                 foreach (Paragraph item in (sender as RichTextBox).Document.Blocks)
                     item.Margin = new Thickness(0, 0, 0, 0);
             }
-            string getRtbText(RichTextBox  _rtb, string lineSep = "\n")
+            string getRtbText(RichTextBox _rtb, string lineSep = "\n")
             {
                 string _result = "";
                 foreach (Paragraph item in (_rtb).Document.Blocks)
@@ -143,7 +132,7 @@ namespace psdPH.Logic
             tb.Text = config.GetValue().ToString();
             result.Control = tb;
             stack.Children.Add(tb);
-            result.valueFunc = () =>tb.Text;
+            result.valueFunc = () => tb.Text;
             return result;
         }
         public static Parameter IntInput(ParameterConfig config, int? min = null, int? max = null)
@@ -155,7 +144,7 @@ namespace psdPH.Logic
             result.Control = ntb;
             ntb.Text = config.GetValue().ToString();
             stack.Children.Add(ntb);
-            result.valueFunc = () => ntb.GetNumber(); 
+            result.valueFunc = () => ntb.GetNumber();
             return result;
         }
         public static Parameter Check(ParameterConfig config)
@@ -167,7 +156,7 @@ namespace psdPH.Logic
             result.Control = chb;
             chb.IsChecked = (bool)config.GetValue();
             stack.Children.Add(chb);
-            result.valueFunc = () => chb.IsChecked;;
+            result.valueFunc = () => chb.IsChecked; ;
             return result;
         }
         public static Parameter EnumChoose(ParameterConfig config, Type @enum)

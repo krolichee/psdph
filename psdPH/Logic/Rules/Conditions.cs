@@ -1,11 +1,6 @@
 ﻿using psdPH.Logic.Compositions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic.Rules
@@ -34,11 +29,11 @@ namespace psdPH.Logic.Rules
     }
     public abstract class TextCondition : Condition
     {
-        
+
         //public ConditionRule rule;
         public string TextLeafLayerName;
 
-        protected TextCondition(Composition composition) : base(composition){}
+        protected TextCondition(Composition composition) : base(composition) { }
 
         [XmlIgnore]
         public TextLeaf TextLeaf
@@ -56,7 +51,7 @@ namespace psdPH.Logic.Rules
         {
             get
             {
-                
+
                 var result = new List<Parameter>();
                 var textLeafConfig = new ParameterConfig(this, nameof(this.TextLeaf), "поля");
                 TextLeaf[] textLeaves = Composition.getChildren<TextLeaf>();
@@ -64,12 +59,12 @@ namespace psdPH.Logic.Rules
                 return result.ToArray();
             }
         }
-        
+
     }
 
     public class MaxRowCountCondition : TextCondition
     {
-        public override string ToString()  => "количество строк";
+        public override string ToString() => "количество строк";
         [XmlIgnore]
         public override Parameter[] Parameters
         {
@@ -124,7 +119,7 @@ namespace psdPH.Logic.Rules
         public string FlagName;
 
 
-        
+
 
         public override Parameter[] Parameters
         {

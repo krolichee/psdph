@@ -1,18 +1,10 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace psdPH
 {
@@ -24,6 +16,8 @@ namespace psdPH
         Dictionary<DayOfWeek, string> dowLayerDictionary = new Dictionary<DayOfWeek, string>();
         public DowPlaceholderMatchWindow(PrototypeLeaf prot)
         {
+            Owner = TopmostWindow.Get();
+            WindowStartupLocation =WindowStartupLocation.CenterOwner;
             InitializeComponent();
             Closed += Window_Closed;
             Blob root = prot.Parent as Blob;

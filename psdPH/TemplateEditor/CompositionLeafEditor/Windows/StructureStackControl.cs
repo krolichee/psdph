@@ -9,9 +9,9 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     {
         public override ICommand DeleteCommand() =>
             new StructureCommand(Context).DeleteCommand;
-        public override ICommand EditCommand()=>
+        public override ICommand EditCommand() =>
             new StructureCommand(Context).EditCommand;
-        public StructureStackControl(Composition composition,PsdPhContext context):base(context)
+        public StructureStackControl(Composition composition, PsdPhContext context) : base(context)
         {
             HorizontalAlignment = HorizontalAlignment.Stretch;
             HorizontalContentAlignment = HorizontalAlignment.Stretch;

@@ -1,6 +1,5 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
-using psdPH.Utils;
 using psdPH.Views.WeekView;
 using System;
 using System.IO;
@@ -31,7 +30,7 @@ namespace psdPH
         {
             CurrentProjectName = "";
         }
-        bool tryCreateProject(string templatePath,string projectName)
+        bool tryCreateProject(string templatePath, string projectName)
         {
             string projectDirectory = Path.Combine(Directories.ProjectsDirectory, projectName);
             if (Directory.Exists(projectDirectory))
@@ -69,12 +68,14 @@ namespace psdPH
                 return;
             var filePath = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument.FullName;
             MessageBox.Show(filePath);
-            tryCreateProject(filePath,si_w.getResultString());
+            var projectName = si_w.getResultString();
+            if (tryCreateProject(filePath, projectName))
+                OpenProject(projectName);
             LoadFoldersIntoMenu();
         }
         public void InitializeBaseDirectory()
         {
-            string path = Path.Combine(@"C:\","ProgramData","psdPH");
+            string path = Path.Combine(@"C:\", "ProgramData", "psdPH");
             Directories.SetBaseDirectory(path); //Directory.GetCurrentDirectory();
         }
         public MainWindow()
@@ -94,14 +95,14 @@ namespace psdPH
             InitializeComponent();
             LoadFoldersIntoMenu();
             templateMenuItem.Command = new RelayCommand(templateMenuItem_Click, isProjectOpen);
-            weekkViewMenuItem.Command = new RelayCommand(weekkViewMenuItem_Click, isProjectOpen);
+            weekkViewMenuItem.Command = new RelayCommand(weekViewMenuItem_Click, isProjectOpen);
             openMenuItem.Command = new RelayCommand(noneCommand, isAnyProject);
             closeProjectMenuItem.Command = new RelayCommand(CloseProject, isProjectOpen);
         }
         private void noneCommand(object _) { }
         private bool isAnyProject(object _)
         {
-           return getProjectsFolders().Any();
+            return getProjectsFolders().Any();
         }
         private string[] getProjectsFolders()
         {
@@ -149,20 +150,16 @@ namespace psdPH
             editor.ShowDialog();
             PsdPhProject.saveBlob(blob, CurrentProjectName);
         }
-        private void weekkViewMenuItem_Click(object _)
+        private void weekViewMenuItem_Click(object _)
         {
+            var weekView = new WeekView(CurrentProjectName);
             Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
-            var weekListData = WeekView.openOrCreateWeekListData(CurrentProjectName, blob);
+            var weekListData = weekView.OpenOrCreateWeekListData(blob);
             if (weekListData == null)
                 return;
             var wv_w = new WeekViewWindow(weekListData);
-            WeekView.saveWeekListData(projectName, weekListData);
-            if (wv_w.ShowDialog() == true)
-            {
-                weekConfig = wv_w.WeekConfig;
-                weeksListData = wv_w.WeekListData;
-                
-            }
+            wv_w.ShowDialog();
+            weekView.SaveWeekListData(weekListData);
         }
 
         private void Window_Closed(object sender, EventArgs e)

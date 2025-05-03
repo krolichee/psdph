@@ -1,8 +1,8 @@
 ﻿using psdPH.TemplateEditor;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.Utils;
 using System;
 using static psdPH.TemplateEditor.StructureDicts;
-using psdPH.Utils;
 
 namespace psdPH
 {

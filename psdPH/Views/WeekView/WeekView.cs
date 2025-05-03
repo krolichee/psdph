@@ -1,68 +1,62 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.Utils;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.IO.Packaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Windows;
 
 namespace psdPH.Views.WeekView
 {
     public class WeekView
     {
-        static string ViewDirectory(string projectName)
-        {
-            return Path.Combine(Directories.ViewsDirectory(projectName), "WeekView");
-        }
-        static string ConfigPath(string projectName)
-        {
-            return Path.Combine(ViewDirectory( projectName), "config.xml");
-        } 
+        private readonly string _projectName;
 
-        static string WeekListDataPath(string projectName)
+        public WeekView(string projectName)
         {
-            return Path.Combine(ViewDirectory(projectName), "data.xml");
+            Directory.CreateDirectory(ViewDirectory);
+            _projectName = projectName;
         }
-        public static WeekConfig createWeekConfig(Blob root)
+
+        private string ViewDirectory => Path.Combine(Directories.ViewsDirectory(_projectName), "WeekView");
+        private string ConfigPath => Path.Combine(ViewDirectory, "config.xml");
+        private string WeekListDataPath => Path.Combine(ViewDirectory, "data.xml");
+
+        public static WeekConfig CreateWeekConfig(Blob root)
         {
             WeekConfigEditor wce_w = new WeekConfigEditor(root);
             if (!wce_w.ShowDialog())
                 return null;
             return wce_w.GetResultConfig();
         }
-        public static WeekConfig openOrCreateWeekConfig(string projectName, Blob root)
+
+        public WeekConfig OpenOrCreateWeekConfig(Blob root)
         {
-            string configPath = ConfigPath(projectName);
-            var weekConfig = DiskOperations.openXml<WeekConfig>(configPath);
+            var weekConfig = DiskOperations.OpenXml<WeekConfig>(ConfigPath);
             if (weekConfig == null)
-                weekConfig = createWeekConfig(root);
+                weekConfig = CreateWeekConfig(root);
             return weekConfig;
         }
-        public static WeekListData openOrCreateWeekListData(string projectName, Blob root)
+
+        public WeekListData OpenOrCreateWeekListData(Blob root)
         {
-            string dataPath = WeekListDataPath(projectName);
-            var weeksListData = DiskOperations.openXml<WeekListData>(dataPath);
-            WeekConfig weekConfig;
-            weekConfig = openOrCreateWeekConfig(projectName, root);
+            var weeksListData = DiskOperations.OpenXml<WeekListData>(WeekListDataPath);
+            var weekConfig = OpenOrCreateWeekConfig(root);
+
             if (weekConfig == null)
                 return null;
+
             if (weeksListData == null)
                 weeksListData = WeekListData.Create(weekConfig, root);
             else
                 weeksListData.WeekConfig = weekConfig;
+
             weeksListData.Restore();
             weeksListData.RootBlob = root;
             return weeksListData;
         }
-        public static void saveWeekListData(string projectName,WeekListData weekListData)
+
+        public void SaveWeekListData(WeekListData weekListData)
         {
             var weekConfig = weekListData.WeekConfig;
-            DiskOperations.saveXml(ConfigPath(projectName), weekConfig);
-            DiskOperations.saveXml(WeekListDataPath(projectName), weekListData);
+            DiskOperations.SaveXml(ConfigPath, weekConfig);
+            DiskOperations.SaveXml(WeekListDataPath, weekListData);
         }
     }
 }

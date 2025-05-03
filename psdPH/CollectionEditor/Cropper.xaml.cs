@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace psdPH
 {
@@ -29,8 +21,10 @@ namespace psdPH
         private Size Size
         {
             get { return _size; }
-            set { _size = value; 
-            CutoutBorder.Width = _size.Width;
+            set
+            {
+                _size = value;
+                CutoutBorder.Width = _size.Width;
                 CutoutBorder.Height = _size.Height;
             }
         }
@@ -74,7 +68,7 @@ namespace psdPH
 
             // Применяем обрезку к основному элементу
             MainRectangle.Clip = combinedGeometry;
-            
+
         }
 
         private void window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -88,7 +82,7 @@ namespace psdPH
             double scaleFactor = e.Delta > 0 ? 1.1 : 0.9;
             ScaleTransform.ScaleX *= scaleFactor;
             ScaleTransform.ScaleY *= scaleFactor;
-            
+
         }
         private void UpdateRenderTransformOrigin()
         {
@@ -142,7 +136,7 @@ namespace psdPH
                 _isRotating = false;
                 image.ReleaseMouseCapture();
             }
-           //UpdateRenderTransformOrigin();
+            //UpdateRenderTransformOrigin();
         }
 
         private void ImageControl_MouseMove(object sender, MouseEventArgs e)

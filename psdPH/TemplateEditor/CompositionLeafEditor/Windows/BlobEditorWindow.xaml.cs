@@ -1,32 +1,16 @@
 ﻿using Photoshop;
-using psdPH;
 using psdPH.Logic;
-using psdPH.TemplateEditor;
+using psdPH.Logic.Compositions;
+using psdPH.RuleEditor;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.Utils;
+using psdPH.Utils.CedStack;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using PsApp = Photoshop.Application;
 using PsWr = psdPH.PhotoshopWrapper;
-using PsDocWr = psdPH.Logic.PhotoshopDocumentExtension;
-using System.ComponentModel;
-using psdPH.RuleEditor;
-using psdPH.Logic.Rules;
-using psdPH.Logic.Compositions;
-using System.Runtime.Remoting.Messaging;
-using System.Runtime.InteropServices;
 
 namespace psdPH
 {
@@ -36,6 +20,7 @@ namespace psdPH
 
     public partial class BlobEditorWindow : Window, ICompositionShapitor
     {
+
         Composition _composition;
         Document _doc;
         public static BlobEditorWindow OpenInDocument(Document doc, Blob blob)
@@ -54,16 +39,16 @@ namespace psdPH
             Document doc = psApp.Open(blob.Path);
             return new BlobEditorWindow(doc, blob);
         }
-        BlobEditorWindow(Document doc,Blob root)
+        BlobEditorWindow(Document doc, Blob root)
         {
             _composition = root;
             _doc = doc;
             InitializeComponent();
             Closing += (object sender, CancelEventArgs e) => DialogResult = true;
             structureTab.Content = CEDStackUI.CreateCEDStack(
-                new StructureStackHandler(doc, root));
+                new StructureStackHandler(new PsdPhContext(doc, root)));
             ruleTab.Content = CEDStackUI.CreateCEDStack(
-                new RuleStackHandler(doc, root));
+                new RuleStackHandler(new PsdPhContext(doc, root)));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -84,15 +69,7 @@ namespace psdPH
         }
         private void Window_Activated(object sender, EventArgs e)
         {
-            
-        }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            var rc_window = new RuleControlWindow(_composition);
-            if (rc_window.ShowDialog() != true)
-                return;
-            _composition.RuleSet.Rules.Add(rc_window.GetResultRule());
         }
     }
 }

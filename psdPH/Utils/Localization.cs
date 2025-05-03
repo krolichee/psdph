@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace psdPH
+﻿namespace psdPH
 {
     using Photoshop;
     using psdPH.Logic;
     using psdPH.Logic.Compositions;
     using System;
     using System.Collections.Generic;
-    using System.Windows;
-    using System.Windows.Controls;
 
     public static class TypeLocalization
     {
@@ -75,19 +67,19 @@ namespace psdPH
         },
     };
 
-    public static string GetLocalizedDescription<TEnum>(TEnum value)
-    {
-        Type enumType = value.GetType();
-
-        if (Localizations.TryGetValue(enumType, out var localization) &&
-            localization.TryGetValue(value, out var description))
+        public static string GetLocalizedDescription<TEnum>(TEnum value)
         {
-            return description;
+            Type enumType = value.GetType();
+
+            if (Localizations.TryGetValue(enumType, out var localization) &&
+                localization.TryGetValue(value, out var description))
+            {
+                return description;
+            }
+
+            // Если локализация не найдена, возвращаем строковое представление значения
+            return value.ToString();
         }
 
-        // Если локализация не найдена, возвращаем строковое представление значения
-        return value.ToString();
     }
-
-}
 }

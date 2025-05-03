@@ -1,9 +1,6 @@
 ﻿using Photoshop;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace psdPH.Logic
 {
@@ -55,7 +52,7 @@ namespace psdPH.Logic
         {
             bool filter(ArtLayer layer)
             {
-                return kind==layer.Kind;
+                return kind == layer.Kind;
             }
             return GetArtLayers(doc, listing).Where(filter).ToArray();
         }

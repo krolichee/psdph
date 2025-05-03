@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Xml.Serialization;
 
 namespace psdPH.Utils
@@ -11,7 +6,7 @@ namespace psdPH.Utils
 
     static class DiskOperations
     {
-        public static T openXml<T>(string path)
+        public static T OpenXml<T>(string path)
         {
             T result = default(T);
             FileStream fileStream;
@@ -25,7 +20,7 @@ namespace psdPH.Utils
             return result;
         }
 
-        public static void saveXml<T>(string path, T obj)
+        public static void SaveXml<T>(string path, T obj)
         {
             FileStream fileStream;
             XmlSerializer serializer = new XmlSerializer(typeof(T));

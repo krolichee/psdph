@@ -1,18 +1,17 @@
-﻿using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
-using psdPH.Utils.CedStack;
-using System;
-using System.Collections.Generic;
+﻿using psdPH.Utils.CedStack;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace psdPH.Views.WeekView
 {
     class WeekStackHandler : CEDStackHandler
     {
         WeekListData WeekListData;
+        public WeekStackHandler(WeekListData weekListData)
+        {
+            WeekListData = weekListData;
+            weekListData.Weeks.CollectionChanged += (_,__)=> Refresh();
+        }
         protected override UIElement createControl(object item)
         {
             return new WeekRow((WeekData)item);
@@ -24,7 +23,7 @@ namespace psdPH.Views.WeekView
         }
         protected override void AddButtonAction()
         {
-            
+            new WeekCommand().CreateCommand.Execute(WeekListData);
         }
     }
 }

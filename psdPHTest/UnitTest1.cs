@@ -1,10 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using psdPH;
-using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Rules;
-using psdPH.Views.WeekView;
 
 
 namespace psdPHTest.Automatic
@@ -12,7 +9,7 @@ namespace psdPHTest.Automatic
     [TestClass]
     public class DateFormat
     {
-        
+
     }
     [TestClass]
     public class CompositionTest

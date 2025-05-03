@@ -1,19 +1,8 @@
 ﻿using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace psdPH.Views.WeekView
 {
@@ -54,7 +43,7 @@ namespace psdPH.Views.WeekView
             DowPlaceholderMatchWindow dwpm_w = new DowPlaceholderMatchWindow(prototype);
             if (dwpm_w.ShowDialog() != true)
                 return false;
-            
+
 
             result = new WeekConfig
             {

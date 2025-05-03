@@ -1,5 +1,4 @@
-﻿using Photoshop;
-using psdPH.Logic;
+﻿using psdPH.Logic;
 using psdPH.Utils;
 using System;
 using System.Collections.Generic;

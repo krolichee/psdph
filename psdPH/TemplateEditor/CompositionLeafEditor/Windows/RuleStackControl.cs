@@ -1,5 +1,4 @@
-﻿using Photoshop;
-using psdPH.RuleEditor;
+﻿using psdPH.RuleEditor;
 using psdPH.Utils;
 using System.Windows;
 using System.Windows.Input;
@@ -14,7 +13,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 
         public override ICommand EditCommand() =>
             new RuleCommand(Context).EditCommand;
-        public RuleStackControl(Rule rule, PsdPhContext context):base(context)
+        public RuleStackControl(Rule rule, PsdPhContext context) : base(context)
         {
             HorizontalAlignment = HorizontalAlignment.Stretch;
             HorizontalContentAlignment = HorizontalAlignment.Stretch;

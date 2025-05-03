@@ -1,23 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Drawing;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Path = System.IO.Path;
-using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
-using psdPH.Utils;
+using Path = System.IO.Path;
 
 namespace psdPH.CollectionEditor
 {
@@ -57,7 +46,7 @@ namespace psdPH.CollectionEditor
     public partial class CollectionEditor : Window
     {
         ImageCollection currentCollection;
-        
+
         OpenCollectionCommand occ;
         class OpenCollectionCommand : ICommand
         {
@@ -84,7 +73,7 @@ namespace psdPH.CollectionEditor
         void openCollection(string collectionName)
         {
             string collection_dir = Path.Combine(Directories.CollectionsDirectory, collectionName);
-            
+
             currentCollection = new ImageCollection(collection_dir);
             foreach (var bitmapImage in currentCollection.CollectionImages)
             {
@@ -108,9 +97,9 @@ namespace psdPH.CollectionEditor
             foreach (var item in collections_paths)
             {
                 string collectionName = Path.GetFileNameWithoutExtension(item);
-                collectionsMenuItem.Items.Add(new MenuItem() { Header = collectionName,Command=occ,CommandParameter=collectionName});
+                collectionsMenuItem.Items.Add(new MenuItem() { Header = collectionName, Command = occ, CommandParameter = collectionName });
             }
-            
+
         }
     }
 }

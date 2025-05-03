@@ -1,6 +1,4 @@
-﻿using Photoshop;
-using psdPH.Utils;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -8,11 +6,12 @@ namespace psdPH.Utils.CedStack
 {
     abstract public class CEDStackHandler
     {
-        
+
         public StackPanel Stack;
         protected abstract UIElement createControl(object item);
         protected abstract object[] getElements();
-        public void Refresh() {
+        public void Refresh()
+        {
             Stack.Children.Clear();
             object[] elements = getElements();
             foreach (object item in elements)
@@ -28,6 +27,6 @@ namespace psdPH.Utils.CedStack
             cEDStackUI.AddButton.Click += AddButton_Click;
             Stack = cEDStackUI.StackPanel;
         }
-        
+
     }
 }

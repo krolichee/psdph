@@ -1,10 +1,10 @@
 ﻿using psdPH.Logic;
 using psdPH.RuleEditor;
 using psdPH.TemplateEditor;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.Utils;
 using System;
 using static psdPH.TemplateEditor.RuleDicts;
-using psdPH.Utils;
-using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 
 namespace psdPH
 {

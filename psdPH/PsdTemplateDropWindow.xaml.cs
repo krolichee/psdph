@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace psdPH
 {
@@ -45,12 +35,12 @@ namespace psdPH
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string projectDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Projects", projectNameTB.Text);
-            if  (Directory.Exists(projectDirectory))
+            if (Directory.Exists(projectDirectory))
             {
                 MessageBox.Show("Такой проект уже существует. Измените название");
                 return;
             }
-           
+
             Directory.CreateDirectory(projectDirectory);
             string destinationPath = Path.Combine(projectDirectory, "template.psd");
             try

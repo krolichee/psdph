@@ -1,17 +1,11 @@
 ﻿using psdPH.Logic;
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using Rule = psdPH.Logic.Rule;
 
 namespace psdPH.RuleEditor
 {
-    class RuleTextBlock:TextBlock
+    class RuleTextBlock : TextBlock
     {
         string getText(Parameter[] parameters)
         {

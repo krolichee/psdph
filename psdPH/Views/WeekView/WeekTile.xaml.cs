@@ -1,18 +1,6 @@
 ﻿using psdPH.Logic.Compositions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace psdPH.Views.WeekView
 {
@@ -23,12 +11,12 @@ namespace psdPH.Views.WeekView
     {
         Composition[] exclude = new Composition[0];
         Blob blob;
-        Composition[] getExcludes(WeekConfig weekConfig, Blob blob)=>
+        Composition[] getExcludes(WeekConfig weekConfig, Blob blob) =>
             new Composition[] {
                 weekConfig.GetWeekDatesTextLeaf(blob)
             };
-        
-        public WeekTile(WeekData data,WeekConfig weekConfig)
+
+        public WeekTile(WeekData data, WeekConfig weekConfig)
         {
             blob = data.MainBlob;
             exclude = getExcludes(weekConfig, blob);

@@ -1,14 +1,9 @@
 ﻿using Photoshop;
 using psdPH.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
-    public class TemplateCEDCommand:CEDCommand
+    public class TemplateCEDCommand : CEDCommand
     {
         protected PsdPhContext Context
         {
@@ -17,7 +12,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         }
         protected Document _doc;
         protected Composition _root;
-        protected TemplateCEDCommand(PsdPhContext context) {
+        protected TemplateCEDCommand(PsdPhContext context)
+        {
             Context = context;
         }
     }

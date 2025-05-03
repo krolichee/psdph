@@ -15,9 +15,9 @@ namespace psdPH
     [XmlInclude(typeof(FlagLeaf))]
     [XmlInclude(typeof(PrototypeLeaf))]
     [XmlInclude(typeof(PlaceholderLeaf))]
-    
+
     [XmlInclude(typeof(LayerComposition))]
-    
+
 
     [XmlInclude(typeof(Rule))]
     public abstract class Composition : IParameterable
@@ -51,7 +51,7 @@ namespace psdPH
         {
             ChildrenUpdatedEvent?.Invoke();
         }
-        virtual public void addChild(Composition child) {  }
+        virtual public void addChild(Composition child) { }
         virtual public void removeChild(Composition child) { }
         public void Restore(Blob parent = null)
         {
@@ -70,9 +70,9 @@ namespace psdPH
         virtual public T[] getChildren<T>() { return null; }
         public RuleSet RuleSet = new RuleSet();
 
-        public Composition() { ChildrenUpdatedEvent+= ()=>Restore(); RuleSet.Updated += () => RulesetUpdatedEvent?.Invoke(); }
+        public Composition() { ChildrenUpdatedEvent += () => Restore(); RuleSet.Updated += () => RulesetUpdatedEvent?.Invoke(); }
     }
-    
+
     [Serializable]
     [XmlRoot("Flag")]
     public partial class FlagLeaf : Composition
@@ -97,9 +97,9 @@ namespace psdPH
         {
             Name = name;
         }
-        public FlagLeaf():base(){}
+        public FlagLeaf() : base() { }
 
-        public override void Apply(Document doc){ }
+        public override void Apply(Document doc) { }
     }
 
     [Serializable]
@@ -108,15 +108,20 @@ namespace psdPH
     {
         Blob blob;
         [XmlIgnore]
-        public Blob Blob { get { 
-                if (blob == null) 
-                    blob = Parent.getChildren<Blob>().First(b => b.LayerName == LayerName); return blob; } }
+        public Blob Blob
+        {
+            get
+            {
+                if (blob == null)
+                    blob = Parent.getChildren<Blob>().First(b => b.LayerName == LayerName); return blob;
+            }
+        }
         public override string UIName => "Прототип";
         public string RelativeLayerName;
         public string LayerName;
         public Vector GetRelativeLayerAlightmentVector(Document doc)
         {
-            return doc.GetAlightmentVector(RelativeLayerName,LayerName);
+            return doc.GetAlightmentVector(RelativeLayerName, LayerName);
         }
         public override Parameter[] Parameters => new Parameter[0];
         public override string ObjName => Blob.LayerName;
@@ -177,7 +182,7 @@ namespace psdPH
         {
             base.restoreParents(parent);
         }
-        
+
         internal void ReplaceWithFiller(Document doc, Blob blob)
         {
             derivedLayerName = $"{PrototypeLayerName}_{LayerName}";
@@ -187,8 +192,8 @@ namespace psdPH
 
             var phAVector = doc.GetAlightmentVector(phLayer, newLayer);
 
-            newLayer.Translate(phAVector);
-            newLayer.Translate(prototypeAVector);
+            newLayer.TranslateV(phAVector);
+            newLayer.TranslateV(prototypeAVector);
             //ph_layer.Delete();
             phLayer.Opacity = 0;
             newLayer.Name = blob.LayerName = derivedLayerName;
@@ -196,7 +201,7 @@ namespace psdPH
             Parent.removeChild(this);
         }
 
-        public override void Apply(Document doc){ }
+        public override void Apply(Document doc) { }
     }
 }
 

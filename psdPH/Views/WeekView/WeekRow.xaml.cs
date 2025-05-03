@@ -1,17 +1,7 @@
 ﻿using psdPH.Logic.Compositions;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace psdPH.Views.WeekView
 {
@@ -20,13 +10,23 @@ namespace psdPH.Views.WeekView
     /// </summary>
     public partial class WeekRow : UserControl
     {
-        public WeekRow( WeekData data)    
+        public WeekRow(WeekData data)
         {
             var weekConfig = data.WeekConfig;
             InitializeComponent();
             rowStack.Children.Add(new WeekTile(data, weekConfig));
             foreach (KeyValuePair<DayOfWeek, Blob> item in data.DowBlobsDict)
                 rowStack.Children.Add(new DayTile(weekConfig, item.Key, data.DowBlobsDict[item.Key]));
+            var randerButton = new Button()
+            {
+                VerticalAlignment = System.Windows.VerticalAlignment.Stretch,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch,
+                Content = "Рендер",
+                Command = new RenderCommand(
+                    PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument).Command, 
+                CommandParameter= data
+            };
+            rowStack.Children.Add(randerButton);
         }
     }
 }
