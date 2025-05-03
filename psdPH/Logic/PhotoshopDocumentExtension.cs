@@ -1,17 +1,7 @@
 ﻿using Photoshop;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using Application = Photoshop.Application;
-using psdPH.Logic;
-using psdPH.Logic.Rules;
-using System.Windows.Media;
-using static psdPH.Logic.PhotoshopDocumentExtension;
 
 namespace psdPH.Logic
 {
@@ -29,7 +19,7 @@ namespace psdPH.Logic
         public static void FitTextLayer(this Document doc, ArtLayer textLayer, ArtLayer areaLayer)
         {
             bool isFits(Size fittable, Size area) => fittable.Width <= area.Width && fittable.Height <= area.Height;
-            bool isFitsWithToler(Size fittable, Size area, int toler,out bool fits)
+            bool isFitsWithToler(Size fittable, Size area, int toler, out bool fits)
             {
                 fits = isFits(fittable, area);
                 double[] diffs = new double[] { area.Width - fittable.Width, area.Height - fittable.Height };
@@ -37,11 +27,11 @@ namespace psdPH.Logic
             }
 
             var areaSize = areaLayer.GetBoundsSize();
-            double fontSizeShift = textLayer.TextItem.Size/2;
+            double fontSizeShift = textLayer.TextItem.Size / 2;
 
             bool _fits;
 
-            while (!isFitsWithToler(textLayer.GetBoundsSize(), areaSize,3,out _fits))
+            while (!isFitsWithToler(textLayer.GetBoundsSize(), areaSize, 3, out _fits))
             {
                 if (_fits)
                     textLayer.TextItem.Size += fontSizeShift;
@@ -65,10 +55,10 @@ namespace psdPH.Logic
         const LayerListing DefaultListing = LayerListing.Recursive;
         public class Alignment
         {
-            public override int GetHashCode()=> (int)H*4 + (int)V;
+            public override int GetHashCode() => (int)H * 4 + (int)V;
             public HorizontalAlignment H;
             public VerticalAlignment V;
-            public Alignment(HorizontalAlignment horizontal,VerticalAlignment vertical)
+            public Alignment(HorizontalAlignment horizontal, VerticalAlignment vertical)
             {
                 H = horizontal;
                 V = vertical;
@@ -113,9 +103,9 @@ namespace psdPH.Logic
             return new Vector(x, y);
         }
 
-        public static Vector GetAlightmentVector(this Document doc, ArtLayer targetLayer, ArtLayer dynamicLayer,Alignment alignment=null)
+        public static Vector GetAlightmentVector(this Document doc, ArtLayer targetLayer, ArtLayer dynamicLayer, Alignment alignment = null)
         {
-            return GetAlightmentVector(targetLayer.GetBoundRect(), dynamicLayer.GetBoundRect(),alignment);
+            return GetAlightmentVector(targetLayer.GetBoundRect(), dynamicLayer.GetBoundRect(), alignment);
         }
         public static Vector GetAlightmentVector(this Document doc, string targetLayerName, string dynamicLayerName)
         {
@@ -136,12 +126,12 @@ namespace psdPH.Logic
         {
             doc.SaveAs(savePath, new PsSaveOptions(), true, PsExtensionType.psLowercase);
         }
-        
+
         public static string GetDocPath(this Document doc)
         {
             return doc.FullName;
         }
-        
+
         public static Document OpenSmartLayer(this Document doc, string layername, LayerListing listing = DefaultListing)
         {
             ArtLayer layer = doc.GetLayerByName(layername, listing);

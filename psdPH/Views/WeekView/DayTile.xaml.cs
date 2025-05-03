@@ -1,20 +1,9 @@
-﻿using Photoshop;
-using psdPH.Logic;
+﻿using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace psdPH
 {
@@ -51,24 +40,24 @@ namespace psdPH
         }
         Composition[] getExcludes(WeekConfig weekConfig, Blob blob)
         {
-            return new Composition[] { 
+            return new Composition[] {
                 weekConfig.GetDowTextLeaf(blob),
                 weekConfig.GetDateTextLeaf(blob),
             };
 
         }
-        public DayTile(WeekConfig weekConfig, DayOfWeek key,Blob blob)
+        public DayTile(WeekConfig weekConfig, DayOfWeek key, Blob blob)
         {
             InitializeComponent();
             this.WeekGaleryConfig = weekConfig;
             this.Key = key;
             this.blob = blob;
-            exclude = getExcludes(weekConfig,blob);
+            exclude = getExcludes(weekConfig, blob);
             refreshPreview();
         }
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            new DataInputWindow(blob,exclude).ShowDialog();
+            new DataInputWindow(blob, exclude).ShowDialog();
             refreshPreview();
         }
     }

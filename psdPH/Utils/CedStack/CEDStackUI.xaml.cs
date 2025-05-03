@@ -1,20 +1,7 @@
-﻿using Photoshop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
+namespace psdPH.Utils.CedStack
 {
     /// <summary>
     /// Логика взаимодействия для CEDStack.xaml
@@ -35,8 +22,12 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             this.handler = handler;
             InitializeComponent();
         }
-        
-        
+
+        public CEDStackUI()
+        {
+            InitializeComponent();
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             addButton.ContextMenu.IsOpen = true;
@@ -44,7 +35,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            handler.Refresh();
+            handler?.Refresh();
         }
     }
 }

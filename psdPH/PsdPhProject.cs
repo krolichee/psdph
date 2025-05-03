@@ -1,11 +1,6 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.Utils;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace psdPH
 {
@@ -13,8 +8,8 @@ namespace psdPH
     {
         public static void saveBlob(Blob blob, string projectName)
         {
-            string xmlFilePath = Directories.ProjectPsd(projectName);
-            DiskOperations.saveXml<Blob>(xmlFilePath, blob);
+            string xmlFilePath = Directories.ProjectXml(projectName);
+            DiskOperations.SaveXml<Blob>(xmlFilePath, blob);
         }
         public static Blob openOrCreateMainBlob(string projectName)
         {
@@ -37,7 +32,7 @@ namespace psdPH
         {
             Blob blob;
             string xmlFilePath = Directories.ProjectXml(projectName);
-            blob = DiskOperations.openXml<Blob>(xmlFilePath);
+            blob = DiskOperations.OpenXml<Blob>(xmlFilePath);
             blob.Restore();
             return blob;
         }

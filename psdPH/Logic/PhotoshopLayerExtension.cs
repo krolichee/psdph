@@ -1,18 +1,13 @@
 ﻿using Photoshop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace psdPH.Logic
 {
     public static class PhotoshopLayerExtension
     {
-        public static void Translate (this ArtLayer layer,Vector vector)
+        public static void TranslateV(this ArtLayer layer, Vector vector)
         {
-            layer.Translate(vector.X,vector.Y);
+            layer.Translate(vector.X, vector.Y);
         }
         public static Size GetBoundsSize(this ArtLayer layer)
         {
@@ -30,6 +25,6 @@ namespace psdPH.Logic
         {
             layer.Application.DoAction("onFx", "psdPH");
         }
-        
+
     }
 }

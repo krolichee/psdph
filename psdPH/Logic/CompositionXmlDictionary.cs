@@ -1,9 +1,6 @@
 ﻿using psdPH.Logic.Compositions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic
@@ -19,11 +16,11 @@ namespace psdPH.Logic
             }
             public static KeyValuePair<string, Type> NewKV(Type type)
             {
-                XmlRootAttribute rootAttribute = (XmlRootAttribute)Attribute.GetCustomAttribute(type,typeof(XmlRootAttribute));
+                XmlRootAttribute rootAttribute = (XmlRootAttribute)Attribute.GetCustomAttribute(type, typeof(XmlRootAttribute));
                 return NewKV(rootAttribute.ElementName, type);
             }
         }
-        
+
         public static void InitializeDictionary()
         {
             KeyValuePair<string, Type>[] pairs =

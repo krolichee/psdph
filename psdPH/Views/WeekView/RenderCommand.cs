@@ -1,14 +1,7 @@
 ﻿using Photoshop;
-using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
-using psdPH.TemplateEditor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static psdPH.BlobEditorWindow;
-using System.Windows.Input;
 using psdPH.Logic.Compositions;
+using psdPH.Views.WeekView.Logic;
+using System.Windows.Input;
 
 namespace psdPH.Views.WeekView
 {
@@ -21,12 +14,12 @@ namespace psdPH.Views.WeekView
         public ICommand Command { get; set; }
         public RenderCommand(Document doc)
         {
-            (_doc.ActiveLayer as ArtLayer).Duplicate();
+            _doc = doc;
             Command = new RelayCommand(RenderExecuteCommand, CanExecuteCommand);
         }
         private void RenderExecuteCommand(object parameter)
         {
-            var blob = parameter as Blob;
+            WeekRenderer.renderWeek((WeekData)parameter, _doc);
         }
         private bool CanExecuteCommand(object parameter)
         {

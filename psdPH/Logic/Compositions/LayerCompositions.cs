@@ -1,15 +1,8 @@
 ﻿using Photoshop;
-using psdPH.Logic.Rules;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Navigation;
 using System.Xml.Serialization;
 using static psdPH.Logic.PhotoshopDocumentExtension;
 
@@ -130,7 +123,7 @@ namespace psdPH.Logic.Compositions
 },
                 { PsJustification.psCenter,HorizontalAlignment.Center },
             };
-public override void Apply(Document doc)
+        public override void Apply(Document doc)
         {
             var textLayer = doc.GetLayerByName(TextLeafLayername);
             var areaLayer = doc.GetLayerByName(LayerName);

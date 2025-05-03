@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace psdPH.Views.WeekView.Logic
 {
@@ -22,7 +19,7 @@ namespace psdPH.Views.WeekView.Logic
                 var pairs = weekConfig.DowPrototypeLayernameList;
                 return whereLayernameIs(p.LayerName, pairs).Dow;
             }
-            
+
             WeekData weekData_clone = weekData.Clone();
             PlaceholderLeaf[] prototypes = weekData_clone.MainBlob.getChildren<PlaceholderLeaf>();
             Dictionary<DayOfWeek, PlaceholderLeaf> dowPlaceholderDict = prototypes.ToDictionary(getMatchingDow, p => p);

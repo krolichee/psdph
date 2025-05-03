@@ -2,13 +2,7 @@
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
@@ -128,7 +122,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psSmartObjectLayer }));
             var ln_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой");
             var ln_parameter = Parameter.Choose(ln_pconfig, layers_names);
-            p_w = new ParametersInputWindow(new[] {ln_parameter});
+            p_w = new ParametersInputWindow(new[] { ln_parameter });
         }
     }
 

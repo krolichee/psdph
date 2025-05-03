@@ -83,7 +83,16 @@
     <Compile Include="StringInputWindow.xaml.cs">
       <DependentUpon>StringInputWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackHandler.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateCEDCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateStackControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateStackHandler.cs" />
+    <Compile Include="Utils\CedStack\CEDStackHandler.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RuleStackControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RuleStackHandler.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\StructureStackControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\StructureStackHandler.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RuleCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\StructureCommand.cs" />
     <Compile Include="Utils\Directories.cs" />
     <Compile Include="CollectionEditor\ImageSelectorWindow.xaml.cs">
       <DependentUpon>ImageSelectorWindow.xaml</DependentUpon>
@@ -94,10 +103,10 @@
     <Compile Include="Logic\PhotoshopLayerExtension.cs" />
     <Compile Include="Logic\Rules\TextRules.cs" />
     <Compile Include="MainWindow.BlobSave.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackUI.xaml.cs">
+    <Compile Include="Utils\CedStack\CEDStackUI.xaml.cs">
       <DependentUpon>CEDStackUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackControl.cs" />
+    <Compile Include="Utils\CedStack\CEDStackControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionStackElement.cs" />
     <Compile Include="Utils\PsdPhContext.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
@@ -105,6 +114,7 @@
     <Compile Include="Utils\DiskOperations.cs" />
     <Compile Include="Utils\DataInputWindow.cs" />
     <Compile Include="Utils\EnumWrapper.cs" />
+    <Compile Include="Utils\TopmostWindow.cs" />
     <Compile Include="Utils\XmlClone.cs" />
     <Compile Include="Views\WeekView\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>
@@ -112,6 +122,7 @@
     <Compile Include="Views\WeekView\DayTile.xaml.cs">
       <DependentUpon>DayTile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WeekView\DirectoriesExtension.cs" />
     <Compile Include="Views\WeekView\DowPlaceholderMatchWindow.xaml.cs">
       <DependentUpon>DowPlaceholderMatchWindow.xaml</DependentUpon>
     </Compile>
@@ -142,7 +153,7 @@
     </Compile>
     <Compile Include="TemplateEditor\StructureDicts.cs" />
     <Compile Include="Logic\PhotoshopWrapper.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CEDCommand.cs" />
+    <Compile Include="Utils\CedStack\CEDCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionCreators.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
@@ -166,7 +177,11 @@
     <Compile Include="Views\WeekView\Logic\WeekRenderer.cs" />
     <Compile Include="Views\WeekView\Logic\WeekTime.cs" />
     <Compile Include="Views\WeekView\RenderCommand.cs" />
+    <Compile Include="Views\WeekView\WeekCommand.cs" />
     <Compile Include="Views\WeekView\WeekConfigEditor.cs" />
+    <Compile Include="Views\WeekView\WeekDatesStrings.cs" />
+    <Compile Include="Views\WeekView\WeekStackHandler.cs" />
+    <Compile Include="Views\WeekView\WeekView.cs" />
     <Compile Include="Views\WeekView\WeekViewWindow.xaml.cs">
       <DependentUpon>WeekViewWindow.xaml</DependentUpon>
     </Compile>
@@ -189,7 +204,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\CEDStackUI.xaml">
+    <Page Include="Utils\CedStack\CEDStackUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

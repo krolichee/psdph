@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Shapes;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic.Compositions
@@ -28,7 +26,7 @@ namespace psdPH.Logic.Compositions
         public override string UIName => "Подфайл";
         public BlobMode Mode;
         [XmlArray("Children")]
-        public  Composition[] Children = new Composition[0];
+        public Composition[] Children = new Composition[0];
         public string Path;
         public bool IsPrototyped()
         {
@@ -50,7 +48,7 @@ namespace psdPH.Logic.Compositions
             //    Parent.removeChild(item);
             //}
         }
-        public override string ObjName => Mode==BlobMode.Layer?LayerName: System.IO.Path.GetFileNameWithoutExtension(Path);
+        public override string ObjName => Mode == BlobMode.Layer ? LayerName : System.IO.Path.GetFileNameWithoutExtension(Path);
         override public void Apply(Document doc)
         {
             if (IsPrototyped())
@@ -71,10 +69,10 @@ namespace psdPH.Logic.Compositions
         }
         override public void addChild(Composition child)
         {
-            invokeChildrenEvent();
             var children = Children.ToHashSet();
             children.Add(child);
             Children = children.ToArray();
+            invokeChildrenEvent();
         }
         override public void removeChild(Composition child)
         {
@@ -124,7 +122,7 @@ namespace psdPH.Logic.Compositions
             result.Restore(Parent as Blob);
             return result;
         }
-        public Blob():base()
+        public Blob() : base()
         {
         }
     }

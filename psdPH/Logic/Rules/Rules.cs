@@ -4,20 +4,8 @@ using psdPH.Logic.Rules;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Xml;
 using System.Xml.Serialization;
-using static psdPH.Logic.Parameter;
 using Condition = psdPH.Logic.Rules.Condition;
 
 namespace psdPH.Logic
@@ -33,7 +21,7 @@ namespace psdPH.Logic
 
         public void apply(Document doc)
         {
-            
+
             foreach (var item in Rules)
             {
                 item.Apply(doc);
@@ -47,14 +35,14 @@ namespace psdPH.Logic
             {
                 rule.restoreComposition(composition);
             }
-            
+
         }
         public RuleSet()
         {
             Rules.CollectionChanged += (_, __) => Updated?.Invoke();
         }
     }
-    
+
     [XmlInclude(typeof(ConditionRule))]
 
     [XmlInclude(typeof(LayerRule))]
@@ -120,8 +108,8 @@ namespace psdPH.Logic
     [XmlInclude(typeof(VisibleRule))]
     public abstract class LayerRule : ConditionRule
     {
-        public ChangeMode ChangeMode= ChangeMode.Abs;
-        public ELayerMode LayerMode= ELayerMode.ArtLayer;
+        public ChangeMode ChangeMode = ChangeMode.Abs;
+        public ELayerMode LayerMode = ELayerMode.ArtLayer;
         public string LayerName;
         public LayerComposition layerComposition;
         [XmlIgnore]
@@ -220,7 +208,7 @@ namespace psdPH.Logic
     {
         public override string ToString() => "видимость";
         public bool Toggle;
-        
+
 
         public override Parameter[] Parameters
         {

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="StackOkWindow" Height="450" Width="800" SizeToContent="WidthAndHeight">
     <StackPanel x:Name="MainGrid">
         <Button Content="Ok" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="25" Width="40" Margin="0,10,0,0" Click="Button_Click"/>

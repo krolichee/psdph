@@ -1,19 +1,8 @@
 ﻿using psdPH.Logic;
-using System;
-using System.Collections.Generic;
+using psdPH.Utils;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Globalization;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
 {
@@ -26,7 +15,9 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
         public bool Applied => applied;
         StackPanel stack;
         Parameter[] parameters;
-        Parameter[] Parameters { set
+        Parameter[] Parameters
+        {
+            set
             {
                 parameters = value;
                 foreach (var p in parameters)
@@ -34,8 +25,9 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             }
             get => parameters;
         }
-        public ParametersInputWindow(Parameter[] parameters,string title = "")
+        public ParametersInputWindow(Parameter[] parameters, string title = "")
         {
+            Owner = TopmostWindow.Get();
             InitializeComponent();
             Title = title;
             stack = new StackPanel();
@@ -44,7 +36,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             {
                 item.Stack.Orientation = Orientation.Vertical;
                 item.Control.HorizontalAlignment = HorizontalAlignment.Left;
-                item.Stack.Margin = new Thickness(0,0,0,10);
+                item.Stack.Margin = new Thickness(0, 0, 0, 10);
             }
             MainGrid.Children.Insert(0, stack);
         }

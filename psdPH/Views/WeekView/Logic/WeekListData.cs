@@ -1,7 +1,9 @@
 ﻿using psdPH.Logic.Compositions;
+using psdPH.Views.WeekView;
 using psdPH.Views.WeekView.Logic;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -11,21 +13,22 @@ namespace psdPH
     [XmlInclude(typeof(Blob))]
     public class WeekListData
     {
+        public static WeekListData Create(WeekConfig weekConfig, Blob root)
+        {
+            var result = new WeekListData();
+            result.WeekConfig = weekConfig;
+            result.RootBlob = root;
+            return result;
+        }
         [XmlIgnore]
         public WeekConfig WeekConfig;
-        public List<WeekData> Weeks = new List<WeekData>();
+        public ObservableCollection<WeekData> Weeks = new ObservableCollection<WeekData>();
         public Blob RootBlob;
         public void Restore()
         {
             RootBlob.Restore();
             foreach (var week in Weeks)
-            {
                 week.Restore(this);
-                foreach (var item in week.DowBlobList)
-                {
-                    item.Blob.Restore(week.MainBlob);
-                }
-            }
         }
         internal void NewWeek()
         {
@@ -35,7 +38,7 @@ namespace psdPH
             else
                 new_week = WeekTime.GetCurrentWeekFromUnixTime(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
             var new_weekData = new WeekData(new_week, this);
-            
+
             Weeks.Add(new_weekData);
         }
     }

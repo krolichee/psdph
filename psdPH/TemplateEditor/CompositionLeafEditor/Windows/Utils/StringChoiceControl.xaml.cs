@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
@@ -21,7 +10,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     public partial class StringChoiceControl : UserControl
     {
         protected string _result = "";
-        public StringChoiceControl(string[] items, string annotation, int default_index=0)
+        public StringChoiceControl(string[] items, string annotation, int default_index = 0)
         {
             if (!items.Any())
                 throw new ArgumentException();

@@ -1,5 +1,4 @@
-﻿using psdPH.Logic;
-using psdPH.Logic.Compositions;
+﻿using psdPH.Logic.Compositions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +49,7 @@ namespace psdPH
         }
         internal TextLeaf GetTimeTextLeaf(Blob blob)
         {
-           return blob.getChildren<TextLeaf>().First(_=>_.LayerName== TimeTextLeafLayerName);
+            return blob.getChildren<TextLeaf>().First(_ => _.LayerName == TimeTextLeafLayerName);
         }
         internal TextLeaf GetDateTextLeaf(Blob blob)
         {

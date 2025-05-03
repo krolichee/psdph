@@ -1,19 +1,6 @@
 ﻿using psdPH.Logic.Compositions;
-using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace psdPH
 {
@@ -24,7 +11,7 @@ namespace psdPH
     {
         ParametersInputWindow parametersWindow;
 
-        public DataInputWindow(Blob blob, Composition[] exclude = null,string title = "")
+        public DataInputWindow(Blob blob, Composition[] exclude = null, string title = "")
         {
             if (exclude == null)
                 exclude = new Composition[0];

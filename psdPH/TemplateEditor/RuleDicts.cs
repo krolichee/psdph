@@ -1,14 +1,8 @@
 ﻿using Photoshop;
 using psdPH.Logic;
-using psdPH.Logic.Compositions;
 using psdPH.RuleEditor;
-using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static psdPH.TemplateEditor.RuleDicts;
 
 namespace psdPH.TemplateEditor
 {
@@ -23,7 +17,7 @@ namespace psdPH.TemplateEditor
         { typeof(Rule),(doc, composition) =>
                  new RuleControlWindow(composition)
         } };
-    
+
         public static Dictionary<Type, EditRule>
             EditorDict = new Dictionary<Type, EditRule>
             ()
