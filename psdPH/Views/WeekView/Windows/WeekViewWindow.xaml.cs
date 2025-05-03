@@ -10,6 +10,8 @@ namespace psdPH.Views.WeekView
     /// </summary>
     public partial class WeekViewWindow : Window
     {
+        private bool _deleted;
+        public bool Deleted { private set { _deleted = value; } get => _deleted; }
         public WeekConfig WeekConfig => WeekListData.WeekConfig;
         public WeekListData WeekListData;
         Document doc;
@@ -20,7 +22,7 @@ namespace psdPH.Views.WeekView
             InitializeComponent();
             cedStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekStackHandler(weekListData)));
             var psApp = PhotoshopWrapper.GetPhotoshopApplication();
-            doc = PhotoshopWrapper.OpenDocument(psApp, root.Path);
+            doc = PhotoshopWrapper.OpenDocument(psApp, Directories.ProjectPsd(PsdPhProject.Instance().ProjectName));
 
             if (weekListData == null)
             {
@@ -29,6 +31,14 @@ namespace psdPH.Views.WeekView
             Closing += (object sender, CancelEventArgs e) => DialogResult = true;
             WeekListData = weekListData;
             
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var weekView = WeekView.Instance();
+            weekView.Delete();
+            Deleted = true;
+            Close();
         }
     }
 }

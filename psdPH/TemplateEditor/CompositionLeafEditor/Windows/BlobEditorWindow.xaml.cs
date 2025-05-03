@@ -5,6 +5,7 @@ using psdPH.RuleEditor;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.Utils;
 using psdPH.Utils.CedStack;
+using psdPH.Views.WeekView;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -36,7 +37,7 @@ namespace psdPH
             if (blob.Mode != BlobMode.Path)
                 throw new ArgumentException();
             PsApp psApp = PsWr.GetPhotoshopApplication();
-            Document doc = psApp.Open(blob.Path);
+            Document doc = PhotoshopWrapper.OpenDocument(psApp,Directories.ProjectPsd(PsdPhProject.Instance().ProjectName));
             return new BlobEditorWindow(doc, blob);
         }
         BlobEditorWindow(Document doc, Blob root)
@@ -70,6 +71,11 @@ namespace psdPH
         private void Window_Activated(object sender, EventArgs e)
         {
 
+        }
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            _composition = Blob.PathBlob("template.psd");
+            Close();
         }
     }
 }

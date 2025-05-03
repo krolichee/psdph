@@ -30,7 +30,8 @@ namespace psdPH.Utils.CedStack
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            addButton.ContextMenu.IsOpen = true;
+            if (addButton.ContextMenu.Items.Count!=0)
+                addButton.ContextMenu.IsOpen = true;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

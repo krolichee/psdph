@@ -8,5 +8,10 @@
             var weekListData = (WeekListData)parameter;
             weekListData.NewWeek();
         }
+        protected override void DeleteExecuteCommand(object parameter)
+        {
+            var weekData =(WeekData) parameter;
+            weekData.WeekListData.Weeks.Remove(weekData);
+        }
     }
 }

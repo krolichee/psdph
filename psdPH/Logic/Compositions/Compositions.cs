@@ -43,7 +43,12 @@ namespace psdPH
         }
         [XmlIgnore]
         virtual public Composition Parent { get; set; }
-
+        protected T[] Siblings<T>() where T:Composition
+        {
+            if (Parent == null)
+                return new Composition[0] as T[];
+            return Parent.getChildren<T>().ToArray();
+        }
         public abstract Parameter[] Parameters { get; }
 
         abstract public void Apply(Document doc);
@@ -53,7 +58,7 @@ namespace psdPH
         }
         virtual public void addChild(Composition child) { }
         virtual public void removeChild(Composition child) { }
-        public void Restore(Blob parent = null)
+        public void Restore(Composition parent = null)
         {
             restoreParents(parent);
             RuleSet.restoreLinks(this);
@@ -64,7 +69,7 @@ namespace psdPH
                 Parent = parent;
             if (getChildren() != null)
                 foreach (var item in getChildren())
-                    item.restoreParents(this);
+                    item.Restore(this);
         }
         virtual public Composition[] getChildren() { return null; }
         virtual public T[] getChildren<T>() { return null; }

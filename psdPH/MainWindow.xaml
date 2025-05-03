@@ -19,20 +19,8 @@
                 <Separator/>
                 <MenuItem x:Name="weekkViewMenuItem" Header="Недельный вид" />
             </MenuItem>
-
-            <!-- Пункт меню "Правка" -->
-            <MenuItem Header="Правка">
-                <MenuItem Header="Вырезать" />
-                <MenuItem Header="Копировать" />
-                <MenuItem Header="Вставить" />
-            </MenuItem>
-
-            <!-- Пункт меню "Справка" -->
-            <MenuItem Header="Справка">
-                <MenuItem Header="О программе" />
-            </MenuItem>
         </Menu>
-        <Label Content="Текущий проект:" HorizontalAlignment="Left" Margin="10,28,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="projectNameLabel" Content="" HorizontalAlignment="Left" Margin="117,28,0,0" VerticalAlignment="Top"/>
+        <Label Content="Текущий проект:" HorizontalAlignment="Center" Margin="0,23,0,0" VerticalAlignment="Top" FontSize="8"/>
+        <TextBlock x:Name="projectNameTextBlock" HorizontalAlignment="Center" Margin="0,54,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="86" Width="271" TextAlignment="Center" FontFamily="Arial Black" Foreground="#FFB1B1B1"/>
     </Grid>
 </Window>

@@ -82,7 +82,7 @@ namespace psdPH.Logic
                 case HorizontalAlignment.Stretch:
                     double t_w = targetRect.Width;
                     double d_w = dynamicRect.Width;
-                    x = (targetRect.Left + t_w) - (dynamicRect.Left + d_w);
+                    x = (targetRect.Left + t_w/2) - (dynamicRect.Left + d_w/2);
                     break;
             }
             switch (alignment.V)
@@ -97,7 +97,7 @@ namespace psdPH.Logic
                 case VerticalAlignment.Stretch:
                     double t_h = targetRect.Height;
                     double d_h = dynamicRect.Height;
-                    y = (targetRect.Top + t_h) - (dynamicRect.Top + d_h);
+                    y = (targetRect.Top + t_h / 2) - (dynamicRect.Top + d_h / 2);
                     break;
             }
             return new Vector(x, y);

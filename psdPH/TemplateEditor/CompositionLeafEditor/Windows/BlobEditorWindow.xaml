@@ -9,18 +9,25 @@
         Title="TemplateEditor" Height="450" Width="365" Closed="Window_Closed" Activated="Window_Activated"
         >
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-        <TabControl Margin="0,0,0,0">
-            <TabItem x:Name="structureTab" Header="Структура">
-                <CedStack:CEDStackUI/>
-            </TabItem>
-            <TabItem x:Name="ruleTab" Header="Правила" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58"/>
+        <Menu VerticalAlignment="Center" Height="18">
+            <MenuItem Header="Шаблон" >
+                <MenuItem Header="Удалить" Click="MenuItem_Click" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
 
+            <TabControl Margin="0,0,0,0">
+                <TabItem x:Name="structureTab" Header="Структура">
+                    <CedStack:CEDStackUI/>
+                </TabItem>
+                <TabItem x:Name="ruleTab" Header="Правила" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58"/>
+            </TabControl>
 
-            
-
-
-        </TabControl>
-
+        </Grid>
     </Grid>
 </Window>

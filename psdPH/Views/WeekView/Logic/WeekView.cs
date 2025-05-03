@@ -1,17 +1,32 @@
-﻿using psdPH.Logic.Compositions;
+﻿using Photoshop;
+using psdPH.Logic.Compositions;
 using psdPH.Utils;
+using System;
 using System.IO;
+using System.Windows;
 
 namespace psdPH.Views.WeekView
 {
     public class WeekView
     {
+        private static WeekView _instance;
         private readonly string _projectName;
-
-        public WeekView(string projectName)
+        public static WeekView Instance()
         {
-            Directory.CreateDirectory(ViewDirectory);
+            if (_instance == null)
+                throw new System.Exception();
+            return _instance;
+        }
+        public static WeekView MakeInstance(string projectName)
+        {
+            return _instance = new WeekView(projectName);
+        }
+        
+
+        protected WeekView(string projectName)
+        {
             _projectName = projectName;
+            Directory.CreateDirectory(ViewDirectory);
         }
 
         private string ViewDirectory => Path.Combine(Directories.ViewsDirectory(_projectName), "WeekView");
@@ -57,6 +72,12 @@ namespace psdPH.Views.WeekView
             var weekConfig = weekListData.WeekConfig;
             DiskOperations.SaveXml(ConfigPath, weekConfig);
             DiskOperations.SaveXml(WeekListDataPath, weekListData);
+        }
+
+        internal void Delete()
+        {
+            Directory.Delete(ViewDirectory, true);
+            
         }
     }
 }

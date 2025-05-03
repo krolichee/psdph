@@ -8,9 +8,9 @@ namespace psdPH
     {
         public static void SetBaseDirectory(string path)
         {
-            Directory.SetCurrentDirectory("C");
+            //Directory.SetCurrentDirectory(@"C:");
             var v = Directory.CreateDirectory(Path.GetFullPath(path));
-            Directory.SetCurrentDirectory(path);
+            //Directory.SetCurrentDirectory(path);
             BaseDirectory = path;
         }
         public static string ProjectPsd(string projectName) => Path.Combine(Directories.ProjectDirectory(projectName), "template.psd");

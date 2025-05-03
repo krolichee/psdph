@@ -8,10 +8,17 @@
         mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="#FFC3C3C3">
     <Grid x:Name="mainGrid">
-        <Grid x:Name="cedStackGrid" Margin="0,39,0,0">
-
-            <CedStack:CEDStackUI Width="801"/>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="cedStackGrid" Grid.Row="1">
+            <CedStack:CEDStackUI Margin="0,0,0,0"/>
         </Grid>
+        <Menu VerticalAlignment="Center" Height="18">
+            <MenuItem Header="Вид" >
+                <MenuItem Header="Удалить" Click="MenuItem_Click" />
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>

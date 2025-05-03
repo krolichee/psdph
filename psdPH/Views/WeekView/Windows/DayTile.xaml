@@ -9,8 +9,7 @@
     <Button x:Name="button" Click="button_Click">
         <Grid Background="#FFECE9E9" Width="{Binding ActualWidth, ElementName=button, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=button, Mode=OneWay}">
             <Label x:Name="dowLabel" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="#FFBBADAD" FontSize="24" FontFamily="Arial Black"/>
-            <TextBlock x:Name="previewTextBlock" HorizontalAlignment="Left" Height="35" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="100"/>
-
+            <TextBlock x:Name="previewTextBlock" TextWrapping="Wrap" Text="Лорем Ипсум" VerticalAlignment="Top" Margin="6,6,6,0" FontFamily="Bahnschrift" Foreground="#FF524E4E"/>
         </Grid>
     </Button>
 </UserControl>

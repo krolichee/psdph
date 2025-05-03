@@ -70,12 +70,12 @@ namespace psdPH.Logic.Compositions
             }
         }
 
-        public PsJustification Justification = PsJustification.psLeft;
+        public PsJustification Justification = PsJustification.psCenter;
 
         override public void Apply(Document doc)
         {
             ArtLayer layer = doc.GetLayerByName(LayerName, LayerListing.Recursive);
-            layer.TextItem.Contents = Text;
+            layer.TextItem.Contents = Text.Replace("\n","\r");
         }
     }
 
@@ -127,16 +127,23 @@ namespace psdPH.Logic.Compositions
         {
             var textLayer = doc.GetLayerByName(TextLeafLayername);
             var areaLayer = doc.GetLayerByName(LayerName);
+            TextLeaf textLeaf = Siblings<TextLeaf>().First(t => t.LayerName == TextLeafLayername);
+            
+            areaLayer.Opacity = 0;
+            if (textLeaf.Text == "")
+                return;
+            textLeaf.Apply(doc);
+           
+            
 
             Alignment alignment = new Alignment(HorizontalAlignment.Left, VerticalAlignment.Center);
 
             doc.FitTextLayer(textLayer, areaLayer);
 
-            alignment.H = JustificationMatchDict[TextLeaf.Justification];
+            alignment.H = JustificationMatchDict[textLeaf.Justification];
 
             var initialAVector = doc.GetAlightmentVector(areaLayer, textLayer, alignment);
-            textLayer.Translate(initialAVector);
-
+            textLayer.TranslateV(initialAVector);
         }
     }
 

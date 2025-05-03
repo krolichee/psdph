@@ -83,16 +83,16 @@
     <Compile Include="StringInputWindow.xaml.cs">
       <DependentUpon>StringInputWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateCEDCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateStackControl.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateStackHandler.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateCEDCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackHandler.cs" />
     <Compile Include="Utils\CedStack\CEDStackHandler.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RuleStackControl.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RuleStackHandler.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\StructureStackControl.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\StructureStackHandler.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\RuleCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\StructureCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\RuleStackControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\RuleStackHandler.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureStackControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureStackHandler.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\RuleCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureCommand.cs" />
     <Compile Include="Utils\Directories.cs" />
     <Compile Include="CollectionEditor\ImageSelectorWindow.xaml.cs">
       <DependentUpon>ImageSelectorWindow.xaml</DependentUpon>
@@ -107,7 +107,6 @@
       <DependentUpon>CEDStackUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\CedStack\CEDStackControl.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionStackElement.cs" />
     <Compile Include="Utils\PsdPhContext.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="TemplateEditor\RuleDicts.cs" />
@@ -116,14 +115,13 @@
     <Compile Include="Utils\EnumWrapper.cs" />
     <Compile Include="Utils\TopmostWindow.cs" />
     <Compile Include="Utils\XmlClone.cs" />
-    <Compile Include="Views\WeekView\DateFormatWindow.xaml.cs">
+    <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WeekView\DayTile.xaml.cs">
+    <Compile Include="Views\WeekView\Windows\DayTile.xaml.cs">
       <DependentUpon>DayTile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WeekView\DirectoriesExtension.cs" />
-    <Compile Include="Views\WeekView\DowPlaceholderMatchWindow.xaml.cs">
+    <Compile Include="Views\WeekView\Windows\DowPlaceholderMatchWindow.xaml.cs">
       <DependentUpon>DowPlaceholderMatchWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Localization.cs" />
@@ -176,20 +174,20 @@
     <Compile Include="Views\WeekView\Logic\WeekData.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRenderer.cs" />
     <Compile Include="Views\WeekView\Logic\WeekTime.cs" />
-    <Compile Include="Views\WeekView\RenderCommand.cs" />
-    <Compile Include="Views\WeekView\WeekCommand.cs" />
-    <Compile Include="Views\WeekView\WeekConfigEditor.cs" />
-    <Compile Include="Views\WeekView\WeekDatesStrings.cs" />
-    <Compile Include="Views\WeekView\WeekStackHandler.cs" />
-    <Compile Include="Views\WeekView\WeekView.cs" />
-    <Compile Include="Views\WeekView\WeekViewWindow.xaml.cs">
+    <Compile Include="Views\WeekView\Logic\RenderCommand.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekCommand.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekConfigEditor.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekDatesStrings.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekStackHandler.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekView.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekViewWindow.xaml.cs">
       <DependentUpon>WeekViewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WeekView\Logic\WeekListData.cs" />
-    <Compile Include="Views\WeekView\WeekRow.xaml.cs">
+    <Compile Include="Views\WeekView\Windows\WeekRow.xaml.cs">
       <DependentUpon>WeekRow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WeekView\WeekTile.xaml.cs">
+    <Compile Include="Views\WeekView\Windows\WeekTile.xaml.cs">
       <DependentUpon>WeekTile.xaml</DependentUpon>
     </Compile>
     <Page Include="CollectionEditor\CollectionEditor.xaml">
@@ -208,15 +206,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WeekView\DateFormatWindow.xaml">
+    <Page Include="Views\WeekView\Windows\DateFormatWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WeekView\DayTile.xaml">
+    <Page Include="Views\WeekView\Windows\DayTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WeekView\DowPlaceholderMatchWindow.xaml">
+    <Page Include="Views\WeekView\Windows\DowPlaceholderMatchWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -272,15 +270,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WeekView\WeekViewWindow.xaml">
+    <Page Include="Views\WeekView\Windows\WeekViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WeekView\WeekRow.xaml">
+    <Page Include="Views\WeekView\Windows\WeekRow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WeekView\WeekTile.xaml">
+    <Page Include="Views\WeekView\Windows\WeekTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

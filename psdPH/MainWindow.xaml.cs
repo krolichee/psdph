@@ -23,12 +23,14 @@ namespace psdPH
         public static string CurrentProjectName = "";
         void OpenProject(string projectName)
         {
+            PsdPhProject.MakeInstance(projectName);
             CurrentProjectName = projectName;
-            projectNameLabel.Content = CurrentProjectName;
+            projectNameTextBlock.Text= CurrentProjectName;
         }
         void CloseProject(object _)
         {
             CurrentProjectName = "";
+            projectNameTextBlock.Text = CurrentProjectName;
         }
         bool tryCreateProject(string templatePath, string projectName)
         {
@@ -52,6 +54,10 @@ namespace psdPH
                 return false;
             }
         }
+        bool AnyViews()
+        {
+           return Directory.EnumerateFileSystemEntries(Directories.ViewsDirectory(CurrentProjectName)).Any();
+        }
         void NewProject()
         {
             MessageBoxResult result;
@@ -67,16 +73,41 @@ namespace psdPH
             if (si_w.ShowDialog() != true)
                 return;
             var filePath = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument.FullName;
-            MessageBox.Show(filePath);
             var projectName = si_w.getResultString();
             if (tryCreateProject(filePath, projectName))
                 OpenProject(projectName);
+            Directory.CreateDirectory(Directories.ViewsDirectory(projectName));
             LoadFoldersIntoMenu();
         }
+        public string BaseDirectory => Path.Combine(@"C:\", "ProgramData", "psdPH");
         public void InitializeBaseDirectory()
         {
-            string path = Path.Combine(@"C:\", "ProgramData", "psdPH");
-            Directories.SetBaseDirectory(path); //Directory.GetCurrentDirectory();
+            Directories.SetBaseDirectory(BaseDirectory); //Directory.GetCurrentDirectory();
+        }
+        public static void CopyDirectory(string sourceDir, string targetDir)
+        {
+            Directory.CreateDirectory(targetDir);
+
+            // Копируем все файлы
+            foreach (string file in Directory.GetFiles(sourceDir))
+            {
+                string destFile = Path.Combine(targetDir, Path.GetFileName(file));
+                File.Copy(file, destFile, true); 
+            }
+            foreach (string directory in Directory.GetDirectories(sourceDir))
+            {
+                string destDir = Path.Combine(targetDir, Path.GetFileName(directory));
+                CopyDirectory(directory, destDir);
+            }
+        }
+        public void ExportExamples()
+        {
+            //if (Directory.Exists(BaseDirectory))
+            //    return;
+            Directory.CreateDirectory(BaseDirectory);
+            var examplesDir = Path.Combine(Directory.GetCurrentDirectory(),"Examples");
+            var targerDir = Directories.ProjectsDirectory;
+            CopyDirectory(examplesDir, targerDir);
         }
         public MainWindow()
         {
@@ -92,6 +123,7 @@ namespace psdPH
             //Console.WriteLine(layer.TextItem.Height);
             //layer.TextItem.Size -= 10;
             InitializeBaseDirectory();
+            ExportExamples();
             InitializeComponent();
             LoadFoldersIntoMenu();
             templateMenuItem.Command = new RelayCommand(templateMenuItem_Click, isProjectOpen);
@@ -138,6 +170,7 @@ namespace psdPH
         private void NewProjectMenuItem_Click(object sender, RoutedEventArgs e)
         {
             NewProject();
+
         }
         bool isProjectOpen(object _)
         {
@@ -145,21 +178,26 @@ namespace psdPH
         }
         private void templateMenuItem_Click(object sender)
         {
+            if(AnyViews())
+            {
+                MessageBox.Show("Изменения шаблона не будут отображаться на уже созданных видах. После редактирования необходимо будет заново создать виды");
+            }    
             Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
             ICompositionShapitor editor = BlobEditorWindow.OpenFromDisk(blob);
             editor.ShowDialog();
-            PsdPhProject.saveBlob(blob, CurrentProjectName);
+            PsdPhProject.saveBlob(editor.GetResultComposition() as Blob, CurrentProjectName);
         }
         private void weekViewMenuItem_Click(object _)
         {
-            var weekView = new WeekView(CurrentProjectName);
+            var weekView = WeekView.MakeInstance(CurrentProjectName);
             Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
             var weekListData = weekView.OpenOrCreateWeekListData(blob);
             if (weekListData == null)
                 return;
             var wv_w = new WeekViewWindow(weekListData);
             wv_w.ShowDialog();
-            weekView.SaveWeekListData(weekListData);
+            if (!wv_w.Deleted)
+                weekView.SaveWeekListData(weekListData);
         }
 
         private void Window_Closed(object sender, EventArgs e)

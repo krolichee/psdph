@@ -17,9 +17,9 @@ namespace psdPH.Views.WeekView
         public Blob MainBlob;
         public List<DowBlobPair> DowBlobList = new List<DowBlobPair>();
         [XmlIgnore]
-        WeekListData weekListData;
+        public WeekListData WeekListData;
         [XmlIgnore]
-        public WeekConfig WeekConfig => weekListData.WeekConfig;
+        public WeekConfig WeekConfig => WeekListData.WeekConfig;
         [XmlIgnore]
         public Dictionary<DayOfWeek, Blob> DowBlobsDict
         {
@@ -38,7 +38,7 @@ namespace psdPH.Views.WeekView
         }
         public void Restore(WeekListData weekListData)
         {
-            this.weekListData = weekListData;
+            this.WeekListData = weekListData;
             MainBlob.Restore();
             foreach (var item in DowBlobList)
                 item.Blob.Restore();
@@ -51,7 +51,7 @@ namespace psdPH.Views.WeekView
             serializer.Serialize(sw, this);
             StringReader sr = new StringReader(sb.ToString());
             WeekData result = serializer.Deserialize(sr) as WeekData;
-            result.Restore(weekListData);
+            result.Restore(WeekListData);
             return result;
         }
 
@@ -65,7 +65,7 @@ namespace psdPH.Views.WeekView
         }
         public WeekData(int week, WeekListData weekListData)
         {
-            this.weekListData = weekListData;
+            this.WeekListData = weekListData;
             Week = week;
             var mainBlobPrototype = weekListData.RootBlob;
             var mainBlob = mainBlobPrototype.Clone();

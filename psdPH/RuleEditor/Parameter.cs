@@ -93,16 +93,39 @@ namespace psdPH.Logic
             stack.Children.Add(cb);
             return result;
         }
+        public static FlowDocument ConvertStringToFlowDocument(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return new FlowDocument(); // Возвращаем пустой документ
 
+            FlowDocument flowDoc = new FlowDocument();
+            Paragraph paragraph = new Paragraph();
+
+            // Разделяем строку с учетом разных типов переносов
+            string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                paragraph.Inlines.Add(new Run(lines[i]));
+
+                // Не добавляем LineBreak после последней строки
+                if (i < lines.Length - 1)
+                    paragraph.Inlines.Add(new LineBreak());
+            }
+            flowDoc.Blocks.Add(paragraph);
+            return flowDoc;
+        }
         public static Parameter RichStringInput(ParameterConfig config)
         {
             var result = new Parameter(config);
             var stack = result._stack;
 
-            var rtb = new RichTextBox() { Width = 70, Height = 30 };
+            var rtb = new RichTextBox() { MinWidth = 70, MinHeight = 40 };
+
             rtb.TextChanged += RichTextBox_TextChanged;
             result.valueFunc = () => getRtbText(rtb, "\r");
             result.Control = rtb;
+            rtb.Document = ConvertStringToFlowDocument( config.GetValue().ToString());
             stack.Children.Add(rtb);
             return result;
 
@@ -115,11 +138,15 @@ namespace psdPH.Logic
             {
                 string _result = "";
                 foreach (Paragraph item in (_rtb).Document.Blocks)
-                    foreach (Run item1 in item.Inlines)
-                    {
-                        _result += item1.Text;
-                        _result += lineSep;
-                    }
+                    foreach (var item1 in item.Inlines)
+                        if (item1 is Run)
+                        {
+                            var run = (Run)item1;
+                            if (_result != "")
+                                _result += lineSep;
+                            _result += run.Text;
+                            
+                        }
                 return _result;
             }
         }
