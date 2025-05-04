@@ -1,7 +1,9 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.Views.SimpleView;
 using psdPH.Views.WeekView;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -79,7 +81,7 @@ namespace psdPH
             Directory.CreateDirectory(Directories.ViewsDirectory(projectName));
             LoadFoldersIntoMenu();
         }
-        public string BaseDirectory => Path.Combine(@"C:\", "ProgramData", "psdPH");
+        public string BaseDirectory;
         public void InitializeBaseDirectory()
         {
             Directories.SetBaseDirectory(BaseDirectory); //Directory.GetCurrentDirectory();
@@ -109,8 +111,12 @@ namespace psdPH
             var targerDir = Directories.ProjectsDirectory;
             CopyDirectory(examplesDir, targerDir);
         }
-        public MainWindow()
+        public MainWindow():this(Path.Combine(@"C:\", "ProgramData", "psdPH"))
         {
+        }
+        public MainWindow(string baseDirectory)
+        {
+            BaseDirectory = baseDirectory;
             // Получаем типы из сборки
             //var psApp = PhotoshopWrapper.GetPhotoshopApplication();
             //var doc = psApp.ActiveDocument;
@@ -127,7 +133,8 @@ namespace psdPH
             InitializeComponent();
             LoadFoldersIntoMenu();
             templateMenuItem.Command = new RelayCommand(templateMenuItem_Click, isProjectOpen);
-            weekkViewMenuItem.Command = new RelayCommand(weekViewMenuItem_Click, isProjectOpen);
+            weekViewMenuItem.Command = new RelayCommand(weekViewMenuItem_Click, isProjectOpen);
+            simpleViewMenuItem.Command = new RelayCommand(simpleViewMenuItem_Click, isProjectOpen);
             openMenuItem.Command = new RelayCommand(noneCommand, isAnyProject);
             closeProjectMenuItem.Command = new RelayCommand(CloseProject, isProjectOpen);
         }
@@ -176,7 +183,7 @@ namespace psdPH
         {
             return CurrentProjectName != "";
         }
-        private void templateMenuItem_Click(object sender)
+        private void templateMenuItem_Click(object _)
         {
             if(AnyViews())
             {
@@ -208,6 +215,14 @@ namespace psdPH
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             LoadFoldersIntoMenu();
+        }
+
+        private void simpleViewMenuItem_Click(object _)
+        {
+            var w = new Window1();
+            var blob = PsdPhProject.Instance().openMainBlob();
+            w.MainGrid.Children.Add(new CompositionTreeControl(blob));
+            w.ShowDialog();
         }
     }
 }

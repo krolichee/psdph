@@ -115,6 +115,7 @@
     <Compile Include="Utils\EnumWrapper.cs" />
     <Compile Include="Utils\TopmostWindow.cs" />
     <Compile Include="Utils\XmlClone.cs" />
+    <Compile Include="Views\SimpleView\CompositionTreeControl.cs" />
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>
     </Compile>
@@ -189,6 +190,9 @@
     </Compile>
     <Compile Include="Views\WeekView\Windows\WeekTile.xaml.cs">
       <DependentUpon>WeekTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
     <Page Include="CollectionEditor\CollectionEditor.xaml">
       <SubType>Designer</SubType>
@@ -282,6 +286,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -308,6 +316,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="testResources\TestProjects\Projects\simple\template.psd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -354,7 +363,10 @@
     <Resource Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="testResources\TestProjects\" />
+    <Folder Include="testResources\TestProjects\Projects\simple\Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="testResources\TestProjects\Projects\simple\template.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

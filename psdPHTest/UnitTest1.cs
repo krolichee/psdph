@@ -7,6 +7,39 @@ using psdPH.Logic.Rules;
 namespace psdPHTest.Automatic
 {
     [TestClass]
+    public class SimpleView
+    {
+        [ClassInitialize]
+        public void Initialize()
+        {
+            string baseDirectory = @"C:\\Users\\Puziko\\source\\repos\\psdPH\\psdPH\\testResources\\TestProjects\\";
+            Directories.SetBaseDirectory(baseDirectory);
+            var project = PsdPhProject.MakeInstance("simple");
+            
+            
+        }
+        [TestMethod]
+        public void OpenView()
+        {
+        }
+        [TestMethod]
+        public void OpenOrCreateView()
+        {
+        }
+        public void CreateView()
+        {
+        }
+        [TestMethod]
+        public void SaveView()
+        {
+        }
+        [TestMethod]
+        public void NewRow()
+        {
+        }
+
+    }
+    [TestClass]
     public class DateFormat
     {
 

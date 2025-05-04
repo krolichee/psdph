@@ -32,11 +32,11 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             Title = title;
             stack = new StackPanel();
             Parameters = parameters;
-            foreach (var item in parameters)
+            foreach (var parameter in parameters)
             {
-                item.Stack.Orientation = Orientation.Vertical;
-                item.Control.HorizontalAlignment = HorizontalAlignment.Left;
-                item.Stack.Margin = new Thickness(0, 0, 0, 10);
+                parameter.Stack.Orientation = Orientation.Vertical;
+                parameter.Control.HorizontalAlignment = HorizontalAlignment.Left;
+                parameter.Stack.Margin = new Thickness(0, 0, 0, 10);
             }
             MainGrid.Children.Insert(0, stack);
         }

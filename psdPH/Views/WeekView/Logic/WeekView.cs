@@ -48,7 +48,7 @@ namespace psdPH.Views.WeekView
                 weekConfig = CreateWeekConfig(root);
             return weekConfig;
         }
-
+        
         public WeekListData OpenOrCreateWeekListData(Blob root)
         {
             var weeksListData = DiskOperations.OpenXml<WeekListData>(WeekListDataPath);
