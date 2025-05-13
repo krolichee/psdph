@@ -3,6 +3,7 @@ using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 
 namespace psdPH.Views.WeekView
 {
@@ -15,7 +16,6 @@ namespace psdPH.Views.WeekView
         Blob root;
         public WeekConfigEditor(Blob root)
         {
-            //Выбор прототипа
             this.root = root;
         }
 
@@ -24,20 +24,34 @@ namespace psdPH.Views.WeekView
             return result;
         }
 
-        internal bool ShowDialog()
+        StringChoiceWindow DayPrototypeChoiceWindow()
         {
             PrototypeLeaf[] prototypes = root.getChildren<PrototypeLeaf>().ToArray();
             string[] prototypes_names = prototypes.Select(l => l.LayerName).ToArray();
             StringChoiceWindow pscc_w = new StringChoiceWindow(prototypes_names.ToArray(), "Выбор прототип для дня");
+            return pscc_w;
+        }
+        PrototypeLeaf GetPrototypeByLayerName(string layername)
+        {
+            PrototypeLeaf[] prototypes = root.getChildren<PrototypeLeaf>().ToArray();
+            return prototypes.First(l => l.LayerName == layername);
+        }
+        internal bool ShowDialog()
+        {
+            string[] root_textLeafs_names = root.getChildren<TextLeaf>().Select(l => l.LayerName).ToArray();
+            StringChoiceWindow pscc_w = DayPrototypeChoiceWindow();
             if (pscc_w.ShowDialog() != true)
                 return false;
 
 
-            PrototypeLeaf prototype = prototypes.First(l => l.LayerName == pscc_w.getResultString());
+
+
+
+            PrototypeLeaf prototype = GetPrototypeByLayerName(pscc_w.GetResultString());
 
             TextLeaf[] textLeafs = prototype.Blob.getChildren<TextLeaf>();
             string[] textLeafs_names = textLeafs.Select(l => l.LayerName).ToArray();
-            var root_textLeafs_names = root.getChildren<TextLeaf>().Select(l => l.LayerName).ToArray();
+            
 
             //Сопоставление плейсхолдеров дням недели
             DowPlaceholderMatchWindow dwpm_w = new DowPlaceholderMatchWindow(prototype);
@@ -58,9 +72,10 @@ namespace psdPH.Views.WeekView
                 new ParameterConfig(result, nameof(result.TilePreviewTextLeafName), "Текстовое поле для предпросмотра")
             };
             List<Parameter> parameters = new List<Parameter>();
-            parameters.AddRange(
-                parameterConfigs_protoTextLeafName.Select(c => Parameter.Choose(c, textLeafs_names))
-                );
+            foreach (var config in parameterConfigs_protoTextLeafName)
+            {
+                parameters.Add(Parameter.Choose(config, textLeafs_names));
+            }
             parameters.Add(Parameter.Choose(
                 new ParameterConfig(result, nameof(result.WeekDatesTextLeafName), "Текстовое поле дат недели"),
                 root_textLeafs_names

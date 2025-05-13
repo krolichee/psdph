@@ -96,19 +96,16 @@ namespace psdPH.Logic
         public static FlowDocument ConvertStringToFlowDocument(string text)
         {
             if (string.IsNullOrEmpty(text))
-                return new FlowDocument(); // Возвращаем пустой документ
+                return new FlowDocument();
 
             FlowDocument flowDoc = new FlowDocument();
             Paragraph paragraph = new Paragraph();
 
-            // Разделяем строку с учетом разных типов переносов
             string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
 
             for (int i = 0; i < lines.Length; i++)
             {
                 paragraph.Inlines.Add(new Run(lines[i]));
-
-                // Не добавляем LineBreak после последней строки
                 if (i < lines.Length - 1)
                     paragraph.Inlines.Add(new LineBreak());
             }

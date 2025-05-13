@@ -116,6 +116,13 @@
     <Compile Include="Utils\TopmostWindow.cs" />
     <Compile Include="Utils\XmlClone.cs" />
     <Compile Include="Views\SimpleView\CompositionTreeControl.cs" />
+    <Compile Include="Views\SimpleView\Logic\SimpleView.cs" />
+    <Compile Include="Views\SimpleView\Logic\SimpleListData.cs" />
+    <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleViewCommand.cs" />
+    <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleViewHandler.cs" />
+    <Compile Include="Views\SimpleView\Windows\SimpleViewWindow.xaml.cs">
+      <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>
     </Compile>
@@ -207,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utils\CedStack\CEDStackUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SimpleView\Windows\SimpleViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

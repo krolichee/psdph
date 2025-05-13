@@ -15,8 +15,6 @@ namespace psdPHTest.Automatic
             string baseDirectory = @"C:\\Users\\Puziko\\source\\repos\\psdPH\\psdPH\\testResources\\TestProjects\\";
             Directories.SetBaseDirectory(baseDirectory);
             var project = PsdPhProject.MakeInstance("simple");
-            
-            
         }
         [TestMethod]
         public void OpenView()

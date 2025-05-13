@@ -17,7 +17,7 @@ namespace psdPH
             stackPanel.Children.Insert(0, scc);
         }
 
-        public string getResultString()
+        public string GetResultString()
         {
             return _result;
         }

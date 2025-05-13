@@ -40,18 +40,18 @@ namespace psdPH.Views.WeekView
                 return null;
             return wce_w.GetResultConfig();
         }
-
+        public WeekConfig OpenWeekConfig() => DiskOperations.OpenXml<WeekConfig>(ConfigPath);
         public WeekConfig OpenOrCreateWeekConfig(Blob root)
         {
-            var weekConfig = DiskOperations.OpenXml<WeekConfig>(ConfigPath);
+            var weekConfig = OpenWeekConfig();
             if (weekConfig == null)
                 weekConfig = CreateWeekConfig(root);
             return weekConfig;
         }
-        
+        public WeekListData OpenWeekListData() => DiskOperations.OpenXml<WeekListData>(WeekListDataPath);
         public WeekListData OpenOrCreateWeekListData(Blob root)
         {
-            var weeksListData = DiskOperations.OpenXml<WeekListData>(WeekListDataPath);
+            var weeksListData = OpenWeekListData();
             var weekConfig = OpenOrCreateWeekConfig(root);
 
             if (weekConfig == null)
@@ -77,7 +77,6 @@ namespace psdPH.Views.WeekView
         internal void Delete()
         {
             Directory.Delete(ViewDirectory, true);
-            
         }
     }
 }

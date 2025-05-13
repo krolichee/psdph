@@ -2,7 +2,7 @@
 {
     public interface IStringEditor
     {
-        string getResultString();
+        string GetResultString();
 
         bool? ShowDialog();
     }

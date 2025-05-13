@@ -14,7 +14,7 @@ namespace psdPH
             Title = annotation;
             tb.Focus();
         }
-        public string getResultString()
+        public string GetResultString()
         {
             return tb.Text;
         }

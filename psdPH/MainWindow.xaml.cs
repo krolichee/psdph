@@ -1,6 +1,8 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.Views.SimpleView;
+using psdPH.Views.SimpleView.Logic;
+using psdPH.Views.SimpleView.Windows;
 using psdPH.Views.WeekView;
 using System;
 using System.ComponentModel;
@@ -75,7 +77,7 @@ namespace psdPH
             if (si_w.ShowDialog() != true)
                 return;
             var filePath = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument.FullName;
-            var projectName = si_w.getResultString();
+            var projectName = si_w.GetResultString();
             if (tryCreateProject(filePath, projectName))
                 OpenProject(projectName);
             Directory.CreateDirectory(Directories.ViewsDirectory(projectName));
@@ -219,6 +221,17 @@ namespace psdPH
 
         private void simpleViewMenuItem_Click(object _)
         {
+            var weekView = SimpleView.MakeInstance(CurrentProjectName);
+            Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
+            var simpleListData = weekView.OpenOrCreateSimpleListData(blob);
+            if (simpleListData == null)
+                return;
+            var wv_w = new SimpleViewWindow(simpleListData);
+            wv_w.ShowDialog();
+            if (!wv_w.Deleted)
+                weekView.SaveWeekListData(simpleListData);
+
+
             var w = new Window1();
             var blob = PsdPhProject.Instance().openMainBlob();
             w.MainGrid.Children.Add(new CompositionTreeControl(blob));
