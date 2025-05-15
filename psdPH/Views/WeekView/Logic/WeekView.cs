@@ -7,28 +7,15 @@ using System.Windows;
 
 namespace psdPH.Views.WeekView
 {
-    public class WeekView
+    public class WeekView:ViewManager
     {
-        private static WeekView _instance;
-        private readonly string _projectName;
-        public static WeekView Instance()
-        {
-            if (_instance == null)
-                throw new System.Exception();
-            return _instance;
-        }
-        public static WeekView MakeInstance(string projectName)
-        {
-            return _instance = new WeekView(projectName);
-        }
-        
-
         protected WeekView(string projectName)
         {
             _projectName = projectName;
             Directory.CreateDirectory(ViewDirectory);
         }
-
+        public WeekView() { }
+        protected override string ViewName => "WeekView";
         private string ViewDirectory => Path.Combine(Directories.ViewsDirectory(_projectName), "WeekView");
         private string ConfigPath => Path.Combine(ViewDirectory, "config.xml");
         private string WeekListDataPath => Path.Combine(ViewDirectory, "data.xml");

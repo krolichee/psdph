@@ -10,7 +10,7 @@ namespace psdPH.Views.WeekView
         public WeekStackHandler(WeekListData weekListData)
         {
             WeekListData = weekListData;
-            weekListData.Weeks.CollectionChanged += (_,__)=> Refresh();
+            weekListData.Variants.CollectionChanged += (_,__)=> Refresh();
         }
         protected override UIElement createControl(object item)
         {
@@ -19,7 +19,7 @@ namespace psdPH.Views.WeekView
 
         protected override object[] getElements()
         {
-            return WeekListData.Weeks.ToArray();
+            return WeekListData.Variants.ToArray();
         }
         protected override void AddButtonAction()
         {

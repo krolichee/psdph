@@ -1,5 +1,6 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.Views;
 using psdPH.Views.SimpleView;
 using psdPH.Views.SimpleView.Logic;
 using psdPH.Views.SimpleView.Windows;
@@ -198,7 +199,7 @@ namespace psdPH
         }
         private void weekViewMenuItem_Click(object _)
         {
-            var weekView = WeekView.MakeInstance(CurrentProjectName);
+            var weekView = ViewManager.MakeInstance<WeekView>(CurrentProjectName);
             Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
             var weekListData = weekView.OpenOrCreateWeekListData(blob);
             if (weekListData == null)
@@ -229,13 +230,7 @@ namespace psdPH
             var wv_w = new SimpleViewWindow(simpleListData);
             wv_w.ShowDialog();
             if (!wv_w.Deleted)
-                weekView.SaveWeekListData(simpleListData);
-
-
-            var w = new Window1();
-            var blob = PsdPhProject.Instance().openMainBlob();
-            w.MainGrid.Children.Add(new CompositionTreeControl(blob));
-            w.ShowDialog();
+                weekView.SaveListData(simpleListData);
         }
     }
 }

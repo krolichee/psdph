@@ -8,26 +8,14 @@ using System.Threading.Tasks;
 
 namespace psdPH.Views.SimpleView.Logic
 {
-    public class SimpleListData
+    [Serializable]
+    public class SimpleListData: ViewListData<Blob>
     {
-        public Blob RootBlob;
-        public ObservableCollection<Blob> Variants;
-        public void New()
+        public SimpleListData() { }
+        public override void New()
         {
             Variants.Add(RootBlob.Clone());
         }
-        public void Remove(Blob item)
-        {
-            Variants.Remove(item);
-        }
 
-        internal void Restore()
-        {
-            RootBlob.Restore();
-            foreach (var item in Variants)
-            {
-                item.Restore();
-            }
-        }
     }
 }

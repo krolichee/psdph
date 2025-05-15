@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 namespace psdPH.Views.WeekView
 {
     [Serializable]
-    public class WeekData
+    public class WeekData:Restorable
     {
         public int Week;
         public Blob MainBlob;
@@ -36,12 +36,16 @@ namespace psdPH.Views.WeekView
         {
 
         }
-        public void Restore(WeekListData weekListData)
+        public void Restore()
         {
-            this.WeekListData = weekListData;
             MainBlob.Restore();
             foreach (var item in DowBlobList)
                 item.Blob.Restore();
+        }
+        public void Restore(WeekListData weekListData)
+        {
+            this.WeekListData = weekListData;
+            Restore();
         }
         public WeekData Clone()
         {

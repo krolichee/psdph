@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
+using psdPH.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace psdPH
 
 
     [XmlInclude(typeof(Rule))]
-    public abstract class Composition : IParameterable
+    public abstract class Composition : IParameterable, Restorable
     {
         public delegate void RulesetUpdated();
         public delegate void ChildrenUpdated();
@@ -58,7 +59,11 @@ namespace psdPH
         }
         virtual public void addChild(Composition child) { }
         virtual public void removeChild(Composition child) { }
-        public void Restore(Composition parent = null)
+        public void Restore()
+        {
+            restoreParents();
+        }
+        public void Restore(Composition parent)
         {
             restoreParents(parent);
             RuleSet.restoreLinks(this);
