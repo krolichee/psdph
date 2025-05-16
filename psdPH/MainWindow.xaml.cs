@@ -230,12 +230,6 @@ namespace psdPH
             wv_w.ShowDialog();
             if (!wv_w.Deleted)
                 weekView.SaveWeekListData(simpleListData);
-
-
-            var w = new Window1();
-            var blob = PsdPhProject.Instance().openMainBlob();
-            w.MainGrid.Children.Add(new CompositionTreeControl(blob));
-            w.ShowDialog();
         }
     }
 }
