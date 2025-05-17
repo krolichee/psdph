@@ -134,7 +134,6 @@ namespace psdPH.Logic.Compositions
                 return;
             textLeaf.Apply(doc);
            
-            
 
             Alignment alignment = new Alignment(HorizontalAlignment.Left, VerticalAlignment.Center);
 
@@ -142,8 +141,7 @@ namespace psdPH.Logic.Compositions
 
             alignment.H = JustificationMatchDict[textLeaf.Justification];
 
-            var initialAVector = doc.GetAlightmentVector(areaLayer, textLayer, alignment);
-            textLayer.TranslateV(initialAVector);
+            doc.AlignLayer(areaLayer, textLayer, alignment);
         }
     }
 

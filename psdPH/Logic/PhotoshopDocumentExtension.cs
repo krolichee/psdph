@@ -12,9 +12,9 @@ namespace psdPH.Logic
     }
     public static partial class PhotoshopDocumentExtension
     {
-        public static void AlignLayer(this Document doc, ArtLayer targetLayer, ArtLayer dynamicLayer)
+        public static void AlignLayer(this Document doc, ArtLayer targetLayer, ArtLayer dynamicLayer,Alignment alignment)
         {
-            targetLayer.Translate(doc.GetAlightmentVector(targetLayer, dynamicLayer));
+            dynamicLayer.TranslateV(doc.GetAlightmentVector(targetLayer, dynamicLayer,alignment));
         }
         public static void FitTextLayer(this Document doc, ArtLayer textLayer, ArtLayer areaLayer)
         {
@@ -107,7 +107,7 @@ namespace psdPH.Logic
         {
             return GetAlightmentVector(targetLayer.GetBoundRect(), dynamicLayer.GetBoundRect(), alignment);
         }
-        public static Vector GetAlightmentVector(this Document doc, string targetLayerName, string dynamicLayerName)
+        public static Vector GetAlightmentVector(this Document doc, string targetLayerName, string dynamicLayerName, Alignment alignment = null)
         {
             ArtLayer targetLayer = doc.GetLayerByName(targetLayerName);
             ArtLayer dynamicLayer = doc.GetLayerByName(dynamicLayerName);

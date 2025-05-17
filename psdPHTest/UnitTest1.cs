@@ -1,11 +1,51 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Photoshop;
 using psdPH;
+using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Rules;
+using System;
+using System.ComponentModel.Design;
+using System.Linq;
+using System.Windows;
+using static psdPH.Logic.PhotoshopDocumentExtension;
+using Application = Photoshop.Application;
 
+namespace psdPHText.Ps
+{
+    [TestClass]
+    public class SomeTest
+    {
+        Application psApp;
+        Document doc => psApp.ActiveDocument;
+        [TestInitialize]
+        public void Init()
+        {
+            Type psType = Type.GetTypeFromProgID("Photoshop.Application");
+            psApp = Activator.CreateInstance(psType) as Application;
+        }
+        [TestMethod]
+        [Timeout(5000)]
+        public void Fit()
+        {
+            ArtLayer textLayer = doc.GetLayerByName("text");
+            ArtLayer zoneLayer = doc.GetLayerByName("zone");
+            doc.FitTextLayer(textLayer, zoneLayer);
+            doc.AlignLayer(zoneLayer, textLayer, new Alignment(HorizontalAlignment.Right, VerticalAlignment.Bottom));
+            Assert.IsTrue(true);
+        }
+        [TestMethod]
+        public void ViewTextItem()
+        {
+            ArtLayer textLayer = doc.GetLayerByName("text");
+            Console.WriteLine(textLayer.TextItem.GetHashCode());
+        }
 
+    }
+}
 namespace psdPHTest.Automatic
 {
+    
     [TestClass]
     public class SimpleView
     {

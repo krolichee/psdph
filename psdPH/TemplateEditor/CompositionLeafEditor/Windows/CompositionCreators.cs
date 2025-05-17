@@ -2,7 +2,9 @@
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Documents;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
@@ -51,7 +53,15 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             result.LayerName = "";
             var ln_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой");
             string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psTextLayer }));
-            p_w = new ParametersInputWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
+            List<Parameter> parameters = new List<Parameter>();
+            var justificationConfig = new ParameterConfig(result, nameof(result.Justification), "Выравнивание");
+            parameters.Add(Parameter.Choose(justificationConfig, new PsJustification[] {
+                    PsJustification.psRight,
+                    PsJustification.psLeft,
+                    PsJustification.psCenter
+                }.Cast<object>().ToArray(), FieldFunctions.EnumWrapperFunctions));
+            parameters.Add(Parameter.Choose(ln_pconfig, layers_names));
+            p_w = new ParametersInputWindow(parameters.ToArray());
         }
     }
     public class PrototypeCreator : LeafCreator<PrototypeLeaf>
