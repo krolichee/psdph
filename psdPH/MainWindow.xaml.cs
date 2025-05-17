@@ -6,6 +6,7 @@ using psdPH.Views.SimpleView.Windows;
 using psdPH.Views.WeekView;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -31,7 +32,7 @@ namespace psdPH
             CurrentProjectName = projectName;
             projectNameTextBlock.Text= CurrentProjectName;
         }
-        void CloseProject(object _)
+        void CloseProject_Execute(object _)
         {
             CurrentProjectName = "";
             projectNameTextBlock.Text = CurrentProjectName;
@@ -48,7 +49,6 @@ namespace psdPH
             string destinationPath = Path.Combine(projectDirectory, "template.psd");
             try
             {
-                // Копируем файл в целевую директорию
                 File.Copy(templatePath, destinationPath, overwrite: true);
                 return true;
             }
@@ -134,13 +134,24 @@ namespace psdPH
             ExportExamples();
             InitializeComponent();
             LoadFoldersIntoMenu();
-            templateMenuItem.Command = new RelayCommand(templateMenuItem_Click, isProjectOpen);
-            weekViewMenuItem.Command = new RelayCommand(weekViewMenuItem_Click, isProjectOpen);
-            simpleViewMenuItem.Command = new RelayCommand(simpleViewMenuItem_Click, isProjectOpen);
-            openMenuItem.Command = new RelayCommand(noneCommand, isAnyProject);
-            closeProjectMenuItem.Command = new RelayCommand(CloseProject, isProjectOpen);
+            RelayCommand projectOpenDepended(Action<object> action) => new RelayCommand(action, isProjectOpen);
+            RelayCommand notDepended(Action<object> action) => new RelayCommand(action, (object _) => true);
+            //Проект
+            newProjectMenuItem.Command = notDepended(NewProjectMenuItem_Execute);
+            openMenuItem.Command = new RelayCommand(noneCommand_Execute,isAnyProject);
+            closeProjectMenuItem.Command = projectOpenDepended(CloseProject_Execute);
+            openInExplorerMenuItem.Command = projectOpenDepended(openInExplorer_Execute);
+            //Шаблон
+            templateMenuItem.Command = projectOpenDepended(templateMenuItem_Execute);
+            //Виды
+            weekViewMenuItem.Command = projectOpenDepended(weekViewMenuItem_Execute);
+            simpleViewMenuItem.Command = projectOpenDepended(simpleViewMenuItem_Execute);
         }
-        private void noneCommand(object _) { }
+        private void openInExplorer_Execute(object _) {
+            string folderPath = Directories.ProjectDirectory(CurrentProjectName);
+            Process.Start("explorer.exe", folderPath);
+        }
+        private void noneCommand_Execute(object _) { }
         private bool isAnyProject(object _)
         {
             return getProjectsFolders().Any();
@@ -176,7 +187,7 @@ namespace psdPH
             }
         }
 
-        private void NewProjectMenuItem_Click(object sender, RoutedEventArgs e)
+        private void NewProjectMenuItem_Execute(object _)
         {
             NewProject();
 
@@ -185,7 +196,7 @@ namespace psdPH
         {
             return CurrentProjectName != "";
         }
-        private void templateMenuItem_Click(object _)
+        private void templateMenuItem_Execute(object _)
         {
             if(AnyViews())
             {
@@ -196,7 +207,7 @@ namespace psdPH
             editor.ShowDialog();
             PsdPhProject.saveBlob(editor.GetResultComposition() as Blob, CurrentProjectName);
         }
-        private void weekViewMenuItem_Click(object _)
+        private void weekViewMenuItem_Execute(object _)
         {
             var weekView = WeekView.MakeInstance(CurrentProjectName);
             Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
@@ -219,7 +230,7 @@ namespace psdPH
             LoadFoldersIntoMenu();
         }
 
-        private void simpleViewMenuItem_Click(object _)
+        private void simpleViewMenuItem_Execute(object _)
         {
             var weekView = SimpleView.MakeInstance(CurrentProjectName);
             Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);

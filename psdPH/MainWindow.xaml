@@ -8,15 +8,16 @@
         Title="MainWindow" Height="150" Width="270" Closed="Window_Closed" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid x:Name="MainGrid" Margin="0,0,0,-6">
         <Menu VerticalAlignment="Top">
-            <!-- Пункт меню "Файл" -->
             <MenuItem Header="Проект" Click="MenuItem_Click" >
-                <!-- Подменю -->
-                <MenuItem Header="Новый" Click="NewProjectMenuItem_Click" />
+                <MenuItem x:Name="newProjectMenuItem" Header="Новый"/>
                 <MenuItem Header="Открыть" x:Name="openMenuItem" />
                 <MenuItem  Header="Закрыть" x:Name="closeProjectMenuItem"/>
-                <Separator/>
+                <MenuItem  Header="Открыть в проводнике" x:Name="openInExplorerMenuItem"/>
+            </MenuItem>
+            <MenuItem Header="Шаблон">
                 <MenuItem x:Name="templateMenuItem" Header="Редактировать шаблон" />
-                <Separator/>
+            </MenuItem>
+            <MenuItem Header="Виды">
                 <MenuItem x:Name="weekViewMenuItem" Header="Недельный вид" />
                 <MenuItem x:Name="simpleViewMenuItem" Header="Простой вид" />
             </MenuItem>
