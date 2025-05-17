@@ -14,7 +14,7 @@
 
                 {typeof(FlagLeaf), "Флаг"},
                 {typeof(PrototypeLeaf), "Прототип" },
-                {typeof(PlaceholderLeaf), "Плейсхолдер" },
+                {typeof(PlaceholderLeaf), "Заглушка" },
 
                 {typeof(ImageLeaf), "Изображение" },
                 {typeof(TextLeaf), "Текст" },

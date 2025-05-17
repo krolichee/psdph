@@ -43,17 +43,13 @@ namespace psdPH.Views.WeekView
             if (pscc_w.ShowDialog() != true)
                 return false;
 
-
-
-
-
             PrototypeLeaf prototype = GetPrototypeByLayerName(pscc_w.GetResultString());
 
             TextLeaf[] textLeafs = prototype.Blob.getChildren<TextLeaf>();
             string[] textLeafs_names = textLeafs.Select(l => l.LayerName).ToArray();
             
 
-            //Сопоставление плейсхолдеров дням недели
+            //Сопоставление заглушек дням недели
             DowPlaceholderMatchWindow dwpm_w = new DowPlaceholderMatchWindow(prototype);
             if (dwpm_w.ShowDialog() != true)
                 return false;
