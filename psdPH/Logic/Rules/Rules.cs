@@ -3,45 +3,12 @@ using psdPH.Logic.Compositions;
 using psdPH.Logic.Rules;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Xml.Serialization;
 using Condition = psdPH.Logic.Rules.Condition;
 
 namespace psdPH.Logic
 {
-    [Serializable]
-    [XmlRoot("Ruleset")]
-    public class RuleSet
-    {
-        public event Action Updated;
-        [XmlIgnore]
-        public Composition composition;
-        public ObservableCollection<Rule> Rules = new ObservableCollection<Rule>();
-
-        public void apply(Document doc)
-        {
-
-            foreach (var item in Rules)
-            {
-                item.Apply(doc);
-            }
-        }
-
-        internal void restoreLinks(Composition composition)
-        {
-            this.composition = composition;
-            foreach (var rule in Rules)
-            {
-                rule.restoreComposition(composition);
-            }
-
-        }
-        public RuleSet()
-        {
-            Rules.CollectionChanged += (_, __) => Updated?.Invoke();
-        }
-    }
 
     [XmlInclude(typeof(ConditionRule))]
 
@@ -63,7 +30,6 @@ namespace psdPH.Logic
         public virtual void restoreComposition(Composition composition)
         {
             Composition = composition;
-
         }
 
         [XmlIgnore]
@@ -74,8 +40,9 @@ namespace psdPH.Logic
     public abstract class ConditionRule : Rule
     {
         public Condition Condition;
-
-        protected ConditionRule(Composition composition) : base(composition) { }
+        protected ConditionRule(Composition composition) : base(composition) { 
+            Condition = new DummyCondition(Composition); 
+        }
         public override void restoreComposition(Composition composition)
         {
             base.restoreComposition(composition);
@@ -233,26 +200,6 @@ namespace psdPH.Logic
         }
         public VisibleRule(Composition composition) : base(composition) { }
         public VisibleRule() : base(null) { }
-    }
-
-    public static class UIName
-    {
-        public static string ToString(object value)
-        {
-            return value.ToString();
-        }
-    }
-    //------------------
-    public static class EnumExtensions
-    {
-        public static string GetDescription(this Enum value)
-        {
-            return EnumLocalization.GetLocalizedDescription(value);
-        }
-        public static string ToString(this Enum value)
-        {
-            return value.GetDescription();
-        }
     }
 
 

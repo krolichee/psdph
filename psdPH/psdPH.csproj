@@ -79,6 +79,9 @@
     <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
       <DependentUpon>CollectionEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\EnumExtensions.cs" />
+    <Compile Include="Logic\Rules\RuleSet.cs" />
+    <Compile Include="Utils\UIName.cs" />
     <Compile Include="PsdPhProject.cs" />
     <Compile Include="StringInputWindow.xaml.cs">
       <DependentUpon>StringInputWindow.xaml</DependentUpon>

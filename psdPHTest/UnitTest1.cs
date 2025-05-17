@@ -14,6 +14,15 @@ using Application = Photoshop.Application;
 namespace psdPHText.Ps
 {
     [TestClass]
+    public class FitRuleTest
+    {
+        [TestMethod]
+        public void _()
+        {
+            
+        }
+    }
+    [TestClass]
     public class SomeTest
     {
         Application psApp;
@@ -40,7 +49,11 @@ namespace psdPHText.Ps
             ArtLayer textLayer = doc.GetLayerByName("text");
             Console.WriteLine(textLayer.TextItem.GetHashCode());
         }
-
+        [TestMethod]
+        public void CheckInteropWhenTextEditing()
+        {
+            var _ = (psApp.ActiveDocument.ActiveLayer as ArtLayer).TextItem.Size=50;
+        }
     }
 }
 namespace psdPHTest.Automatic

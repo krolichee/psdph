@@ -27,10 +27,16 @@ namespace psdPH.Logic.Rules
             Composition = composition;
         }
     }
+    public class DummyCondition : Condition
+    {
+        public DummyCondition(Composition composition) : base(composition) { }
+
+        public override Parameter[] Parameters => new Parameter[0];
+
+        public override bool IsValid() => true;
+    }
     public abstract class TextCondition : Condition
     {
-
-        //public ConditionRule rule;
         public string TextLeafLayerName;
 
         protected TextCondition(Composition composition) : base(composition) { }
@@ -38,20 +44,13 @@ namespace psdPH.Logic.Rules
         [XmlIgnore]
         public TextLeaf TextLeaf
         {
-            get
-            {
-                return Composition.getChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName);
-            }
-            set
-            {
-                TextLeafLayerName = value.LayerName;
-            }
+            get => Composition.getChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName); 
+            set => TextLeafLayerName = value.LayerName;
         }
         public override Parameter[] Parameters
         {
             get
             {
-
                 var result = new List<Parameter>();
                 var textLeafConfig = new ParameterConfig(this, nameof(this.TextLeaf), "поля");
                 TextLeaf[] textLeaves = Composition.getChildren<TextLeaf>();

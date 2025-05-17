@@ -31,14 +31,8 @@ namespace psdPH.Logic.Rules
         [XmlIgnore]
         public TextLeaf TextLeaf
         {
-            get
-            {
-                return Composition.getChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName);
-            }
-            set
-            {
-                TextLeafLayerName = value.LayerName;
-            }
+            get => Composition.getChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName);
+            set => TextLeafLayerName = value.LayerName;
         }
 
     };
