@@ -76,10 +76,10 @@ namespace psdPH.Logic.Compositions
         }
         override public void removeChild(Composition child)
         {
-            invokeChildrenEvent();
             var children = Children.ToHashSet();
             children.Remove(child);
             Children = children.ToArray();
+            invokeChildrenEvent();
         }
         override public Composition[] getChildren()
         {

@@ -2,6 +2,7 @@
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.Utils;
 using System;
+using System.Media;
 using static psdPH.TemplateEditor.StructureDicts;
 
 namespace psdPH
@@ -9,7 +10,7 @@ namespace psdPH
     public class StructureCommand : TemplateCEDCommand
     {
         public StructureCommand(PsdPhContext context) : base(context) { }
-        protected override bool IsEditableCommand(object parameter) => StructureDicts.EditorDict.ContainsKey(parameter.GetType());
+        protected override bool IsEditableCommand(object parameter) => true; 
         protected override void CreateExecuteCommand(object parameter)
         {
             Type type = parameter as Type;
@@ -24,7 +25,10 @@ namespace psdPH
         }
         protected override void EditExecuteCommand(object parameter)
         {
-            StructureDicts.EditorDict[parameter.GetType()](_doc, parameter as Composition).ShowDialog();
+            if (StructureDicts.EditorDict.ContainsKey(parameter.GetType()))
+                StructureDicts.EditorDict[parameter.GetType()](_doc, parameter as Composition).ShowDialog();
+            else
+                SystemSounds.Exclamation.Play();
         }
         protected override void DeleteExecuteCommand(object parameter)
         {
