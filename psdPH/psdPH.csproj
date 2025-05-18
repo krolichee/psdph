@@ -79,6 +79,9 @@
     <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
       <DependentUpon>CollectionEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logic\PhotoshopLayerExtension.Adjust.cs" />
+    <Compile Include="Logic\Rules\ChangeMode.cs" />
+    <Compile Include="Logic\Rules\ELayerMode.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Logic\Rules\RuleSet.cs" />
     <Compile Include="Utils\UIName.cs" />
@@ -325,6 +328,7 @@
     </EmbeddedResource>
     <Compile Include="Logic\PhotoshopDocumentExtension.Layers.cs" />
     <Compile Include="Logic\PhotoshopDocumentExtenson.Layersets.cs" />
+    <Compile Include="Logic\PhotoshopLayerExtension.Align.cs" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

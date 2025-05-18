@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Logic.Compositions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

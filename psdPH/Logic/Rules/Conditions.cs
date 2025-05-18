@@ -116,10 +116,6 @@ namespace psdPH.Logic.Rules
     {
         public override string ToString() => "установлен флаг";
         public string FlagName;
-
-
-
-
         public override Parameter[] Parameters
         {
             get

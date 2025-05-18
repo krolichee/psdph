@@ -151,62 +151,7 @@ namespace psdPH
         }
         public PrototypeLeaf() { }
     }
-    [Serializable]
-    [XmlRoot("Placeholder")]
-    public class PlaceholderLeaf : Composition
-    {
-        public override string UIName => "Плейс.";
-        public string LayerName;
-        [XmlIgnore]
-        public Blob ActualBlob;
-        [XmlIgnore]
-        public PrototypeLeaf Prototype
-        {
-            get
-            {
-                return Parent.getChildren<PrototypeLeaf>().First(p => p.LayerName == PrototypeLayerName);
-            }
-            set
-            {
-                PrototypeLayerName = value.LayerName;
-            }
-        }
-        public string PrototypeLayerName;
-        string derivedLayerName;
-        public override string ObjName => LayerName;
-
-        public override Parameter[] Parameters => new Parameter[0];
-
-        public PlaceholderLeaf(string layername, string prototypeLayername)
-        {
-            LayerName = layername;
-            PrototypeLayerName = prototypeLayername;
-        }
-        public PlaceholderLeaf() { }
-        public override void restoreParents(Composition parent = null)
-        {
-            base.restoreParents(parent);
-        }
-
-        internal void ReplaceWithFiller(Document doc, Blob blob)
-        {
-            derivedLayerName = $"{PrototypeLayerName}_{LayerName}";
-            ArtLayer phLayer = doc.GetLayerByName(LayerName);
-            ArtLayer newLayer = doc.CloneSmartLayer(PrototypeLayerName);
-            var prototypeAVector = Prototype.GetRelativeLayerAlightmentVector(doc);
-
-            var phAVector = doc.GetAlightmentVector(phLayer, newLayer);
-
-            newLayer.TranslateV(phAVector);
-            newLayer.TranslateV(prototypeAVector);
-            //ph_layer.Delete();
-            phLayer.Opacity = 0;
-            newLayer.Name = blob.LayerName = derivedLayerName;
-            Parent.addChild(blob);
-            Parent.removeChild(this);
-        }
-
-        public override void Apply(Document doc) { }
-    }
+    
+    
 }
 
