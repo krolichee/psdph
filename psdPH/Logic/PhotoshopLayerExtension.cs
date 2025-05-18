@@ -77,9 +77,7 @@ namespace psdPH.Logic
             _makeActive(layer);
             layer.Application.DoAction("pasteStyle", "psdPH");
         }
-
-        public static LayerSet SplitTextLayer(this ArtLayer artLayer)
-        {
+        public static LayerSets GetParentLayerSets(this ArtLayer artLayer) {
             dynamic parent = artLayer.Parent;
             LayerSets parentLayersets;
             try
@@ -92,6 +90,19 @@ namespace psdPH.Logic
                 var parent_group = (parent as Document);
                 parentLayersets = parent_group.LayerSets;
             }
+            return parentLayersets;
+        }
+        public static LayerSet GroupLayer(this ArtLayer artLayer)
+        {
+            LayerSets parentLayersets = artLayer.GetParentLayerSets();
+            LayerSet newLayerSet = parentLayersets.Add();
+            newLayerSet.Name = "NewGroup";
+            artLayer.Move(newLayerSet, PsElementPlacement.psPlaceInside);
+            return newLayerSet;
+        }
+        public static LayerSet SplitTextLayer(this ArtLayer artLayer)
+        {
+            LayerSets parentLayersets = artLayer.GetParentLayerSets();
             LayerSet linesLayerSet = parentLayersets.Add();
             linesLayerSet.Name = "NewGroup";
             artLayer.CopyStyle();

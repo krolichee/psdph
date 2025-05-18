@@ -10,9 +10,35 @@ namespace psdPH.Logic
 {
     public static partial class PhotoshopLayerExtension
     {
-        
-        public static void AdjustTextLayerByWidth(this ArtLayer textLayer, double width)
+        public static void AdjustLayerToWidth(this ArtLayer layer, double width)
         {
+            double resizeRatio = width / layer.GetBoundRect().Width*100;
+            layer.Resize(resizeRatio, resizeRatio);
+        }
+        public static void AdjustLayerSetTo(this LayerSet layer, ArtLayer areaLayer)
+        {
+            double layerRatio = layer.GetBoundRect().Width / layer.GetBoundRect().Height;
+            double areaRatio = areaLayer.GetBoundRect().Width / areaLayer.GetBoundRect().Height;
+            double resizeRatio;
+            void adjustByWidth()
+            {
+                resizeRatio = areaLayer.GetBoundRect().Width / layer.GetBoundRect().Width * 100;
+            }
+            void adjustByHeight()
+            {
+                resizeRatio = areaLayer.GetBoundRect().Height / layer.GetBoundRect().Height * 100;
+            }
+            if (layerRatio >= areaRatio)
+                adjustByWidth();
+            else
+                adjustByHeight();
+            layer.Resize(resizeRatio, resizeRatio);
+        }
+        
+        public static void AdjustTextLayerToWidth(this ArtLayer textLayer, double width)
+        {
+            LayerSet layerSet = textLayer.GroupLayer() ;
+
             if (textLayer.GetBoundRect().Width == 0 || textLayer.GetBoundRect().Width == width)
                 return;
             bool isFitsIn(double actual, double target) => textLayer.GetBoundRect().Width <= width;

@@ -26,30 +26,6 @@ namespace psdPHText.Ps
     }
     public static class LayerExtension
     {
-        
-        
-
-        public static void AdjustLayerSetTo(this LayerSet layer, ArtLayer areaLayer)
-        {
-            double layerRatio = layer.GetBoundRect().Width / layer.GetBoundRect().Height;
-            double areaRatio = areaLayer.GetBoundRect().Width / areaLayer.GetBoundRect().Height;
-            double resizeRatio;
-            void adjustByWidth()
-            {
-                resizeRatio = areaLayer.GetBoundRect().Width/ layer.GetBoundRect().Width*100;
-            }
-            void adjustByHeight()
-            {
-                resizeRatio = areaLayer.GetBoundRect().Height / layer.GetBoundRect().Height * 100;
-            }
-            if (layerRatio >= areaRatio)
-                adjustByWidth();
-            else
-                adjustByHeight();
-            layer.Resize(resizeRatio, resizeRatio);
-        }
-
-
         public static LayerSet EqualizeLineWidth(this ArtLayer textLayer)
         {
             LayerSet lineLayerSet = textLayer.SplitTextLayer();
@@ -63,13 +39,13 @@ namespace psdPHText.Ps
                 ArtLayer prevLayer = lineLayers[i - 1];
                 prevLineGaps.Add(layer.GetBoundRect().Top - prevLayer.GetBoundRect().Bottom);
             }
-            lineLayers[0].AdjustTextLayerByWidth(maxWidth);
+            lineLayers[0].AdjustLayerToWidth(maxWidth);
             for (int i = 1; i < lineLayers.Count(); i++)
             {
                 double prevLineGap = prevLineGaps[i];
                 ArtLayer layer = lineLayers[i];
                 ArtLayer prevLayer = lineLayers[i - 1];
-                layer.AdjustTextLayerByWidth(maxWidth);
+                layer.AdjustLayerToWidth(maxWidth);
                 double curGap = layer.GetBoundRect().Top - prevLayer.GetBoundRect().Bottom;
                 layer.TranslateV(new Vector(0, prevLineGap - curGap));
             }
