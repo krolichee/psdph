@@ -11,26 +11,27 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
     /// </summary>
     public partial class ParametersInputWindow : Window
     {
-        bool applied = false;
-        public bool Applied => applied;
-        StackPanel stack;
-        Parameter[] parameters;
+        bool _applied = false;
+        public bool Applied => _applied;
+        StackPanel _stack;
+        Parameter[] _parameters;
         Parameter[] Parameters
         {
             set
             {
-                parameters = value;
-                foreach (var p in parameters)
-                    stack.Children.Add(p.Stack);
+                _parameters = value;
+                _stack.Children.Clear();
+                foreach (var p in _parameters)
+                    _stack.Children.Add(p.Stack);
             }
-            get => parameters;
+            get => _parameters;
         }
         public ParametersInputWindow(Parameter[] parameters, string title = "")
         {
-            Owner = TopmostWindow.Get();
+            //Owner = TopmostWindow.Get();
             InitializeComponent();
             Title = title;
-            stack = new StackPanel();
+            _stack = new StackPanel();
             Parameters = parameters;
             foreach (var parameter in parameters)
             {
@@ -38,15 +39,20 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
                 parameter.Control.HorizontalAlignment = HorizontalAlignment.Left;
                 parameter.Stack.Margin = new Thickness(0, 0, 0, 10);
             }
-            MainGrid.Children.Insert(0, stack);
+            MainGrid.Children.Insert(0, _stack);
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
-            applied = true;
-            foreach (var par in parameters)
+            _applied = true;
+            foreach (var par in _parameters)
                 par.Accept();
             Close();
+        }
+
+        private void Window_Closed(object sender, System.EventArgs e)
+        {
+            _stack.Children.Clear();
         }
     }
 }
