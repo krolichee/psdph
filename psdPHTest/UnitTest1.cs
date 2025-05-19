@@ -16,6 +16,24 @@ using static psdPH.Logic.PhotoshopDocumentExtension;
 using Application = Photoshop.Application;
 using Microsoft.CSharp;
 using System.Windows.Controls;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+
+namespace psdPHText.UI
+{
+    [TestClass]
+    public class Rtb
+    {
+        static string s = string.Empty;
+        public string m { get => Rtb.s; set => Rtb.s = value; }
+        [TestMethod]
+        public void TestM()
+        {
+            ParameterConfig config = new ParameterConfig(this, nameof(this.m), "Строка");
+            Parameter[] parameters = new Parameter[] { Parameter.RichStringInput(config) };
+            while (new ParametersInputWindow(parameters).ShowDialog()==true) ;
+        }
+    }
+}
 
 namespace psdPHText.Ps
 {
