@@ -143,14 +143,14 @@
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
-    <Compile Include="RuleEditor\IParameterable.cs" />
+    <Compile Include="Utils\ReflectionParameter\IParameterable.cs" />
     <Compile Include="Logic\PhotoshopDocumentExtension.cs" />
     <Compile Include="Logic\Rules\Conditions.cs" />
     <Compile Include="RuleEditor\IRuleEditor.cs" />
     <Compile Include="RuleEditor\RuleControl.xaml.cs">
       <DependentUpon>RuleControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RuleEditor\Parameter.cs" />
+    <Compile Include="Utils\ReflectionParameter\Parameter.cs" />
     <Compile Include="Logic\Rules\Rules.cs" />
     <Compile Include="Utils\NumericTextBox.cs" />
     <Compile Include="PsdTemplateDropWindow.xaml.cs">
@@ -172,7 +172,7 @@
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\ICompositionShapitor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\ParametersInputWindow.xaml.cs">
+    <Compile Include="Utils\ReflectionParameter\ParametersInputWindow.xaml.cs">
       <DependentUpon>ParametersInputWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml.cs">
@@ -275,7 +275,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\ParametersInputWindow.xaml">
+    <Page Include="Utils\ReflectionParameter\ParametersInputWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

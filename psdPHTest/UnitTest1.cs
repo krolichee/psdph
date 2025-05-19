@@ -26,38 +26,7 @@ namespace psdPHText.Ps
     }
     public static class LayerExtension
     {
-        public static LayerSet EqualizeLineWidth(this ArtLayer textLayer)
-        {
-            LayerSet lineLayerSet = textLayer.SplitTextLayer();
-            ArtLayer[] lineLayers = lineLayerSet.ArtLayers.Cast<ArtLayer>().ToArray();
-            double maxWidth = lineLayers.Max((l) => l.GetBoundRect().Width);
-
-            List<double> prevLineGaps = new List<double> { 0 };
-            for (int i = 1; i < lineLayers.Count(); i++)
-            {
-                ArtLayer layer = lineLayers[i];
-                ArtLayer prevLayer = lineLayers[i - 1];
-                prevLineGaps.Add(layer.GetBoundRect().Top - prevLayer.GetBoundRect().Bottom);
-            }
-            lineLayers[0].AdjustLayerToWidth(maxWidth);
-            for (int i = 1; i < lineLayers.Count(); i++)
-            {
-                double prevLineGap = prevLineGaps[i];
-                ArtLayer layer = lineLayers[i];
-                ArtLayer prevLayer = lineLayers[i - 1];
-                layer.AdjustLayerToWidth(maxWidth);
-                double curGap = layer.GetBoundRect().Top - prevLayer.GetBoundRect().Bottom;
-                layer.TranslateV(new Vector(0, prevLineGap - curGap));
-            }
-            return lineLayerSet;
-        }
-        public static void FitWithEqualize(this ArtLayer textLayer,ArtLayer areaLayer) {
-            LayerSet equalized = textLayer.EqualizeLineWidth();
-            equalized.AdjustLayerSetTo(areaLayer);
-            equalized.AlignLayer(areaLayer, new Alignment(HorizontalAlignment.Center, VerticalAlignment.Center));
-            equalized.OnStyle();
-        }
-
+        
     }
     [TestClass]
     public class ManualPhotoshopTests
