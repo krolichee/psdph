@@ -16,7 +16,7 @@ namespace psdPH
         Dictionary<DayOfWeek, string> dowLayerDictionary = new Dictionary<DayOfWeek, string>();
         public DowPlaceholderMatchWindow(PrototypeLeaf prot)
         {
-            Owner = TopmostWindow.Get();
+            //Owner = TopmostWindow.Get();
             WindowStartupLocation =WindowStartupLocation.CenterOwner;
             InitializeComponent();
             Closed += Window_Closed;
