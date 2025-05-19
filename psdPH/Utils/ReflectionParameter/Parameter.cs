@@ -101,7 +101,7 @@ namespace psdPH.Logic
             FlowDocument flowDoc = new FlowDocument();
             Paragraph paragraph = new Paragraph();
 
-            string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            string[] lines = text.Split('\n');
 
             for (int i = 0; i < lines.Length; i++)
             {
@@ -112,6 +112,22 @@ namespace psdPH.Logic
             flowDoc.Blocks.Add(paragraph);
             return flowDoc;
         }
+        static string getRtbText(RichTextBox _rtb, string lineSep = "\n")
+        {
+            string _result = "";
+            foreach (Paragraph item in (_rtb).Document.Blocks)
+                foreach (var item1 in item.Inlines)
+                    if (item1 is Run)
+                    {
+                        var run = (Run)item1;
+                        if (_result != "")
+                            _result += lineSep;
+                        _result += run.Text;
+
+                    }
+            return _result;
+        }
+
         public static Parameter RichStringInput(ParameterConfig config)
         {
             var result = new Parameter(config);
@@ -131,21 +147,7 @@ namespace psdPH.Logic
                 foreach (Paragraph item in (sender as RichTextBox).Document.Blocks)
                     item.Margin = new Thickness(0, 0, 0, 0);
             }
-            string getRtbText(RichTextBox _rtb, string lineSep = "\n")
-            {
-                string _result = "";
-                foreach (Paragraph item in (_rtb).Document.Blocks)
-                    foreach (var item1 in item.Inlines)
-                        if (item1 is Run)
-                        {
-                            var run = (Run)item1;
-                            if (_result != "")
-                                _result += lineSep;
-                            _result += run.Text;
-                            
-                        }
-                return _result;
-            }
+            
         }
         public static Parameter StringInput(ParameterConfig config)
         {
@@ -202,7 +204,6 @@ namespace psdPH.Logic
             _config = config;
             _stack.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
         }
-        public Parameter() : this(null) { }
         public void Accept()
         {
             accept();
