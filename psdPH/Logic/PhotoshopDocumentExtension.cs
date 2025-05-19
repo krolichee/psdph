@@ -12,41 +12,7 @@ namespace psdPH.Logic
     }
     public static partial class PhotoshopDocumentExtension
     {
-        public static void AlignLayer(this Document doc, ArtLayer targetLayer, ArtLayer dynamicLayer,Alignment alignment)
-        {
-            dynamicLayer.TranslateV(doc.GetAlightmentVector(targetLayer, dynamicLayer,alignment));
-        }
-        public static void FitTextLayer(this Document doc, ArtLayer textLayer, ArtLayer areaLayer)
-        {
-            bool isFits(Size fittable, Size area) => fittable.Width <= area.Width && fittable.Height <= area.Height;
-            bool isFitsWithToler(Size fittable, Size area, int toler, out bool fits)
-            {
-                fits = isFits(fittable, area);
-                double[] diffs = new double[] { area.Width - fittable.Width, area.Height - fittable.Height };
-                return fits && (diffs.Min() <= toler) && isFits(fittable, area);
-            }
-
-            var areaSize = areaLayer.GetBoundsSize();
-            double fontSizeShift = textLayer.TextItem.Size / 2;
-
-            bool _fits;
-
-            while (!isFitsWithToler(textLayer.GetBoundsSize(), areaSize, 3, out _fits))
-            {
-                if (_fits)
-                    textLayer.TextItem.Size += fontSizeShift;
-                else
-                    textLayer.TextItem.Size -= fontSizeShift;
-                fontSizeShift /= 2;
-            }
-        }
-        public static void FitTextLayer(this Document doc, string textLayerName, string areaLayerName)
-        {
-            doc.FitTextLayer(
-                doc.GetLayerByName(textLayerName),
-                doc.GetLayerByName(areaLayerName)
-                );
-        }
+        
         public static void Rollback(this Document doc)
         {
             var initialState = doc.HistoryStates[1];
@@ -64,54 +30,11 @@ namespace psdPH.Logic
                 V = vertical;
             }
         }
-        public static Vector GetAlightmentVector(Rect targetRect, Rect dynamicRect, Alignment alignment = null)
-        {
-            if (alignment == null)
-                alignment = new Alignment(HorizontalAlignment.Left, VerticalAlignment.Top);
-            double x = 0;
-            double y = 0;
-            switch (alignment.H)
-            {
-                case HorizontalAlignment.Left:
-                    x = targetRect.Left - dynamicRect.Left;
-                    break;
-                case HorizontalAlignment.Right:
-                    x = targetRect.Right - dynamicRect.Right;
-                    break;
-                case HorizontalAlignment.Center:
-                case HorizontalAlignment.Stretch:
-                    double t_w = targetRect.Width;
-                    double d_w = dynamicRect.Width;
-                    x = (targetRect.Left + t_w/2) - (dynamicRect.Left + d_w/2);
-                    break;
-            }
-            switch (alignment.V)
-            {
-                case VerticalAlignment.Top:
-                    y = targetRect.Top - dynamicRect.Top;
-                    break;
-                case VerticalAlignment.Bottom:
-                    y = targetRect.Bottom - dynamicRect.Bottom;
-                    break;
-                case VerticalAlignment.Center:
-                case VerticalAlignment.Stretch:
-                    double t_h = targetRect.Height;
-                    double d_h = dynamicRect.Height;
-                    y = (targetRect.Top + t_h / 2) - (dynamicRect.Top + d_h / 2);
-                    break;
-            }
-            return new Vector(x, y);
-        }
-
-        public static Vector GetAlightmentVector(this Document doc, ArtLayer targetLayer, ArtLayer dynamicLayer, Alignment alignment = null)
-        {
-            return GetAlightmentVector(targetLayer.GetBoundRect(), dynamicLayer.GetBoundRect(), alignment);
-        }
         public static Vector GetAlightmentVector(this Document doc, string targetLayerName, string dynamicLayerName, Alignment alignment = null)
         {
             ArtLayer targetLayer = doc.GetLayerByName(targetLayerName);
             ArtLayer dynamicLayer = doc.GetLayerByName(dynamicLayerName);
-            return doc.GetAlightmentVector(targetLayer, dynamicLayer);
+            return dynamicLayer.GetAlightmentVector(targetLayer);
         }
         public static ArtLayer CloneSmartLayer(this Document doc, string layername)
         {

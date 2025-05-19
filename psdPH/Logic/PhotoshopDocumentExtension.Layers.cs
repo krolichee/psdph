@@ -20,26 +20,30 @@ namespace psdPH.Logic
         }
         public static ArtLayer[] GetArtLayers(this Document doc, LayerListing listing = DefaultListing)
         {
-
             List<ArtLayer> layers = new List<ArtLayer>();
             foreach (ArtLayer item in doc.ArtLayers)
                 layers.Add(item);
-
             if (listing == LayerListing.Recursive)
                 foreach (LayerSet layerSet in doc.LayerSets)
-                    ProcessLayerSet(layerSet, layers);
-
+                    layers.AddRange(layerSet.GetArtLayers(listing));
             return layers.ToArray();
         }
-        private static void ProcessLayerSet(LayerSet layerSet, List<ArtLayer> layers)
+        public static ArtLayer[] GetArtLayers(this LayerSet layerSet, LayerListing listing = DefaultListing)
         {
-
-
-            foreach (ArtLayer layer in layerSet.ArtLayers)
-                layers.Add(layer);
-            foreach (LayerSet nestedLayerSet in layerSet.LayerSets)
-                ProcessLayerSet(nestedLayerSet, layers);
+            List<ArtLayer> layers = new List<ArtLayer>();
+            layers.AddRange(layerSet.ArtLayers.Cast<ArtLayer>().ToArray());
+            if (listing == LayerListing.Recursive)
+                foreach (LayerSet nestlayerSet in layerSet.LayerSets)
+                    layers.AddRange(nestlayerSet.GetArtLayers(listing));
+            return layers.ToArray();
         }
+        //private static void ProcessLayerSet(LayerSet layerSet, List<ArtLayer> layers)
+        //{
+        //    foreach (ArtLayer layer in layerSet.ArtLayers)
+        //        layers.Add(layer);
+        //    foreach (LayerSet nestedLayerSet in layerSet.LayerSets)
+        //        ProcessLayerSet(nestedLayerSet, layers);
+        //}
         public static ArtLayer[] GetLayersByKinds(this Document doc, PsLayerKind[] kinds, LayerListing listing = DefaultListing)
         {
             bool filter(ArtLayer layer)
@@ -66,6 +70,10 @@ namespace psdPH.Logic
         {
             ArtLayer[] layers = doc.GetArtLayers(listing);
             return layers.First(l => l.Name == layerName);
+        }
+        public static void ResetHistory(this Document doc)
+        {
+            doc.ActiveHistoryState = doc.HistoryStates[1];
         }
     }
 }

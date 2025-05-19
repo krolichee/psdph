@@ -109,7 +109,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             p_w = new ParametersInputWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
         }
     }
-    public class TextAreaLeafCreator : LeafCreator<TextAreaLeaf>
+    public class TextAreaLeafCreator : LeafCreator<AreaLeaf>
     {
         public TextAreaLeafCreator(Document doc, Blob root) : base()
         {

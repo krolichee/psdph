@@ -4,7 +4,9 @@ using psdPH.Logic.Rules;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml.Serialization;
+using static psdPH.Logic.PhotoshopDocumentExtension;
 using Condition = psdPH.Logic.Rules.Condition;
 
 namespace psdPH.Logic
@@ -40,8 +42,9 @@ namespace psdPH.Logic
     public abstract class ConditionRule : Rule
     {
         public Condition Condition;
-        protected ConditionRule(Composition composition) : base(composition) { 
-            Condition = new DummyCondition(Composition); 
+        protected ConditionRule(Composition composition) : base(composition)
+        {
+            Condition = new DummyCondition(Composition);
         }
         public override void restoreComposition(Composition composition)
         {
@@ -59,16 +62,6 @@ namespace psdPH.Logic
                 _else(doc);
         }
     };
-    public enum ELayerMode
-    {
-        ArtLayer,
-        LayerSet
-    }
-    public enum ChangeMode
-    {
-        Rel,
-        Abs
-    }
 
     [XmlInclude(typeof(TranslateRule))]
     [XmlInclude(typeof(OpacityRule))]
@@ -78,7 +71,7 @@ namespace psdPH.Logic
         public ChangeMode ChangeMode = ChangeMode.Abs;
         public ELayerMode LayerMode = ELayerMode.ArtLayer;
         public string LayerName;
-        public LayerComposition layerComposition;
+        protected LayerComposition layerComposition;
         [XmlIgnore]
         public LayerComposition LayerComposition
         {
@@ -200,6 +193,26 @@ namespace psdPH.Logic
         }
         public VisibleRule(Composition composition) : base(composition) { }
         public VisibleRule() : base(null) { }
+    }
+    public class FitRule : LayerRule
+    {
+        public FitRule(Composition composition) : base(composition) { }
+        [XmlIgnore]
+        public AreaLeaf AreaLeaf;
+        Alignment Alignment;
+        public override Parameter[] Parameters
+        {
+            get
+            {
+                var result = new List<Parameter>();
+                return result.ToArray();
+            }
+        }
+
+        protected override void _apply(Document doc)
+        {
+            AreaLeaf.Fit(doc, LayerComposition, Alignment);
+        }
     }
 
 

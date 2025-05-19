@@ -14,7 +14,7 @@ namespace psdPH.Logic.Compositions
     [XmlInclude(typeof(LayerLeaf))]
     [XmlInclude(typeof(GroupLeaf))]
 
-    [XmlInclude(typeof(TextAreaLeaf))]
+    [XmlInclude(typeof(AreaLeaf))]
 
     public abstract class LayerComposition : Composition
     {
@@ -64,7 +64,6 @@ namespace psdPH.Logic.Compositions
             {
                 var result = new List<Parameter>();
                 var textConfig = new ParameterConfig(this, nameof(this.Text), LayerName);
-                ///TODO
                 result.Add(Parameter.RichStringInput(textConfig));
                 return result.ToArray();
             }
@@ -75,7 +74,7 @@ namespace psdPH.Logic.Compositions
         override public void Apply(Document doc)
         {
             ArtLayer layer = doc.GetLayerByName(LayerName, LayerListing.Recursive);
-            layer.TextItem.Contents = Text.Replace("\n","\r");
+            layer.TextItem.Contents = Text.Replace("\n", "\r");
         }
     }
 
@@ -100,8 +99,8 @@ namespace psdPH.Logic.Compositions
         public override void Apply(Document doc) { }
     }
     [Serializable]
-    [XmlRoot("TextArea")]
-    public class TextAreaLeaf : LayerComposition
+    [XmlRoot("Area")]
+    public class AreaLeaf : LayerComposition
     {
         [XmlIgnore]
         public TextLeaf TextLeaf
@@ -109,7 +108,7 @@ namespace psdPH.Logic.Compositions
             get => Parent.getChildren<TextLeaf>().First(p => p.LayerName == TextLeafLayername);
             set => TextLeafLayername = value.LayerName;
         }
-        public override string UIName => "Текст.поле";
+        public override string UIName => "Область";
         public string TextLeafLayername;
 
         public bool SwitchStyle;
@@ -123,26 +122,86 @@ namespace psdPH.Logic.Compositions
 },
                 { PsJustification.psCenter,HorizontalAlignment.Center },
             };
-        public override void Apply(Document doc)
+        public void Fit(Document doc, LayerComposition layerLeaf, Alignment alignment)
         {
+            TextLeaf textLeaf;
+            if (layerLeaf is TextLeaf)
+                textLeaf = layerLeaf as TextLeaf;
+            else
+                throw new NotImplementedException();
+
             var textLayer = doc.GetLayerByName(TextLeafLayername);
+
             var areaLayer = doc.GetLayerByName(LayerName);
-            TextLeaf textLeaf = Siblings<TextLeaf>().First(t => t.LayerName == TextLeafLayername);
-            
+
             areaLayer.Opacity = 0;
             if (textLeaf.Text == "")
                 return;
             textLeaf.Apply(doc);
-           
 
-            Alignment alignment = new Alignment(HorizontalAlignment.Left, VerticalAlignment.Center);
+            textLayer.AdjustTextLayerTo(areaLayer);
 
-            doc.FitTextLayer(textLayer, areaLayer);
+            //alignment.H = JustificationMatchDict[textLeaf.Justification];
 
-            alignment.H = JustificationMatchDict[textLeaf.Justification];
-
-            doc.AlignLayer(areaLayer, textLayer, alignment);
+            textLayer.AlignLayer(areaLayer, alignment);
         }
+        public override void Apply(Document doc) { }
+    }
+    [Serializable]
+    [XmlRoot("Placeholder")]
+    public class PlaceholderLeaf : LayerComposition
+    {
+        public override string UIName => "Плейс.";
+        [XmlIgnore]
+        public Blob ActualBlob;
+        [XmlIgnore]
+        public PrototypeLeaf Prototype
+        {
+            get
+            {
+                return Parent.getChildren<PrototypeLeaf>().First(p => p.LayerName == PrototypeLayerName);
+            }
+            set
+            {
+                PrototypeLayerName = value.LayerName;
+            }
+        }
+        public string PrototypeLayerName;
+        string derivedLayerName;
+        public override string ObjName => LayerName;
+
+        public override Parameter[] Parameters => new Parameter[0];
+
+        public PlaceholderLeaf(string layername, string prototypeLayername)
+        {
+            LayerName = layername;
+            PrototypeLayerName = prototypeLayername;
+        }
+        public PlaceholderLeaf() { }
+        public override void restoreParents(Composition parent = null)
+        {
+            base.restoreParents(parent);
+        }
+
+        internal void ReplaceWithFiller(Document doc, Blob blob)
+        {
+            derivedLayerName = $"{PrototypeLayerName}_{LayerName}";
+            ArtLayer phLayer = doc.GetLayerByName(LayerName);
+            ArtLayer newLayer = doc.CloneSmartLayer(PrototypeLayerName);
+            var prototypeAVector = Prototype.GetRelativeLayerAlightmentVector(doc);
+
+            var phAVector = newLayer.GetAlightmentVector(phLayer);
+
+            newLayer.TranslateV(phAVector);
+            newLayer.TranslateV(prototypeAVector);
+            //ph_layer.Delete();
+            phLayer.Opacity = 0;
+            newLayer.Name = blob.LayerName = derivedLayerName;
+            Parent.addChild(blob);
+            Parent.removeChild(this);
+        }
+
+        public override void Apply(Document doc) { }
     }
 
 }

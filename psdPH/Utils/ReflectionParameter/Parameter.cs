@@ -122,7 +122,7 @@ namespace psdPH.Logic
             rtb.TextChanged += RichTextBox_TextChanged;
             result.valueFunc = () => getRtbText(rtb, "\r");
             result.Control = rtb;
-            rtb.Document = ConvertStringToFlowDocument( config.GetValue().ToString());
+            rtb.Document = ConvertStringToFlowDocument(config.GetValue().ToString());
             stack.Children.Add(rtb);
             return result;
 
