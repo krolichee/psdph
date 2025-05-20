@@ -37,11 +37,7 @@ namespace psdPHText.UI
 
 namespace psdPHText.Ps
 {
-    [TestClass]
-    public class FitRuleTest
-    {
-        
-    }
+    
     public static class LayerExtension
     {
         
@@ -51,7 +47,13 @@ namespace psdPHText.Ps
     {
         static Application psApp;
         Document doc => psApp.ActiveDocument;
-        
+        [TestMethod]
+        public void LayerCast()
+        {
+            var _ = psApp as Document;
+            _.Layers[0] as La;
+        }
+
         [TestInitialize]
         public void Init()
         {

@@ -80,6 +80,7 @@
       <DependentUpon>CollectionEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\PhotoshopLayerExtension.Adjust.cs" />
+    <Compile Include="Logic\PhotoshopLayerWrapper.cs" />
     <Compile Include="Logic\Rules\ChangeMode.cs" />
     <Compile Include="Logic\Rules\ELayerMode.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
