@@ -11,7 +11,7 @@ namespace psdPH.Logic
         public override dynamic Parent => _layer.Parent;
         public override dynamic Name => _layer.Name;
         public override bool Visible { get => _layer.Visible; set => _layer.Visible = value; }
-
+        public override double Opacity { get => _layer.Opacity; set => _layer.Opacity = value; }
         public ArtLayerWr(ArtLayer layer)
         {
             _layer = layer;
