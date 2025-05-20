@@ -33,6 +33,19 @@ namespace psdPHText.UI
             Parameter[] parameters = new Parameter[] { Parameter.RichStringInput(config) };
             while (new ParametersInputWindow(parameters).ShowDialog()==true) ;
         }
+        [TestMethod]
+        public void AligmentContolTest()
+        {
+            var window = new Window();
+            window.SizeToContent = SizeToContent.WidthAndHeight;
+            var aliControl = new AligmentControl();
+            aliControl.HorizontalAlignment=HorizontalAlignment.Stretch;
+            aliControl.VerticalAlignment = VerticalAlignment.Stretch;
+            aliControl.VerticalContentAlignment = VerticalAlignment.Stretch;
+            aliControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            window.Content = aliControl;
+            window.ShowDialog();
+        }
     }
 }
 

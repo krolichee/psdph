@@ -154,7 +154,8 @@ namespace psdPH.Logic
         {
             var result = new Parameter(config);
             var stack = result._stack;
-            var aliControl = new AligmentControl();
+            //var aliControl = new AligmentControl();
+            return result;
         }
         public static Parameter StringInput(ParameterConfig config)
         {

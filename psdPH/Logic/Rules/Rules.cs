@@ -206,16 +206,17 @@ namespace psdPH.Logic
         {
             get
             {
-                Document doc;
-                var result = new List<Parameter>();
-                result.Add(getLayerParameter());
-                var balance_config = new ParameterConfig(this, nameof(BalanceFont), "балансировать шрифт");
-                var layerWr = doc.GetLayerWrByName(LayerName);
-                if (layerWr is ArtLayerWr)
-                    if ((layerWr as ArtLayerWr).ArtLayer.Kind == PsLayerKind.psTextLayer)
-                        result.Add(Parameter.Check(balance_config));
-                var alingment_config = new ParameterConfig(this, nameof(Alignment), "с выравниванием");
-                result.Add(Parameter.StringInput);
+                //Document doc;
+                //var result = new List<Parameter>();
+                //result.Add(getLayerParameter());
+                //var balance_config = new ParameterConfig(this, nameof(BalanceFont), "балансировать шрифт");
+                //var layerWr = doc.GetLayerWrByName(LayerName);
+                //if (layerWr is ArtLayerWr)
+                //    if ((layerWr as ArtLayerWr).ArtLayer.Kind == PsLayerKind.psTextLayer)
+                //        result.Add(Parameter.Check(balance_config));
+                //var alingment_config = new ParameterConfig(this, nameof(Alignment), "с выравниванием");
+                //result.Add(Parameter.StringInput);
+                return null;
             }
             
             }
