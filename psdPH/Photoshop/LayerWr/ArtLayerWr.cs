@@ -1,7 +1,7 @@
 ﻿using Photoshop;
 using Application = Photoshop.Application;
 
-namespace psdPH.Logic
+namespace psdPH.Photoshop
 {
     public partial class ArtLayerWr : LayerWr
     {
@@ -9,7 +9,7 @@ namespace psdPH.Logic
         public override Application Application => _layer.Application;
         public override double[] Bounds => _layer.Bounds;
         public override dynamic Parent => _layer.Parent;
-        public override dynamic Name => _layer.Name;
+        public override dynamic Name { get => _layer.Name; set => _layer.Name = value; }
         public override bool Visible { get => _layer.Visible; set => _layer.Visible = value; }
         public override double Opacity { get => _layer.Opacity; set => _layer.Opacity = value; }
         public ArtLayerWr(ArtLayer layer)

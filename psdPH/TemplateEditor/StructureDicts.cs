@@ -35,7 +35,7 @@ namespace psdPH.TemplateEditor
         { typeof(GroupLeaf),(doc, root) =>
             new GroupLeafCreator(doc)},
         { typeof(AreaLeaf),(doc, root) =>
-            new TextAreaLeafCreator(doc, root as Blob)}
+            new AreaLeafCreator(doc, root as Blob)}
     };
         public static Dictionary<Type, EditComposition>
             EditorDict = new Dictionary<Type, EditComposition>

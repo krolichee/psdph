@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Photoshop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,14 +37,14 @@ namespace psdPH.Logic
             layer.Resize(resizeRatio, resizeRatio);
         }
         
-        public static void AdjustTextLayerToWidth(this ArtLayerWr textLayer, double width)
+        public static void AdjustTextLayerToWidth(this ArtLayerWr textLayerWr, double width)
         {
-            LayerSet layerSet = textLayer.GroupLayer() ;
-            TextItem textItem = textLayer.ArtLayer.TextItem;
+            LayerSet layerSet = textLayerWr.GroupLayer() ;
+            TextItem textItem = textLayerWr.ArtLayer.TextItem;
 
-            if (textLayer.GetBoundRect().Width == 0 || textLayer.GetBoundRect().Width == width)
+            if (textLayerWr.GetBoundRect().Width == 0 || textLayerWr.GetBoundRect().Width == width)
                 return;
-            bool isFitsIn(double actual, double target) => textLayer.GetBoundRect().Width <= width;
+            bool isFitsIn(double actual, double target) => textLayerWr.GetBoundRect().Width <= width;
             bool isFitsInWithToler(double actual, double target, double toler, out bool fits)
             {
                 fits = isFitsIn(actual, target);
@@ -55,7 +56,7 @@ namespace psdPH.Logic
             double fontSizeShift = textItem.Size / 2;
             bool _fits;
 
-            while (!isFitsInWithToler(textLayer.GetBoundsSize().Width, width, 3, out _fits))
+            while (!isFitsInWithToler(textLayerWr.GetBoundsSize().Width, width, 3, out _fits))
             {
                 if (_fits)
                     textItem.Size += fontSizeShift;
@@ -92,15 +93,16 @@ namespace psdPH.Logic
             }
             return lineLayerSet;
         }
-        public static void FitWithEqualize(this ArtLayerWr textLayer, ArtLayer areaLayer)
+        public static void FitWithEqualize(this ArtLayerWr textLayer, ArtLayerWr areaLayer)
         {
             LayerSet equalized = textLayer.EqualizeLineWidth();
-            equalized.AdjustLayerSetTo(areaLayer);
-            equalized.AlignLayer(areaLayer, new Alignment(HorizontalAlignment.Center, VerticalAlignment.Center));
-            equalized.OnStyle();
+            LayerSetWr equalizedWr = new LayerSetWr(equalized);
+            equalizedWr.AdjustTo(areaLayer);
+            equalizedWr.AlignLayer(areaLayer, new Alignment(HorizontalAlignment.Center, VerticalAlignment.Center));
+            equalizedWr.OnStyle();
         }
 
-        public static void AdjustTextLayerTo(this ArtLayer textLayer, ArtLayer areaLayer)
+        public static void AdjustTextLayerTo(this ArtLayerWr textLayer, ArtLayerWr areaLayer)
         {
             bool isFitsIn(Size fittable, Size area) => fittable.Width <= area.Width && fittable.Height <= area.Height;
             bool isFitsInWithToler(Size fittable, Size area, int toler, out bool fits)
@@ -111,18 +113,18 @@ namespace psdPH.Logic
                 double[] diffs = new double[] { area.Width - fittable.Width, area.Height - fittable.Height };
                 return diffs.Min() <= toler;
             }
-
+            var textItem = textLayer.ArtLayer.TextItem;
             var areaSize = areaLayer.GetBoundsSize();
-            double fontSizeShift = textLayer.TextItem.Size / 2;
+            double fontSizeShift = textItem.Size / 2;
 
             bool _fits;
 
             while (!isFitsInWithToler(textLayer.GetBoundsSize(), areaSize, 3, out _fits))
             {
                 if (_fits)
-                    textLayer.TextItem.Size += fontSizeShift;
+                    textItem.Size += fontSizeShift;
                 else
-                    textLayer.TextItem.Size -= fontSizeShift;
+                    textItem.Size -= fontSizeShift;
                 fontSizeShift /= 2;
                 if (fontSizeShift <= 0.5)
                     break;

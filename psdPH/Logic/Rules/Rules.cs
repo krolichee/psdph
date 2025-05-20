@@ -225,7 +225,7 @@ namespace psdPH.Logic
         public override Parameter[] Parameters => new Parameter[0];
         protected override void _apply(Document doc)
         {
-            PhotoshopLayerExtension.AlignLayer(getProcessingLayer(doc), AreaLeaf.ArtLayer(doc), Alignment);
+            PhotoshopLayerExtension.AlignLayer(getProcessingLayer(doc), AreaLeaf.ArtLayerWr(doc), Alignment);
             AreaLeaf.Fit(doc, LayerComposition, Alignment);
         }
 

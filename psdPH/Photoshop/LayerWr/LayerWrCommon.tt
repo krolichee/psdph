@@ -1,25 +1,32 @@
-﻿using Photoshop;
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".txt" #>
+<#
+var classNames = new[]{ "ArtLayerWr1","LayerSetWr1"};
+#>
+using Photoshop;
 using Application = Photoshop.Application;
 
-namespace psdPH.Photoshop
+namespace psdPH.Logic
 {
-    public partial class LayerSetWr : LayerWr
+ <# foreach (var className in classNames) { #>
+    public partial class <#= className#>: LayerWr
     {
         //For Copying
         public override Application Application => _layer.Application;
         public override double[] Bounds => _layer.Bounds;
         public override dynamic Parent => _layer.Parent;
-        public override dynamic Name { get => _layer.Name; set => _layer.Name = value; }
+        public override dynamic Name => _layer.Name;
         public override bool Visible { get => _layer.Visible; set => _layer.Visible = value; }
         public override double Opacity { get => _layer.Opacity; set => _layer.Opacity = value; }
-
-        public LayerSetWr(LayerSet layer)
+        public ArtLayerWr(ArtLayer layer)
         {
-            
             _layer = layer;
         }
         public override void Duplicate() => _layer.Duplicate();
-
         public override void MakeActive()
         {
             GetDocument().ActiveLayer = _layer;
@@ -36,4 +43,5 @@ namespace psdPH.Photoshop
         public override void Duplicate(object dest, PsElementPlacement placement) =>
             _layer.Duplicate(dest, placement);
     }
+    <# } #>
 }

@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Photoshop;
 using System.Linq;
 using System.Windows;
 using Application = Photoshop.Application;
@@ -32,8 +33,8 @@ namespace psdPH.Logic
         }
         public static Vector GetAlightmentVector(this Document doc, string targetLayerName, string dynamicLayerName, Alignment alignment = null)
         {
-            ArtLayer targetLayer = doc.GetLayerByName(targetLayerName);
-            ArtLayer dynamicLayer = doc.GetLayerByName(dynamicLayerName);
+            ArtLayerWr targetLayer = new ArtLayerWr(doc.GetLayerByName(targetLayerName));
+            ArtLayerWr dynamicLayer = new ArtLayerWr(doc.GetLayerByName(dynamicLayerName));
             return dynamicLayer.GetAlightmentVector(targetLayer);
         }
         public static ArtLayer CloneSmartLayer(this Document doc, string layername)

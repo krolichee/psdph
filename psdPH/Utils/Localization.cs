@@ -1,5 +1,6 @@
 ﻿namespace psdPH
 {
+    using global::Photoshop;
     using Photoshop;
     using psdPH.Logic;
     using psdPH.Logic.Compositions;

@@ -17,6 +17,7 @@ using Application = Photoshop.Application;
 using Microsoft.CSharp;
 using System.Windows.Controls;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+using psdPH.Photoshop;
 
 namespace psdPHText.UI
 {
@@ -50,8 +51,6 @@ namespace psdPHText.Ps
         [TestMethod]
         public void LayerCast()
         {
-            var _ = psApp as Document;
-            _.Layers[0] as La;
         }
 
         [TestInitialize]
@@ -74,15 +73,15 @@ namespace psdPHText.Ps
             int count = 4;
             for (int i = 1; i <= count; i++)
             {
-                ArtLayer textLayer = doc.GetLayerByName($"text{i}");
-                ArtLayer areaLayer = doc.GetLayerByName($"area{i}");
+                ArtLayerWr textLayer = doc.GetLayerByName($"text{i}").Wrapper();
+                ArtLayerWr areaLayer = doc.GetLayerByName($"area{i}").Wrapper();
                 textLayer.FitWithEqualize(areaLayer);
             }
         }
 
         [TestMethod]
         public void EqualizeLineWidth() {
-            ArtLayer textLayer = doc.GetLayerByName("text");
+            ArtLayerWr textLayer = doc.GetLayerByName("text").Wrapper();
             textLayer.EqualizeLineWidth();
         }
         [TestMethod]
@@ -93,7 +92,7 @@ namespace psdPHText.Ps
         [TestMethod]
         public void SplitTextLayer()
         {
-            ArtLayer textLayer = doc.GetLayerByName("text");
+            ArtLayerWr textLayer = doc.GetLayerByName("text").Wrapper();
             textLayer.SplitTextLayer();
         }
         [TestMethod]
@@ -111,7 +110,7 @@ namespace psdPHText.Ps
         [TestMethod]
         public void EmptyTextRectWidth()
         {
-            ArtLayer textLayer = doc.GetLayerByName("empty_text");
+            ArtLayerWr textLayer = doc.GetLayerByName("empty_text").Wrapper();
             var rect = textLayer.GetBoundRect();
             Assert.AreEqual(rect.Width,0);
         }

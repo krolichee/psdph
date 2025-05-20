@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using static psdPH.Logic.PhotoshopDocumentExtension;
 using System.Windows.Controls;
 using System.Windows;
+using psdPH.Photoshop;
 
 namespace psdPH.Logic
 {
