@@ -197,15 +197,30 @@ namespace psdPH.Logic
     }
     public class FitRule : LayerRule
     {
-        public bool BalanceFont;
+        public bool BalanceFont=false;
         public FitRule(Composition composition) : base(composition) { }
         [XmlIgnore]
         public AreaLeaf AreaLeaf;
         Alignment Alignment;
-        public override Parameter[] Parameters => new Parameter[0];
+        public override Parameter[] Parameters
+        {
+            get
+            {
+                Document doc;
+                var result = new List<Parameter>();
+                result.Add(getLayerParameter());
+                var balance_config = new ParameterConfig(this, nameof(BalanceFont), "балансировать шрифт");
+                var layerWr = doc.GetLayerWrByName(LayerName);
+                if (layerWr is ArtLayerWr)
+                    if ((layerWr as ArtLayerWr).ArtLayer.Kind == PsLayerKind.psTextLayer)
+                        result.Add(Parameter.Check(balance_config));
+                var alingment_config = new ParameterConfig(this, nameof(Alignment), "с выравниванием");
+                result.Add(Parameter.StringInput);
+            }
+            
+            }
         protected override void _apply(Document doc)
         {
-
             getRuledLayerWr(doc).AlignLayer(AreaLeaf.ArtLayerWr(doc), Alignment);
         }
     }

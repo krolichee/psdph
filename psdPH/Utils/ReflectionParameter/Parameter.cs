@@ -149,11 +149,17 @@ namespace psdPH.Logic
             }
             
         }
+
+        public static Parameter AlignmentInput(ParameterConfig config)
+        {
+            var result = new Parameter(config);
+            var stack = result._stack;
+            var aliControl = new AligmentControl();
+        }
         public static Parameter StringInput(ParameterConfig config)
         {
             var result = new Parameter(config);
             var stack = result._stack;
-
             var tb = new TextBox() { Width = 40 };
             tb.Text = config.GetValue().ToString();
             result.Control = tb;
