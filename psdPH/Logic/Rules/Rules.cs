@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Rules;
+using psdPH.Photoshop;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -69,7 +70,6 @@ namespace psdPH.Logic
     public abstract class LayerRule : ConditionRule
     {
         public ChangeMode ChangeMode = ChangeMode.Abs;
-        public ELayerMode LayerMode = ELayerMode.ArtLayer;
         public string LayerName;
         protected LayerComposition layerComposition;
         [XmlIgnore]
@@ -77,10 +77,6 @@ namespace psdPH.Logic
         {
             get => layerComposition; set
             {
-                if (value is GroupLeaf)
-                    LayerMode = ELayerMode.LayerSet;
-                else
-                    LayerMode = ELayerMode.ArtLayer;
                 layerComposition = value;
                 LayerName = value.LayerName;
             }
@@ -90,15 +86,8 @@ namespace psdPH.Logic
             var layerNameConfig = new ParameterConfig(this, nameof(this.LayerComposition), "для слоя");
             return Parameter.Choose(layerNameConfig, Composition.getChildren<LayerComposition>());
         }
-        protected dynamic getProcessingLayer(Document doc)
-        {
-            dynamic layer;
-            if (LayerMode == ELayerMode.ArtLayer)
-                layer = doc.GetLayerByName(LayerName);
-            else
-                layer = doc.GetLayerSetByName(LayerName);
-            return layer;
-        }
+        protected LayerWr getRuledLayerWr(Document doc)=>
+            doc.GetLayerWrByName(LayerName);
         protected LayerRule(Composition composition) : base(composition) { }
     };
     [Serializable]
@@ -130,11 +119,13 @@ namespace psdPH.Logic
         }
         protected override void _apply(Document doc)
         {
-            dynamic layer = getProcessingLayer(doc);
+            var layer = getRuledLayerWr(doc);
+            Vector shift;
             if (ChangeMode == ChangeMode.Rel)
-                layer.Translate(Shift.X, Shift.Y);
+                shift = new Vector(Shift.X, Shift.Y);
             else
-                layer.Translate(Shift.X - layer.Bounds[0], Shift.Y - layer.Bounds[1]);
+                shift = new Vector(Shift.X - layer.Bounds[0], Shift.Y - layer.Bounds[1]);
+            layer.TranslateV(shift);
         }
         public TranslateRule() : base(null) { }
     }
@@ -157,7 +148,7 @@ namespace psdPH.Logic
         }
         protected override void _apply(Document doc)
         {
-            dynamic layer = getProcessingLayer(doc);
+            dynamic layer = getRuledLayerWr(doc);
             layer.Opacity = Opacity;
         }
         public OpacityRule(Composition composition) : base(composition) { }
@@ -181,40 +172,16 @@ namespace psdPH.Logic
         }
         protected override void _else(Document doc)
         {
-            dynamic layer = getProcessingLayer(doc);
+            dynamic layer = getRuledLayerWr(doc);
             layer.Visible = !Toggle;
         }
         protected override void _apply(Document doc)
         {
-            dynamic layer = getProcessingLayer(doc);
+            dynamic layer = getRuledLayerWr(doc);
             layer.Visible = Toggle;
         }
         public VisibleRule(Composition composition) : base(composition) { }
         public VisibleRule() : base(null) { }
-    }
-    public class FitRule : LayerRule
-    {
-        public FitRule(Composition composition) : base(composition) { }
-        [XmlIgnore]
-        public AreaLeaf AreaLeaf;
-        Alignment Alignment;
-        public override Parameter[] Parameters
-        {
-            get
-            {
-                var result = new List<Parameter>();
-                return result.ToArray();
-            }
-        }
-        protected override void _apply(Document doc)
-        {
-            AreaLeaf.Fit(doc, LayerComposition, Alignment);
-        }
-
-    }
-    public interface ILayer
-    {
-
     }
     public class AlignRule : LayerRule
     {
@@ -225,10 +192,22 @@ namespace psdPH.Logic
         public override Parameter[] Parameters => new Parameter[0];
         protected override void _apply(Document doc)
         {
-            PhotoshopLayerExtension.AlignLayer(getProcessingLayer(doc), AreaLeaf.ArtLayerWr(doc), Alignment);
-            AreaLeaf.Fit(doc, LayerComposition, Alignment);
+            getRuledLayerWr(doc).AlignLayer(AreaLeaf.ArtLayerWr(doc), Alignment);
         }
+    }
+    public class FitRule : LayerRule
+    {
+        public bool BalanceFont;
+        public FitRule(Composition composition) : base(composition) { }
+        [XmlIgnore]
+        public AreaLeaf AreaLeaf;
+        Alignment Alignment;
+        public override Parameter[] Parameters => new Parameter[0];
+        protected override void _apply(Document doc)
+        {
 
+            getRuledLayerWr(doc).AlignLayer(AreaLeaf.ArtLayerWr(doc), Alignment);
+        }
     }
 
 }

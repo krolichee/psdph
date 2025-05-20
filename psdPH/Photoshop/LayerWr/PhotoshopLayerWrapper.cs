@@ -88,7 +88,6 @@ namespace psdPH.Photoshop
             return newLayerSet;
         }
         
-
     }
     public partial class ArtLayerWr : LayerWr
     {

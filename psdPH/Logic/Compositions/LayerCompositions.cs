@@ -27,6 +27,7 @@ namespace psdPH.Logic.Compositions
         }
         public LayerComposition(string layername) { LayerName = layername; }
         public LayerComposition() { LayerName = string.Empty; }
+        protected LayerWr getLayer(Document doc, string layerName) => doc.GetLayerWrByName(layerName);
     }
     [Serializable]
     [XmlRoot("Image")]
