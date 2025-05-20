@@ -20,6 +20,10 @@ namespace psdPH.Logic.Compositions
     {
         public string LayerName;
         public override string ObjName => LayerName;
+        public ArtLayer ArtLayer(Document doc)
+        {
+            return doc.GetLayerByName(LayerName);
+        }
         public LayerComposition(string layername) { LayerName = layername; }
         public LayerComposition() { LayerName = string.Empty; }
     }
@@ -44,15 +48,13 @@ namespace psdPH.Logic.Compositions
         }
 
     }
-    [Serializable]
-    [XmlRoot("Text")]
-
     public enum BlobMode
     {
         Layer,
         Path
     }
-
+    [Serializable]
+    [XmlRoot("Text")]
     public class TextLeaf : LayerComposition
     {
         public override string UIName => "Текст";
@@ -73,7 +75,7 @@ namespace psdPH.Logic.Compositions
 
         override public void Apply(Document doc)
         {
-            ArtLayer layer = doc.GetLayerByName(LayerName, LayerListing.Recursive);
+            ArtLayer layer = ArtLayer(doc);
             layer.TextItem.Contents = Text.Replace("\n", "\r");
         }
     }
@@ -102,26 +104,17 @@ namespace psdPH.Logic.Compositions
     [XmlRoot("Area")]
     public class AreaLeaf : LayerComposition
     {
-        [XmlIgnore]
-        public TextLeaf TextLeaf
-        {
-            get => Parent.getChildren<TextLeaf>().First(p => p.LayerName == TextLeafLayername);
-            set => TextLeafLayername = value.LayerName;
-        }
         public override string UIName => "Область";
-        public string TextLeafLayername;
-
-        public bool SwitchStyle;
-
         public override Parameter[] Parameters => new Parameter[0];
         static Dictionary<PsJustification, HorizontalAlignment> JustificationMatchDict = new Dictionary<PsJustification, HorizontalAlignment>()
             {
                 { PsJustification.psLeft,HorizontalAlignment.Left
     },
                 { PsJustification.psRight,HorizontalAlignment.Right
-},
+    },
                 { PsJustification.psCenter,HorizontalAlignment.Center },
             };
+
         public void Fit(Document doc, LayerComposition layerLeaf, Alignment alignment)
         {
             TextLeaf textLeaf;
@@ -130,7 +123,7 @@ namespace psdPH.Logic.Compositions
             else
                 throw new NotImplementedException();
 
-            var textLayer = doc.GetLayerByName(TextLeafLayername);
+            var dynamicLayer = doc.GetLayerByName(layerLeaf.LayerName);
 
             var areaLayer = doc.GetLayerByName(LayerName);
 
@@ -139,11 +132,11 @@ namespace psdPH.Logic.Compositions
                 return;
             textLeaf.Apply(doc);
 
-            textLayer.AdjustTextLayerTo(areaLayer);
+            dynamicLayer.AdjustTextLayerTo(areaLayer);
 
             //alignment.H = JustificationMatchDict[textLeaf.Justification];
 
-            textLayer.AlignLayer(areaLayer, alignment);
+            dynamicLayer.AlignLayer(areaLayer, alignment);
         }
         public override void Apply(Document doc) { }
     }
