@@ -11,12 +11,12 @@ namespace psdPH.Logic
 {
     public static partial class PhotoshopLayerExtension
     {
-        public static void AdjustLayerToWidth(this ArtLayer layer, double width)
+        public static void AdjustToWidth(this LayerWr layer, double width)
         {
             double resizeRatio = width / layer.GetBoundRect().Width*100;
             layer.Resize(resizeRatio, resizeRatio);
         }
-        public static void AdjustLayerSetTo(this LayerSet layer, ArtLayer areaLayer)
+        public static void AdjustTo(this LayerWr layer, LayerWr areaLayer)
         {
             double layerRatio = layer.GetBoundRect().Width / layer.GetBoundRect().Height;
             double areaRatio = areaLayer.GetBoundRect().Width / areaLayer.GetBoundRect().Height;
@@ -36,9 +36,10 @@ namespace psdPH.Logic
             layer.Resize(resizeRatio, resizeRatio);
         }
         
-        public static void AdjustTextLayerToWidth(this ArtLayer textLayer, double width)
+        public static void AdjustTextLayerToWidth(this ArtLayerWr textLayer, double width)
         {
             LayerSet layerSet = textLayer.GroupLayer() ;
+            TextItem textItem = textLayer.ArtLayer.TextItem;
 
             if (textLayer.GetBoundRect().Width == 0 || textLayer.GetBoundRect().Width == width)
                 return;
@@ -51,47 +52,47 @@ namespace psdPH.Logic
                     return false;
                 return (diff <= toler);
             }
-            double fontSizeShift = textLayer.TextItem.Size / 2;
+            double fontSizeShift = textItem.Size / 2;
             bool _fits;
 
             while (!isFitsInWithToler(textLayer.GetBoundsSize().Width, width, 3, out _fits))
             {
                 if (_fits)
-                    textLayer.TextItem.Size += fontSizeShift;
+                    textItem.Size += fontSizeShift;
                 else
-                    textLayer.TextItem.Size -= fontSizeShift;
+                    textItem.Size -= fontSizeShift;
                 fontSizeShift /= 2;
                 if (fontSizeShift <= 0.5)
                     break;
             }
         }
 
-        public static LayerSet EqualizeLineWidth(this ArtLayer textLayer)
+        public static LayerSet EqualizeLineWidth(this ArtLayerWr textLayer)
         {
             LayerSet lineLayerSet = textLayer.SplitTextLayer();
-            ArtLayer[] lineLayers = lineLayerSet.ArtLayers.Cast<ArtLayer>().ToArray();
+            ArtLayerWr[] lineLayers = lineLayerSet.ArtLayers.Cast<ArtLayer>().Select(l=>new ArtLayerWr(l)).ToArray();
             double maxWidth = lineLayers.Max((l) => l.GetBoundRect().Width);
 
             List<double> prevLineGaps = new List<double> { 0 };
             for (int i = 1; i < lineLayers.Count(); i++)
             {
-                ArtLayer layer = lineLayers[i];
-                ArtLayer prevLayer = lineLayers[i - 1];
+                ArtLayerWr layer = lineLayers[i];
+                ArtLayerWr prevLayer = lineLayers[i - 1];
                 prevLineGaps.Add(layer.GetBoundRect().Top - prevLayer.GetBoundRect().Bottom);
             }
-            lineLayers[0].AdjustLayerToWidth(maxWidth);
+            lineLayers[0].AdjustToWidth(maxWidth);
             for (int i = 1; i < lineLayers.Count(); i++)
             {
                 double prevLineGap = prevLineGaps[i];
-                ArtLayer layer = lineLayers[i];
-                ArtLayer prevLayer = lineLayers[i - 1];
-                layer.AdjustLayerToWidth(maxWidth);
+                ArtLayerWr layer = lineLayers[i];
+                ArtLayerWr prevLayer = lineLayers[i - 1];
+                layer.AdjustToWidth(maxWidth);
                 double curGap = layer.GetBoundRect().Top - prevLayer.GetBoundRect().Bottom;
                 layer.TranslateV(new Vector(0, prevLineGap - curGap));
             }
             return lineLayerSet;
         }
-        public static void FitWithEqualize(this ArtLayer textLayer, ArtLayer areaLayer)
+        public static void FitWithEqualize(this ArtLayerWr textLayer, ArtLayer areaLayer)
         {
             LayerSet equalized = textLayer.EqualizeLineWidth();
             equalized.AdjustLayerSetTo(areaLayer);
