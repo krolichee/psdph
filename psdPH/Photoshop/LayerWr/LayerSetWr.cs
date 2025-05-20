@@ -12,12 +12,6 @@ namespace psdPH.Photoshop
         public override dynamic Name { get => _layer.Name; set => _layer.Name = value; }
         public override bool Visible { get => _layer.Visible; set => _layer.Visible = value; }
         public override double Opacity { get => _layer.Opacity; set => _layer.Opacity = value; }
-
-        public LayerSetWr(LayerSet layer)
-        {
-            
-            _layer = layer;
-        }
         public override void Duplicate() => _layer.Duplicate();
 
         public override void MakeActive()

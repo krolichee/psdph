@@ -86,19 +86,51 @@ namespace psdPH.Photoshop
             newLayerSet.Name = "NewGroup";
             Move(newLayerSet, PsElementPlacement.psPlaceInside);
             return newLayerSet;
-        } 
+        }
         
+
     }
     public partial class ArtLayerWr : LayerWr
     {
         private ArtLayer _layer;
         public ArtLayer ArtLayer { get => _layer; }
-        
+        public ArtLayerWr(ArtLayer layer) =>
+            _layer = layer;
+        public LayerSet SplitTextLayer()
+        {
+            LayerSets parentLayersets = GetParentLayerSets();
+            LayerSet linesLayerSet = parentLayersets.Add();
+            linesLayerSet.Name = "NewGroup";
+            CopyStyle();
+            OffStyle();
+            var linesLayerSetWr = new LayerSetWr(linesLayerSet);
+            linesLayerSetWr.PasteStyle();
+            linesLayerSetWr.OffStyle();
+
+            List<ArtLayer> lineLayers = new List<ArtLayer>();
+
+            var lines = ArtLayer.TextItem.Contents.Split('\r');
+
+            int lineCount = lines.Count();
+
+
+            for (int i = 0; i < lineCount; i++)
+            {
+                ArtLayer copy = ArtLayer.Duplicate(linesLayerSet, PsElementPlacement.psPlaceAtEnd);
+                copy.TextItem.Contents = new string('\r', i) + lines[i];
+                copy.Name = $"{Name}_line{i + 0}";
+                lineLayers.Add(copy);
+            }
+            Visible = false;
+            return linesLayerSet;
+        }
     }
     public partial class LayerSetWr : LayerWr
     {
         private LayerSet _layer;
         public LayerSet LayerSet { get => _layer; }
+        public LayerSetWr(LayerSet layer) =>
+            _layer = layer;
     }
     public static class WrapperExtension
     {
