@@ -20,17 +20,6 @@ namespace psdPH.Logic
             doc.ActiveHistoryState = initialState;
         }
         const LayerListing DefaultListing = LayerListing.Recursive;
-        public class Alignment
-        {
-            public override int GetHashCode() => (int)H * 4 + (int)V;
-            public HorizontalAlignment H;
-            public VerticalAlignment V;
-            public Alignment(HorizontalAlignment horizontal, VerticalAlignment vertical)
-            {
-                H = horizontal;
-                V = vertical;
-            }
-        }
         public static Vector GetAlightmentVector(this Document doc, string targetLayerName, string dynamicLayerName, Alignment alignment = null)
         {
             ArtLayerWr targetLayer = new ArtLayerWr(doc.GetLayerByName(targetLayerName));

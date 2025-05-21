@@ -82,6 +82,7 @@
     <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
       <DependentUpon>CollectionEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Photoshop\Alignment.cs" />
     <Compile Include="Photoshop\LayerWr\ArtLayerWr.cs" />
     <Compile Include="Photoshop\LayerWr\LayerSetWr.cs" />
     <Compile Include="Photoshop\PhotoshopLayerExtension.Adjust.cs" />
