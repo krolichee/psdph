@@ -23,7 +23,7 @@ namespace psdPH.RuleEditor
         {
             List<string> parts = new List<string>();
             Logic.Rules.Condition condition = rule.Condition;
-            Parameter[] conditionParameters = condition.Parameters;
+            Parameter[] conditionParameters = condition.Setups;
             parts.Add("Если");
             parts.Add(condition.ToString());
             parts.Add(getText(conditionParameters));
@@ -32,7 +32,7 @@ namespace psdPH.RuleEditor
         }
         void textblockView(Rule rule)
         {
-            Parameter[] ruleParameters = rule.Parameters;
+            Parameter[] ruleParameters = rule.Setups;
             List<string> parts = new List<string>();
             if (rule is ConditionRule)
                 parts.AddRange(getConditionParts((ConditionRule)rule));

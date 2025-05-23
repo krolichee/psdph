@@ -38,7 +38,7 @@ namespace psdPH.Logic
         {
             _condition = conditionsComboBox.SelectedItem as Condition;
             conditionParametersStack.Children.Clear();
-            var parameters = _condition.Parameters;
+            var parameters = _condition.Setups;
             _parameters.AddRange(parameters);
             foreach (var item in parameters)
             {
@@ -49,7 +49,7 @@ namespace psdPH.Logic
         {
             _result = ruleComboBox.SelectedItem as ConditionRule;
             ruleParametersStack.Children.Clear();
-            var parameters = _result.Parameters;
+            var parameters = _result.Setups;
             _parameters.AddRange(parameters);
             foreach (var item in parameters)
             {

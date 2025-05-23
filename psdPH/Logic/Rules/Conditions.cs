@@ -9,12 +9,12 @@ namespace psdPH.Logic.Rules
     [XmlInclude(typeof(MaxRowCountCondition))]
     [XmlInclude(typeof(MaxRowLenCondition))]
     [XmlInclude(typeof(FlagCondition))]
-    public abstract class Condition : IParameterable
+    public abstract class Condition : ISetupable
     {
         [XmlIgnore]
         public Composition Composition;
         [XmlIgnore]
-        public abstract Parameter[] Parameters { get; }
+        public abstract Parameter[] Setups { get; }
         public abstract bool IsValid();
 
         public void restoreComposition(Composition composition)
@@ -31,7 +31,7 @@ namespace psdPH.Logic.Rules
     {
         public DummyCondition(Composition composition) : base(composition) { }
 
-        public override Parameter[] Parameters => new Parameter[0];
+        public override Parameter[] Setups => new Parameter[0];
 
         public override bool IsValid() => true;
     }
@@ -47,7 +47,7 @@ namespace psdPH.Logic.Rules
             get => Composition.getChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName); 
             set => TextLeafLayerName = value.LayerName;
         }
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
@@ -65,11 +65,11 @@ namespace psdPH.Logic.Rules
     {
         public override string ToString() => "количество строк";
         [XmlIgnore]
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
-                List<Parameter> result = base.Parameters.ToList();
+                List<Parameter> result = base.Setups.ToList();
                 var RowCountConfig = new ParameterConfig(this, nameof(this.RowCount), "превышает");
                 result.Add(Parameter.IntInput(RowCountConfig));
                 return result.ToArray();
@@ -91,11 +91,11 @@ namespace psdPH.Logic.Rules
     {
         public override string ToString() => "максимальная длина строки\n среди строк";
         [XmlIgnore]
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
-                List<Parameter> result = base.Parameters.ToList();
+                List<Parameter> result = base.Setups.ToList();
                 var RowLenghtConfig = new ParameterConfig(this, nameof(this.RowLength), "превышает");
                 result.Add(Parameter.IntInput(RowLenghtConfig));
                 return result.ToArray();
@@ -114,16 +114,19 @@ namespace psdPH.Logic.Rules
     }
     public class FlagCondition : Condition
     {
-        public override string ToString() => "установлен флаг";
+        public override string ToString() => "значение флага";
         public string FlagName;
-        public override Parameter[] Parameters
+        public bool Value=true;
+        public override Parameter[] Setups
         {
             get
             {
                 List<Parameter> result = new List<Parameter>();
                 FlagLeaf[] flagLeaves = Composition.getChildren<FlagLeaf>();
                 var flagConfig = new ParameterConfig(this, nameof(this.FlagLeaf), "");
+                var valueConfig = new ParameterConfig(this, nameof(this.Value),"");
                 result.Add(Parameter.Choose(flagConfig, flagLeaves));
+                result.Add(Parameter.Check(valueConfig));
                 return result.ToArray();
             }
         }
@@ -142,7 +145,7 @@ namespace psdPH.Logic.Rules
         }
         public override bool IsValid()
         {
-            return FlagLeaf.Toggle;
+            return FlagLeaf.Toggle== Value;
         }
         public FlagCondition(Composition composition) : base(composition) { }
         public FlagCondition() : base(null) { }

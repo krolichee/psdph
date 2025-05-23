@@ -12,14 +12,14 @@ namespace psdPH.Logic.Compositions
     [XmlRoot("Blob")]
     public class Blob : LayerComposition
     {
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
                 var result = new List<Parameter>();
                 if (!IsPrototyped())
                     foreach (var item in Children)
-                        result.AddRange(item.Parameters);
+                        result.AddRange(item.Setups);
                 return result.ToArray();
             }
         }

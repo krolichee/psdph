@@ -36,7 +36,7 @@ namespace psdPH.Logic.Compositions
         public override string UIName => "Изобр.";
         public string Path;
 
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
@@ -62,7 +62,7 @@ namespace psdPH.Logic.Compositions
         public override string UIName => "Текст";
         public string Text = string.Empty;
 
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
@@ -88,7 +88,7 @@ namespace psdPH.Logic.Compositions
     {
         public override string UIName => "Слой";
 
-        public override Parameter[] Parameters => new Parameter[0];
+        public override Parameter[] Setups => new Parameter[0];
 
         public override void Apply(Document doc) { }
     }
@@ -98,7 +98,7 @@ namespace psdPH.Logic.Compositions
     {
         public override string UIName => "Группа";
 
-        public override Parameter[] Parameters => new Parameter[0];
+        public override Parameter[] Setups => new Parameter[0];
         public override string ObjName => LayerName;
         public override void Apply(Document doc) { }
     }
@@ -107,7 +107,7 @@ namespace psdPH.Logic.Compositions
     public class AreaLeaf : LayerComposition
     {
         public override string UIName => "Область";
-        public override Parameter[] Parameters => new Parameter[0];
+        public override Parameter[] Setups => new Parameter[0];
         static Dictionary<PsJustification, HorizontalAlignment> JustificationMatchDict = new Dictionary<PsJustification, HorizontalAlignment>()
             {
                 { PsJustification.psLeft,HorizontalAlignment.Left
@@ -165,7 +165,7 @@ namespace psdPH.Logic.Compositions
         string derivedLayerName;
         public override string ObjName => LayerName;
 
-        public override Parameter[] Parameters => new Parameter[0];
+        public override Parameter[] Setups => new Parameter[0];
 
         public PlaceholderLeaf(string layername, string prototypeLayername)
         {

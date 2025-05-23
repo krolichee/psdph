@@ -25,8 +25,8 @@ namespace psdPH.RuleEditor
         {
             _sp = new StackPanel() { Orientation = Orientation.Horizontal };
             Content = _sp;
-            Parameter[] conditionParameters = rule.Condition.Parameters;
-            Parameter[] ruleParameters = rule.Parameters;
+            Parameter[] conditionParameters = rule.Condition.Setups;
+            Parameter[] ruleParameters = rule.Setups;
             var sp_ch = _sp.Children;
             sp_ch.Add(new Label() { Content = "Если" });
             sp_ch.Add(new Label() { Content = rule.Condition.ToString() });
@@ -49,8 +49,8 @@ namespace psdPH.RuleEditor
         }
         void textblockView(ConditionRule rule)
         {
-            Parameter[] conditionParameters = rule.Condition.Parameters;
-            Parameter[] ruleParameters = rule.Parameters;
+            Parameter[] conditionParameters = rule.Condition.Setups;
+            Parameter[] ruleParameters = rule.Setups;
 
             var tb = new TextBlock();
             tb.HorizontalAlignment = HorizontalAlignment.Stretch;

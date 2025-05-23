@@ -20,6 +20,11 @@ using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using psdPH.Photoshop;
 using System.Windows.Controls.Primitives;
 using System.Reflection;
+using Condition = psdPH.Logic.Rules.Condition;
+using System.Threading;
+using HAli = System.Windows.HorizontalAlignment;
+using VAli = System.Windows.VerticalAlignment;
+using System.Threading.Tasks;
 
 
 namespace psdPHText.UI
@@ -96,8 +101,9 @@ namespace psdPHText.Ps
         static Application psApp;
         Document doc => psApp.ActiveDocument;
         [TestMethod]
-        public void LayerCast()
+        public void OpenImage()
         {
+            psApp.Open("D:/Downloads/image.png");
         }
 
         [TestInitialize]
@@ -134,7 +140,7 @@ namespace psdPHText.Ps
         [TestMethod]
         public void GroupLayer()
         {
-            doc.LayerSets.Add();
+
         }
         [TestMethod]
         public void SplitTextLayer()
@@ -176,7 +182,77 @@ namespace psdPHText.Ps
 }
 namespace psdPHTest.Automatic
 {
-    
+    [TestClass]
+    public class AligmentRuleTest
+    {
+        Blob MainBlob;
+        FlagLeaf flagLeaf;
+        void _(object sender, RoutedEventArgs e)
+        {
+            var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
+            flagLeaf.Toggle = (sender as CheckBox).IsChecked==true;
+            MainBlob.Apply(doc);
+        }
+        Blob GetBlob()
+        {
+            var blob = Blob.PathBlob("");
+            flagLeaf = new FlagLeaf("sadism") { Toggle = true };
+            var on_area = new AreaLeaf() { LayerName = "on_area" };
+            var off_area = new AreaLeaf() { LayerName = "off_area" };
+            var layer1Leaf = new TextLeaf() { LayerName = "lorem", Text = "Lorem Ipsum" };
+            var objLayer = new TextLeaf() { LayerName = "obj" };
+            var controlLayer = new LayerLeaf() { LayerName = "control" };
+            blob.addChild(flagLeaf);
+            blob.addChild(on_area);
+            blob.addChild(off_area);
+            blob.addChild(layer1Leaf);
+            Condition true_condition = new FlagCondition(blob) { FlagLeaf = flagLeaf, Value = true };
+            Condition false_condition = new FlagCondition(blob) { FlagLeaf = flagLeaf, Value = false };
+            blob.RuleSet.Rules.Add(
+                new AlignRule(blob)
+                {
+                    LayerComposition = layer1Leaf,
+                    AreaLeaf = on_area,
+                    Alignment = Alignment.Create("center", "left"),
+                    Condition = true_condition
+                }
+                );
+            blob.RuleSet.Rules.Add(
+                new AlignRule(blob)
+                {
+                    LayerComposition = layer1Leaf,
+                    AreaLeaf = off_area,
+                    Alignment = Alignment.Create("center", "left"),
+                    Condition = false_condition
+                }
+                );
+            blob.RuleSet.Rules.Add(
+                new VisibleRule(blob) { LayerComposition = objLayer, Condition = true_condition }
+                );
+            return blob;
+        }
+        [TestInitialize]
+        public void Init()
+        {
+            MainBlob = GetBlob();
+            var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
+            var window = new Window();
+            var chb = new CheckBox();
+            window.Content = chb;
+            chb.HorizontalAlignment = HAli.Center;
+            chb.VerticalAlignment = VAli.Center;
+            chb.Click += _;
+            window.Height = window.MinHeight = 100;
+            window.Width = window.MinWidth = 70;
+            window.WindowStyle = WindowStyle.ToolWindow;
+            window.ShowDialog();
+        }
+        [TestMethod]
+        public void AlignRuleTest()
+        {
+            
+        }
+    }
     [TestClass]
     public class SimpleView
     {

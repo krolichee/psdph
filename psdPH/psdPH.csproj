@@ -86,7 +86,7 @@
     <Compile Include="Photoshop\LayerWr\ArtLayerWr.cs" />
     <Compile Include="Photoshop\LayerWr\LayerSetWr.cs" />
     <Compile Include="Photoshop\PhotoshopLayerExtension.Adjust.cs" />
-    <Compile Include="Photoshop\LayerWr\PhotoshopLayerWrapper.cs" />
+    <Compile Include="Photoshop\LayerWr\LayerWr.cs" />
     <Compile Include="Logic\Rules\ChangeMode.cs" />
     <Compile Include="Logic\Rules\ELayerMode.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
@@ -150,7 +150,7 @@
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
-    <Compile Include="Utils\ReflectionParameter\IParameterable.cs" />
+    <Compile Include="Utils\ReflectionParameter\ISetupable.cs" />
     <Compile Include="Photoshop\PhotoshopDocumentExtension.cs" />
     <Compile Include="Logic\Rules\Conditions.cs" />
     <Compile Include="RuleEditor\IRuleEditor.cs" />

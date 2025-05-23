@@ -15,7 +15,7 @@ namespace psdPH
         {
             if (exclude == null)
                 exclude = new Composition[0];
-            var parameters = blob.Parameters.Where(p => !exclude.Contains(p.Config.Obj)).ToArray();
+            var parameters = blob.Setups.Where(p => !exclude.Contains(p.Config.Obj)).ToArray();
             parametersWindow = new ParametersInputWindow(parameters, title);
         }
         public bool? ShowDialog()

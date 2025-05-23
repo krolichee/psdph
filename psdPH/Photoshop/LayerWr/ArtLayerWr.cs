@@ -1,4 +1,6 @@
 ﻿using Photoshop;
+using System.Collections;
+using System.Linq;
 using Application = Photoshop.Application;
 
 namespace psdPH.Photoshop
@@ -7,7 +9,7 @@ namespace psdPH.Photoshop
     {
         //For Copying
         public override Application Application => _layer.Application;
-        public override double[] Bounds => _layer.Bounds;
+        public override double[] Bounds => (_layer.Bounds as dynamic[]).Cast<double>().ToArray();
         public override dynamic Parent => _layer.Parent;
         public override dynamic Name { get => _layer.Name; set => _layer.Name = value; }
         public override bool Visible { get => _layer.Visible; set => _layer.Visible = value; }

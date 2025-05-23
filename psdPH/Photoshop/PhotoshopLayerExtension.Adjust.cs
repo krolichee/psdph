@@ -39,7 +39,7 @@ namespace psdPH.Logic
         
         public static void AdjustTextLayerToWidth(this ArtLayerWr textLayerWr, double width)
         {
-            LayerSet layerSet = textLayerWr.GroupLayer() ;
+            textLayerWr.GroupLayer();
             TextItem textItem = textLayerWr.ArtLayer.TextItem;
 
             if (textLayerWr.GetBoundRect().Width == 0 || textLayerWr.GetBoundRect().Width == width)
@@ -68,10 +68,12 @@ namespace psdPH.Logic
             }
         }
 
-        public static LayerSet EqualizeLineWidth(this ArtLayerWr textLayer)
+        public static LayerSetWr EqualizeLineWidth(this ArtLayerWr textLayerWr)
         {
-            LayerSet lineLayerSet = textLayer.SplitTextLayer();
-            ArtLayerWr[] lineLayers = lineLayerSet.ArtLayers.Cast<ArtLayer>().Select(l=>new ArtLayerWr(l)).ToArray();
+            textLayerWr.CopyStyle();
+            textLayerWr.OffStyle();
+            LayerSetWr lineLayerSetWr = textLayerWr.SplitTextLayer();
+            ArtLayerWr[] lineLayers = lineLayerSetWr.ArtLayers.Cast<ArtLayer>().Select(l=>new ArtLayerWr(l)).ToArray();
             double maxWidth = lineLayers.Max((l) => l.GetBoundRect().Width);
 
             List<double> prevLineGaps = new List<double> { 0 };
@@ -91,15 +93,18 @@ namespace psdPH.Logic
                 double curGap = layer.GetBoundRect().Top - prevLayer.GetBoundRect().Bottom;
                 layer.TranslateV(new Vector(0, prevLineGap - curGap));
             }
-            return lineLayerSet;
+            lineLayerSetWr.PasteStyle();
+            return lineLayerSetWr;
         }
-        public static void FitWithEqualize(this ArtLayerWr textLayer, ArtLayerWr areaLayer)
+        public static void FitWithEqualize(this ArtLayerWr textLayer, ArtLayerWr areaLayer, Alignment alignment)
         {
-            LayerSet equalized = textLayer.EqualizeLineWidth();
-            LayerSetWr equalizedWr = new LayerSetWr(equalized);
-            equalizedWr.AdjustTo(areaLayer);
-            equalizedWr.AlignLayer(areaLayer, new Alignment(HorizontalAlignment.Center, VerticalAlignment.Center));
-            equalizedWr.OnStyle();
+            LayerSetWr equalizedWr = textLayer.EqualizeLineWidth();
+            equalizedWr.Fit(areaLayer,alignment);
+        }
+        public static void Fit(this LayerWr layerWr, ArtLayerWr areaLayer,Alignment alignment)
+        {
+            layerWr.AdjustTo(areaLayer);
+            layerWr.AlignLayer(areaLayer, alignment);
         }
 
         public static void AdjustTextLayerTo(this ArtLayerWr textLayer, ArtLayerWr areaLayer)

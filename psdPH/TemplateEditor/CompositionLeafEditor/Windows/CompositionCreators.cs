@@ -111,7 +111,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     }
     public class AreaLeafCreator : LeafCreator<AreaLeaf>
     {
-        public AreaLeafCreator(Document doc, Blob root) : base()
+        public AreaLeafCreator(Document doc) : base()
         {
             result.LayerName = "";
             string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer }));

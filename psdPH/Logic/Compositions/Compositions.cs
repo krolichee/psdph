@@ -20,7 +20,7 @@ namespace psdPH
 
 
     [XmlInclude(typeof(Rule))]
-    public abstract class Composition : IParameterable
+    public abstract class Composition : ISetupable
     {
         public delegate void RulesetUpdated();
         public delegate void ChildrenUpdated();
@@ -49,7 +49,7 @@ namespace psdPH
                 return new Composition[0] as T[];
             return Parent.getChildren<T>().ToArray();
         }
-        public abstract Parameter[] Parameters { get; }
+        public abstract Parameter[] Setups { get; }
 
         abstract public void Apply(Document doc);
         protected void invokeChildrenEvent()
@@ -87,7 +87,7 @@ namespace psdPH
         public string Name;
         public override string ObjName => Name;
 
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
@@ -128,7 +128,7 @@ namespace psdPH
         {
             return doc.GetAlightmentVector(RelativeLayerName, LayerName);
         }
-        public override Parameter[] Parameters => new Parameter[0];
+        public override Parameter[] Setups => new Parameter[0];
         public override string ObjName => Blob.LayerName;
         public override void Apply(Document doc)
         {
