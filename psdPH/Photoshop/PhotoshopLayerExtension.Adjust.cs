@@ -68,7 +68,7 @@ namespace psdPH.Logic
             }
         }
 
-        public static LayerSetWr EqualizeLineWidth(this ArtLayerWr textLayerWr)
+        public static LayerSetWr EqualizeLineWidth(this TextLayerWr textLayerWr)
         {
             textLayerWr.CopyStyle();
             textLayerWr.OffStyle();
@@ -96,7 +96,7 @@ namespace psdPH.Logic
             lineLayerSetWr.PasteStyle();
             return lineLayerSetWr;
         }
-        public static void FitWithEqualize(this ArtLayerWr textLayer, ArtLayerWr areaLayer, Alignment alignment)
+        public static void FitWithEqualize(this TextLayerWr textLayer, ArtLayerWr areaLayer, Alignment alignment)
         {
             LayerSetWr equalizedWr = textLayer.EqualizeLineWidth();
             equalizedWr.Fit(areaLayer,alignment);

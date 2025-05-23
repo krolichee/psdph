@@ -120,6 +120,7 @@ namespace psdPH
                 if (blob == null)
                     blob = Parent.getChildren<Blob>().First(b => b.LayerName == LayerName); return blob;
             }
+            set { LayerName = value.LayerName; }
         }
         public override string UIName => "Прототип";
         public string RelativeLayerName;

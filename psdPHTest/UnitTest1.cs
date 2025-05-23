@@ -25,6 +25,7 @@ using System.Threading;
 using HAli = System.Windows.HorizontalAlignment;
 using VAli = System.Windows.VerticalAlignment;
 using System.Threading.Tasks;
+using psdPH.Views.WeekView;
 
 
 namespace psdPHText.UI
@@ -126,15 +127,15 @@ namespace psdPHText.Ps
             int count = 4;
             for (int i = 1; i <= count; i++)
             {
-                ArtLayerWr textLayer = doc.GetLayerByName($"text{i}").Wrapper();
+                TextLayerWr textLayer = doc.GetLayerByName($"text{i}").TextWrapper();
                 ArtLayerWr areaLayer = doc.GetLayerByName($"area{i}").Wrapper();
-                textLayer.FitWithEqualize(areaLayer);
+                textLayer.FitWithEqualize(areaLayer,Alignment.Create("up","left"));
             }
         }
 
         [TestMethod]
         public void EqualizeLineWidth() {
-            ArtLayerWr textLayer = doc.GetLayerByName("text").Wrapper();
+            TextLayerWr textLayer =  doc.GetLayerByName("text").TextWrapper();
             textLayer.EqualizeLineWidth();
         }
         [TestMethod]
@@ -145,8 +146,8 @@ namespace psdPHText.Ps
         [TestMethod]
         public void SplitTextLayer()
         {
-            ArtLayerWr textLayer = doc.GetLayerByName("text").Wrapper();
-            textLayer.SplitTextLayer();
+            TextLayerWr textLayerWr =new TextLayerWr(doc.GetLayerByName("text"));
+            textLayerWr.SplitTextLayer();
         }
         [TestMethod]
         public void EmptyTextTextItemError()
@@ -285,9 +286,24 @@ namespace psdPHTest.Automatic
 
     }
     [TestClass]
-    public class DateFormat
+    public class DateFormatTest
     {
+        [TestMethod]
+        public void TestM()
+        {
+            var blob = Blob.PathBlob("C:\\ProgramData\\psdPH\\Projects\\№пример\\template.psd");
+            var dayBlob = Blob.LayerBlob("Прототип дня");
+            dayBlob.addChild(new TextLeaf() { LayerName = "Число"});
+            dayBlob.addChild(new TextLeaf() { LayerName = "День недели" });
+            var dayPrototype = new PrototypeLeaf() { Blob = dayBlob, RelativeLayerName = "Пн" };
+            blob.addChild(dayBlob);
+            blob.addChild(dayPrototype);
+            foreach (var dow in new string[] { "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" })
+                blob.addChild(new PlaceholderLeaf() {Prototype= dayPrototype ,LayerName = dow});
+            var weekDatesTextLeaf = new TextLeaf() { LayerName = "Даты недели" };
 
+            WeekView.CreateWeekConfig(blob);
+        }
     }
     [TestClass]
     public class CompositionTest
