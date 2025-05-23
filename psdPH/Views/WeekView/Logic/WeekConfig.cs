@@ -31,7 +31,7 @@ namespace psdPH
     }
     public class NoZeroDateFormat : DayDateFormat
     {
-        public override string Format => "d";
+        public override string Format => "%d";
     }
     public class WithZeroDateFormat : DayDateFormat
     {

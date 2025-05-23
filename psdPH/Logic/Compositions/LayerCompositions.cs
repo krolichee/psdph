@@ -148,8 +148,6 @@ namespace psdPH.Logic.Compositions
     {
         public override string UIName => "Плейс.";
         [XmlIgnore]
-        public Blob ActualBlob;
-        [XmlIgnore]
         public PrototypeLeaf Prototype
         {
             get
