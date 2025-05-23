@@ -59,8 +59,8 @@ namespace psdPH.Views.WeekView
         {
             var dateTextLeaf = WeekConfig.GetDateTextLeaf(blob);
             var dowTextLeaf = WeekConfig.GetDowTextLeaf(blob);
-            dateTextLeaf.Text = dateTime.ToString(WeekConfig.DayDateFormat.Format).ToLower();
-            dowTextLeaf.Text = dateTime.ToString(WeekConfig.DayDowFormat.Format).ToLower();
+            dateTextLeaf.Text = WeekConfig.DayDateFormat.Format(dateTime);
+            dowTextLeaf.Text = WeekConfig.DayDowFormat.Format(dateTime);
 
         }
         public WeekData(int week, WeekListData weekListData)

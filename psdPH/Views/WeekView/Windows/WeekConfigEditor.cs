@@ -68,13 +68,18 @@ namespace psdPH.Views.WeekView
             var dayDateFormatConfig = resultConfig(nameof(WeekConfig.DayDateFormat), "Формат даты дня");
             var dowFormatConfig = resultConfig(nameof(WeekConfig.DayDateFormat), "Формат дня недели");
 
-            var dayDateFormats = new DayDateFormat[]
+            var dayDateFormats = new DateFormat[]
             {
                 new NoZeroDateFormat(),new WithZeroDateFormat()
             };
-            var dowFormats = new DayDateFormat[]
+            var dowFormats = new DateFormat[]
             {
-                 new ShortDowFormat(),new FullDowFormat()
+                 new ShortDowFormat().Upper,
+                 new ShortDowFormat().Lower,
+                 new ShortDowFormat().FirstUpper,
+                new FullDowFormat().Upper,
+                new FullDowFormat().Lower,
+                new FullDowFormat().FirstUpper,
             };
             List<Parameter> parameters = new List<Parameter>();
             parameters.Add(Parameter.Choose(dayTextLeafConfig, textLeafs_names));

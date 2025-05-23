@@ -20,30 +20,71 @@ namespace psdPH
             Layername = layername;
         }
     }
-    public abstract class DayDateFormat
+    public abstract class DateFormat
     {
+        
+        public DateFormat Upper =>new Upper(this);
+        public DateFormat Lower => new Lower(this);
+        public DateFormat FirstUpper => new FirstUpper(this);
         DateTime _sampleDateTime => new DateTime(1970, 1, 9);
-        public abstract string Format { get; }
         public override string ToString()
         {
-            return _sampleDateTime.ToString(Format);
+            return Format(_sampleDateTime);
+        }
+        
+        public abstract string Format(DateTime dt);
+        
+    }
+    class AffectFormat: DateFormat
+    {
+        public DateFormat _include;
+        protected virtual string affect(string s) => s;
+        public override string Format(DateTime dt) =>
+            affect(_include.ToString());
+        protected AffectFormat(DateFormat dateFormat)
+        {
+            _include = dateFormat;
         }
     }
-    public class NoZeroDateFormat : DayDateFormat
+    class Upper : AffectFormat
     {
-        public override string Format => "%d";
+        public Upper(DateFormat dateFormat) : base(dateFormat) { }
+
+        protected override string affect(string s)=>s.ToUpper();
     }
-    public class WithZeroDateFormat : DayDateFormat
+    class Lower : AffectFormat
     {
-        public override string Format => "dd";
+        public Lower(DateFormat dateFormat) : base(dateFormat) { }
+        protected override string affect(string s) => s.ToLower();
     }
-    public class FullDowFormat : DayDateFormat
+    class FirstUpper : AffectFormat
     {
-        public override string Format => "dddd";
+        public FirstUpper(DateFormat dateFormat) : base(dateFormat) { }
+        protected override string affect(string s) {
+            var result = s.ToLower();
+            result=result.Remove(0, 1);
+            var firstLetter = s[0].ToString().ToUpper();
+            result=result.Insert(0, firstLetter);
+            return result;
+        }
     }
-    public class ShortDowFormat : DayDateFormat
+    public abstract class DayFormat : DateFormat{ }
+    public abstract class DowFormat : DateFormat{ }
+    public class NoZeroDateFormat : DayFormat
     {
-        public override string Format => "ddd";
+        public override string Format(DateTime dt) => dt.ToString("%d");
+    }
+    public class WithZeroDateFormat : DayFormat
+    {
+        public override string Format(DateTime dt) => dt.ToString("dd");
+    }
+    public class FullDowFormat : DowFormat
+    {
+        public override string Format(DateTime dt) => dt.ToString("dddd");
+    }
+    public class ShortDowFormat : DowFormat
+    {
+        public override string Format(DateTime dt) => dt.ToString("ddd");
     }
     [Serializable]
     public class WeekConfig
@@ -60,8 +101,8 @@ namespace psdPH
             }
         }
         public List<DowLayernamePair> DowPrototypeLayernameList = new List<DowLayernamePair>();
-        public DayDateFormat DayDateFormat;
-        internal DayDateFormat DayDowFormat;
+        public DateFormat DayDateFormat;
+        internal DateFormat DayDowFormat;
 
         public string TilePreviewTextLeafName;
         public string PrototypeLayerName;
