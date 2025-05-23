@@ -28,7 +28,6 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
         }
         public ParametersInputWindow(Parameter[] parameters, string title = "")
         {
-            //Owner = TopmostWindow.Get();
             InitializeComponent();
             Title = title;
             _stack = new StackPanel();

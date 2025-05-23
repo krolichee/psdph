@@ -2,9 +2,9 @@
 
 namespace psdPH.Logic
 {
-    public interface IParameterable
+    public interface ISetupable
     {
         [XmlIgnore]
-        Parameter[] Parameters { get; }
+        Parameter[] Setups { get; }
     }
 }

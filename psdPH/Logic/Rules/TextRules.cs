@@ -14,7 +14,7 @@ namespace psdPH.Logic.Rules
 
         public string TextLeafLayerName;
         [XmlIgnore]
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
@@ -46,11 +46,11 @@ namespace psdPH.Logic.Rules
         public TextFontSizeRule(Composition composition) : base(composition) { }
         public TextFontSizeRule() : base(null) { }
         [XmlIgnore]
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
-                List<Parameter> result = base.Parameters.ToList();
+                List<Parameter> result = base.Setups.ToList();
                 var modeConfig = new ParameterConfig(this, nameof(this.ChangeMode), "");
                 var fontSizeConfig = new ParameterConfig(this, nameof(this.FontSize), "");
                 result.Add(Parameter.EnumChoose(modeConfig, typeof(ChangeMode)));
@@ -78,11 +78,11 @@ namespace psdPH.Logic.Rules
         public TextAnchorRule(Composition composition) : base(composition) { }
         public TextAnchorRule() : base(null) { }
         [XmlIgnore]
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
-                List<Parameter> result = base.Parameters.ToList();
+                List<Parameter> result = base.Setups.ToList();
                 var justificationConfig = new ParameterConfig(this, nameof(this.Justification), "установить");
                 result.Add(Parameter.Choose(justificationConfig, new PsJustification[] {
                     PsJustification.psRight,

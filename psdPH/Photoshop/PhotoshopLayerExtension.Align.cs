@@ -7,27 +7,20 @@ using System.Threading.Tasks;
 using static psdPH.Logic.PhotoshopDocumentExtension;
 using System.Windows.Controls;
 using System.Windows;
+using psdPH.Photoshop;
 
 namespace psdPH.Logic
 {
 	public static partial class PhotoshopLayerExtension
 	{
-		public static Vector GetAlightmentVector(this ArtLayer dynamicLayer, ArtLayer targetLayer, Alignment alignment = null)
+		public static Vector GetAlightmentVector(this LayerWr dynamicLayer, LayerWr targetLayer, Alignment alignment = null)
 		{
 			return GetAlightmentVector(targetLayer.GetBoundRect(), dynamicLayer.GetBoundRect(), alignment);
 		}
-		public static Vector GetAlightmentVector(this LayerSet dynamicLayer, ArtLayer targetLayer, Alignment alignment = null)
-		{
-			return GetAlightmentVector(targetLayer.GetBoundRect(), dynamicLayer.GetBoundRect(), alignment);
-        }
-		public static void AlignLayer(this ArtLayer dynamicLayer, ArtLayer targetLayer, Alignment alignment)
+		public static void AlignLayer(this LayerWr dynamicLayer, LayerWr targetLayer, Alignment alignment)
 		{
 			dynamicLayer.TranslateV(dynamicLayer.GetAlightmentVector(targetLayer, alignment));
         }
-		public static void AlignLayer(this LayerSet dynamicLayer, ArtLayer targetLayer, Alignment alignment)
-		{
-			dynamicLayer.TranslateV(dynamicLayer.GetAlightmentVector(targetLayer, alignment));
-		}
 		public static Vector GetAlightmentVector(Rect targetRect, Rect dynamicRect, Alignment alignment = null)
 		{
 			if (alignment == null)

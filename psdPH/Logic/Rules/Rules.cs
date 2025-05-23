@@ -1,8 +1,10 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Rules;
+using psdPH.Photoshop;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
@@ -17,7 +19,7 @@ namespace psdPH.Logic
     [XmlInclude(typeof(LayerRule))]
 
     [XmlInclude(typeof(TextRule))]
-    public abstract class Rule : IParameterable
+    public abstract class Rule : ISetupable
     {
         [XmlIgnore]
         public Composition Composition;
@@ -35,7 +37,7 @@ namespace psdPH.Logic
         }
 
         [XmlIgnore]
-        public abstract Parameter[] Parameters { get; }
+        public abstract Parameter[] Setups { get; }
     }
 
     [XmlInclude(typeof(Condition))]
@@ -69,19 +71,12 @@ namespace psdPH.Logic
     public abstract class LayerRule : ConditionRule
     {
         public ChangeMode ChangeMode = ChangeMode.Abs;
-        public ELayerMode LayerMode = ELayerMode.ArtLayer;
         public string LayerName;
-        protected LayerComposition layerComposition;
         [XmlIgnore]
         public LayerComposition LayerComposition
         {
-            get => layerComposition; set
+            get => Composition.getChildren<LayerComposition>().First((c) => c.LayerName == LayerName); set
             {
-                if (value is GroupLeaf)
-                    LayerMode = ELayerMode.LayerSet;
-                else
-                    LayerMode = ELayerMode.ArtLayer;
-                layerComposition = value;
                 LayerName = value.LayerName;
             }
         }
@@ -90,15 +85,8 @@ namespace psdPH.Logic
             var layerNameConfig = new ParameterConfig(this, nameof(this.LayerComposition), "для слоя");
             return Parameter.Choose(layerNameConfig, Composition.getChildren<LayerComposition>());
         }
-        protected dynamic getProcessingLayer(Document doc)
-        {
-            dynamic layer;
-            if (LayerMode == ELayerMode.ArtLayer)
-                layer = doc.GetLayerByName(LayerName);
-            else
-                layer = doc.GetLayerSetByName(LayerName);
-            return layer;
-        }
+        protected LayerWr getRuledLayerWr(Document doc) =>
+            doc.GetLayerWrByName(LayerName);
         protected LayerRule(Composition composition) : base(composition) { }
     };
     [Serializable]
@@ -113,7 +101,7 @@ namespace psdPH.Logic
         public int Y { get => (int)Shift.Y; set { Shift.Y = (double)value; } }
         public string LeafLayerName;
         [XmlIgnore]
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
@@ -130,11 +118,13 @@ namespace psdPH.Logic
         }
         protected override void _apply(Document doc)
         {
-            dynamic layer = getProcessingLayer(doc);
+            var layer = getRuledLayerWr(doc);
+            Vector shift;
             if (ChangeMode == ChangeMode.Rel)
-                layer.Translate(Shift.X, Shift.Y);
+                shift = new Vector(Shift.X, Shift.Y);
             else
-                layer.Translate(Shift.X - layer.Bounds[0], Shift.Y - layer.Bounds[1]);
+                shift = new Vector(Shift.X - layer.Bounds[0], Shift.Y - layer.Bounds[1]);
+            layer.TranslateV(shift);
         }
         public TranslateRule() : base(null) { }
     }
@@ -144,7 +134,7 @@ namespace psdPH.Logic
 
         public int Opacity;
 
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
@@ -157,7 +147,7 @@ namespace psdPH.Logic
         }
         protected override void _apply(Document doc)
         {
-            dynamic layer = getProcessingLayer(doc);
+            dynamic layer = getRuledLayerWr(doc);
             layer.Opacity = Opacity;
         }
         public OpacityRule(Composition composition) : base(composition) { }
@@ -167,10 +157,8 @@ namespace psdPH.Logic
     public class VisibleRule : LayerRule
     {
         public override string ToString() => "видимость";
-        public bool Toggle;
-
-
-        public override Parameter[] Parameters
+        public bool Toggle = true;
+        public override Parameter[] Setups
         {
             get
             {
@@ -183,37 +171,63 @@ namespace psdPH.Logic
         }
         protected override void _else(Document doc)
         {
-            dynamic layer = getProcessingLayer(doc);
-            layer.Visible = !Toggle;
+            getRuledLayerWr(doc).Visible = !Toggle;
         }
         protected override void _apply(Document doc)
         {
-            dynamic layer = getProcessingLayer(doc);
-            layer.Visible = Toggle;
+            getRuledLayerWr(doc).Visible = Toggle;
         }
         public VisibleRule(Composition composition) : base(composition) { }
         public VisibleRule() : base(null) { }
     }
-    public class FitRule : LayerRule
+    public abstract class AreaRule : LayerRule
     {
-        public FitRule(Composition composition) : base(composition) { }
+        public string AreaLayerName;
         [XmlIgnore]
-        public AreaLeaf AreaLeaf;
+        public AreaLeaf AreaLeaf
+        {
+            get => Composition.getChildren<AreaLeaf>().First((c) => c.LayerName == AreaLayerName); set
+            {
+                AreaLayerName = value.LayerName;
+            }
+        }
+        public AreaRule(Composition composition) : base(composition) { }
+    }
+    public class AlignRule : AreaRule
+    {
+        public AlignRule(Composition composition) : base(composition) { }
+
+        public Alignment Alignment;
+        public override Parameter[] Setups => new Parameter[0];
+        protected override void _apply(Document doc)
+        {
+            getRuledLayerWr(doc).AlignLayer(AreaLeaf.ArtLayerWr(doc), Alignment);
+        }
+    }
+    public class FitRule : AreaRule
+    {
+        public bool BalanceFont = false;
+        public FitRule(Composition composition) : base(composition) { }
         Alignment Alignment;
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
                 var result = new List<Parameter>();
-                return result.ToArray();
+                result.Add(getLayerParameter());
+                var balance_config = new ParameterConfig(this, nameof(BalanceFont), "балансировать шрифт");
+                if (LayerComposition is TextLeaf)
+                    result.Add(Parameter.Check(balance_config));
+                var alingment_config = new ParameterConfig(this, nameof(Alignment), "с выравниванием");
+                result.Add(Parameter.AlignmentInput(alingment_config));
+                return null;
             }
-        }
 
+        }
         protected override void _apply(Document doc)
         {
-            AreaLeaf.Fit(doc, LayerComposition, Alignment);
+            getRuledLayerWr(doc).Fit(AreaLeaf.ArtLayerWr(doc), Alignment);
         }
     }
-
 
 }

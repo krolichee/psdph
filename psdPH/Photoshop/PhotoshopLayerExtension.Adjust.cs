@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Photoshop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,12 @@ namespace psdPH.Logic
 {
     public static partial class PhotoshopLayerExtension
     {
-        public static void AdjustLayerToWidth(this ArtLayer layer, double width)
+        public static void AdjustToWidth(this LayerWr layer, double width)
         {
             double resizeRatio = width / layer.GetBoundRect().Width*100;
             layer.Resize(resizeRatio, resizeRatio);
         }
-        public static void AdjustLayerSetTo(this LayerSet layer, ArtLayer areaLayer)
+        public static void AdjustTo(this LayerWr layer, LayerWr areaLayer)
         {
             double layerRatio = layer.GetBoundRect().Width / layer.GetBoundRect().Height;
             double areaRatio = areaLayer.GetBoundRect().Width / areaLayer.GetBoundRect().Height;
@@ -36,13 +37,14 @@ namespace psdPH.Logic
             layer.Resize(resizeRatio, resizeRatio);
         }
         
-        public static void AdjustTextLayerToWidth(this ArtLayer textLayer, double width)
+        public static void AdjustTextLayerToWidth(this ArtLayerWr textLayerWr, double width)
         {
-            LayerSet layerSet = textLayer.GroupLayer() ;
+            textLayerWr.GroupLayer();
+            TextItem textItem = textLayerWr.ArtLayer.TextItem;
 
-            if (textLayer.GetBoundRect().Width == 0 || textLayer.GetBoundRect().Width == width)
+            if (textLayerWr.GetBoundRect().Width == 0 || textLayerWr.GetBoundRect().Width == width)
                 return;
-            bool isFitsIn(double actual, double target) => textLayer.GetBoundRect().Width <= width;
+            bool isFitsIn(double actual, double target) => textLayerWr.GetBoundRect().Width <= width;
             bool isFitsInWithToler(double actual, double target, double toler, out bool fits)
             {
                 fits = isFitsIn(actual, target);
@@ -51,55 +53,61 @@ namespace psdPH.Logic
                     return false;
                 return (diff <= toler);
             }
-            double fontSizeShift = textLayer.TextItem.Size / 2;
+            double fontSizeShift = textItem.Size / 2;
             bool _fits;
 
-            while (!isFitsInWithToler(textLayer.GetBoundsSize().Width, width, 3, out _fits))
+            while (!isFitsInWithToler(textLayerWr.GetBoundsSize().Width, width, 3, out _fits))
             {
                 if (_fits)
-                    textLayer.TextItem.Size += fontSizeShift;
+                    textItem.Size += fontSizeShift;
                 else
-                    textLayer.TextItem.Size -= fontSizeShift;
+                    textItem.Size -= fontSizeShift;
                 fontSizeShift /= 2;
                 if (fontSizeShift <= 0.5)
                     break;
             }
         }
 
-        public static LayerSet EqualizeLineWidth(this ArtLayer textLayer)
+        public static LayerSetWr EqualizeLineWidth(this ArtLayerWr textLayerWr)
         {
-            LayerSet lineLayerSet = textLayer.SplitTextLayer();
-            ArtLayer[] lineLayers = lineLayerSet.ArtLayers.Cast<ArtLayer>().ToArray();
+            textLayerWr.CopyStyle();
+            textLayerWr.OffStyle();
+            LayerSetWr lineLayerSetWr = textLayerWr.SplitTextLayer();
+            ArtLayerWr[] lineLayers = lineLayerSetWr.ArtLayers.Cast<ArtLayer>().Select(l=>new ArtLayerWr(l)).ToArray();
             double maxWidth = lineLayers.Max((l) => l.GetBoundRect().Width);
 
             List<double> prevLineGaps = new List<double> { 0 };
             for (int i = 1; i < lineLayers.Count(); i++)
             {
-                ArtLayer layer = lineLayers[i];
-                ArtLayer prevLayer = lineLayers[i - 1];
+                ArtLayerWr layer = lineLayers[i];
+                ArtLayerWr prevLayer = lineLayers[i - 1];
                 prevLineGaps.Add(layer.GetBoundRect().Top - prevLayer.GetBoundRect().Bottom);
             }
-            lineLayers[0].AdjustLayerToWidth(maxWidth);
+            lineLayers[0].AdjustToWidth(maxWidth);
             for (int i = 1; i < lineLayers.Count(); i++)
             {
                 double prevLineGap = prevLineGaps[i];
-                ArtLayer layer = lineLayers[i];
-                ArtLayer prevLayer = lineLayers[i - 1];
-                layer.AdjustLayerToWidth(maxWidth);
+                ArtLayerWr layer = lineLayers[i];
+                ArtLayerWr prevLayer = lineLayers[i - 1];
+                layer.AdjustToWidth(maxWidth);
                 double curGap = layer.GetBoundRect().Top - prevLayer.GetBoundRect().Bottom;
                 layer.TranslateV(new Vector(0, prevLineGap - curGap));
             }
-            return lineLayerSet;
+            lineLayerSetWr.PasteStyle();
+            return lineLayerSetWr;
         }
-        public static void FitWithEqualize(this ArtLayer textLayer, ArtLayer areaLayer)
+        public static void FitWithEqualize(this ArtLayerWr textLayer, ArtLayerWr areaLayer, Alignment alignment)
         {
-            LayerSet equalized = textLayer.EqualizeLineWidth();
-            equalized.AdjustLayerSetTo(areaLayer);
-            equalized.AlignLayer(areaLayer, new Alignment(HorizontalAlignment.Center, VerticalAlignment.Center));
-            equalized.OnStyle();
+            LayerSetWr equalizedWr = textLayer.EqualizeLineWidth();
+            equalizedWr.Fit(areaLayer,alignment);
+        }
+        public static void Fit(this LayerWr layerWr, ArtLayerWr areaLayer,Alignment alignment)
+        {
+            layerWr.AdjustTo(areaLayer);
+            layerWr.AlignLayer(areaLayer, alignment);
         }
 
-        public static void AdjustTextLayerTo(this ArtLayer textLayer, ArtLayer areaLayer)
+        public static void AdjustTextLayerTo(this ArtLayerWr textLayer, ArtLayerWr areaLayer)
         {
             bool isFitsIn(Size fittable, Size area) => fittable.Width <= area.Width && fittable.Height <= area.Height;
             bool isFitsInWithToler(Size fittable, Size area, int toler, out bool fits)
@@ -110,18 +118,18 @@ namespace psdPH.Logic
                 double[] diffs = new double[] { area.Width - fittable.Width, area.Height - fittable.Height };
                 return diffs.Min() <= toler;
             }
-
+            var textItem = textLayer.ArtLayer.TextItem;
             var areaSize = areaLayer.GetBoundsSize();
-            double fontSizeShift = textLayer.TextItem.Size / 2;
+            double fontSizeShift = textItem.Size / 2;
 
             bool _fits;
 
             while (!isFitsInWithToler(textLayer.GetBoundsSize(), areaSize, 3, out _fits))
             {
                 if (_fits)
-                    textLayer.TextItem.Size += fontSizeShift;
+                    textItem.Size += fontSizeShift;
                 else
-                    textLayer.TextItem.Size -= fontSizeShift;
+                    textItem.Size -= fontSizeShift;
                 fontSizeShift /= 2;
                 if (fontSizeShift <= 0.5)
                     break;

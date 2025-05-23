@@ -1,6 +1,9 @@
 ﻿using Photoshop;
+using psdPH.Photoshop;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Windows.Controls;
 
 namespace psdPH.Logic
 {
@@ -64,7 +67,7 @@ namespace psdPH.Logic
         private static ArtLayer FindLayerById(this Document doc, int layerId, LayerListing listing = DefaultListing)
         {
             ArtLayer[] layers = doc.GetArtLayers(listing);
-            return layers.First(l => l.id == layerId);
+            return layers.FirstOrDefault(l => l.id == layerId);
         }
         public static ArtLayer GetLayerByName(this Document doc, string layerName, LayerListing listing = DefaultListing)
         {
@@ -74,6 +77,16 @@ namespace psdPH.Logic
         public static void ResetHistory(this Document doc)
         {
             doc.ActiveHistoryState = doc.HistoryStates[1];
+        }
+        public static LayerWr GetLayerWrByName(this Document doc, string layerName, LayerListing listing = DefaultListing) {
+            try
+            {
+                return doc.GetLayerByName(layerName, listing).Wrapper();
+            }
+            catch
+            {
+                return doc.GetLayerSetByName(layerName, listing).Wrapper();
+            }
         }
     }
 }

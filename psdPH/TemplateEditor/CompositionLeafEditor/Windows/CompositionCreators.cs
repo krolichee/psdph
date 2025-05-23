@@ -109,19 +109,16 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             p_w = new ParametersInputWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
         }
     }
-    public class TextAreaLeafCreator : LeafCreator<AreaLeaf>
+    public class AreaLeafCreator : LeafCreator<AreaLeaf>
     {
-        public TextAreaLeafCreator(Document doc, Blob root) : base()
+        public AreaLeafCreator(Document doc) : base()
         {
             result.LayerName = "";
             string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer }));
             var ln_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой поля");
             var ln_parameter = Parameter.Choose(ln_pconfig, layers_names);
 
-            var textleaf_config = new ParameterConfig(result, nameof(result.TextLeafLayername), "Текст для вмещения");
-            var textleaf_parameter = Parameter.Choose(textleaf_config, root.getChildren<TextLeaf>().Select(p => p.LayerName).ToArray());
-
-            p_w = new ParametersInputWindow(new[] { ln_parameter, textleaf_parameter });
+            p_w = new ParametersInputWindow(new[] { ln_parameter});
         }
     }
     public class BlobCreator : LeafCreator<Blob>

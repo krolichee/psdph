@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Photoshop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,13 @@ namespace psdPH.Logic.Compositions
     {
         public string LayerName;
         public override string ObjName => LayerName;
+        public ArtLayerWr ArtLayerWr(Document doc)
+        {
+            return new ArtLayerWr(doc.GetLayerByName(LayerName));
+        }
         public LayerComposition(string layername) { LayerName = layername; }
         public LayerComposition() { LayerName = string.Empty; }
+        protected LayerWr getLayer(Document doc, string layerName) => doc.GetLayerWrByName(layerName);
     }
     [Serializable]
     [XmlRoot("Image")]
@@ -30,7 +36,7 @@ namespace psdPH.Logic.Compositions
         public override string UIName => "Изобр.";
         public string Path;
 
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
@@ -44,21 +50,19 @@ namespace psdPH.Logic.Compositions
         }
 
     }
-    [Serializable]
-    [XmlRoot("Text")]
-
     public enum BlobMode
     {
         Layer,
         Path
     }
-
+    [Serializable]
+    [XmlRoot("Text")]
     public class TextLeaf : LayerComposition
     {
         public override string UIName => "Текст";
         public string Text = string.Empty;
 
-        public override Parameter[] Parameters
+        public override Parameter[] Setups
         {
             get
             {
@@ -73,7 +77,7 @@ namespace psdPH.Logic.Compositions
 
         override public void Apply(Document doc)
         {
-            ArtLayer layer = doc.GetLayerByName(LayerName, LayerListing.Recursive);
+            ArtLayer layer = ArtLayerWr(doc).ArtLayer;
             layer.TextItem.Contents = Text.Replace("\n", "\r");
         }
     }
@@ -84,7 +88,7 @@ namespace psdPH.Logic.Compositions
     {
         public override string UIName => "Слой";
 
-        public override Parameter[] Parameters => new Parameter[0];
+        public override Parameter[] Setups => new Parameter[0];
 
         public override void Apply(Document doc) { }
     }
@@ -94,7 +98,7 @@ namespace psdPH.Logic.Compositions
     {
         public override string UIName => "Группа";
 
-        public override Parameter[] Parameters => new Parameter[0];
+        public override Parameter[] Setups => new Parameter[0];
         public override string ObjName => LayerName;
         public override void Apply(Document doc) { }
     }
@@ -102,48 +106,39 @@ namespace psdPH.Logic.Compositions
     [XmlRoot("Area")]
     public class AreaLeaf : LayerComposition
     {
-        [XmlIgnore]
-        public TextLeaf TextLeaf
-        {
-            get => Parent.getChildren<TextLeaf>().First(p => p.LayerName == TextLeafLayername);
-            set => TextLeafLayername = value.LayerName;
-        }
         public override string UIName => "Область";
-        public string TextLeafLayername;
-
-        public bool SwitchStyle;
-
-        public override Parameter[] Parameters => new Parameter[0];
+        public override Parameter[] Setups => new Parameter[0];
         static Dictionary<PsJustification, HorizontalAlignment> JustificationMatchDict = new Dictionary<PsJustification, HorizontalAlignment>()
             {
                 { PsJustification.psLeft,HorizontalAlignment.Left
     },
                 { PsJustification.psRight,HorizontalAlignment.Right
-},
+    },
                 { PsJustification.psCenter,HorizontalAlignment.Center },
             };
+
         public void Fit(Document doc, LayerComposition layerLeaf, Alignment alignment)
         {
-            TextLeaf textLeaf;
-            if (layerLeaf is TextLeaf)
-                textLeaf = layerLeaf as TextLeaf;
-            else
-                throw new NotImplementedException();
+            //TextLeaf textLeaf;
+            //if (layerLeaf is TextLeaf)
+            //    textLeaf = layerLeaf as TextLeaf;
+            //else
+            //    throw new NotImplementedException();
 
-            var textLayer = doc.GetLayerByName(TextLeafLayername);
+            //var dynamicLayer = doc.GetLayerByName(layerLeaf.LayerName);
 
-            var areaLayer = doc.GetLayerByName(LayerName);
+            //var areaLayer = doc.GetLayerByName(LayerName);
 
-            areaLayer.Opacity = 0;
-            if (textLeaf.Text == "")
-                return;
-            textLeaf.Apply(doc);
+            //areaLayer.Opacity = 0;
+            //if (textLeaf.Text == "")
+            //    return;
+            //textLeaf.Apply(doc);
 
-            textLayer.AdjustTextLayerTo(areaLayer);
+            //dynamicLayer.AdjustTextLayerTo(areaLayer);
 
-            //alignment.H = JustificationMatchDict[textLeaf.Justification];
+            ////alignment.H = JustificationMatchDict[textLeaf.Justification];
 
-            textLayer.AlignLayer(areaLayer, alignment);
+            //dynamicLayer.AlignLayer(areaLayer, alignment);
         }
         public override void Apply(Document doc) { }
     }
@@ -170,7 +165,7 @@ namespace psdPH.Logic.Compositions
         string derivedLayerName;
         public override string ObjName => LayerName;
 
-        public override Parameter[] Parameters => new Parameter[0];
+        public override Parameter[] Setups => new Parameter[0];
 
         public PlaceholderLeaf(string layername, string prototypeLayername)
         {
@@ -187,10 +182,10 @@ namespace psdPH.Logic.Compositions
         {
             derivedLayerName = $"{PrototypeLayerName}_{LayerName}";
             ArtLayer phLayer = doc.GetLayerByName(LayerName);
-            ArtLayer newLayer = doc.CloneSmartLayer(PrototypeLayerName);
+            ArtLayerWr newLayer = new ArtLayerWr(doc.CloneSmartLayer(PrototypeLayerName));
             var prototypeAVector = Prototype.GetRelativeLayerAlightmentVector(doc);
 
-            var phAVector = newLayer.GetAlightmentVector(phLayer);
+            var phAVector = newLayer.GetAlightmentVector(new ArtLayerWr(phLayer));
 
             newLayer.TranslateV(phAVector);
             newLayer.TranslateV(prototypeAVector);

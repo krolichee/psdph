@@ -23,7 +23,7 @@ namespace psdPH.Views.SimpleView
                         parameters_stack.Children.Add(new CompositionTreeControl(child as Blob));
                 }
                 else
-                    foreach (var parameter in child.Parameters)
+                    foreach (var parameter in child.Setups)
                     {
                         parameters_stack.Children.Add(parameter.Stack); 
                     }

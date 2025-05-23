@@ -76,10 +76,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AligmentControl.xaml.cs">
+      <DependentUpon>AligmentControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
       <DependentUpon>CollectionEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Logic\PhotoshopLayerExtension.Adjust.cs" />
+    <Compile Include="Photoshop\Alignment.cs" />
+    <Compile Include="Photoshop\LayerWr\ArtLayerWr.cs" />
+    <Compile Include="Photoshop\LayerWr\LayerSetWr.cs" />
+    <Compile Include="Photoshop\PhotoshopLayerExtension.Adjust.cs" />
+    <Compile Include="Photoshop\LayerWr\LayerWr.cs" />
     <Compile Include="Logic\Rules\ChangeMode.cs" />
     <Compile Include="Logic\Rules\ELayerMode.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
@@ -106,7 +113,7 @@
     <Compile Include="Logic\Compositions\Blob.cs" />
     <Compile Include="Logic\Compositions\Compositions.cs" />
     <Compile Include="Logic\Compositions\LayerCompositions.cs" />
-    <Compile Include="Logic\PhotoshopLayerExtension.cs" />
+    <Compile Include="Photoshop\PhotoshopLayerExtension.cs" />
     <Compile Include="Logic\Rules\TextRules.cs" />
     <Compile Include="MainWindow.BlobSave.cs" />
     <Compile Include="Utils\CedStack\CEDStackUI.xaml.cs">
@@ -143,8 +150,8 @@
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
-    <Compile Include="Utils\ReflectionParameter\IParameterable.cs" />
-    <Compile Include="Logic\PhotoshopDocumentExtension.cs" />
+    <Compile Include="Utils\ReflectionParameter\ISetupable.cs" />
+    <Compile Include="Photoshop\PhotoshopDocumentExtension.cs" />
     <Compile Include="Logic\Rules\Conditions.cs" />
     <Compile Include="RuleEditor\IRuleEditor.cs" />
     <Compile Include="RuleEditor\RuleControl.xaml.cs">
@@ -164,7 +171,7 @@
       <DependentUpon>RuleViewControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\StructureDicts.cs" />
-    <Compile Include="Logic\PhotoshopWrapper.cs" />
+    <Compile Include="Photoshop\PhotoshopWrapper.cs" />
     <Compile Include="Utils\CedStack\CEDCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionCreators.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
@@ -207,6 +214,10 @@
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
+    <Page Include="AligmentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CollectionEditor\CollectionEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -326,9 +337,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Logic\PhotoshopDocumentExtension.Layers.cs" />
-    <Compile Include="Logic\PhotoshopDocumentExtenson.Layersets.cs" />
-    <Compile Include="Logic\PhotoshopLayerExtension.Align.cs" />
+    <Compile Include="Photoshop\PhotoshopDocumentExtension.Layers.cs" />
+    <Compile Include="Photoshop\PhotoshopDocumentExtenson.Layersets.cs" />
+    <Compile Include="Photoshop\PhotoshopLayerExtension.Align.cs" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -385,6 +396,20 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="testResources\TestProjects\Projects\simple\template.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Photoshop\LayerWr\LayerWrCommon.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LayerWrCommon.txt</LastGenOutput>
+    </Content>
+    <Resource Include="Photoshop\LayerWr\LayerWrCommon.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LayerWrCommon.tt</DependentUpon>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
