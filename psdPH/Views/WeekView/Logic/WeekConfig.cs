@@ -61,7 +61,8 @@ namespace psdPH
         }
         public List<DowLayernamePair> DowPrototypeLayernameList = new List<DowLayernamePair>();
         public DayDateFormat DayDateFormat;
-        internal DayDateFormat DowFormat;
+        internal DayDateFormat DayDowFormat;
+
         public string TilePreviewTextLeafName;
         public string PrototypeLayerName;
         public string WeekDatesTextLeafName;

@@ -31,7 +31,7 @@ namespace psdPH.Views.WeekView
             StringChoiceWindow pscc_w = new StringChoiceWindow(prototypes_names.ToArray(), "Выбор прототип для дня");
             return pscc_w;
         }
-        PrototypeLeaf GetPrototypeByLayerName(string layername)
+        PrototypeLeaf _getPrototypeByLayerName(string layername)
         {
             PrototypeLeaf[] prototypes = root.getChildren<PrototypeLeaf>().ToArray();
             return prototypes.First(l => l.LayerName == layername);
@@ -43,7 +43,7 @@ namespace psdPH.Views.WeekView
             if (pscc_w.ShowDialog() != true)
                 return false;
 
-            PrototypeLeaf prototype = GetPrototypeByLayerName(pscc_w.GetResultString());
+            PrototypeLeaf prototype = _getPrototypeByLayerName(pscc_w.GetResultString());
 
             TextLeaf[] textLeafs = prototype.Blob.getChildren<TextLeaf>();
             string[] textLeafs_names = textLeafs.Select(l => l.LayerName).ToArray();
@@ -60,22 +60,30 @@ namespace psdPH.Views.WeekView
                 DowPrototypeLayernameDict = dwpm_w.GetResultDict(),
                 PrototypeLayerName = prototype.LayerName
             };
-            ParameterConfig[] parameterConfigs_protoTextLeafName = new ParameterConfig[]
+            ParameterConfig resultConfig(string fieldname, string desc) => new ParameterConfig(result, nameof(fieldname), desc);
+            var dayTextLeafConfig = resultConfig(nameof(WeekConfig.DateTextLeafLayerName), "Текстовое поле числа дня");
+            var dowTextLeafConfig = resultConfig(nameof(WeekConfig.DowTextLeafLayerName), "Текстовое поле дня недели");
+            var previewTextLeafConfig = resultConfig(nameof(WeekConfig.TilePreviewTextLeafName), "Текстовое поле для предпросмотра");
+            var weekDatesTextLeafConfig = resultConfig(nameof(WeekConfig.WeekDatesTextLeafName), "Текстовое поле дат недели");
+            var dayDateFormatConfig = resultConfig(nameof(WeekConfig.DayDateFormat), "Формат даты дня");
+            var dowFormatConfig = resultConfig(nameof(WeekConfig.DayDateFormat), "Формат дня недели");
+
+            var dayDateFormats = new DayDateFormat[]
             {
-                new ParameterConfig(result, nameof(result.DateTextLeafLayerName), "Текстовое поле числа дня"),
-                new ParameterConfig(result, nameof(result.TimeTextLeafLayerName), "Текстовое поле времени дня"),
-                new ParameterConfig(result, nameof(result.DowTextLeafLayerName), "Текстовое поле дня недели"),
-                new ParameterConfig(result, nameof(result.TilePreviewTextLeafName), "Текстовое поле для предпросмотра")
+                new NoZeroDateFormat(),new WithZeroDateFormat()
+            };
+            var dowFormats = new DayDateFormat[]
+            {
+                 new ShortDowFormat(),new FullDowFormat()
             };
             List<Parameter> parameters = new List<Parameter>();
-            foreach (var config in parameterConfigs_protoTextLeafName)
-            {
-                parameters.Add(Parameter.Choose(config, textLeafs_names));
-            }
-            parameters.Add(Parameter.Choose(
-                new ParameterConfig(result, nameof(result.WeekDatesTextLeafName), "Текстовое поле дат недели"),
-                root_textLeafs_names
-                ));
+            parameters.Add(Parameter.Choose(dayTextLeafConfig, textLeafs_names));
+            parameters.Add(Parameter.Choose(dayDateFormatConfig, dayDateFormats));
+            parameters.Add(Parameter.Choose(dowTextLeafConfig, textLeafs_names));
+            parameters.Add(Parameter.Choose(previewTextLeafConfig, textLeafs_names));
+            parameters.Add(Parameter.Choose(weekDatesTextLeafConfig , root_textLeafs_names ));
+            parameters.Add(Parameter.Choose(dowFormatConfig, dowFormats));
+
             var conf_w = new ParametersInputWindow(parameters.ToArray(), "Настройка конфигурации недельного вида");
             if (conf_w.ShowDialog() != true)
                 return false;
