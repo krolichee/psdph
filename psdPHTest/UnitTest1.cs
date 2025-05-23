@@ -128,7 +128,7 @@ namespace psdPHText.Ps
             {
                 ArtLayerWr textLayer = doc.GetLayerByName($"text{i}").Wrapper();
                 ArtLayerWr areaLayer = doc.GetLayerByName($"area{i}").Wrapper();
-                textLayer.FitWithEqualize(areaLayer);
+                textLayer.FitWithEqualize(areaLayer,Alignment.Create("up","left"));
             }
         }
 
@@ -145,8 +145,8 @@ namespace psdPHText.Ps
         [TestMethod]
         public void SplitTextLayer()
         {
-            ArtLayerWr textLayer = doc.GetLayerByName("text").Wrapper();
-            textLayer.SplitTextLayer();
+            TextLayerWr textLayerWr =new TextLayerWr(doc.GetLayerByName("text"));
+            textLayerWr.SplitTextLayer();
         }
         [TestMethod]
         public void EmptyTextTextItemError()
@@ -285,9 +285,12 @@ namespace psdPHTest.Automatic
 
     }
     [TestClass]
-    public class DateFormat
+    public class DateFormatTest
     {
-
+        public void TestM()
+        {
+            new WeekConfig().DayDateFormat = new NoZeroDateFormat();
+        }
     }
     [TestClass]
     public class CompositionTest

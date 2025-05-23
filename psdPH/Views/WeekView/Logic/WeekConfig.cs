@@ -20,6 +20,31 @@ namespace psdPH
             Layername = layername;
         }
     }
+    public abstract class DayDateFormat
+    {
+        DateTime _sampleDateTime => new DateTime(1970, 1, 9);
+        public abstract string Format { get; }
+        public override string ToString()
+        {
+            return _sampleDateTime.ToString(Format);
+        }
+    }
+    public class NoZeroDateFormat : DayDateFormat
+    {
+        public override string Format => "d";
+    }
+    public class WithZeroDateFormat : DayDateFormat
+    {
+        public override string Format => "dd";
+    }
+    public class FullDowFormat : DayDateFormat
+    {
+        public override string Format => "dddd";
+    }
+    public class ShortDowFormat : DayDateFormat
+    {
+        public override string Format => "ddd";
+    }
     [Serializable]
     public class WeekConfig
     {
@@ -35,21 +60,16 @@ namespace psdPH
             }
         }
         public List<DowLayernamePair> DowPrototypeLayernameList = new List<DowLayernamePair>();
+        public DayDateFormat DayDateFormat;
+        internal DayDateFormat DowFormat;
         public string TilePreviewTextLeafName;
         public string PrototypeLayerName;
-
         public string WeekDatesTextLeafName;
-
-        public string TimeTextLeafLayerName;
         public string DowTextLeafLayerName;
         public string DateTextLeafLayerName;
         internal TextLeaf GetWeekDatesTextLeaf(Blob blob)
         {
             return blob.getChildren<TextLeaf>().First(_ => _.LayerName == WeekDatesTextLeafName);
-        }
-        internal TextLeaf GetTimeTextLeaf(Blob blob)
-        {
-            return blob.getChildren<TextLeaf>().First(_ => _.LayerName == TimeTextLeafLayerName);
         }
         internal TextLeaf GetDateTextLeaf(Blob blob)
         {
