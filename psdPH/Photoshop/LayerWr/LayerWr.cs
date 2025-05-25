@@ -47,7 +47,7 @@ namespace psdPH.Photoshop
             MakeActive();
             Application.DoAction("onFx", "psdPH");
         }
-        public Document GetDocument() => Application.ActiveDocument;
+        public Document GetActiveDocument() => Application.ActiveDocument;
         public abstract void MakeActive();
         public void CopyStyle()
         {

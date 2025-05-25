@@ -230,10 +230,6 @@ namespace psdPH
 
             Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
             ICompositionShapitor editor = BlobEditorWindow.OpenFromDisk(blob);
-
-
-
-            BlockingStack.Add(editor);
             editor.ShowDialog();
             
             PsdPhProject.saveBlob(editor.GetResultComposition() as Blob, CurrentProjectName);

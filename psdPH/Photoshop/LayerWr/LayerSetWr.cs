@@ -15,7 +15,7 @@ namespace psdPH.Photoshop
         public override double Opacity { get => _layer.Opacity; set => _layer.Opacity = value; }
         public override void Duplicate() => _layer.Duplicate();
         public override void MakeActive() =>
-            GetDocument().ActiveLayer = _layer;
+            GetActiveDocument().ActiveLayer = _layer;
 
         public override void Move(object dest, PsElementPlacement placement) =>
             _layer.Move(dest, placement);

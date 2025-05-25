@@ -37,12 +37,12 @@ using System.Text;
 namespace psdPHTest.UI
 {
     [TestClass]
-    public class Rtb
+    public class MiscTest
     {
         static string s = string.Empty;
-        public string m { get => Rtb.s; set => Rtb.s = value; }
+        public string m { get => MiscTest.s; set => MiscTest.s = value; }
         [TestMethod]
-        public void TestM()
+        public void ParameterWindowTest()
         {
             ParameterConfig config = new ParameterConfig(this, nameof(this.m), "Строка");
             Parameter[] parameters = new Parameter[] { Parameter.RichStringInput(config) };
@@ -117,10 +117,7 @@ namespace psdPHTest.Ps
         static Application psApp;
         Document doc => psApp.ActiveDocument;
         [TestMethod]
-        public void OpenImage()
-        {
-            psApp.Open("D:/Downloads/image.png");
-        }
+        
 
         [TestInitialize]
         public void Init()
@@ -129,7 +126,10 @@ namespace psdPHTest.Ps
             psApp = Activator.CreateInstance(psType) as Application;
             doc.ResetHistory();
         }
-
+        public void OpenImage()
+        {
+            psApp.Open("D:/Downloads/image.png");
+        }
         [TestMethod]
         public void DynamicCast()
         {
@@ -137,24 +137,7 @@ namespace psdPHTest.Ps
             Console.WriteLine((_.ActiveLayer as ArtLayer).Name);
         }
         [TestMethod]
-        public void FitWithEqualizeDemo()
-        {
-            int count = 4;
-            for (int i = 1; i <= count; i++)
-            {
-                TextLayerWr textLayer = doc.GetLayerByName($"text{i}").TextWrapper();
-                ArtLayerWr areaLayer = doc.GetLayerByName($"area{i}").Wrapper();
-                textLayer.FitWithEqualize(areaLayer, Alignment.Create("up", "left"));
-            }
-        }
-
-        [TestMethod]
-        public void EqualizeLineWidth()
-        {
-            TextLayerWr textLayer = doc.GetLayerByName("text").TextWrapper();
-            textLayer.EqualizeLineWidth();
-        }
-        [TestMethod]
+        
         public void GroupLayer()
         {
 
@@ -189,6 +172,101 @@ namespace psdPHTest.Ps
         {
             ArtLayer textLayer = doc.GetLayerByName("text");
             Console.WriteLine(textLayer.TextItem.GetHashCode());
+        }
+    }
+    namespace psdPHTest.Ps.Duration
+    {
+        [TestClass]
+        public class DurationTest
+        {
+            static Application psApp;
+            Document doc => psApp.ActiveDocument;
+            LayerWr layerWr => (doc.ArtLayers.Cast<ArtLayer>().ToList()) [0].Wrapper();
+            [TestInitialize]
+            public void Init()
+            {
+                Type psType = Type.GetTypeFromProgID("Photoshop.Application");
+                psApp = Activator.CreateInstance(psType) as Application;
+                doc.ResetHistory();
+            }
+            [TestMethod]
+            public void OnStyle()
+            {
+                layerWr.OnStyle();
+            }
+            [TestMethod]
+            public void OffStyle()
+            {
+                layerWr.OffStyle();
+            }
+        }
+    }
+
+    namespace psdPHTest.Ps.Adjust {
+        [TestClass]
+        public class AdjustTest
+        {
+            static Application psApp;
+            Document _doc => psApp.ActiveDocument;
+            
+
+
+            [TestInitialize]
+            public void Init()
+            {
+                Type psType = Type.GetTypeFromProgID("Photoshop.Application");
+                psApp = Activator.CreateInstance(psType) as Application;
+                _doc.ResetHistory();
+            }
+            [TestMethod]
+            public void FitWithEqualizeDemo()
+            {
+                int count = 4;
+                for (int i = 1; i <= count; i++)
+                {
+                    TextLayerWr textLayer = _doc.GetLayerByName($"text{i}").TextWrapper();
+                    ArtLayerWr areaLayer = _doc.GetLayerByName($"area{i}").Wrapper();
+                    textLayer.FitWithEqualize(areaLayer, Alignment.Create("center", "center"));
+                }
+            }
+            [TestMethod]
+            public void EqualizeLineWidth()
+            {
+                TextLayerWr textLayer = _doc.GetLayerByName("text").TextWrapper();
+                textLayer.EqualizeLineWidth();
+            }
+
+            static void DoWork(Document doc)
+            {
+                int count = 4;
+                for (int i = 1; i <= count; i++)
+                {
+                    TextLayerWr textLayer = doc.GetLayerByName($"text{i}").TextWrapper();
+                    ArtLayerWr areaLayer = doc.GetLayerByName($"area{i}").Wrapper();
+                    textLayer.FitWithEqualize(areaLayer, Alignment.Create("center", "center"));
+                    Console.WriteLine($"обработка пары {i} в документе {doc.Name}");
+                }
+            }
+            [TestMethod]
+            public void ThreadingTest()
+            {
+                Document[] docs = psApp.Documents.Cast<Document>().ToArray();
+                int threadCount = docs.Length;
+                Thread[] threads = new Thread[threadCount];
+
+                // Создание и запуск потоков
+
+                threads[0] = new Thread(() => DoWork(docs[0]));
+                threads[0].Start();
+                threads[1] = new Thread(() => DoWork(docs[1]));
+                threads[1].Start();
+
+                // Ожидание завершения всех потоков
+                foreach (Thread thread in threads)
+                {
+                    thread.Join();
+                }
+            }
         }
     }
 }

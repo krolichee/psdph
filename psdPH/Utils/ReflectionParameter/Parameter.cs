@@ -10,6 +10,8 @@ namespace psdPH.Logic
 {
     public class Parameter
     {
+        public delegate void AcceptedEvent();
+        public event AcceptedEvent Accepted;
         public Parameter() { }
         public Control Control;
         FieldFunctions _fieldFunctions;
@@ -22,6 +24,7 @@ namespace psdPH.Logic
         public void Accept()
         {
             _config.SetValue(valueFunc());
+            Accepted?.Invoke();
         }
         public string ValueToString()
         {
