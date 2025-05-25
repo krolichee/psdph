@@ -6,8 +6,6 @@ using System.Xml.Serialization;
 namespace psdPH.Logic.Rules
 {
     [XmlInclude(typeof(TextCondition))]
-    [XmlInclude(typeof(MaxRowCountCondition))]
-    [XmlInclude(typeof(MaxRowLenCondition))]
     [XmlInclude(typeof(FlagCondition))]
     public abstract class Condition : ISetupable
     {
