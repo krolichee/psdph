@@ -47,7 +47,7 @@ namespace psdPHText.UI
         {
             var window = new Window();
             window.SizeToContent = SizeToContent.WidthAndHeight;
-            var aliControl = new AligmentControl(30);
+            var aliControl = new AlignmentControl(30);
             aliControl.HorizontalAlignment = HorizontalAlignment.Stretch;
             aliControl.VerticalAlignment = VerticalAlignment.Stretch;
             aliControl.VerticalContentAlignment = VerticalAlignment.Stretch;
@@ -60,8 +60,8 @@ namespace psdPHText.UI
         {
             var window = new Window();
             window.SizeToContent = SizeToContent.WidthAndHeight;
-            var aliControl = new AligmentControl();
-            aliControl.HorizontalAlignment=HorizontalAlignment.Stretch;
+            var aliControl = new AlignmentControl();
+            aliControl.HorizontalAlignment = HorizontalAlignment.Stretch;
             aliControl.VerticalAlignment = VerticalAlignment.Stretch;
             aliControl.VerticalContentAlignment = VerticalAlignment.Stretch;
             aliControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
@@ -301,8 +301,106 @@ namespace psdPHTest.Automatic
             foreach (var dow in new string[] { "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" })
                 blob.addChild(new PlaceholderLeaf() {Prototype= dayPrototype ,LayerName = dow});
             var weekDatesTextLeaf = new TextLeaf() { LayerName = "Даты недели" };
+            blob.addChild(weekDatesTextLeaf);
+            return blob;
+        }
+        [TestClass]
+        public class DateFormatTest
+        {
+            [TestMethod]
+            public void TestM()
+            {
+                WeekView.CreateWeekConfig(GetBlob());
+            }
+        }
+        [TestClass]
+        public class WeekRules
+        {
+            [TestMethod]
+            public void FromBlobTest()
+            {
+                Blob blob = GetBlob();
+                var dayBlob = DowBlob.FromBlob(blob,0,DayOfWeek.Monday);
+            }
+            [Serializable]
+            public class FlagRule : ConditionRule, CoreRule
+            {
+                public string FlagName;
+                public FlagRule() : base(null)
+                {
+                }
+                [XmlIgnore]
+                public override Parameter[] Setups => throw new NotImplementedException();
 
-            WeekView.CreateWeekConfig(blob);
+                public void CoreApply()
+                {
+                    var flagLeaf = Composition.getChildren<FlagLeaf>().First(f => f.Name == FlagName);
+                    flagLeaf.Toggle = Condition.IsValid();
+                }
+
+                protected override void _apply(Document doc) =>
+                    CoreApply();
+                protected override void _else(Document doc) =>
+                    CoreApply();
+                
+            }
+            EveryNDayCondition GetEveryNDayCondition(int interval,DateTime startDateTime, DowBlob blob)
+            {
+                return new EveryNDayCondition(blob) { Interval = interval, StartDateTime = startDateTime };
+            }
+            [DataTestMethod]
+            [DataRow(2, DayOfWeek.Monday, true)]
+            [DataRow(3, DayOfWeek.Tuesday, false)]
+            [DataRow(2, DayOfWeek.Wednesday, true)]
+            [DataRow(3, DayOfWeek.Thursday, true)]
+            public void EveryNDayConditionTest(int interval, DayOfWeek dayOfWeek, bool result)
+            {
+                var blob = GetBlob();
+                var weekConfig = GetWeekConfig();
+
+                var weekListData = new WeekListData() { RootBlob = blob, WeekConfig = weekConfig };
+                var currentWeek = WeekTime.CurrentWeek;
+
+                weekListData.NewWeek(currentWeek);
+                var weekData = weekListData.Weeks[0];
+
+                var startDateTime = WeekTime.GetDateByWeekAndDay(currentWeek, DayOfWeek.Monday);
+                var dayBlob =  new DowBlob() { Dow = dayOfWeek, Week = currentWeek };
+                var everynCondition = GetEveryNDayCondition(interval,startDateTime,dayBlob);
+
+                Assert.IsTrue(everynCondition.IsValid() == result);
+
+            }
+            [DataTestMethod]
+            [DataRow(2, DayOfWeek.Monday, true)]
+            [DataRow(3, DayOfWeek.Tuesday, false)]
+            [DataRow(2, DayOfWeek.Wednesday, true)]
+            [DataRow(3, DayOfWeek.Thursday, true)]
+            public void WeekRulesTest(int interval, DayOfWeek dayOfWeek, bool result)
+            {
+                var blob = GetBlob();
+                var weekConfig = GetWeekConfig();
+
+                weekConfig.GetDayPrototype(blob).Blob.addChild(new FlagLeaf("uvu"));
+
+                var weekListData = new WeekListData() { RootBlob = blob, WeekConfig = weekConfig };
+                var currentWeek = WeekTime.CurrentWeek;
+
+                weekListData.NewWeek(currentWeek);
+                var weekData = weekListData.Weeks[0];
+
+                var startDateTime = WeekTime.GetDateByWeekAndDay(currentWeek, DayOfWeek.Monday);
+                var everynCondition = new EveryNDayCondition() { Interval = interval, StartDateTime = startDateTime };
+                var everynRule = new FlagRule() { FlagName = "uvu", Condition = everynCondition };
+
+                weekConfig.DayRules.Add(everynRule);
+                var mainBlob = weekData.Prepare();
+
+                var dayPh = mainBlob.getChildren<PlaceholderLeaf>().First(ph => (ph.Replacement as DowBlob).Dow == dayOfWeek);
+                var dayBlob = dayPh.Replacement as DowBlob;
+                
+                Assert.IsTrue(dayBlob.getChildren<FlagLeaf>().First(f => f.Name == "uvu").Toggle == result);
+            }
         }
     }
     [TestClass]

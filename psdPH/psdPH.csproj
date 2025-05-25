@@ -91,6 +91,8 @@
     <Compile Include="Logic\Rules\ELayerMode.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Logic\Rules\RuleSet.cs" />
+    <Compile Include="Utils\ReflectionParameter\FieldFunctions.cs" />
+    <Compile Include="Utils\ReflectionParameter\ParameterConfig.cs" />
     <Compile Include="Utils\UIName.cs" />
     <Compile Include="PsdPhProject.cs" />
     <Compile Include="StringInputWindow.xaml.cs">
@@ -136,6 +138,11 @@
     <Compile Include="Views\SimpleView\Windows\SimpleViewWindow.xaml.cs">
       <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
     </Compile>
+<<<<<<< Updated upstream
+=======
+    <Compile Include="Views\WeekView\Logic\DateFormat.cs" />
+    <Compile Include="Views\WeekView\Logic\DowBlob.cs" />
+>>>>>>> Stashed changes
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>
     </Compile>
