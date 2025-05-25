@@ -1,7 +1,5 @@
-﻿using psdPH.Utils;
-using System;
+﻿using System;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -75,7 +73,7 @@ namespace psdPH.Logic
 
         private ParameterConfig _config;
         public ParameterConfig Config => _config;
-        void accept()
+        public void Accept()
         {
             _config.SetValue(valueFunc());
         }
@@ -90,12 +88,11 @@ namespace psdPH.Logic
             var stack = result._stack;
             var cb = new ComboBox() { ItemsSource = options.Select(fieldFunctions.ConvertFunction) };
             result.valueFunc = () => fieldFunctions.RevertFunction(cb.SelectedValue);
-
             result.Control = cb;
             stack.Children.Add(cb);
             return result;
         }
-        public static FlowDocument ConvertStringToFlowDocument(string text)
+        static FlowDocument ConvertStringToFlowDocument(string text)
         {
             if (string.IsNullOrEmpty(text))
                 return new FlowDocument();
@@ -151,12 +148,13 @@ namespace psdPH.Logic
             }
             
         }
-
         public static Parameter AlignmentInput(ParameterConfig config)
         {
             var result = new Parameter(config);
             var stack = result._stack;
-            //var aliControl = new AligmentControl();
+            var aliControl = new AlignmentControl(config.GetValue() as Alignment);
+            result.Control = aliControl;
+            result.valueFunc = () => aliControl.GetResultAlignment();
             return result;
         }
         public static Parameter StringInput(ParameterConfig config)
@@ -205,17 +203,11 @@ namespace psdPH.Logic
             if (fieldFunctions == null)
                 fieldFunctions = new FieldFunctions();
             _fieldFunctions = fieldFunctions;
-            _stack = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal
-            };
+            _stack = new StackPanel();
+            _stack.Orientation = Orientation.Horizontal;
             _stack.Children.Add(new Label() { Content = config.Desc });
             _config = config;
             _stack.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-        }
-        public void Accept()
-        {
-            accept();
         }
 
         public StackPanel Stack => _stack;

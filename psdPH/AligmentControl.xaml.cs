@@ -20,7 +20,7 @@ namespace psdPH
     /// <summary>
     /// Логика взаимодействия для AligmentControl.xaml
     /// </summary>
-    public partial class AligmentControl : UserControl
+    public partial class AlignmentControl : UserControl
     {
         Dictionary<Button, Alignment> btnAli=> new Dictionary<Button, Alignment>()
             {
@@ -36,15 +36,15 @@ namespace psdPH
             };
         Size _size = new Size(90, 90);
         Alignment _result=new Alignment(HorizontalAlignment.Center,VerticalAlignment.Center);
-        public AligmentControl(Alignment alignment):this()
+        public AlignmentControl(Alignment alignment):this()
         {
             setAligment(alignment);
         }
-        public AligmentControl(int size) : this()
+        public AlignmentControl(int size) : this()
         {
             Height = Width = size;
         }
-        public AligmentControl()
+        public AlignmentControl()
         {
             InitializeComponent();
             foreach (Button button in btnAli.Keys)

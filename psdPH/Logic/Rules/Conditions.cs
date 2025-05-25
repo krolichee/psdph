@@ -61,58 +61,29 @@ namespace psdPH.Logic.Rules
         }
 
     }
-
-    public class MaxRowCountCondition : TextCondition
+    public class EmptyTextCondition : TextCondition
     {
         public override string ToString() => "количество строк";
-        [XmlIgnore]
-        public override Parameter[] Setups
-        {
-            get
-            {
-                List<Parameter> result = base.Setups.ToList();
-                var RowCountConfig = new ParameterConfig(this, nameof(this.RowCount), "превышает");
-                result.Add(Parameter.IntInput(RowCountConfig));
-                return result.ToArray();
-            }
-        }
-
-        public int RowCount;
-
-        public MaxRowCountCondition(Composition composition) : base(composition) { }
-        public MaxRowCountCondition() : base(null) { }
+        public EmptyTextCondition(Composition composition) : base(composition) { }
+        public EmptyTextCondition() : base(null) { }
 
         public override bool IsValid()
         {
-            return TextLeaf.Text.Split(@"\r".ToCharArray()).Length > RowCount;
+            return TextLeaf.Text.Length==0;
         }
     }
-
-    public class MaxRowLenCondition : TextCondition
+    public class NonEmptyTextCondition : TextCondition
     {
-        public override string ToString() => "максимальная длина строки\n среди строк";
-        [XmlIgnore]
-        public override Parameter[] Setups
-        {
-            get
-            {
-                List<Parameter> result = base.Setups.ToList();
-                var RowLenghtConfig = new ParameterConfig(this, nameof(this.RowLength), "превышает");
-                result.Add(Parameter.IntInput(RowLenghtConfig));
-                return result.ToArray();
-            }
-        }
-
-        public int RowLength;
-
-        public MaxRowLenCondition(Composition composition) : base(composition) { }
-        public MaxRowLenCondition() : base(null) { }
+        public override string ToString() => "количество строк";
+        public NonEmptyTextCondition(Composition composition) : base(composition) { }
+        public NonEmptyTextCondition() : base(null) { }
 
         public override bool IsValid()
         {
-            return TextLeaf.Text.Split(@"\r".ToCharArray()).Select(s => s.Length).Max() > RowLength;
+            return TextLeaf.Text.Length > 0;
         }
     }
+
     public class FlagCondition : Condition
     {
         public override string ToString() => "значение флага";

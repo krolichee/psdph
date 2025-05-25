@@ -53,7 +53,7 @@ namespace psdPHText.UI
         {
             var window = new Window();
             window.SizeToContent = SizeToContent.WidthAndHeight;
-            var aliControl = new AligmentControl(30);
+            var aliControl = new AlignmentControl(30);
             aliControl.HorizontalAlignment = HorizontalAlignment.Stretch;
             aliControl.VerticalAlignment = VerticalAlignment.Stretch;
             aliControl.VerticalContentAlignment = VerticalAlignment.Stretch;
@@ -66,7 +66,7 @@ namespace psdPHText.UI
         {
             var window = new Window();
             window.SizeToContent = SizeToContent.WidthAndHeight;
-            var aliControl = new AligmentControl();
+            var aliControl = new AlignmentControl();
             aliControl.HorizontalAlignment = HorizontalAlignment.Stretch;
             aliControl.VerticalAlignment = VerticalAlignment.Stretch;
             aliControl.VerticalContentAlignment = VerticalAlignment.Stretch;
@@ -343,7 +343,7 @@ namespace psdPHTest.Automatic
             public void FromBlobTest()
             {
                 Blob blob = GetBlob();
-                var dayBlob = DayBlob.FromBlob(blob,0,DayOfWeek.Monday);
+                var dayBlob = DowBlob.FromBlob(blob,0,DayOfWeek.Monday);
             }
             [Serializable]
             public class FlagRule : ConditionRule, CoreRule
@@ -367,7 +367,7 @@ namespace psdPHTest.Automatic
                     CoreApply();
                 
             }
-            EveryNDayCondition GetEveryNDayCondition(int interval,DateTime startDateTime, DayBlob blob)
+            EveryNDayCondition GetEveryNDayCondition(int interval,DateTime startDateTime, DowBlob blob)
             {
                 return new EveryNDayCondition(blob) { Interval = interval, StartDateTime = startDateTime };
             }
@@ -388,7 +388,7 @@ namespace psdPHTest.Automatic
                 var weekData = weekListData.Weeks[0];
 
                 var startDateTime = WeekTime.GetDateByWeekAndDay(currentWeek, DayOfWeek.Monday);
-                var dayBlob =  new DayBlob() { Dow = dayOfWeek, Week = currentWeek };
+                var dayBlob =  new DowBlob() { Dow = dayOfWeek, Week = currentWeek };
                 var everynCondition = GetEveryNDayCondition(interval,startDateTime,dayBlob);
 
                 Assert.IsTrue(everynCondition.IsValid() == result);
@@ -419,8 +419,8 @@ namespace psdPHTest.Automatic
                 weekConfig.DayRules.Add(everynRule);
                 var mainBlob = weekData.Prepare();
 
-                var dayPh = mainBlob.getChildren<PlaceholderLeaf>().First(ph => (ph.Replacement as DayBlob).Dow == dayOfWeek);
-                var dayBlob = dayPh.Replacement as DayBlob;
+                var dayPh = mainBlob.getChildren<PlaceholderLeaf>().First(ph => (ph.Replacement as DowBlob).Dow == dayOfWeek);
+                var dayBlob = dayPh.Replacement as DowBlob;
                 
                 Assert.IsTrue(dayBlob.getChildren<FlagLeaf>().First(f => f.Name == "uvu").Toggle == result);
             }

@@ -18,8 +18,6 @@ namespace psdPH.Logic
             InitializeComponent();
             var conditions = new Condition[]
             {
-                new MaxRowCountCondition(root),
-                new MaxRowLenCondition(root),
                 new FlagCondition(root)
             };
             conditionsComboBox.ItemsSource = conditions;
@@ -30,6 +28,8 @@ namespace psdPH.Logic
                 new TranslateRule(root),
                 new OpacityRule(root),
                 new VisibleRule(root),
+                new AlignRule(root),
+                new FitRule(root),
             };
             ruleComboBox.ItemsSource = rules;
         }
