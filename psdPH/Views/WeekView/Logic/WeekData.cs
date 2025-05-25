@@ -17,7 +17,7 @@ namespace psdPH.Views.WeekView
     public class WeekData
     {
         public int Week;
-        public Blob MainBlob;
+        public WeekBlob MainBlob;
         public List<DowBlobPair> DowBlobList = new List<DowBlobPair>();
         [XmlIgnore]
         public WeekListData WeekListData;
@@ -57,9 +57,6 @@ namespace psdPH.Views.WeekView
             result.Restore(WeekListData);
             return result;
         }
-
-        
-
         internal Blob Prepare()
         {
             DowLayernamePair whereLayernameIs(string layername, List<DowLayernamePair> pairs)
@@ -85,30 +82,28 @@ namespace psdPH.Views.WeekView
                 WeekConfig.FillDateAndDow(dayBlob);
                 ph.Replacement = dayBlob;
             }
+            WeekConfig.GetWeekDatesTextLeaf(weekData_clone.MainBlob).Text = WeekConfig.GetWeekDatesString(Week);
             WeekConfig.IncludeRules(weekData_clone);
             weekData_clone.MainBlob.CoreApply();
             return weekData_clone.MainBlob;
         }
 
+        void InitializeDowBlobList()
+        {
+            PrototypeLeaf prototype = WeekConfig.GetDayPrototype(MainBlob);
+            foreach (var item in WeekConfig.DowPrototypeLayernameDict)
+            {
+                var dayBlob = DayBlob.FromBlob(prototype.Blob, Week, item.Key);
+                DowBlobList.Add(new DowBlobPair(item.Key, dayBlob));
+            }
+        }
         public WeekData(int week, WeekListData weekListData)
         {
             this.WeekListData = weekListData;
             Week = week;
-            var mainBlobPrototype = weekListData.RootBlob;
-            var mainBlob = mainBlobPrototype.Clone();
-            MainBlob = mainBlob;
+            MainBlob = WeekBlob.FromBlob(weekListData.RootBlob, week);
             this.Restore(weekListData);
-
-            
-            WeekConfig.GetWeekDatesTextLeaf(mainBlob).Text = WeekDatesStrings.getWeekDatesString(week);
-            PrototypeLeaf prototype = WeekConfig.GetDayPrototype(mainBlob);
-            foreach (var item in WeekConfig.DowPrototypeLayernameDict)
-            {
-                var dayBlob = DayBlob.FromBlob(prototype.Blob);
-                dayBlob.Week = week;
-                dayBlob.Dow = item.Key;
-                DowBlobList.Add(new DowBlobPair(item.Key, dayBlob));
-            }
+            InitializeDowBlobList();
         }
         public WeekData() { }
     }

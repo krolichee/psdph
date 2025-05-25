@@ -343,7 +343,7 @@ namespace psdPHTest.Automatic
             public void FromBlobTest()
             {
                 Blob blob = GetBlob();
-                var dayBlob = DayBlob.FromBlob(blob);
+                var dayBlob = DayBlob.FromBlob(blob,0,DayOfWeek.Monday);
             }
             [Serializable]
             public class FlagRule : ConditionRule, CoreRule
@@ -423,17 +423,6 @@ namespace psdPHTest.Automatic
                 var dayBlob = dayPh.Replacement as DayBlob;
                 
                 Assert.IsTrue(dayBlob.getChildren<FlagLeaf>().First(f => f.Name == "uvu").Toggle == result);
-
-            }
-
-            [TestMethod]
-            public void AddRule()
-            {
-                var blob = GetBlob();
-                //var weekConfig = WeekView.CreateWeekConfig(blob);
-                //var weekListData = new WeekListData(blob, weekConfig);
-                //weekConfig.AddRule(new EveryNDayCondition() {StartDateTime=DateTime.Now,Interval = 2});
-
             }
         }
     }

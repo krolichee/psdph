@@ -89,6 +89,7 @@
     <Compile Include="Photoshop\LayerWr\LayerWr.cs" />
     <Compile Include="Logic\Rules\ChangeMode.cs" />
     <Compile Include="Logic\Rules\ELayerMode.cs" />
+    <Compile Include="Utils\CloneConverter.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Logic\Rules\RuleSet.cs" />
     <Compile Include="Utils\UIName.cs" />

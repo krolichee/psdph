@@ -125,5 +125,16 @@ namespace psdPH
             dowTextLeaf.Text = DayDowFormat.Format(dateTime);
         }
 
+        internal string GetWeekDatesString(int week)
+        {
+            string result = "";
+            DateTime monday = WeekTime.GetDateByWeekAndDay(week, DayOfWeek.Monday);
+            DateTime sunday = WeekTime.GetDateByWeekAndDay(week, DayOfWeek.Sunday);
+            if (monday.Month != sunday.Month)
+                result = monday.ToString("dd MMMM") + " - " + sunday.ToString("dd MMMM");
+            else
+                result = monday.ToString("dd") + " - " + sunday.ToString("dd MMMM");
+            return result;
+        }
     }
 }
