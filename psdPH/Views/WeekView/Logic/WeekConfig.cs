@@ -16,16 +16,13 @@ namespace psdPH
     {
         public DayOfWeek Dow;
         public string Layername;
-
         public DowLayernamePair() { }
-
         public DowLayernamePair(DayOfWeek dow, string layername)
         {
             Dow = dow;
             Layername = layername;
         }
     }
-    
     [Serializable]
     public class WeekConfig
     {
@@ -44,7 +41,7 @@ namespace psdPH
         }
         public List<DowLayernamePair> DowPlaceholderLayernameList = new List<DowLayernamePair>();
         public DateFormat DayDateFormat;
-        internal DateFormat DayDowFormat;
+        public DateFormat DayDowFormat;
 
         public string TilePreviewTextLeafName;
         public string PrototypeLayerName;

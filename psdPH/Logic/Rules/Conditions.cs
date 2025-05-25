@@ -1,4 +1,6 @@
-﻿using psdPH.Logic.Compositions;
+﻿using Photoshop;
+using psdPH.Logic.Compositions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -61,7 +63,7 @@ namespace psdPH.Logic.Rules
     }
     public class EmptyTextCondition : TextCondition
     {
-        public override string ToString() => "количество строк";
+        public override string ToString() => "текст пустой";
         public EmptyTextCondition(Composition composition) : base(composition) { }
         public EmptyTextCondition() : base(null) { }
 
@@ -72,7 +74,7 @@ namespace psdPH.Logic.Rules
     }
     public class NonEmptyTextCondition : TextCondition
     {
-        public override string ToString() => "количество строк";
+        public override string ToString() => "текст не пустой";
         public NonEmptyTextCondition(Composition composition) : base(composition) { }
         public NonEmptyTextCondition() : base(null) { }
 
@@ -120,5 +122,27 @@ namespace psdPH.Logic.Rules
         }
         public FlagCondition(Composition composition) : base(composition) { }
         public FlagCondition() : base(null) { }
+    }
+    [Serializable]
+    public class FlagRule : ConditionRule, CoreRule
+    {
+        public string FlagName;
+        public FlagRule() : base(null)
+        {
+        }
+        [XmlIgnore]
+        public override Parameter[] Setups => throw new NotImplementedException();
+
+        public void CoreApply()
+        {
+            var flagLeaf = Composition.getChildren<FlagLeaf>().First(f => f.Name == FlagName);
+            flagLeaf.Toggle = Condition.IsValid();
+        }
+
+        protected override void _apply(Document doc) =>
+            CoreApply();
+        protected override void _else(Document doc) =>
+            CoreApply();
+
     }
 }

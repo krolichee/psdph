@@ -34,7 +34,7 @@ using System.IO;
 using System.Text;
 
 
-namespace psdPHText.UI
+namespace psdPHTest.UI
 {
     [TestClass]
     public class Rtb
@@ -47,6 +47,15 @@ namespace psdPHText.UI
             ParameterConfig config = new ParameterConfig(this, nameof(this.m), "Строка");
             Parameter[] parameters = new Parameter[] { Parameter.RichStringInput(config) };
             while (new ParametersInputWindow(parameters).ShowDialog() == true) ;
+        }
+        [TestMethod]
+        public void CalendarTest()
+        {
+            var window = new Window();
+            var calendar = new Calendar();
+            window.Content = calendar;
+            window.ShowDialog();
+          // calendar.SelectedDate;
         }
         [TestMethod]
         public void AligmentContolUITest()
@@ -95,7 +104,7 @@ namespace psdPHText.UI
     }
 }
 
-namespace psdPHText.Ps
+namespace psdPHTest.Ps
 {
 
     public static class LayerExtension
@@ -180,11 +189,6 @@ namespace psdPHText.Ps
         {
             ArtLayer textLayer = doc.GetLayerByName("text");
             Console.WriteLine(textLayer.TextItem.GetHashCode());
-        }
-        [TestMethod]
-        public void CheckInteropWhenTextEditing()
-        {
-            var _ = (psApp.ActiveDocument.ActiveLayer as ArtLayer).TextItem.Size = 50;
         }
     }
 }
@@ -345,28 +349,7 @@ namespace psdPHTest.Automatic
                 Blob blob = GetBlob();
                 var dayBlob = DowBlob.FromBlob(blob,0,DayOfWeek.Monday);
             }
-            [Serializable]
-            public class FlagRule : ConditionRule, CoreRule
-            {
-                public string FlagName;
-                public FlagRule() : base(null)
-                {
-                }
-                [XmlIgnore]
-                public override Parameter[] Setups => throw new NotImplementedException();
-
-                public void CoreApply()
-                {
-                    var flagLeaf = Composition.getChildren<FlagLeaf>().First(f => f.Name == FlagName);
-                    flagLeaf.Toggle = Condition.IsValid();
-                }
-
-                protected override void _apply(Document doc) =>
-                    CoreApply();
-                protected override void _else(Document doc) =>
-                    CoreApply();
-                
-            }
+            
             EveryNDayCondition GetEveryNDayCondition(int interval,DateTime startDateTime, DowBlob blob)
             {
                 return new EveryNDayCondition(blob) { Interval = interval, StartDateTime = startDateTime };
