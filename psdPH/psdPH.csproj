@@ -89,6 +89,7 @@
     <Compile Include="Photoshop\LayerWr\LayerWr.cs" />
     <Compile Include="Logic\Rules\ChangeMode.cs" />
     <Compile Include="Logic\Rules\ELayerMode.cs" />
+    <Compile Include="Utils\CloneConverter.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Logic\Rules\RuleSet.cs" />
     <Compile Include="Utils\UIName.cs" />
@@ -136,6 +137,8 @@
     <Compile Include="Views\SimpleView\Windows\SimpleViewWindow.xaml.cs">
       <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WeekView\Logic\DateFormat.cs" />
+    <Compile Include="Views\WeekView\Logic\DayBlob.cs" />
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>
     </Compile>

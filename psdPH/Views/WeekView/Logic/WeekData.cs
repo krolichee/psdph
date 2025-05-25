@@ -3,9 +3,12 @@ using psdPH.Logic.Compositions;
 using psdPH.Views.WeekView.Logic;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace psdPH.Views.WeekView
@@ -14,23 +17,16 @@ namespace psdPH.Views.WeekView
     public class WeekData
     {
         public int Week;
-        public Blob MainBlob;
-        public List<DowBlobPair> DowBlobList = new List<DowBlobPair>();
+        public WeekBlob MainBlob;
+        public List<DowBlob> DowBlobList = new List<DowBlob>();
         [XmlIgnore]
         public WeekListData WeekListData;
         [XmlIgnore]
         public WeekConfig WeekConfig => WeekListData.WeekConfig;
         [XmlIgnore]
-        public Dictionary<DayOfWeek, Blob> DowBlobsDict
+        public Dictionary<DayOfWeek, DowBlob> DowBlobsDict
         {
-            get => DowBlobList.ToDictionary(p => p.Dow, p => p.Blob);
-            set
-            {
-                var result = new List<DowBlobPair>();
-                foreach (var item in value)
-                    result.Add(new DowBlobPair(item.Key, item.Value));
-                DowBlobList = result;
-            }
+            get => DowBlobList.ToDictionary(p => p.Dow, p => p);
         }
         public void Apply(Document doc)
         {
@@ -41,7 +37,7 @@ namespace psdPH.Views.WeekView
             this.WeekListData = weekListData;
             MainBlob.Restore();
             foreach (var item in DowBlobList)
-                item.Blob.Restore();
+                item.Restore();
         }
         public WeekData Clone()
         {
@@ -54,48 +50,53 @@ namespace psdPH.Views.WeekView
             result.Restore(WeekListData);
             return result;
         }
-
-        void fillDateAndDow(Blob blob, DateTime dateTime)
+        internal Blob Prepare()
         {
-            var dateTextLeaf = WeekConfig.GetDateTextLeaf(blob);
-            var dowTextLeaf = WeekConfig.GetDowTextLeaf(blob);
-            dateTextLeaf.Text = WeekConfig.DayDateFormat.Format(dateTime);
-            dowTextLeaf.Text = WeekConfig.DayDowFormat.Format(dateTime);
+            DowLayernamePair whereLayernameIs(string layername, List<DowLayernamePair> pairs)
+            {
+                return pairs.First(dl_p => dl_p.Layername == layername);
+            }
+            DayOfWeek getMatchingDow(PlaceholderLeaf p)
+            {
+                var pairs = WeekConfig.DowPlaceholderLayernameList;
+                return whereLayernameIs(p.LayerName, pairs).Dow;
+            }
+            WeekData weekData_clone = Clone();
+            PlaceholderLeaf[] placeholders = weekData_clone.MainBlob.getChildren<PlaceholderLeaf>();
 
+            Dictionary<DayOfWeek, PlaceholderLeaf> dowPlaceholderDict = placeholders.ToDictionary(getMatchingDow, p => p);
+
+            var dayOfWeekEnumValues = Enum.GetValues(typeof(DayOfWeek)).Cast<Enum>();
+
+            foreach (var dayBlob in weekData_clone.DowBlobList)
+            {
+                var ph = dowPlaceholderDict[dayBlob.Dow];
+                WeekConfig.FillDateAndDow(dayBlob);
+                ph.Replacement = dayBlob;
+            }
+            WeekConfig.GetWeekDatesTextLeaf(weekData_clone.MainBlob).Text = WeekConfig.GetWeekDatesString(Week);
+            WeekConfig.InjectRules(weekData_clone);
+            weekData_clone.MainBlob.CoreApply();
+            return weekData_clone.MainBlob;
+        }
+
+        void InitializeDowBlobList()
+        {
+            PrototypeLeaf prototype = WeekConfig.GetDayPrototype(MainBlob);
+            foreach (var item in WeekConfig.DowPrototypeLayernameDict)
+            {
+                var dayBlob = DowBlob.FromBlob(prototype.Blob, Week, item.Key);
+                DowBlobList.Add(dayBlob);
+            }
         }
         public WeekData(int week, WeekListData weekListData)
         {
             this.WeekListData = weekListData;
             Week = week;
-            var mainBlobPrototype = weekListData.RootBlob;
-            var mainBlob = mainBlobPrototype.Clone();
-            MainBlob = mainBlob;
+            MainBlob = WeekBlob.FromBlob(weekListData.RootBlob, week);
             this.Restore(weekListData);
-
-            
-            WeekConfig.GetWeekDatesTextLeaf(mainBlob).Text = WeekDatesStrings.getWeekDatesString(week);
-            PrototypeLeaf prototype = WeekConfig.GetDayPrototype(mainBlob);
-            foreach (var item in WeekConfig.DowPrototypeLayernameDict)
-            {
-                var dayBlob = prototype.Blob.Clone();
-                fillDateAndDow(dayBlob, WeekTime.GetDateByWeekAndDay(week, item.Key));
-                DowBlobList.Add(new DowBlobPair(item.Key, dayBlob));
-            }
+            InitializeDowBlobList();
         }
         public WeekData() { }
-    }
-    [Serializable]
-    public class DowBlobPair
-    {
-        public DayOfWeek Dow;
-        public Blob Blob;
-
-        public DowBlobPair() { }
-
-        public DowBlobPair(DayOfWeek dow, Blob blob)
-        {
-            Dow = dow;
-            Blob = blob;
-        }
     }
 }

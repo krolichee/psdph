@@ -17,7 +17,7 @@ namespace psdPH.Logic.Rules
         public abstract Parameter[] Setups { get; }
         public abstract bool IsValid();
 
-        public void restoreComposition(Composition composition)
+        public void RestoreComposition(Composition composition)
         {
             Composition = composition;
         }
@@ -30,7 +30,7 @@ namespace psdPH.Logic.Rules
     public class DummyCondition : Condition
     {
         public DummyCondition(Composition composition) : base(composition) { }
-
+        [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
 
         public override bool IsValid() => true;
@@ -47,6 +47,7 @@ namespace psdPH.Logic.Rules
             get => Composition.getChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName); 
             set => TextLeafLayerName = value.LayerName;
         }
+        [XmlIgnore]
         public override Parameter[] Setups
         {
             get
@@ -117,6 +118,7 @@ namespace psdPH.Logic.Rules
         public override string ToString() => "значение флага";
         public string FlagName;
         public bool Value=true;
+        [XmlIgnore]
         public override Parameter[] Setups
         {
             get

@@ -4,7 +4,8 @@ namespace psdPH.Views.WeekView.Logic
 {
     public class WeekTime
     {
-        public static int GetCurrentWeekFromUnixTime(long unixTime)
+        public static int CurrentWeek => GetWeekFromUnixTime(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+        public static int GetWeekFromUnixTime(long unixTime)
         {
             // Unix-время начинается с 01.01.1970 00:00:00 UTC
             DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);

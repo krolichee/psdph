@@ -4,7 +4,9 @@ using psdPH.Logic.Rules;
 using psdPH.Photoshop;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
@@ -13,7 +15,9 @@ using Condition = psdPH.Logic.Rules.Condition;
 
 namespace psdPH.Logic
 {
-
+    public interface CoreRule{
+        void CoreApply();
+    }
     [XmlInclude(typeof(ConditionRule))]
 
     [XmlInclude(typeof(LayerRule))]
@@ -31,10 +35,12 @@ namespace psdPH.Logic
         public RuleSet ruleSet;
         abstract public void Apply(Document doc);
 
-        public virtual void restoreComposition(Composition composition)
+        public virtual void RestoreComposition(Composition composition)
         {
             Composition = composition;
         }
+
+        
 
         [XmlIgnore]
         public abstract Parameter[] Setups { get; }
@@ -48,10 +54,10 @@ namespace psdPH.Logic
         {
             Condition = new DummyCondition(Composition);
         }
-        public override void restoreComposition(Composition composition)
+        public override void RestoreComposition(Composition composition)
         {
-            base.restoreComposition(composition);
-            Condition.restoreComposition(composition);
+            base.RestoreComposition(composition);
+            Condition.RestoreComposition(composition);
         }
 
         abstract protected void _apply(Document doc);
@@ -62,6 +68,18 @@ namespace psdPH.Logic
                 _apply(doc);
             else
                 _else(doc);
+        }
+
+        public Rule Clone()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(Rule), new Type[] { Condition.GetType(), this.GetType() });
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+            serializer.Serialize(sw, this);
+            StringReader sr = new StringReader(sb.ToString());
+            Rule result = serializer.Deserialize(sr) as Rule;
+            result.RestoreComposition(Composition);
+            return result;
         }
     };
 
@@ -133,7 +151,7 @@ namespace psdPH.Logic
         public override string ToString() => "прозрачность";
 
         public int Opacity;
-
+        [XmlIgnore]
         public override Parameter[] Setups
         {
             get
@@ -158,6 +176,7 @@ namespace psdPH.Logic
     {
         public override string ToString() => "видимость";
         public bool Toggle = true;
+        [XmlIgnore]
         public override Parameter[] Setups
         {
             get

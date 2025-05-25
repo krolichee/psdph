@@ -1,6 +1,7 @@
 ﻿using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+using psdPH.Views.WeekView.Logic;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;

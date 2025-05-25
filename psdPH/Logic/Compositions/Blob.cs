@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic.Compositions
 {
     [Serializable]
-    [XmlRoot("Blob")]
-    public class Blob : LayerComposition
+    public class Blob : LayerComposition,CoreComposition
     {
+        [XmlIgnore]
         public override Parameter[] Setups
         {
             get
@@ -25,8 +26,7 @@ namespace psdPH.Logic.Compositions
         }
         public override string UIName => "Подфайл";
         public BlobMode Mode;
-        [XmlArray("Children")]
-        public Composition[] Children = new Composition[0];
+        
         public string Path;
         public bool IsPrototyped()
         {
@@ -66,6 +66,15 @@ namespace psdPH.Logic.Compositions
             }
             if (Mode == BlobMode.Layer)
                 cur_doc.Close(PsSaveOptions.psSaveChanges);
+        }
+        public void CoreApply()
+        {
+            if (IsPrototyped())
+                return;
+            foreach (var item in Children.Where(c => c is CoreComposition))
+                (item as CoreComposition).CoreApply();
+            foreach (var rule in RuleSet.Rules.Where(r => r is CoreRule))
+                (rule as CoreRule).CoreApply();
         }
         override public void addChild(Composition child)
         {
@@ -122,6 +131,9 @@ namespace psdPH.Logic.Compositions
             result.Restore(Parent as Blob);
             return result;
         }
+
+        
+
         public Blob() : base()
         {
         }
