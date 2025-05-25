@@ -9,6 +9,9 @@ using System.Xml.Serialization;
 
 namespace psdPH
 {
+    public interface CoreComposition {
+        void CoreApply();
+    }
     [Serializable]
     [XmlInclude(typeof(Blob))]
 
@@ -35,6 +38,8 @@ namespace psdPH
                 return rootAttribute.ElementName;
             }
         }
+        [XmlArray("Children")]
+        public Composition[] Children = new Composition[0];
         public virtual string UIName { get { return ""; } }
         abstract public string ObjName { get; }
         public override string ToString()
@@ -49,6 +54,7 @@ namespace psdPH
                 return new Composition[0] as T[];
             return Parent.getChildren<T>().ToArray();
         }
+        [XmlIgnore]
         public abstract Parameter[] Setups { get; }
 
         abstract public void Apply(Document doc);
@@ -60,10 +66,10 @@ namespace psdPH
         virtual public void removeChild(Composition child) { }
         public void Restore(Composition parent = null)
         {
-            restoreParents(parent);
-            RuleSet.restoreLinks(this);
+            RestoreParents(parent);
+            RuleSet.RestoreComposition(this);
         }
-        virtual public void restoreParents(Composition parent = null)
+        virtual public void RestoreParents(Composition parent = null)
         {
             if (parent != null)
                 Parent = parent;
@@ -86,7 +92,7 @@ namespace psdPH
         public bool Toggle;
         public string Name;
         public override string ObjName => Name;
-
+        [XmlIgnore]
         public override Parameter[] Setups
         {
             get
@@ -129,12 +135,15 @@ namespace psdPH
         {
             return doc.GetAlightmentVector(RelativeLayerName, LayerName);
         }
+        [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
         public override string ObjName => Blob.LayerName;
         public override void Apply(Document doc)
         {
             doc.GetLayerByName(Blob.LayerName).Opacity = 0;
         }
+
+
         ~PrototypeLeaf()
         {
             //var placeholders = Parent.getChildren<PlaceholderLeaf>().Where(p=>p.PrototypeLayerName==LayerName);

@@ -1,8 +1,13 @@
-﻿using psdPH.Logic.Compositions;
+﻿using psdPH.Logic;
+using psdPH.Logic.Compositions;
+using psdPH.Views.WeekView.Logic;
+using psdPH.Views.WeekView;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Serialization;
+using psdPH.Logic.Rules;
 
 namespace psdPH
 {
@@ -20,87 +25,24 @@ namespace psdPH
             Layername = layername;
         }
     }
-    public abstract class DateFormat
-    {
-        
-        public DateFormat Upper =>new Upper(this);
-        public DateFormat Lower => new Lower(this);
-        public DateFormat FirstUpper => new FirstUpper(this);
-        DateTime _sampleDateTime => new DateTime(1970, 1, 9);
-        public override string ToString()
-        {
-            return Format(_sampleDateTime);
-        }
-        
-        public abstract string Format(DateTime dt);
-        
-    }
-    class AffectFormat: DateFormat
-    {
-        public DateFormat _include;
-        protected virtual string affect(string s) => s;
-        public override string Format(DateTime dt) =>
-            affect(_include.ToString());
-        protected AffectFormat(DateFormat dateFormat)
-        {
-            _include = dateFormat;
-        }
-    }
-    class Upper : AffectFormat
-    {
-        public Upper(DateFormat dateFormat) : base(dateFormat) { }
-
-        protected override string affect(string s)=>s.ToUpper();
-    }
-    class Lower : AffectFormat
-    {
-        public Lower(DateFormat dateFormat) : base(dateFormat) { }
-        protected override string affect(string s) => s.ToLower();
-    }
-    class FirstUpper : AffectFormat
-    {
-        public FirstUpper(DateFormat dateFormat) : base(dateFormat) { }
-        protected override string affect(string s) {
-            var result = s.ToLower();
-            result=result.Remove(0, 1);
-            var firstLetter = s[0].ToString().ToUpper();
-            result=result.Insert(0, firstLetter);
-            return result;
-        }
-    }
-    public abstract class DayFormat : DateFormat{ }
-    public abstract class DowFormat : DateFormat{ }
-    public class NoZeroDateFormat : DayFormat
-    {
-        public override string Format(DateTime dt) => dt.ToString("%d");
-    }
-    public class WithZeroDateFormat : DayFormat
-    {
-        public override string Format(DateTime dt) => dt.ToString("dd");
-    }
-    public class FullDowFormat : DowFormat
-    {
-        public override string Format(DateTime dt) => dt.ToString("dddd");
-    }
-    public class ShortDowFormat : DowFormat
-    {
-        public override string Format(DateTime dt) => dt.ToString("ddd");
-    }
+    
     [Serializable]
     public class WeekConfig
     {
+        public ObservableCollection<ConditionRule> DayRules=new ObservableCollection<ConditionRule>();
+        public ObservableCollection<ConditionRule> WeekRules=new ObservableCollection<ConditionRule>();
         [XmlIgnore]
         public Dictionary<DayOfWeek, string> DowPrototypeLayernameDict
         {
-            get => DowPrototypeLayernameList.ToDictionary(p => p.Dow, p => p.Layername); set
+            get => DowPlaceholderLayernameList.ToDictionary(p => p.Dow, p => p.Layername); set
             {
                 var result = new List<DowLayernamePair>();
                 foreach (var item in value)
                     result.Add(new DowLayernamePair(item.Key, item.Value));
-                DowPrototypeLayernameList = result;
+                DowPlaceholderLayernameList = result;
             }
         }
-        public List<DowLayernamePair> DowPrototypeLayernameList = new List<DowLayernamePair>();
+        public List<DowLayernamePair> DowPlaceholderLayernameList = new List<DowLayernamePair>();
         public DateFormat DayDateFormat;
         internal DateFormat DayDowFormat;
 
@@ -125,36 +67,63 @@ namespace psdPH
         {
             return blob.getChildren<PrototypeLeaf>().First(p => p.LayerName == PrototypeLayerName);
         }
-        //public void Restore(Prototype prototype)
-        //{
-        //    Prototype = prototype;
-        //    MainBlob = prototype.Parent as Blob;
-        //}
-        //public void Restore(Blob blob)
-        //{
-        //    MainBlob = blob;
-        //    Prototype = MainBlob.getChildren<Prototype>().First(p => p.LayerName == PrototypeLayerName);
-        //}
-        //[XmlIgnore]
-        //public Prototype Prototype;
-        //[XmlIgnore]
-        //public Blob MainBlob;
-        //public WeekDowsConfig()
-        //{
+        internal TextLeaf GetTilePreviewTextLeaf(Blob blob)
+        {
+            return blob.getChildren<TextLeaf>().First(p => p.LayerName == TilePreviewTextLeafName);
+        }
+        [Serializable]
+        public abstract class WeekDataCondition : Condition
+        {
+            protected WeekDataCondition(Composition composition) : base(composition) { }
+            [XmlIgnore]
+            public override Parameter[] Setups => throw new NotImplementedException();
+        }
+        
+        public class EveryNDayCondition : WeekDataCondition
+        {
+            public DateTime StartDateTime;
+            public int Interval;
+            public EveryNDayCondition(Composition composition) : base(composition) { }
+            public override bool IsValid()
 
-        //}
-        //public Parameter[] Parameters
-        //{
-        //    get
-        //    {
-        //        Prototype[] prototypes = MainBlob.getChildren<Prototype>();
-        //        var result = new List<Parameter>();
-        //        var textLeafConfig = new ParameterConfig(this, nameof(this.MainBlob), "Прототип дня");
-        //        result.Add(Parameter.Choose(textLeafConfig, prototypes));
-        //        return result.ToArray();
-        //    }
-        //}
+            { var dayBlob = Composition as DayBlob;
+                var dateTime = WeekTime.GetDateByWeekAndDay(dayBlob.Week, dayBlob.Dow);
+                TimeSpan timeSinceFirstWeek = dateTime - StartDateTime;
+                return timeSinceFirstWeek.TotalDays % Interval == 0;
+            }
+            public EveryNDayCondition() :base(null) { }
+        }
 
+        public void IncludeDayRules(DayBlob dayBlob)
+        {
+            foreach (var item in DayRules)
+            {
+                dayBlob.RuleSet.AddRule(item.Clone());
+            }
+            
+        }
+
+        internal void IncludeRules(WeekData weekData_clone)
+        {
+            foreach (var item in weekData_clone.DowBlobList)
+            {
+                IncludeDayRules(item.DayBlob as DayBlob);
+            }
+            foreach (var item in WeekRules)
+            {
+                weekData_clone.MainBlob.RuleSet.AddRule(item.Clone());
+            }
+        }
+        public void FillDateAndDow(DayBlob dayBlob)
+        {
+            var week = dayBlob.Week;
+            var dow = dayBlob.Dow;
+            var dateTime = WeekTime.GetDateByWeekAndDay(week, dow);
+            var dateTextLeaf = GetDateTextLeaf(dayBlob);
+            var dowTextLeaf = GetDowTextLeaf(dayBlob);
+            dateTextLeaf.Text =DayDateFormat.Format(dateTime);
+            dowTextLeaf.Text = DayDowFormat.Format(dateTime);
+        }
 
     }
 }

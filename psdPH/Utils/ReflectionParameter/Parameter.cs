@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Xml.Serialization;
 
 namespace psdPH.Logic
 {
@@ -62,9 +63,10 @@ namespace psdPH.Logic
             RevertFunction = (o) => (o as EnumWrapper).Value
         };
     }
-
+    
     public class Parameter
     {
+        public Parameter() { }
         public Control Control;
         FieldFunctions _fieldFunctions;
         StackPanel _stack;

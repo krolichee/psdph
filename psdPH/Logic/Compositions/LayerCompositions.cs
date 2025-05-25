@@ -35,7 +35,7 @@ namespace psdPH.Logic.Compositions
     {
         public override string UIName => "Изобр.";
         public string Path;
-
+        [XmlIgnore]
         public override Parameter[] Setups
         {
             get
@@ -61,7 +61,7 @@ namespace psdPH.Logic.Compositions
     {
         public override string UIName => "Текст";
         public string Text = string.Empty;
-
+        [XmlIgnore]
         public override Parameter[] Setups
         {
             get
@@ -87,7 +87,7 @@ namespace psdPH.Logic.Compositions
     public class LayerLeaf : LayerComposition
     {
         public override string UIName => "Слой";
-
+        [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
 
         public override void Apply(Document doc) { }
@@ -97,7 +97,7 @@ namespace psdPH.Logic.Compositions
     public class GroupLeaf : LayerComposition
     {
         public override string UIName => "Группа";
-
+        [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
         public override string ObjName => LayerName;
         public override void Apply(Document doc) { }
@@ -107,6 +107,7 @@ namespace psdPH.Logic.Compositions
     public class AreaLeaf : LayerComposition
     {
         public override string UIName => "Область";
+        [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
         static Dictionary<PsJustification, HorizontalAlignment> JustificationMatchDict = new Dictionary<PsJustification, HorizontalAlignment>()
             {
@@ -144,7 +145,7 @@ namespace psdPH.Logic.Compositions
     }
     [Serializable]
     [XmlRoot("Placeholder")]
-    public class PlaceholderLeaf : LayerComposition
+    public class PlaceholderLeaf : LayerComposition, CoreComposition
     {
         public override string UIName => "Плейс.";
         [XmlIgnore]
@@ -160,10 +161,21 @@ namespace psdPH.Logic.Compositions
             }
         }
         public string PrototypeLayerName;
-        string derivedLayerName;
         public override string ObjName => LayerName;
 
         public override Parameter[] Setups => new Parameter[0];
+        Blob _replacement;
+        [XmlIgnore]
+        public Blob Replacement
+        {
+            get => _replacement;
+            set { _replacement = value; _replacement.LayerName = $"{PrototypeLayerName}_{LayerName}"; }
+        }
+        public override void Apply(Document doc)
+        {
+            if (Replacement != null)
+                ReplaceWithFiller(doc, Replacement);
+        }
 
         public PlaceholderLeaf(string layername, string prototypeLayername)
         {
@@ -171,14 +183,13 @@ namespace psdPH.Logic.Compositions
             PrototypeLayerName = prototypeLayername;
         }
         public PlaceholderLeaf() { }
-        public override void restoreParents(Composition parent = null)
+        public override void RestoreParents(Composition parent = null)
         {
-            base.restoreParents(parent);
+            base.RestoreParents(parent);
         }
 
         internal void ReplaceWithFiller(Document doc, Blob blob)
         {
-            derivedLayerName = $"{PrototypeLayerName}_{LayerName}";
             ArtLayer phLayer = doc.GetLayerByName(LayerName);
             ArtLayerWr newLayer = new ArtLayerWr(doc.CloneSmartLayer(PrototypeLayerName));
             var prototypeAVector = Prototype.GetRelativeLayerAlightmentVector(doc);
@@ -189,12 +200,16 @@ namespace psdPH.Logic.Compositions
             newLayer.TranslateV(prototypeAVector);
             //ph_layer.Delete();
             phLayer.Opacity = 0;
-            newLayer.Name = blob.LayerName = derivedLayerName;
-            Parent.addChild(blob);
-            Parent.removeChild(this);
+            newLayer.Name = blob.LayerName;
+
+            //Parent.addChild(blob);
+            //Parent.removeChild(this);
         }
 
-        public override void Apply(Document doc) { }
+        public void CoreApply()
+        {
+            ((CoreComposition)Replacement).CoreApply();
+        }
     }
 
 }

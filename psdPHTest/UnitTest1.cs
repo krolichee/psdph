@@ -26,6 +26,12 @@ using HAli = System.Windows.HorizontalAlignment;
 using VAli = System.Windows.VerticalAlignment;
 using System.Threading.Tasks;
 using psdPH.Views.WeekView;
+using System.Xml.Serialization;
+using psdPH.Views.WeekView.Logic;
+using static psdPH.WeekConfig;
+using psdPH.Utils;
+using System.IO;
+using System.Text;
 
 
 namespace psdPHText.UI
@@ -40,7 +46,7 @@ namespace psdPHText.UI
         {
             ParameterConfig config = new ParameterConfig(this, nameof(this.m), "Строка");
             Parameter[] parameters = new Parameter[] { Parameter.RichStringInput(config) };
-            while (new ParametersInputWindow(parameters).ShowDialog()==true) ;
+            while (new ParametersInputWindow(parameters).ShowDialog() == true) ;
         }
         [TestMethod]
         public void AligmentContolUITest()
@@ -61,7 +67,7 @@ namespace psdPHText.UI
             var window = new Window();
             window.SizeToContent = SizeToContent.WidthAndHeight;
             var aliControl = new AligmentControl();
-            aliControl.HorizontalAlignment=HorizontalAlignment.Stretch;
+            aliControl.HorizontalAlignment = HorizontalAlignment.Stretch;
             aliControl.VerticalAlignment = VerticalAlignment.Stretch;
             aliControl.VerticalContentAlignment = VerticalAlignment.Stretch;
             aliControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
@@ -91,10 +97,10 @@ namespace psdPHText.UI
 
 namespace psdPHText.Ps
 {
-    
+
     public static class LayerExtension
     {
-        
+
     }
     [TestClass]
     public class ManualPhotoshopTests
@@ -123,19 +129,20 @@ namespace psdPHText.Ps
         }
         [TestMethod]
         public void FitWithEqualizeDemo()
-        { 
+        {
             int count = 4;
             for (int i = 1; i <= count; i++)
             {
                 TextLayerWr textLayer = doc.GetLayerByName($"text{i}").TextWrapper();
                 ArtLayerWr areaLayer = doc.GetLayerByName($"area{i}").Wrapper();
-                textLayer.FitWithEqualize(areaLayer,Alignment.Create("up","left"));
+                textLayer.FitWithEqualize(areaLayer, Alignment.Create("up", "left"));
             }
         }
 
         [TestMethod]
-        public void EqualizeLineWidth() {
-            TextLayerWr textLayer =  doc.GetLayerByName("text").TextWrapper();
+        public void EqualizeLineWidth()
+        {
+            TextLayerWr textLayer = doc.GetLayerByName("text").TextWrapper();
             textLayer.EqualizeLineWidth();
         }
         [TestMethod]
@@ -146,7 +153,7 @@ namespace psdPHText.Ps
         [TestMethod]
         public void SplitTextLayer()
         {
-            TextLayerWr textLayerWr =new TextLayerWr(doc.GetLayerByName("text"));
+            TextLayerWr textLayerWr = new TextLayerWr(doc.GetLayerByName("text"));
             textLayerWr.SplitTextLayer();
         }
         [TestMethod]
@@ -159,14 +166,14 @@ namespace psdPHText.Ps
                 Assert.IsTrue(false);
             }
             catch { Assert.IsTrue(true); }
-            
+
         }
         [TestMethod]
         public void EmptyTextRectWidth()
         {
             ArtLayerWr textLayer = doc.GetLayerByName("empty_text").Wrapper();
             var rect = textLayer.GetBoundRect();
-            Assert.AreEqual(rect.Width,0);
+            Assert.AreEqual(rect.Width, 0);
         }
         [TestMethod]
         public void ViewTextItem()
@@ -177,7 +184,7 @@ namespace psdPHText.Ps
         [TestMethod]
         public void CheckInteropWhenTextEditing()
         {
-            var _ = (psApp.ActiveDocument.ActiveLayer as ArtLayer).TextItem.Size=50;
+            var _ = (psApp.ActiveDocument.ActiveLayer as ArtLayer).TextItem.Size = 50;
         }
     }
 }
@@ -191,7 +198,7 @@ namespace psdPHTest.Automatic
         void _(object sender, RoutedEventArgs e)
         {
             var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
-            flagLeaf.Toggle = (sender as CheckBox).IsChecked==true;
+            flagLeaf.Toggle = (sender as CheckBox).IsChecked == true;
             MainBlob.Apply(doc);
         }
         Blob GetBlob()
@@ -251,7 +258,7 @@ namespace psdPHTest.Automatic
         [TestMethod]
         public void AlignRuleTest()
         {
-            
+
         }
     }
     [TestClass]
@@ -286,25 +293,152 @@ namespace psdPHTest.Automatic
 
     }
     [TestClass]
-    public class DateFormatTest
+    public class WeekViewTest
     {
-        [TestMethod]
-        public void TestM()
+        public static DowLayernamePair GetPair(DayOfWeek dow) => new DowLayernamePair(dow, dow.GetDescription());
+        public static DowLayernamePair[] DowLayernamePairs => Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Select(e => GetPair(e)).ToArray();
+        public static string[] DayOfWeekNames => Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Select(e => e.GetDescription()).ToArray();
+        public static WeekConfig GetWeekConfig()
+        {
+            return new WeekConfig()
+            {
+                DateTextLeafLayerName = "Число",
+                DayDateFormat = new NoZeroDateFormat(),
+                DayDowFormat = new ShortDowFormat().Lower,
+                DowPlaceholderLayernameList = DowLayernamePairs.ToList(),
+                DowTextLeafLayerName = "День недели",
+                WeekDatesTextLeafName = "Даты недели",
+                PrototypeLayerName = "Прототип дня",
+                TilePreviewTextLeafName = "День недели"
+            };
+        }
+        public static Blob GetBlob()
         {
             var blob = Blob.PathBlob("C:\\ProgramData\\psdPH\\Projects\\№пример\\template.psd");
             var dayBlob = Blob.LayerBlob("Прототип дня");
-            dayBlob.addChild(new TextLeaf() { LayerName = "Число"});
+            dayBlob.addChild(new TextLeaf() { LayerName = "Число" });
             dayBlob.addChild(new TextLeaf() { LayerName = "День недели" });
             var dayPrototype = new PrototypeLeaf() { Blob = dayBlob, RelativeLayerName = "Пн" };
             blob.addChild(dayBlob);
             blob.addChild(dayPrototype);
-            foreach (var dow in new string[] { "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" })
-                blob.addChild(new PlaceholderLeaf() {Prototype= dayPrototype ,LayerName = dow});
+            foreach (var dow in DayOfWeekNames)
+                blob.addChild(new PlaceholderLeaf() { Prototype = dayPrototype, LayerName = dow });
             var weekDatesTextLeaf = new TextLeaf() { LayerName = "Даты недели" };
+            blob.addChild(weekDatesTextLeaf);
+            return blob;
+        }
+        [TestClass]
+        public class DateFormatTest
+        {
+            [TestMethod]
+            public void TestM()
+            {
+                WeekView.CreateWeekConfig(GetBlob());
+            }
+        }
+        [TestClass]
+        public class WeekRules
+        {
+            [TestMethod]
+            public void FromBlobTest()
+            {
+                Blob blob = GetBlob();
+                var dayBlob = DayBlob.FromBlob(blob);
+            }
+            [Serializable]
+            public class FlagRule : ConditionRule, CoreRule
+            {
+                public string FlagName;
+                public FlagRule() : base(null)
+                {
+                }
+                [XmlIgnore]
+                public override Parameter[] Setups => throw new NotImplementedException();
 
-            WeekView.CreateWeekConfig(blob);
+                public void CoreApply()
+                {
+                    var flagLeaf = Composition.getChildren<FlagLeaf>().First(f => f.Name == FlagName);
+                    flagLeaf.Toggle = Condition.IsValid();
+                }
+
+                protected override void _apply(Document doc) =>
+                    CoreApply();
+                protected override void _else(Document doc) =>
+                    CoreApply();
+                
+            }
+            EveryNDayCondition GetEveryNDayCondition(int interval,DateTime startDateTime, DayBlob blob)
+            {
+                return new EveryNDayCondition(blob) { Interval = interval, StartDateTime = startDateTime };
+            }
+            [DataTestMethod]
+            [DataRow(2, DayOfWeek.Monday, true)]
+            [DataRow(3, DayOfWeek.Tuesday, false)]
+            [DataRow(2, DayOfWeek.Wednesday, true)]
+            [DataRow(3, DayOfWeek.Thursday, true)]
+            public void EveryNDayConditionTest(int interval, DayOfWeek dayOfWeek, bool result)
+            {
+                var blob = GetBlob();
+                var weekConfig = GetWeekConfig();
+
+                var weekListData = new WeekListData() { RootBlob = blob, WeekConfig = weekConfig };
+                var currentWeek = WeekTime.CurrentWeek;
+
+                weekListData.NewWeek(currentWeek);
+                var weekData = weekListData.Weeks[0];
+
+                var startDateTime = WeekTime.GetDateByWeekAndDay(currentWeek, DayOfWeek.Monday);
+                var dayBlob =  new DayBlob() { Dow = dayOfWeek, Week = currentWeek };
+                var everynCondition = GetEveryNDayCondition(interval,startDateTime,dayBlob);
+
+                Assert.IsTrue(everynCondition.IsValid() == result);
+
+            }
+            [DataTestMethod]
+            [DataRow(2, DayOfWeek.Monday, true)]
+            [DataRow(3, DayOfWeek.Tuesday, false)]
+            [DataRow(2, DayOfWeek.Wednesday, true)]
+            [DataRow(3, DayOfWeek.Thursday, true)]
+            public void WeekRulesTest(int interval, DayOfWeek dayOfWeek, bool result)
+            {
+                var blob = GetBlob();
+                var weekConfig = GetWeekConfig();
+
+                weekConfig.GetDayPrototype(blob).Blob.addChild(new FlagLeaf("uvu"));
+
+                var weekListData = new WeekListData() { RootBlob = blob, WeekConfig = weekConfig };
+                var currentWeek = WeekTime.CurrentWeek;
+
+                weekListData.NewWeek(currentWeek);
+                var weekData = weekListData.Weeks[0];
+
+                var startDateTime = WeekTime.GetDateByWeekAndDay(currentWeek, DayOfWeek.Monday);
+                var everynCondition = new EveryNDayCondition() { Interval = interval, StartDateTime = startDateTime };
+                var everynRule = new FlagRule() { FlagName = "uvu", Condition = everynCondition };
+
+                weekConfig.DayRules.Add(everynRule);
+                var mainBlob = weekData.Prepare();
+
+                var dayPh = mainBlob.getChildren<PlaceholderLeaf>().First(ph => (ph.Replacement as DayBlob).Dow == dayOfWeek);
+                var dayBlob = dayPh.Replacement as DayBlob;
+                
+                Assert.IsTrue(dayBlob.getChildren<FlagLeaf>().First(f => f.Name == "uvu").Toggle == result);
+
+            }
+
+            [TestMethod]
+            public void AddRule()
+            {
+                var blob = GetBlob();
+                //var weekConfig = WeekView.CreateWeekConfig(blob);
+                //var weekListData = new WeekListData(blob, weekConfig);
+                //weekConfig.AddRule(new EveryNDayCondition() {StartDateTime=DateTime.Now,Interval = 2});
+
+            }
         }
     }
+
+
     [TestClass]
     public class CompositionTest
     {

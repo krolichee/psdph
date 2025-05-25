@@ -1,5 +1,7 @@
 ﻿using psdPH.Logic;
 using psdPH.Logic.Compositions;
+using psdPH.Views.WeekView;
+using psdPH.Views.WeekView.Logic;
 using System;
 using System.Linq;
 using System.Windows;
@@ -12,52 +14,42 @@ namespace psdPH
     /// </summary>
     public partial class DayTile : UserControl
     {
-        Composition[] exclude = new Composition[0];
-        Blob blob;
-        private WeekConfig weekGaleryConfig;
-        public WeekConfig WeekGaleryConfig
+        public WeekData WeekData;
+        WeekConfig _weekConfig => WeekData.WeekConfig;
+        DayBlob _dayBlob => WeekData.DowBlobsDict[Dow];
+        public DayOfWeek Dow
         {
-            get => weekGaleryConfig;
-            set
+            get => _dow; set
             {
-                weekGaleryConfig = value;
+                _dow = value;
+                dowLabel.Content = Dow.GetDescription();
             }
         }
-
-        public DayOfWeek Key
-        {
-            get => key; set
-            {
-                key = value;
-                dowLabel.Content = Key.GetDescription();
-            }
-        }
-        private DayOfWeek key;
+        private DayOfWeek _dow;
 
         void refreshPreview()
         {
-            previewTextBlock.Text = blob.getChildren<TextLeaf>().First(t => t.LayerName == WeekGaleryConfig.TilePreviewTextLeafName).Text;
+            previewTextBlock.Text = WeekData.WeekConfig.GetTilePreviewTextLeaf(_dayBlob).Text;
         }
-        Composition[] getExcludes(WeekConfig weekConfig, Blob blob)
+
+        Composition[] getExcludes()
         {
             return new Composition[] {
-                weekConfig.GetDowTextLeaf(blob),
-                weekConfig.GetDateTextLeaf(blob),
+                _weekConfig.GetDowTextLeaf(_dayBlob),
+                _weekConfig.GetDateTextLeaf(_dayBlob),
             };
 
         }
-        public DayTile(WeekConfig weekConfig, DayOfWeek key, Blob blob)
+        public DayTile(WeekData weekData, DayOfWeek dow)
         {
             InitializeComponent();
-            this.WeekGaleryConfig = weekConfig;
-            this.Key = key;
-            this.blob = blob;
-            exclude = getExcludes(weekConfig, blob);
+            WeekData = weekData;
+            this.Dow = dow;
             refreshPreview();
         }
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            new DataInputWindow(blob, exclude).ShowDialog();
+            new DataInputWindow(_dayBlob, getExcludes()).ShowDialog();
             refreshPreview();
         }
     }

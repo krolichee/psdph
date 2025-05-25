@@ -136,6 +136,8 @@
     <Compile Include="Views\SimpleView\Windows\SimpleViewWindow.xaml.cs">
       <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WeekView\Logic\DateFormat.cs" />
+    <Compile Include="Views\WeekView\Logic\DayBlob.cs" />
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>
     </Compile>

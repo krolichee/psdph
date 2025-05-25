@@ -30,15 +30,18 @@ namespace psdPH
             foreach (var week in Weeks)
                 week.Restore(this);
         }
-        internal void NewWeek()
+        public void NewWeek()
         {
             int new_week;
             if (Weeks.Any())
                 new_week = Weeks.Max((WeekData w) => w.Week) + 1;
             else
-                new_week = WeekTime.GetCurrentWeekFromUnixTime(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+                new_week = WeekTime.CurrentWeek;
+            NewWeek(new_week);
+        }
+        public void NewWeek(int new_week)
+        {
             var new_weekData = new WeekData(new_week, this);
-
             Weeks.Add(new_weekData);
         }
     }
