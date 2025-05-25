@@ -16,7 +16,7 @@ namespace psdPH
     {
         public WeekData WeekData;
         WeekConfig _weekConfig => WeekData.WeekConfig;
-        DayBlob _dayBlob => WeekData.DowBlobsDict[Dow];
+        DowBlob _dayBlob => WeekData.DowBlobsDict[Dow];
         public DayOfWeek Dow
         {
             get => _dow; set

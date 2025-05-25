@@ -86,7 +86,7 @@ namespace psdPH
             public EveryNDayCondition(Composition composition) : base(composition) { }
             public override bool IsValid()
 
-            { var dayBlob = Composition as DayBlob;
+            { var dayBlob = Composition as DowBlob;
                 var dateTime = WeekTime.GetDateByWeekAndDay(dayBlob.Week, dayBlob.Dow);
                 TimeSpan timeSinceFirstWeek = dateTime - StartDateTime;
                 return timeSinceFirstWeek.TotalDays % Interval == 0;
@@ -94,27 +94,23 @@ namespace psdPH
             public EveryNDayCondition() :base(null) { }
         }
 
-        public void IncludeDayRules(DayBlob dayBlob)
+        public void InjectDayRules(DowBlob dayBlob)
         {
             foreach (var item in DayRules)
-            {
                 dayBlob.RuleSet.AddRule(item.Clone());
-            }
-            
         }
-
-        internal void IncludeRules(WeekData weekData_clone)
+        internal void InjectWeekRules(WeekData weekData)
         {
-            foreach (var item in weekData_clone.DowBlobList)
-            {
-                IncludeDayRules(item.DayBlob as DayBlob);
-            }
             foreach (var item in WeekRules)
-            {
-                weekData_clone.MainBlob.RuleSet.AddRule(item.Clone());
-            }
+                weekData.MainBlob.RuleSet.AddRule(item.Clone());
         }
-        public void FillDateAndDow(DayBlob dayBlob)
+        internal void InjectRules(WeekData weekData)
+        {
+            foreach (var item in weekData.DowBlobList)
+                InjectDayRules(item);
+            InjectWeekRules(weekData);
+        }
+        public void FillDateAndDow(DowBlob dayBlob)
         {
             var week = dayBlob.Week;
             var dow = dayBlob.Dow;

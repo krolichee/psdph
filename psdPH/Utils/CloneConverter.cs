@@ -25,7 +25,7 @@ namespace psdPH.Utils
         private static T _getObj<T>(string xmlString)where T:class
         {
             StringReader sr = new StringReader(xmlString);
-            XmlSerializer serializer = new XmlSerializer(typeof(DayBlob));
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
             T result = serializer.Deserialize(sr) as T;
             return result;
         }

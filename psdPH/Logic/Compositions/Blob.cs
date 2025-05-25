@@ -10,7 +10,6 @@ using System.Xml.Serialization;
 namespace psdPH.Logic.Compositions
 {
     [Serializable]
-    [XmlRoot("DayBlob")]
     public class Blob : LayerComposition,CoreComposition
     {
         [XmlIgnore]

@@ -18,22 +18,15 @@ namespace psdPH.Views.WeekView
     {
         public int Week;
         public WeekBlob MainBlob;
-        public List<DowBlobPair> DowBlobList = new List<DowBlobPair>();
+        public List<DowBlob> DowBlobList = new List<DowBlob>();
         [XmlIgnore]
         public WeekListData WeekListData;
         [XmlIgnore]
         public WeekConfig WeekConfig => WeekListData.WeekConfig;
         [XmlIgnore]
-        public Dictionary<DayOfWeek, DayBlob> DowBlobsDict
+        public Dictionary<DayOfWeek, DowBlob> DowBlobsDict
         {
-            get => DowBlobList.ToDictionary(p => p.Dow, p => p.DayBlob);
-            set
-            {
-                var result = new List<DowBlobPair>();
-                foreach (var item in value)
-                    result.Add(new DowBlobPair(item.Key, item.Value));
-                DowBlobList = result;
-            }
+            get => DowBlobList.ToDictionary(p => p.Dow, p => p);
         }
         public void Apply(Document doc)
         {
@@ -44,7 +37,7 @@ namespace psdPH.Views.WeekView
             this.WeekListData = weekListData;
             MainBlob.Restore();
             foreach (var item in DowBlobList)
-                item.DayBlob.Restore();
+                item.Restore();
         }
         public WeekData Clone()
         {
@@ -75,15 +68,14 @@ namespace psdPH.Views.WeekView
 
             var dayOfWeekEnumValues = Enum.GetValues(typeof(DayOfWeek)).Cast<Enum>();
 
-            foreach (var item in weekData_clone.DowBlobList)
+            foreach (var dayBlob in weekData_clone.DowBlobList)
             {
-                var ph = dowPlaceholderDict[item.Dow];
-                DayBlob dayBlob = item.DayBlob;
+                var ph = dowPlaceholderDict[dayBlob.Dow];
                 WeekConfig.FillDateAndDow(dayBlob);
                 ph.Replacement = dayBlob;
             }
             WeekConfig.GetWeekDatesTextLeaf(weekData_clone.MainBlob).Text = WeekConfig.GetWeekDatesString(Week);
-            WeekConfig.IncludeRules(weekData_clone);
+            WeekConfig.InjectRules(weekData_clone);
             weekData_clone.MainBlob.CoreApply();
             return weekData_clone.MainBlob;
         }
@@ -93,8 +85,8 @@ namespace psdPH.Views.WeekView
             PrototypeLeaf prototype = WeekConfig.GetDayPrototype(MainBlob);
             foreach (var item in WeekConfig.DowPrototypeLayernameDict)
             {
-                var dayBlob = DayBlob.FromBlob(prototype.Blob, Week, item.Key);
-                DowBlobList.Add(new DowBlobPair(item.Key, dayBlob));
+                var dayBlob = DowBlob.FromBlob(prototype.Blob, Week, item.Key);
+                DowBlobList.Add(dayBlob);
             }
         }
         public WeekData(int week, WeekListData weekListData)
@@ -106,19 +98,5 @@ namespace psdPH.Views.WeekView
             InitializeDowBlobList();
         }
         public WeekData() { }
-    }
-    [Serializable]
-    public class DowBlobPair
-    {
-        public DayOfWeek Dow;
-        public DayBlob DayBlob;
-
-        public DowBlobPair() { }
-
-        public DowBlobPair(DayOfWeek dow, DayBlob blob)
-        {
-            Dow = dow;
-            DayBlob = blob;
-        }
     }
 }

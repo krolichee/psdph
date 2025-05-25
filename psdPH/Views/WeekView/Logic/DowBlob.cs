@@ -23,12 +23,12 @@ namespace psdPH.Views.WeekView.Logic
             return result;
         }
     }
-   public class DayBlob:WeekBlob
+   public class DowBlob:WeekBlob
     {
         public DayOfWeek Dow=DayOfWeek.Monday;
-        public static DayBlob FromBlob(Blob blob,int week,DayOfWeek dow)
+        public static DowBlob FromBlob(Blob blob,int week,DayOfWeek dow)
         {
-            var result = CloneConverter.Convert<DayBlob>(blob);
+            var result = CloneConverter.Convert<DowBlob>(blob);
             result.Restore();
             result.Dow = dow;
             result.Week = week;
