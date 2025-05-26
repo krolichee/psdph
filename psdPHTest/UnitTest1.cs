@@ -477,7 +477,7 @@ namespace psdPHTest.Automatic
                 var everynCondition = new EveryNDayCondition() { Interval = interval, StartDateTime = startDateTime };
                 var everynRule = new FlagRule() { FlagName = "uvu", Condition = everynCondition };
 
-                weekConfig.DayRules.Add(everynRule);
+                weekListData.DayRules.AddRule(everynRule);
                 var mainBlob = weekData.Prepare();
 
                 var dayPh = mainBlob.getChildren<PlaceholderLeaf>().First(ph => (ph.Replacement as DowBlob).Dow == dayOfWeek);

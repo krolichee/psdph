@@ -60,7 +60,10 @@ namespace psdPH.Views.WeekView
             if (weeksListData == null)
                 weeksListData = WeekListData.Create(weekConfig, root);
             else
+            {
                 weeksListData.WeekConfig = weekConfig;
+                weeksListData.RootBlob = root;
+            }
 
             weeksListData.Restore();
             weeksListData.RootBlob = root;

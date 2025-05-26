@@ -141,6 +141,7 @@
     </Compile>
     <Compile Include="Views\WeekView\Logic\DateFormat.cs" />
     <Compile Include="Views\WeekView\Logic\DowBlob.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekConditions.cs" />
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>
     </Compile>

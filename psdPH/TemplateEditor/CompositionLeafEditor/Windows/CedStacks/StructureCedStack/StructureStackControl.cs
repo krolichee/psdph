@@ -36,7 +36,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             Content = grid;
             CommandParameter = composition;
             Command = editCommand;
-            setMenu(this, composition);
+            setContextMenu(this, composition);
         }
     }
 }

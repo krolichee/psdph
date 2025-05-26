@@ -26,7 +26,7 @@ namespace psdPH
         protected override void EditExecuteCommand(object parameter)
         {
             if (StructureDicts.EditorDict.ContainsKey(parameter.GetType()))
-                UIElementExtension.ShowHidding(StructureDicts.EditorDict[parameter.GetType()](_doc, parameter as Composition).ShowDialog);
+               StructureDicts.EditorDict[parameter.GetType()](_doc, parameter as Composition).ShowDialog();
             else
                 SystemSounds.Exclamation.Play();
         }

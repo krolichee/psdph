@@ -8,7 +8,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     {
         abstract public ICommand DeleteCommand();
         abstract public ICommand EditCommand();
-        protected void setMenu(FrameworkElement control, T @object)
+        protected void setContextMenu(FrameworkElement control, T @object)
         {
             control.ContextMenu = new ContextMenu();
             control.ContextMenu.Items.Add(new MenuItem()

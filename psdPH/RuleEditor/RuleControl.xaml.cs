@@ -13,24 +13,10 @@ namespace psdPH.Logic
         ConditionRule _result;
         Condition _condition;
         List<Parameter> _parameters = new List<Parameter>();
-        public RuleControl(Composition root)
+        public RuleControl(Rule[] rules, Condition[] conditions)
         {
             InitializeComponent();
-            var conditions = new Condition[]
-            {
-                new FlagCondition(root)
-            };
             conditionsComboBox.ItemsSource = conditions;
-            var rules = new ConditionRule[]
-            {
-                new TextFontSizeRule(root),
-                new TextAnchorRule(root),
-                new TranslateRule(root),
-                new OpacityRule(root),
-                new VisibleRule(root),
-                new AlignRule(root),
-                new FitRule(root),
-            };
             ruleComboBox.ItemsSource = rules;
         }
 

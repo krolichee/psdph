@@ -75,7 +75,7 @@ namespace psdPH.Views.WeekView
                 ph.Replacement = dayBlob;
             }
             WeekConfig.GetWeekDatesTextLeaf(weekData_clone.MainBlob).Text = WeekConfig.GetWeekDatesString(Week);
-            WeekConfig.InjectRules(weekData_clone);
+            WeekListData.InjectRules(weekData_clone);
             weekData_clone.MainBlob.CoreApply();
             return weekData_clone.MainBlob;
         }
