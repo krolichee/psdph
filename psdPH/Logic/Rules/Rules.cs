@@ -32,8 +32,6 @@ namespace psdPH.Logic
         {
             Composition = composition;
         }
-        [XmlIgnore]
-        public RuleSet ruleSet;
         abstract public void Apply(Document doc);
 
         public virtual void RestoreComposition(Composition composition)
@@ -241,7 +239,7 @@ namespace psdPH.Logic
     {
         public bool BalanceFont = false;
         public FitRule(Composition composition) : base(composition) { }
-        Alignment Alignment;
+        public Alignment Alignment;
         public override Parameter[] Setups
         {
             get

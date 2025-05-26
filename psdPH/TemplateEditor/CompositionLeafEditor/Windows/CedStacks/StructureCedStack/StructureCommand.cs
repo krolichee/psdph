@@ -21,7 +21,7 @@ namespace psdPH
             if (creator.ShowDialog() != true)
                 return;
             Composition result = creator.GetResultComposition();
-            _root.addChild(result);
+            _root.AddChild(result);
         }
         protected override void EditExecuteCommand(object parameter)
         {
@@ -32,7 +32,7 @@ namespace psdPH
         }
         protected override void DeleteExecuteCommand(object parameter)
         {
-            _root.removeChild(parameter as Composition);
+            _root.RemoveChild(parameter as Composition);
         }
     }
 }

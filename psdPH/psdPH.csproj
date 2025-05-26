@@ -130,6 +130,7 @@
     <Compile Include="Utils\DataInputWindow.cs" />
     <Compile Include="Utils\EnumWrapper.cs" />
     <Compile Include="Utils\TopmostWindow.cs" />
+    <Compile Include="Utils\UpcomingAttribute.cs" />
     <Compile Include="Utils\XmlClone.cs" />
     <Compile Include="Views\SimpleView\CompositionTreeControl.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleView.cs" />
@@ -207,6 +208,9 @@
     <Compile Include="Views\WeekView\Logic\WeekDatesStrings.cs" />
     <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekStackHandler.cs" />
     <Compile Include="Views\WeekView\Logic\WeekView.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekRuleCommand.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekRules.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekRulesetStackHandler.cs" />
     <Compile Include="Views\WeekView\Windows\WeekViewWindow.xaml.cs">
       <DependentUpon>WeekViewWindow.xaml</DependentUpon>
     </Compile>

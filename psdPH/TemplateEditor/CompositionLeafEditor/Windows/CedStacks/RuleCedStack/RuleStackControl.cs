@@ -10,7 +10,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
     public class RuleStackControl : CEDStackControl<Rule>
     {
-        RuleSet RuleSet;
+        [Upcoming("asd")]
+        readonly RuleSet RuleSet;
         public override ICommand DeleteCommand() =>
             new StructureRuleCommand(RuleSet).DeleteCommand;
 
@@ -18,6 +19,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             new StructureRuleCommand(RuleSet).EditCommand;
         public RuleStackControl(Rule rule, RuleSet ruleSet,Document doc)
         {
+            RuleSet = ruleSet;
             HorizontalAlignment = HorizontalAlignment.Stretch;
             HorizontalContentAlignment = HorizontalAlignment.Stretch;
             ICommand editCommand = EditCommand();

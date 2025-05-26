@@ -12,14 +12,16 @@ namespace psdPH
         public static Application GetPhotoshopApplication()
         {
             
-            psApp.Visible = true;
+            
 
             if (psApp == null)
             {
                 Type psType = Type.GetTypeFromProgID("Photoshop.Application");
                 psApp = Activator.CreateInstance(psType) as Application;
-                
             }
+            if (psApp == null)
+                psApp = Marshal.GetActiveObject("Photoshop.Application") as Application;
+            psApp.Visible = true;
             return psApp;
         }
         public static void Dispose()

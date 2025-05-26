@@ -49,7 +49,7 @@ namespace psdPH
             structureTab.Content = CEDStackUI.CreateCEDStack(
                 new StructureStackHandler(new PsdPhContext(doc, root)));
             ruleTab.Content = CEDStackUI.CreateCEDStack(
-                new RuleStackHandler(new PsdPhContext(doc, root)));
+                new StructureRuleStackHandler(new PsdPhContext(doc, root)));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

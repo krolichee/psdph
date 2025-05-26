@@ -18,7 +18,9 @@ namespace psdPH
         public RuleSet WeekRules = new RuleSet();
         public static WeekListData Create(WeekConfig weekConfig, Blob root)
         {
+#pragma warning disable CS0612 // Тип или член устарел
             var result = new WeekListData();
+#pragma warning restore CS0612 // Тип или член устарел
             result.WeekConfig = weekConfig;
             result.RootBlob = root;
             result.DayRules.Composition = root;
@@ -66,5 +68,7 @@ namespace psdPH
                 InjectDayRules(item);
             InjectWeekRules(weekData);
         }
+        [Obsolete]
+        public WeekListData() { }
     }
 }

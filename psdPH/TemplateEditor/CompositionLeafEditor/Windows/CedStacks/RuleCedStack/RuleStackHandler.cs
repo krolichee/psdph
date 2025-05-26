@@ -51,4 +51,10 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             RuleSet = ruleSet;
         }
     }
+    public class StructureRuleStackHandler : RuleStackHandler
+    {
+        public StructureRuleStackHandler(PsdPhContext context) : base(context){}
+
+        protected override RuleCommand RuleCommand => new StructureRuleCommand(RuleSet);
+    }
 }

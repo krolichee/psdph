@@ -127,9 +127,7 @@ namespace psdPH.Logic.Rules
     public class FlagRule : ConditionRule, CoreRule
     {
         public string FlagName;
-        public FlagRule() : base(null)
-        {
-        }
+        public FlagRule() : base(null) { }
         [XmlIgnore]
         public override Parameter[] Setups => throw new NotImplementedException();
 

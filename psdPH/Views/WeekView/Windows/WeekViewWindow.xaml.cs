@@ -1,6 +1,5 @@
 ﻿using Photoshop;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
-using psdPH.TemplateEditor;
 using psdPH.Utils;
 using psdPH.Utils.CedStack;
 using System.Collections.Generic;
@@ -9,64 +8,14 @@ using System.ComponentModel;
 using System.Runtime.Remoting.Contexts;
 using System.Windows;
 using System.Windows.Controls;
-using psdPH.Logic;
 using System.Linq;
 using psdPH.RuleEditor;
 using static psdPH.TemplateEditor.RuleDicts;
 using System.Media;
 using static psdPH.WeekConfig;
-using psdPH.Views.WeekView.Logic;
-using Condition = psdPH.Logic.Rules.Condition;
 
 namespace psdPH.Views.WeekView
 {
-    /// <summary>
-    /// Логика взаимодействия для WeekGalery.xaml
-    /// </summary>
-    public static class WeekRules
-    {
-        public static Rule[] Rules(Composition root) =>
-            RuleDicts.Rules(root);
-        public static Condition[] WeekConditions(Composition root) => new Condition[]
-        {
-            new WeekCondition(root)
-        };
-
-        public static Condition[] DayConditions(Composition root) => new Condition[]
-        {
-            new EveryNDayCondition(root),
-            new DayOfWeekCondition(root)
-        };
-    };
-
-    public class WeekRulesetStackHandler : RuleStackHandler
-    {
-        public WeekRulesetStackHandler(RuleSet ruleSet, Document doc) : base(ruleSet, doc) { }
-        protected override RuleCommand RuleCommand => new WeekRuleCommand(RuleSet);
-    }
-    public class WeekDayRulesetStackHandler : RuleStackHandler
-    {
-        public WeekDayRulesetStackHandler(RuleSet ruleSet, Document doc) : base(ruleSet, doc) { }
-        protected override RuleCommand RuleCommand => new WeekDayRuleCommand(RuleSet);
-    }
-
-    public class WeekRuleCommand : RuleCommand
-    {
-        public WeekRuleCommand(RuleSet ruleSet) : base(ruleSet) { }
-
-        public override Condition[] Conditions => WeekRules.WeekConditions(RuleSet.Composition);
-
-        public override Rule[] Rules => WeekRules.Rules(RuleSet.Composition);
-    }
-    public class WeekDayRuleCommand : RuleCommand
-    {
-        public WeekDayRuleCommand(RuleSet ruleSet) : base(ruleSet) { }
-
-        public override Condition[] Conditions => WeekRules.DayConditions(RuleSet.Composition);
-
-        public override Rule[] Rules => WeekRules.Rules(RuleSet.Composition);
-    }
-
     public partial class WeekViewWindow : Window
     {
         private bool _deleted;
@@ -85,7 +34,7 @@ namespace psdPH.Views.WeekView
 
             cedStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekStackHandler(weekListData)));
             dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekDayRulesetStackHandler(weekListData.DayRules, doc)));
-            dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekRulesetStackHandler(weekListData.WeekRules, doc)));
+            //dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekRulesetStackHandler(weekListData.WeekRules, doc)));
 
             if (weekListData == null)
             {

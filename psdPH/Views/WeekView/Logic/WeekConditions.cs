@@ -27,9 +27,18 @@ namespace psdPH.Views.WeekView.Logic
     }
     public class DayOfWeekCondition : Condition
     {
+        public override string ToString() => "день недели";
         public DayOfWeek DayOfWeek;
 
-        public override Parameter[] Setups => throw new NotImplementedException();
+        public override Parameter[] Setups { get
+            {
+                var result = new List<Parameter>();
+                var dowConfig = new ParameterConfig(this, nameof(DayOfWeek), "");
+                var dowParameter = Parameter.EnumChoose(dowConfig, typeof(DayOfWeek));
+                result.Add(dowParameter);
+                return result.ToArray();
+            } 
+        }
 
         public DayOfWeekCondition(Composition composition) : base(composition) { }
         public override bool IsValid()
@@ -39,14 +48,28 @@ namespace psdPH.Views.WeekView.Logic
         }
         public DayOfWeekCondition() : base(null) { }
     }
+    [Obsolete]
     public class WeekCondition : Condition
     {
+        public override string ToString() => "неделя";
         public int Week;
         public WeekCondition(Composition composition) : base(composition) { }
-        public override Parameter[] Setups => throw new NotImplementedException();
+        public override Parameter[] Setups
+        {
+            get
+            {
+                throw new NotImplementedException();
+                //var result = new List<Parameter>();
+                //var dowConfig = new ParameterConfig(this, nameof(Week), "");
+                //var dowParameter = Parameter.EnumChoose(dowConfig, typeof(DayOfWeek));
+                //result.Add(dowParameter);
+                //return result.ToArray();
+            }
+        }
         public override bool IsValid()
         {
             return (Composition as WeekBlob).Week == Week;
         }
+        public WeekCondition() : base(null) { }
     }
 }

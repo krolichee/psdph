@@ -17,7 +17,7 @@
                     <CedStack:CEDStackUI Margin="0,0,0,0"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Данные">
+            <TabItem Header="Правила дней">
                 <Grid x:Name="dayRuleStackGrid" Grid.Row="1">
                     <CedStack:CEDStackUI Margin="0,0,0,0"/>
                 </Grid>

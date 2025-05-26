@@ -62,8 +62,8 @@ namespace psdPH
         {
             ChildrenUpdatedEvent?.Invoke();
         }
-        virtual public void addChild(Composition child) { }
-        virtual public void removeChild(Composition child) { }
+        virtual public void AddChild(Composition child) { }
+        virtual public void RemoveChild(Composition child) { }
         public void Restore(Composition parent = null)
         {
             RestoreParents(parent);
