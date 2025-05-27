@@ -36,19 +36,15 @@ namespace versiontest
                 {
                     MessageBox.Show("Нулевой GUID");
                 }
-                if (typeof(Photoshop.Application).GetType().GUID.ToString() != guid)
-                {
-                    MessageBox.Show("guid не совпадает 1");
-                }
                 try
                 { var _ = Activator.CreateInstance(psType);
-                    MessageBox.Show("Есть объект...");
                     psApp = _ as Application;
-                    MessageBox.Show("Победа!");
+                    if (psApp!=null)
+                        MessageBox.Show("Победа!");
+                    else
+                        MessageBox.Show("Мои соболезнования...");
                 }
                 catch { MessageBox.Show("Не удалось преобразовать в Application"); }
-               
-                
             }
             catch { MessageBox.Show("Не удалось получить Photoshop.Application"); }
             

@@ -9,10 +9,42 @@ using System.Threading;
 using System.Threading.Tasks;
 using static psdPH.Logic.PhotoshopDocumentExtension;
 using psdPH.Logic;
+using System.Runtime.InteropServices;
 
 
 namespace psdPHTest.Tests.Ps
 {
+    [TestClass]
+    public class ApplicationConnectionTest
+    {
+        [TestMethod]
+        public void testConnect()
+        {
+            var psAppCom__ = Marshal.GetActiveObject("Photoshop.Application");
+            if (psAppCom__ == null)
+            {
+                Type psType = Type.GetTypeFromProgID("Photoshop.Application");
+                psAppCom__ = Activator.CreateInstance(psType);
+
+            }
+            Assert.IsNotNull(psAppCom__);
+            return;
+        }
+        [TestMethod]
+        public void testConnectAndCast()
+        {
+            Application psApp;
+            var psAppCom__ = Marshal.GetActiveObject("Photoshop.Application");
+            psApp = psAppCom__ as Application;
+            if (psApp == null)
+            {
+                Type psType = Type.GetTypeFromProgID("Photoshop.Application");
+                psAppCom__ = Activator.CreateInstance(psType);
+                psApp = psAppCom__ as Application;
+            }
+            Assert.IsNotNull(psApp);
+        }
+    }
     [TestClass]
     public class ManualPhotoshopTests
     {

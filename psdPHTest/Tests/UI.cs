@@ -10,15 +10,11 @@ using System.Threading.Tasks;
 using static psdPH.Logic.PhotoshopDocumentExtension;
 using System.Windows.Controls;
 using System.Windows;
+using System.Runtime.InteropServices;
 
 namespace psdPHTest.UI
 {
-    [TestClass]
-    public class ApplicationConnectionTest
-    {
-        [TestMethod]
-        pub
-    }
+    
     [TestClass]
     public class MiscTest
     {
