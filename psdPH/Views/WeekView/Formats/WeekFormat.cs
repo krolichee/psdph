@@ -3,7 +3,7 @@ using System;
 
 namespace psdPH.Views.WeekView
 {
-    public static class WeekDatesStrings
+    public static class WeekFormat
     {
         public static string getShortWeekDatesString(int week)
         {

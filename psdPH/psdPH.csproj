@@ -89,11 +89,13 @@
     <Compile Include="Photoshop\LayerWr\LayerWr.cs" />
     <Compile Include="Logic\Rules\ChangeMode.cs" />
     <Compile Include="Logic\Rules\ELayerMode.cs" />
+    <Compile Include="RuleEditor\RulesetDefinition.cs" />
     <Compile Include="Utils\CloneConverter.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Logic\Rules\RuleSet.cs" />
     <Compile Include="Utils\ReflectionParameter\FieldFunctions.cs" />
     <Compile Include="Utils\ReflectionParameter\ParameterConfig.cs" />
+    <Compile Include="Utils\ReflectionParameter\RtbExtension.cs" />
     <Compile Include="Utils\UIName.cs" />
     <Compile Include="PsdPhProject.cs" />
     <Compile Include="StringInputWindow.xaml.cs">
@@ -109,7 +111,7 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureStackHandler.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\RuleCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureCommand.cs" />
-    <Compile Include="Utils\Directories.cs" />
+    <Compile Include="Utils\PsdPhDirectories.cs" />
     <Compile Include="CollectionEditor\ImageSelectorWindow.xaml.cs">
       <DependentUpon>ImageSelectorWindow.xaml</DependentUpon>
     </Compile>
@@ -140,9 +142,9 @@
     <Compile Include="Views\SimpleView\Windows\SimpleViewWindow.xaml.cs">
       <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WeekView\Logic\DateFormat.cs" />
+    <Compile Include="Views\WeekView\Formats\DateFormat.cs" />
     <Compile Include="Views\WeekView\Logic\DowBlob.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekConditions.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekRules\WeekConditions.cs" />
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>
     </Compile>
@@ -170,8 +172,8 @@
     <Compile Include="PsdTemplateDropWindow.xaml.cs">
       <DependentUpon>PsdTemplateDropWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RuleEditor\RuleControlWindow.xaml.cs">
-      <DependentUpon>RuleControlWindow.xaml</DependentUpon>
+    <Compile Include="RuleEditor\RuleEditorWindow.xaml.cs">
+      <DependentUpon>RuleEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="RuleEditor\RuleTextBlock.cs" />
     <Compile Include="RuleEditor\RuleViewControl.xaml.cs">
@@ -202,15 +204,15 @@
     <Compile Include="Views\WeekView\Logic\WeekData.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRenderer.cs" />
     <Compile Include="Views\WeekView\Logic\WeekTime.cs" />
-    <Compile Include="Views\WeekView\Logic\RenderCommand.cs" />
+    <Compile Include="Views\WeekView\Windows\RenderCommand.cs" />
     <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekCommand.cs" />
     <Compile Include="Views\WeekView\Windows\WeekConfigEditor.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekDatesStrings.cs" />
+    <Compile Include="Views\WeekView\Formats\WeekFormat.cs" />
     <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekStackHandler.cs" />
     <Compile Include="Views\WeekView\Logic\WeekView.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekRuleCommand.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekRules.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekRulesetStackHandler.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekRuleCommand.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekRules\WeekRulesetsDefinitions.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekRulesetsStackHandler.cs" />
     <Compile Include="Views\WeekView\Windows\WeekViewWindow.xaml.cs">
       <DependentUpon>WeekViewWindow.xaml</DependentUpon>
     </Compile>
@@ -284,7 +286,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RuleEditor\RuleControlWindow.xaml">
+    <Page Include="RuleEditor\RuleEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

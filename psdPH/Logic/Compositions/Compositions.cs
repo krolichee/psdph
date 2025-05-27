@@ -142,17 +142,6 @@ namespace psdPH
         {
             doc.GetLayerByName(Blob.LayerName).Opacity = 0;
         }
-
-
-        ~PrototypeLeaf()
-        {
-            //var placeholders = Parent.getChildren<PlaceholderLeaf>().Where(p=>p.PrototypeLayerName==LayerName);
-            //foreach (var item in placeholders)
-            //{
-            //    Parent.removeChild(item);
-            //}
-        }
-
         public PrototypeLeaf(Blob blob, string rel_layer_name)
         {
             this.blob = blob;

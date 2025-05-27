@@ -13,18 +13,16 @@ namespace psdPH
         {
             if (psApp == null)
             {
-                var psAppCom__ = Marshal.GetActiveObject("Photoshop.Application");
-                psApp = psAppCom__ as Application;
-
-            }
-            if (psApp == null)
-            {
                 Type psType = Type.GetTypeFromProgID("Photoshop.Application");
                 var psAppCom__ = Activator.CreateInstance(psType);
                psApp = psAppCom__ as Application;
-               
             }
-            
+            if (psApp == null)
+            {
+                var psAppCom__ = Marshal.GetActiveObject("Photoshop.Application");
+                psApp = psAppCom__ as Application;
+            }
+
             psApp.Visible = true;
             return psApp;
         }

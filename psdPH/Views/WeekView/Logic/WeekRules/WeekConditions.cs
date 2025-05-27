@@ -11,9 +11,25 @@ namespace psdPH.Views.WeekView.Logic
 {
     public class EveryNDayCondition : Condition
     {
-        public DateTime StartDateTime;
-        public int Interval;
-        public override Parameter[] Setups => throw new NotImplementedException();
+        public override string ToString() => "каждый 'n' день";
+        public DateTime StartDateTime=new DateTime(1970,1,1);
+        public int Interval=1;
+        public override Parameter[] Setups
+        {
+            get
+            {
+                var result = new List<Parameter>();
+                var intervalConfig = new ParameterConfig(this, nameof(Interval), "каждый...");
+                var intervalParameter = Parameter.IntInput(intervalConfig,1,366);
+                
+                var startDateConfig = new ParameterConfig(this, nameof(StartDateTime), "начиная с");
+                var startDateParameter = Parameter.Calendar(startDateConfig);
+
+                result.Add(intervalParameter);
+                result.Add(startDateParameter);
+                return result.ToArray();
+            }
+        }
 
         public EveryNDayCondition(Composition composition) : base(composition) { }
         public override bool IsValid()
@@ -30,14 +46,16 @@ namespace psdPH.Views.WeekView.Logic
         public override string ToString() => "день недели";
         public DayOfWeek DayOfWeek;
 
-        public override Parameter[] Setups { get
+        public override Parameter[] Setups
+        {
+            get
             {
                 var result = new List<Parameter>();
                 var dowConfig = new ParameterConfig(this, nameof(DayOfWeek), "");
                 var dowParameter = Parameter.EnumChoose(dowConfig, typeof(DayOfWeek));
                 result.Add(dowParameter);
                 return result.ToArray();
-            } 
+            }
         }
 
         public DayOfWeekCondition(Composition composition) : base(composition) { }

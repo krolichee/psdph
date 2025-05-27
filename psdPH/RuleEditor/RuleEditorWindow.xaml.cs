@@ -1,5 +1,6 @@
 ﻿using psdPH.Logic;
 using psdPH.Logic.Rules;
+using psdPH.Views.WeekView;
 using System.Windows;
 using Condition = psdPH.Logic.Rules.Condition;
 
@@ -8,11 +9,14 @@ namespace psdPH.RuleEditor
     /// <summary>
     /// Логика взаимодействия для RuleControlWindow.xaml
     /// </summary>
-    public partial class RuleControlWindow : Window, IRuleEditor
+    public partial class RuleEditorWindow : Window, IRuleEditor
     {
         ConditionRule _result;
         RuleControl _rc;
-        public RuleControlWindow(Rule[] rules, Condition[] conditions)
+
+        public RuleEditorWindow(RulesetDefinition rulesetDef) : this(rulesetDef.Rules, rulesetDef.Conditions) { }
+
+        public RuleEditorWindow(Rule[] rules, Condition[] conditions)
         {
             InitializeComponent();
             SizeToContent = SizeToContent.WidthAndHeight;

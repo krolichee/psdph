@@ -11,10 +11,49 @@ using static psdPH.Logic.PhotoshopDocumentExtension;
 using System.Windows.Controls;
 using System.Windows;
 using System.Runtime.InteropServices;
+using psdPHTest.Tests;
+using psdPH.Views.WeekView;
+using System.IO;
+using psdPH.RuleEditor;
+using psdPH.Logic.Compositions;
 
 namespace psdPHTest.UI
 {
-    
+
+    [TestClass]
+    public class WeekViewWindowTest:WeekViewTest
+    {
+        [TestMethod]
+        public void testWindow()
+        {
+            //PsdPhDirectories.SetBaseDirectory(Directory.GetCurrentDirectory());
+            //PsdPhProject.MakeInstance("test").saveBlob(GetBlob());
+
+            var weekConfig = GetWeekConfig();
+
+            var weekBlob = GetBlob();
+            weekBlob.AddChild(new FlagLeaf() { Name = "testFlag"});
+            var dayBlob = weekConfig.GetDayBlob(weekBlob);
+            dayBlob.AddChild(new FlagLeaf() { Name = "testFlag"});
+
+            var weekListData = WeekListData.Create(weekConfig, weekBlob);
+
+            var wv_w = new WeekViewWindow(weekListData);
+            wv_w.ShowDialog();
+        }
+        [TestMethod]
+        public void testRuleControl()
+        {
+            var weekConfig = GetWeekConfig();
+            var weekBlob = GetBlob();
+
+            weekBlob.AddChild(new FlagLeaf() { Name = "testFlag" });
+            var dayBlob = weekConfig.GetDayBlob(weekBlob);
+            dayBlob.AddChild(new AreaLeaf() { LayerName="area"});
+
+            new RuleEditorWindow(new DayRulesetDefinition(dayBlob)).ShowDialog();
+        }
+    }
     [TestClass]
     public class MiscTest
     {
@@ -33,8 +72,9 @@ namespace psdPHTest.UI
             var window = new Window();
             var calendar = new Calendar();
             window.Content = calendar;
+            calendar.BlackoutDates.Add(new CalendarDateRange(new DateTime(2025, 05, 1)));
             window.ShowDialog();
-            // calendar.SelectedDate;
+            Assert.IsTrue(calendar.SelectedDate == new DateTime(2025, 05, 1));
         }
         [TestMethod]
         public void AligmentContolUITest()

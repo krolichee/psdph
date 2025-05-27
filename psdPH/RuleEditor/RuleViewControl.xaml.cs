@@ -15,7 +15,7 @@ namespace psdPH.RuleEditor
         {
             var sp_ch = _sp.Children;
             foreach (var parameter in parameters)
-            {
+            {                
                 var config = parameter.Config;
                 sp_ch.Add(new Label() { Content = config.Desc });
                 sp_ch.Add(new Label() { Content = config.GetValue().ToString() });

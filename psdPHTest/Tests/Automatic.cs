@@ -16,6 +16,7 @@ using Condition = psdPH.Logic.Rules.Condition;
 using HAli = System.Windows.HorizontalAlignment;
 using VAli = System.Windows.VerticalAlignment;
 using psdPH.Views.WeekView;
+using psdPHTest.Tests;
 
 namespace psdPHTest.Automatic
 {
@@ -97,7 +98,7 @@ namespace psdPHTest.Automatic
         public void Initialize()
         {
             string baseDirectory = @"C:\\Users\\Puziko\\source\\repos\\psdPH\\psdPH\\testResources\\TestProjects\\";
-            Directories.SetBaseDirectory(baseDirectory);
+            PsdPhDirectories.SetBaseDirectory(baseDirectory);
             var project = PsdPhProject.MakeInstance("simple");
         }
         [TestMethod]
@@ -121,41 +122,7 @@ namespace psdPHTest.Automatic
         }
 
     }
-    public class WeekViewTest
-    {
-        public static DowLayernamePair GetPair(DayOfWeek dow) => new DowLayernamePair(dow, dow.GetDescription());
-        public static DowLayernamePair[] DowLayernamePairs => Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Select(e => GetPair(e)).ToArray();
-        public static string[] DayOfWeekNames => Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Select(e => e.GetDescription()).ToArray();
-        public static WeekConfig GetWeekConfig()
-        {
-            return new WeekConfig()
-            {
-                DateTextLeafLayerName = "Число",
-                DayDateFormat = new NoZeroDateFormat(),
-                DayDowFormat = new ShortDowFormat().Lower,
-                DowPlaceholderLayernameList = DowLayernamePairs.ToList(),
-                DowTextLeafLayerName = "День недели",
-                WeekDatesTextLeafName = "Даты недели",
-                PrototypeLayerName = "Прототип дня",
-                TilePreviewTextLeafName = "День недели"
-            };
-        }
-        public static Blob GetBlob()
-        {
-            var blob = Blob.PathBlob("C:\\ProgramData\\psdPH\\Projects\\№пример\\template.psd");
-            var dayBlob = Blob.LayerBlob("Прототип дня");
-            dayBlob.AddChild(new TextLeaf() { LayerName = "Число" });
-            dayBlob.AddChild(new TextLeaf() { LayerName = "День недели" });
-            var dayPrototype = new PrototypeLeaf() { Blob = dayBlob, RelativeLayerName = "Пн" };
-            blob.AddChild(dayBlob);
-            blob.AddChild(dayPrototype);
-            foreach (var dow in DayOfWeekNames)
-                blob.AddChild(new PlaceholderLeaf() { Prototype = dayPrototype, LayerName = dow });
-            var weekDatesTextLeaf = new TextLeaf() { LayerName = "Даты недели" };
-            blob.AddChild(weekDatesTextLeaf);
-            return blob;
-        }
-    }
+    
     namespace WeekRules
     {
         [TestClass]
@@ -300,7 +267,7 @@ public class ConcreteRuleTest
     [TestMethod]
     public void Fitting()
     {
-        Directories.BaseDirectory = testDirectory;
+        PsdPhDirectories.BaseDirectory = testDirectory;
         Blob blob = PsdPhProject.openOrCreateMainBlob("Fitting");
         blob.AddChild(new TextLeaf());
     }

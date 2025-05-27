@@ -22,18 +22,17 @@ namespace psdPH.Views.WeekView
         public bool Deleted { private set { _deleted = value; } get => _deleted; }
         public WeekConfig WeekConfig => WeekListData.WeekConfig;
         public WeekListData WeekListData;
-        Document doc;
         public WeekViewWindow(WeekListData weekListData)
         {
             var root = weekListData.RootBlob;
             var weekConfig = weekListData.WeekConfig;
             InitializeComponent();
 
-            var psApp = PhotoshopWrapper.GetPhotoshopApplication();
-            doc = PhotoshopWrapper.OpenDocument(psApp, Directories.ProjectPsd(PsdPhProject.Instance().ProjectName));
+            //var psApp = PhotoshopWrapper.GetPhotoshopApplication();
+            //doc = PhotoshopWrapper.OpenDocument(psApp, PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
 
             cedStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekStackHandler(weekListData)));
-            dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekDayRulesetStackHandler(weekListData.DayRules, doc)));
+            dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekDayRulesetStackHandler(weekListData.DayRules)));
             //dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekRulesetStackHandler(weekListData.WeekRules, doc)));
 
             if (weekListData == null)

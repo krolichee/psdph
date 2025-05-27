@@ -21,7 +21,7 @@ namespace psdPH.Views.WeekView
             blob = data.MainBlob;
             exclude = getExcludes(weekConfig, blob);
             InitializeComponent();
-            weekDateLabel.Content = WeekDatesStrings.getShortWeekDatesString(data.Week);
+            weekDateLabel.Content = WeekFormat.getShortWeekDatesString(data.Week);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

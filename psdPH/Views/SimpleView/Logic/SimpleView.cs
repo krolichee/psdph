@@ -29,7 +29,7 @@ namespace psdPH.Views.SimpleView.Logic
                 Directory.CreateDirectory(ViewDirectory);
             }
 
-            private string ViewDirectory => Path.Combine(Directories.ViewsDirectory(_projectName), "SimpleView");
+            private string ViewDirectory => Path.Combine(PsdPhDirectories.ViewsDirectory(_projectName), "SimpleView");
             private string ConfigPath => Path.Combine(ViewDirectory, "config.xml");
             private string WeekListDataPath => Path.Combine(ViewDirectory, "data.xml");
             public WeekConfig OpenWeekConfig() => DiskOperations.OpenXml<WeekConfig>(ConfigPath);

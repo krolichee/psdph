@@ -59,7 +59,7 @@ namespace psdPH
         }
         bool tryCreateProject(string templatePath, string projectName)
         {
-            string projectDirectory = Path.Combine(Directories.ProjectsDirectory, projectName);
+            string projectDirectory = Path.Combine(PsdPhDirectories.ProjectsDirectory, projectName);
             if (Directory.Exists(projectDirectory))
             {
                 MessageBox.Show("Такой проект уже существует");
@@ -80,7 +80,7 @@ namespace psdPH
         }
         bool AnyViews()
         {
-           return Directory.EnumerateFileSystemEntries(Directories.ViewsDirectory(CurrentProjectName)).Any();
+           return Directory.EnumerateFileSystemEntries(PsdPhDirectories.ViewsDirectory(CurrentProjectName)).Any();
         }
         void NewProject()
         {
@@ -100,13 +100,13 @@ namespace psdPH
             var projectName = si_w.GetResultString();
             if (tryCreateProject(filePath, projectName))
                 OpenProject(projectName);
-            Directory.CreateDirectory(Directories.ViewsDirectory(projectName));
+            Directory.CreateDirectory(PsdPhDirectories.ViewsDirectory(projectName));
             LoadFoldersIntoMenu();
         }
         public string BaseDirectory;
         public void InitializeBaseDirectory()
         {
-            Directories.SetBaseDirectory(BaseDirectory); //Directory.GetCurrentDirectory();
+            PsdPhDirectories.SetBaseDirectory(BaseDirectory); //Directory.GetCurrentDirectory();
         }
         public static void CopyDirectory(string sourceDir, string targetDir)
         {
@@ -130,7 +130,7 @@ namespace psdPH
             //    return;
             Directory.CreateDirectory(BaseDirectory);
             var examplesDir = Path.Combine(Directory.GetCurrentDirectory(),"Examples");
-            var targerDir = Directories.ProjectsDirectory;
+            var targerDir = PsdPhDirectories.ProjectsDirectory;
             CopyDirectory(examplesDir, targerDir);
         }
         public MainWindow():this(Path.Combine(@"C:\", "ProgramData", "psdPH"))
@@ -173,7 +173,7 @@ namespace psdPH
             simpleViewMenuItem.Command = projectOpenDepended(simpleViewMenuItem_Execute);
         }
         private void openInExplorer_Execute(object _) {
-            string folderPath = Directories.ProjectDirectory(CurrentProjectName);
+            string folderPath = PsdPhDirectories.ProjectDirectory(CurrentProjectName);
             Process.Start("explorer.exe", folderPath);
         }
         private void noneCommand_Execute(object _) { }
@@ -183,7 +183,7 @@ namespace psdPH
         }
         private string[] getProjectsFolders()
         {
-            string directoryPath = Directories.ProjectsDirectory;
+            string directoryPath = PsdPhDirectories.ProjectsDirectory;
             return Directory.GetDirectories(directoryPath);
         }
         private MenuItem makeOpenProjectMenuItem(string folder)

@@ -49,32 +49,39 @@ namespace psdPH.Logic.Compositions
             //}
         }
         public override string ObjName => Mode == BlobMode.Layer ? LayerName : System.IO.Path.GetFileNameWithoutExtension(Path);
+
+        protected Composition[] CoreChildren => Children.Where(item => (item is CoreComposition)).ToArray();
+        protected Composition[] NonCoreChildren => Children.Where(item => !(item is CoreComposition)).ToArray();
         override public void Apply(Document doc)
         {
             if (IsPrototyped())
                 return;
-            Document cur_doc;
+            Document cur_doc=doc;
+
             if (Mode == BlobMode.Layer)
                 cur_doc = doc.OpenSmartLayer(LayerName);
-            else
-                cur_doc = doc;
-            foreach (var item in Children)
-                item.Apply(cur_doc);
-            foreach (var rule in RuleSet.Rules)
-            {
-                rule.Apply(cur_doc);
-            }
+
+            CoreApply();
+            RuleSet.CoreApply();
+
+            NonCoreApply(cur_doc);
+            RuleSet.NonCoreApply(cur_doc);
+
             if (Mode == BlobMode.Layer)
                 cur_doc.Close(PsSaveOptions.psSaveChanges);
         }
+
         public void CoreApply()
         {
             if (IsPrototyped())
                 return;
-            foreach (var item in Children.Where(c => c is CoreComposition))
-                (item as CoreComposition).CoreApply();
-            foreach (var rule in RuleSet.Rules.Where(r => r is CoreRule))
-                (rule as CoreRule).CoreApply();
+            foreach (CoreComposition item in CoreChildren)
+                item.CoreApply();
+        }
+        public void NonCoreApply(Document doc)
+        {
+            foreach (var item in Children)
+                item.Apply(doc);
         }
         override public void AddChild(Composition child)
         {
