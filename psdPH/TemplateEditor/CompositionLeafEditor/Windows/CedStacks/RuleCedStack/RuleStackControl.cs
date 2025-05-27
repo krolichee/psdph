@@ -1,4 +1,6 @@
-﻿using psdPH.RuleEditor;
+﻿using Photoshop;
+using psdPH.Logic;
+using psdPH.RuleEditor;
 using psdPH.Utils;
 using System.Windows;
 using System.Windows.Input;
@@ -6,15 +8,18 @@ using Rule = psdPH.Logic.Rule;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
-    public class RuleStackControl : TemplateStackControl<Rule>
+    public class RuleStackControl : CEDStackControl<Rule>
     {
+        [Upcoming("asd")]
+        readonly RuleSet RuleSet;
         public override ICommand DeleteCommand() =>
-            new RuleCommand(Context).DeleteCommand;
+            new StructureRuleCommand(RuleSet).DeleteCommand;
 
         public override ICommand EditCommand() =>
-            new RuleCommand(Context).EditCommand;
-        public RuleStackControl(Rule rule, PsdPhContext context) : base(context)
+            new StructureRuleCommand(RuleSet).EditCommand;
+        public RuleStackControl(Rule rule, RuleSet ruleSet,Document doc)
         {
+            RuleSet = ruleSet;
             HorizontalAlignment = HorizontalAlignment.Stretch;
             HorizontalContentAlignment = HorizontalAlignment.Stretch;
             ICommand editCommand = EditCommand();
@@ -24,7 +29,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             Content = rtb;
             CommandParameter = rule;
             Command = editCommand;
-            setMenu(this, rule);
+            setContextMenu(this, rule);
         }
     }
 }

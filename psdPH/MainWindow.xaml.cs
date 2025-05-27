@@ -22,9 +22,29 @@ namespace psdPH
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
 
-
+    public class BlockingStack : StackPanel
+    {
+        public void Add(FrameworkElement control)
+        {
+            Children.Add(control);
+            _refresh();
+        }
+        void _refresh()
+        {
+            for (int i = 0; i < Children.Count-1; i++)
+            {
+                (Children[i] as FrameworkElement).IsEnabled = false;
+            }
+            for (int i = 1; i < Children.Count; i++)
+            {
+                var gap = -(Children[i - 1] as Control).Height*0.95;
+                (Children[i] as FrameworkElement).Margin = new Thickness(0,gap,0,0);
+            }
+        }
+    }
     public partial class MainWindow : Window
     {
+        public static BlockingStack BlockingStack=new BlockingStack();
         public static string CurrentProjectName = "";
         void OpenProject(string projectName)
         {
@@ -130,9 +150,14 @@ namespace psdPH
             //layer.TextItem.Height = 100;
             //Console.WriteLine(layer.TextItem.Height);
             //layer.TextItem.Size -= 10;
+
+            InitializeComponent();
+            Content = BlockingStack;
+            BlockingStack.Add(MainGrid);
+
             InitializeBaseDirectory();
             ExportExamples();
-            InitializeComponent();
+            
             LoadFoldersIntoMenu();
             RelayCommand projectOpenDepended(Action<object> action) => new RelayCommand(action, isProjectOpen);
             RelayCommand notDepended(Action<object> action) => new RelayCommand(action, (object _) => true);
@@ -190,7 +215,6 @@ namespace psdPH
         private void NewProjectMenuItem_Execute(object _)
         {
             NewProject();
-
         }
         bool isProjectOpen(object _)
         {
@@ -202,9 +226,12 @@ namespace psdPH
             {
                 MessageBox.Show("Изменения шаблона не будут отображаться на уже созданных видах. После редактирования необходимо будет заново создать виды");
             }    
+
+
             Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
             ICompositionShapitor editor = BlobEditorWindow.OpenFromDisk(blob);
             editor.ShowDialog();
+            
             PsdPhProject.saveBlob(editor.GetResultComposition() as Blob, CurrentProjectName);
         }
         private void weekViewMenuItem_Execute(object _)

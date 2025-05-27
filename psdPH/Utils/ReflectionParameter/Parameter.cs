@@ -1,71 +1,17 @@
-﻿using psdPH.Utils;
-using System;
+﻿using System;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Xml.Serialization;
+using static psdPH.Logic.PhotoshopDocumentExtension;
 
 namespace psdPH.Logic
 {
-    public class ParameterConfig
-    {
-        public object Obj;
-        public string FieldName;
-        public string Desc;
-        public Type GetTypeOfObj()
-        {
-            return Obj.GetType();
-        }
-        public void SetValue(object value)
-        {
-            Type objType = GetTypeOfObj();
-            FieldInfo fieldInfo = objType.GetField(FieldName);
-            PropertyInfo propertyInfo = objType.GetProperty(FieldName);
-
-            if (fieldInfo != null)
-                fieldInfo.SetValue(Obj, value);
-            else if (propertyInfo != null)
-                propertyInfo.SetValue(Obj, value);
-            else
-                throw new ArgumentException($"Поле или свойство с именем '{FieldName}' не найдено в объекте типа '{objType.Name}'.");
-        }
-
-        public object GetValue()
-        {
-            Type objType = GetTypeOfObj();
-            FieldInfo fieldInfo = objType.GetField(FieldName);
-            PropertyInfo propertyInfo = objType.GetProperty(FieldName);
-
-            if (fieldInfo != null)
-                return fieldInfo.GetValue(Obj);
-            else if (propertyInfo != null)
-                return propertyInfo.GetValue(Obj);
-            else
-                throw new ArgumentException($"Поле или свойство с именем '{FieldName}' не найдено в объекте типа '{objType.Name}'.");
-        }
-        public ParameterConfig(object obj, string fieldname, string desc)
-        {
-            this.Obj = obj;
-            this.FieldName = fieldname;
-            this.Desc = desc;
-        }
-    }
-    public class FieldFunctions
-    {
-        public Func<object, object> ConvertFunction = (o) => (o);
-        public Func<object, object> RevertFunction = (o) => (o);
-
-        public static FieldFunctions EnumWrapperFunctions => new FieldFunctions()
-        {
-            ConvertFunction = (o => new EnumWrapper(o as Enum)),
-            RevertFunction = (o) => (o as EnumWrapper).Value
-        };
-    }
-    
     public class Parameter
     {
+        public delegate void AcceptedEvent();
+        public event AcceptedEvent Accepted;
         public Parameter() { }
         public Control Control;
         FieldFunctions _fieldFunctions;
@@ -75,9 +21,10 @@ namespace psdPH.Logic
 
         private ParameterConfig _config;
         public ParameterConfig Config => _config;
-        void accept()
+        public void Accept()
         {
             _config.SetValue(valueFunc());
+            Accepted?.Invoke();
         }
         public string ValueToString()
         {
@@ -90,12 +37,11 @@ namespace psdPH.Logic
             var stack = result._stack;
             var cb = new ComboBox() { ItemsSource = options.Select(fieldFunctions.ConvertFunction) };
             result.valueFunc = () => fieldFunctions.RevertFunction(cb.SelectedValue);
-
             result.Control = cb;
             stack.Children.Add(cb);
             return result;
         }
-        public static FlowDocument ConvertStringToFlowDocument(string text)
+        static FlowDocument ConvertStringToFlowDocument(string text)
         {
             if (string.IsNullOrEmpty(text))
                 return new FlowDocument();
@@ -151,12 +97,13 @@ namespace psdPH.Logic
             }
             
         }
-
         public static Parameter AlignmentInput(ParameterConfig config)
         {
             var result = new Parameter(config);
             var stack = result._stack;
-            //var aliControl = new AligmentControl();
+            var aliControl = new AlignmentControl(config.GetValue() as Alignment);
+            result.Control = aliControl;
+            result.valueFunc = () => aliControl.GetResultAlignment();
             return result;
         }
         public static Parameter StringInput(ParameterConfig config)
@@ -205,17 +152,11 @@ namespace psdPH.Logic
             if (fieldFunctions == null)
                 fieldFunctions = new FieldFunctions();
             _fieldFunctions = fieldFunctions;
-            _stack = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal
-            };
+            _stack = new StackPanel();
+            _stack.Orientation = Orientation.Horizontal;
             _stack.Children.Add(new Label() { Content = config.Desc });
             _config = config;
             _stack.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-        }
-        public void Accept()
-        {
-            accept();
         }
 
         public StackPanel Stack => _stack;

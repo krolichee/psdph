@@ -76,14 +76,14 @@ namespace psdPH.Logic.Compositions
             foreach (var rule in RuleSet.Rules.Where(r => r is CoreRule))
                 (rule as CoreRule).CoreApply();
         }
-        override public void addChild(Composition child)
+        override public void AddChild(Composition child)
         {
             var children = Children.ToHashSet();
             children.Add(child);
             Children = children.ToArray();
             invokeChildrenEvent();
         }
-        override public void removeChild(Composition child)
+        override public void RemoveChild(Composition child)
         {
             var children = Children.ToHashSet();
             children.Remove(child);

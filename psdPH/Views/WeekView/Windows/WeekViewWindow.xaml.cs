@@ -1,13 +1,21 @@
 ﻿using Photoshop;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.Utils;
 using psdPH.Utils.CedStack;
+using System.Collections.Generic;
+using System;
 using System.ComponentModel;
+using System.Runtime.Remoting.Contexts;
 using System.Windows;
+using System.Windows.Controls;
+using System.Linq;
+using psdPH.RuleEditor;
+using static psdPH.TemplateEditor.RuleDicts;
+using System.Media;
+using static psdPH.WeekConfig;
 
 namespace psdPH.Views.WeekView
 {
-    /// <summary>
-    /// Логика взаимодействия для WeekGalery.xaml
-    /// </summary>
     public partial class WeekViewWindow : Window
     {
         private bool _deleted;
@@ -20,9 +28,13 @@ namespace psdPH.Views.WeekView
             var root = weekListData.RootBlob;
             var weekConfig = weekListData.WeekConfig;
             InitializeComponent();
-            cedStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekStackHandler(weekListData)));
+
             var psApp = PhotoshopWrapper.GetPhotoshopApplication();
             doc = PhotoshopWrapper.OpenDocument(psApp, Directories.ProjectPsd(PsdPhProject.Instance().ProjectName));
+
+            cedStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekStackHandler(weekListData)));
+            dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekDayRulesetStackHandler(weekListData.DayRules, doc)));
+            //dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekRulesetStackHandler(weekListData.WeekRules, doc)));
 
             if (weekListData == null)
             {
@@ -30,7 +42,7 @@ namespace psdPH.Views.WeekView
             }
             Closing += (object sender, CancelEventArgs e) => DialogResult = true;
             WeekListData = weekListData;
-            
+
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)

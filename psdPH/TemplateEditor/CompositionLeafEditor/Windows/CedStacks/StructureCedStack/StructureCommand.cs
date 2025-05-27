@@ -21,18 +21,18 @@ namespace psdPH
             if (creator.ShowDialog() != true)
                 return;
             Composition result = creator.GetResultComposition();
-            _root.addChild(result);
+            _root.AddChild(result);
         }
         protected override void EditExecuteCommand(object parameter)
         {
             if (StructureDicts.EditorDict.ContainsKey(parameter.GetType()))
-                StructureDicts.EditorDict[parameter.GetType()](_doc, parameter as Composition).ShowDialog();
+               StructureDicts.EditorDict[parameter.GetType()](_doc, parameter as Composition).ShowDialog();
             else
                 SystemSounds.Exclamation.Play();
         }
         protected override void DeleteExecuteCommand(object parameter)
         {
-            _root.removeChild(parameter as Composition);
+            _root.RemoveChild(parameter as Composition);
         }
     }
 }

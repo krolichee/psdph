@@ -19,7 +19,7 @@ namespace psdPH.RuleEditor
             return string.Join(" ", parts);
 
         }
-        string[] getConditionParts(ConditionRule rule)
+        string[] getRuleParts(ConditionRule rule)
         {
             List<string> parts = new List<string>();
             Logic.Rules.Condition condition = rule.Condition;
@@ -35,7 +35,7 @@ namespace psdPH.RuleEditor
             Parameter[] ruleParameters = rule.Setups;
             List<string> parts = new List<string>();
             if (rule is ConditionRule)
-                parts.AddRange(getConditionParts((ConditionRule)rule));
+                parts.AddRange(getRuleParts((ConditionRule)rule));
             parts.Add(rule.ToString());
             parts.Add(getText(ruleParameters));
             Text = string.Join(" ", parts);

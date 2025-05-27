@@ -1,4 +1,6 @@
-﻿using psdPH.Logic.Compositions;
+﻿using Photoshop;
+using psdPH.Logic.Compositions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -6,8 +8,6 @@ using System.Xml.Serialization;
 namespace psdPH.Logic.Rules
 {
     [XmlInclude(typeof(TextCondition))]
-    [XmlInclude(typeof(MaxRowCountCondition))]
-    [XmlInclude(typeof(MaxRowLenCondition))]
     [XmlInclude(typeof(FlagCondition))]
     public abstract class Condition : ISetupable
     {
@@ -61,58 +61,29 @@ namespace psdPH.Logic.Rules
         }
 
     }
-
-    public class MaxRowCountCondition : TextCondition
+    public class EmptyTextCondition : TextCondition
     {
-        public override string ToString() => "количество строк";
-        [XmlIgnore]
-        public override Parameter[] Setups
-        {
-            get
-            {
-                List<Parameter> result = base.Setups.ToList();
-                var RowCountConfig = new ParameterConfig(this, nameof(this.RowCount), "превышает");
-                result.Add(Parameter.IntInput(RowCountConfig));
-                return result.ToArray();
-            }
-        }
-
-        public int RowCount;
-
-        public MaxRowCountCondition(Composition composition) : base(composition) { }
-        public MaxRowCountCondition() : base(null) { }
+        public override string ToString() => "текст пустой";
+        public EmptyTextCondition(Composition composition) : base(composition) { }
+        public EmptyTextCondition() : base(null) { }
 
         public override bool IsValid()
         {
-            return TextLeaf.Text.Split(@"\r".ToCharArray()).Length > RowCount;
+            return TextLeaf.Text.Length==0;
         }
     }
-
-    public class MaxRowLenCondition : TextCondition
+    public class NonEmptyTextCondition : TextCondition
     {
-        public override string ToString() => "максимальная длина строки\n среди строк";
-        [XmlIgnore]
-        public override Parameter[] Setups
-        {
-            get
-            {
-                List<Parameter> result = base.Setups.ToList();
-                var RowLenghtConfig = new ParameterConfig(this, nameof(this.RowLength), "превышает");
-                result.Add(Parameter.IntInput(RowLenghtConfig));
-                return result.ToArray();
-            }
-        }
-
-        public int RowLength;
-
-        public MaxRowLenCondition(Composition composition) : base(composition) { }
-        public MaxRowLenCondition() : base(null) { }
+        public override string ToString() => "текст не пустой";
+        public NonEmptyTextCondition(Composition composition) : base(composition) { }
+        public NonEmptyTextCondition() : base(null) { }
 
         public override bool IsValid()
         {
-            return TextLeaf.Text.Split(@"\r".ToCharArray()).Select(s => s.Length).Max() > RowLength;
+            return TextLeaf.Text.Length > 0;
         }
     }
+
     public class FlagCondition : Condition
     {
         public override string ToString() => "значение флага";
@@ -151,5 +122,25 @@ namespace psdPH.Logic.Rules
         }
         public FlagCondition(Composition composition) : base(composition) { }
         public FlagCondition() : base(null) { }
+    }
+    [Serializable]
+    public class FlagRule : ConditionRule, CoreRule
+    {
+        public string FlagName;
+        public FlagRule() : base(null) { }
+        [XmlIgnore]
+        public override Parameter[] Setups => throw new NotImplementedException();
+
+        public void CoreApply()
+        {
+            var flagLeaf = Composition.getChildren<FlagLeaf>().First(f => f.Name == FlagName);
+            flagLeaf.Toggle = Condition.IsValid();
+        }
+
+        protected override void _apply(Document doc) =>
+            CoreApply();
+        protected override void _else(Document doc) =>
+            CoreApply();
+
     }
 }

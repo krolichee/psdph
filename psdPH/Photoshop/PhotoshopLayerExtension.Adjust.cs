@@ -70,7 +70,6 @@ namespace psdPH.Logic
 
         public static LayerSetWr EqualizeLineWidth(this TextLayerWr textLayerWr)
         {
-            textLayerWr.CopyStyle();
             textLayerWr.OffStyle();
             LayerSetWr lineLayerSetWr = textLayerWr.SplitTextLayer();
             ArtLayerWr[] lineLayers = lineLayerSetWr.ArtLayers.Cast<ArtLayer>().Select(l=>new ArtLayerWr(l)).ToArray();
@@ -93,13 +92,14 @@ namespace psdPH.Logic
                 double curGap = layer.GetBoundRect().Top - prevLayer.GetBoundRect().Bottom;
                 layer.TranslateV(new Vector(0, prevLineGap - curGap));
             }
-            lineLayerSetWr.PasteStyle();
             return lineLayerSetWr;
         }
         public static void FitWithEqualize(this TextLayerWr textLayer, ArtLayerWr areaLayer, Alignment alignment)
         {
+            textLayer.CopyStyle();
             LayerSetWr equalizedWr = textLayer.EqualizeLineWidth();
             equalizedWr.Fit(areaLayer,alignment);
+            equalizedWr.PasteStyle();
         }
         public static void Fit(this LayerWr layerWr, ArtLayerWr areaLayer,Alignment alignment)
         {

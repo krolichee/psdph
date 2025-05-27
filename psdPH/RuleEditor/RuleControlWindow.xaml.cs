@@ -1,5 +1,7 @@
 ﻿using psdPH.Logic;
+using psdPH.Logic.Rules;
 using System.Windows;
+using Condition = psdPH.Logic.Rules.Condition;
 
 namespace psdPH.RuleEditor
 {
@@ -10,11 +12,11 @@ namespace psdPH.RuleEditor
     {
         ConditionRule _result;
         RuleControl _rc;
-        public RuleControlWindow(Composition composition)
+        public RuleControlWindow(Rule[] rules, Condition[] conditions)
         {
             InitializeComponent();
             SizeToContent = SizeToContent.WidthAndHeight;
-            _rc = new RuleControl(composition);
+            _rc = new RuleControl(rules, conditions);
             mainGrid.Children.Add(_rc);
         }
 

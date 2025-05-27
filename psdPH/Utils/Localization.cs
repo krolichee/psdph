@@ -22,7 +22,7 @@
                 {typeof(TextLeaf), "Текст" },
                 {typeof(LayerLeaf), "Слой" },
                 {typeof(GroupLeaf), "Группа" },
-                {typeof(AreaLeaf),"Поле для текста" },
+                {typeof(AreaLeaf),"Зона" },
 
                 {typeof(Rule), "Правило" },
 

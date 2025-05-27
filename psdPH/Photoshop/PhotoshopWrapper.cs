@@ -11,12 +11,17 @@ namespace psdPH
         // Конструктор: создает экземпляр Photoshop
         public static Application GetPhotoshopApplication()
         {
+            
+            
+
             if (psApp == null)
             {
                 Type psType = Type.GetTypeFromProgID("Photoshop.Application");
                 psApp = Activator.CreateInstance(psType) as Application;
-                psApp.Visible = true;
             }
+            if (psApp == null)
+                psApp = Marshal.GetActiveObject("Photoshop.Application") as Application;
+            psApp.Visible = true;
             return psApp;
         }
         public static void Dispose()

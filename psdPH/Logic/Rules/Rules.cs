@@ -2,6 +2,7 @@
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Rules;
 using psdPH.Photoshop;
+using psdPH.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,8 +32,6 @@ namespace psdPH.Logic
         {
             Composition = composition;
         }
-        [XmlIgnore]
-        public RuleSet ruleSet;
         abstract public void Apply(Document doc);
 
         public virtual void RestoreComposition(Composition composition)
@@ -44,6 +43,19 @@ namespace psdPH.Logic
 
         [XmlIgnore]
         public abstract Parameter[] Setups { get; }
+
+        public virtual Rule Clone()
+        {
+
+            XmlSerializer serializer = new XmlSerializer(typeof(Rule), new Type[] { this.GetType() });
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+            serializer.Serialize(sw, this);
+            StringReader sr = new StringReader(sb.ToString());
+            Rule result = serializer.Deserialize(sr) as Rule;
+            result.RestoreComposition(Composition);
+            return result;
+        }
     }
 
     [XmlInclude(typeof(Condition))]
@@ -70,7 +82,7 @@ namespace psdPH.Logic
                 _else(doc);
         }
 
-        public Rule Clone()
+        public override Rule Clone()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Rule), new Type[] { Condition.GetType(), this.GetType() });
             StringBuilder sb = new StringBuilder();
@@ -227,7 +239,7 @@ namespace psdPH.Logic
     {
         public bool BalanceFont = false;
         public FitRule(Composition composition) : base(composition) { }
-        Alignment Alignment;
+        public Alignment Alignment;
         public override Parameter[] Setups
         {
             get

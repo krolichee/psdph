@@ -92,6 +92,8 @@
     <Compile Include="Utils\CloneConverter.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Logic\Rules\RuleSet.cs" />
+    <Compile Include="Utils\ReflectionParameter\FieldFunctions.cs" />
+    <Compile Include="Utils\ReflectionParameter\ParameterConfig.cs" />
     <Compile Include="Utils\UIName.cs" />
     <Compile Include="PsdPhProject.cs" />
     <Compile Include="StringInputWindow.xaml.cs">
@@ -128,6 +130,7 @@
     <Compile Include="Utils\DataInputWindow.cs" />
     <Compile Include="Utils\EnumWrapper.cs" />
     <Compile Include="Utils\TopmostWindow.cs" />
+    <Compile Include="Utils\UpcomingAttribute.cs" />
     <Compile Include="Utils\XmlClone.cs" />
     <Compile Include="Views\SimpleView\CompositionTreeControl.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleView.cs" />
@@ -138,7 +141,8 @@
       <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WeekView\Logic\DateFormat.cs" />
-    <Compile Include="Views\WeekView\Logic\DayBlob.cs" />
+    <Compile Include="Views\WeekView\Logic\DowBlob.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekConditions.cs" />
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>
     </Compile>
@@ -204,6 +208,9 @@
     <Compile Include="Views\WeekView\Logic\WeekDatesStrings.cs" />
     <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekStackHandler.cs" />
     <Compile Include="Views\WeekView\Logic\WeekView.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekRuleCommand.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekRules.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekRulesetStackHandler.cs" />
     <Compile Include="Views\WeekView\Windows\WeekViewWindow.xaml.cs">
       <DependentUpon>WeekViewWindow.xaml</DependentUpon>
     </Compile>

@@ -11,9 +11,18 @@
             <RowDefinition Height="18"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid x:Name="cedStackGrid" Grid.Row="1">
-            <CedStack:CEDStackUI Margin="0,0,0,0"/>
-        </Grid>
+        <TabControl  Grid.Row="1">
+            <TabItem Header="Данные">
+                <Grid x:Name="cedStackGrid" Grid.Row="1">
+                    <CedStack:CEDStackUI Margin="0,0,0,0"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Правила дней">
+                <Grid x:Name="dayRuleStackGrid" Grid.Row="1">
+                    <CedStack:CEDStackUI Margin="0,0,0,0"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
         <Menu VerticalAlignment="Center" Height="18">
             <MenuItem Header="Вид" >
                 <MenuItem Header="Удалить" Click="MenuItem_Click" />

@@ -16,21 +16,17 @@ namespace psdPH
     {
         public DayOfWeek Dow;
         public string Layername;
-
         public DowLayernamePair() { }
-
         public DowLayernamePair(DayOfWeek dow, string layername)
         {
             Dow = dow;
             Layername = layername;
         }
     }
-    
     [Serializable]
     public class WeekConfig
     {
-        public ObservableCollection<ConditionRule> DayRules=new ObservableCollection<ConditionRule>();
-        public ObservableCollection<ConditionRule> WeekRules=new ObservableCollection<ConditionRule>();
+        
         [XmlIgnore]
         public Dictionary<DayOfWeek, string> DowPrototypeLayernameDict
         {
@@ -44,7 +40,7 @@ namespace psdPH
         }
         public List<DowLayernamePair> DowPlaceholderLayernameList = new List<DowLayernamePair>();
         public DateFormat DayDateFormat;
-        internal DateFormat DayDowFormat;
+        public DateFormat DayDowFormat;
 
         public string TilePreviewTextLeafName;
         public string PrototypeLayerName;
@@ -71,45 +67,7 @@ namespace psdPH
         {
             return blob.getChildren<TextLeaf>().First(p => p.LayerName == TilePreviewTextLeafName);
         }
-        [Serializable]
-        public abstract class WeekDataCondition : Condition
-        {
-            protected WeekDataCondition(Composition composition) : base(composition) { }
-            [XmlIgnore]
-            public override Parameter[] Setups => throw new NotImplementedException();
-        }
-        
-        public class EveryNDayCondition : WeekDataCondition
-        {
-            public DateTime StartDateTime;
-            public int Interval;
-            public EveryNDayCondition(Composition composition) : base(composition) { }
-            public override bool IsValid()
 
-            { var dayBlob = Composition as DowBlob;
-                var dateTime = WeekTime.GetDateByWeekAndDay(dayBlob.Week, dayBlob.Dow);
-                TimeSpan timeSinceFirstWeek = dateTime - StartDateTime;
-                return timeSinceFirstWeek.TotalDays % Interval == 0;
-            }
-            public EveryNDayCondition() :base(null) { }
-        }
-
-        public void InjectDayRules(DowBlob dayBlob)
-        {
-            foreach (var item in DayRules)
-                dayBlob.RuleSet.AddRule(item.Clone());
-        }
-        internal void InjectWeekRules(WeekData weekData)
-        {
-            foreach (var item in WeekRules)
-                weekData.MainBlob.RuleSet.AddRule(item.Clone());
-        }
-        internal void InjectRules(WeekData weekData)
-        {
-            foreach (var item in weekData.DowBlobList)
-                InjectDayRules(item);
-            InjectWeekRules(weekData);
-        }
         public void FillDateAndDow(DowBlob dayBlob)
         {
             var week = dayBlob.Week;
