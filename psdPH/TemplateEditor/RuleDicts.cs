@@ -34,7 +34,7 @@ namespace psdPH.TemplateEditor
             (){
         {
               typeof(Rule),(doc, composition) =>
-                 new RuleControlWindow(Rules(composition),Conditions(composition))
+                 new RuleEditorWindow(Rules(composition),Conditions(composition))
         } };
 
         public static Dictionary<Type, EditRule>

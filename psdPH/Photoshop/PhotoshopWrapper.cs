@@ -11,16 +11,18 @@ namespace psdPH
         // Конструктор: создает экземпляр Photoshop
         public static Application GetPhotoshopApplication()
         {
-            
-            
-
             if (psApp == null)
             {
                 Type psType = Type.GetTypeFromProgID("Photoshop.Application");
-                psApp = Activator.CreateInstance(psType) as Application;
+                var psAppCom__ = Activator.CreateInstance(psType);
+               psApp = psAppCom__ as Application;
             }
             if (psApp == null)
-                psApp = Marshal.GetActiveObject("Photoshop.Application") as Application;
+            {
+                var psAppCom__ = Marshal.GetActiveObject("Photoshop.Application");
+                psApp = psAppCom__ as Application;
+            }
+
             psApp.Visible = true;
             return psApp;
         }
@@ -31,6 +33,11 @@ namespace psdPH
         }
 
         // Открывает PSD-файл
+        public static Document OpenDocument(string filePath)
+        {
+            GetPhotoshopApplication().Open(filePath);
+            return psApp.ActiveDocument;
+        }
         public static Document OpenDocument(Application psApp, string filePath)
         {
             psApp.Open(filePath);

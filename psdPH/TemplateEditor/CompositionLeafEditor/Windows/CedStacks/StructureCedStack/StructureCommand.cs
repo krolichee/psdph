@@ -17,11 +17,10 @@ namespace psdPH
             CreateComposition creator_func;
             if (!StructureDicts.CreatorDict.TryGetValue(type, out creator_func))
                 throw new ArgumentException();
-            ICompositionShapitor creator = creator_func(_doc, _root);
+            IBatchCompositionCreator creator = creator_func(_doc, _root);
             if (creator.ShowDialog() != true)
                 return;
-            Composition result = creator.GetResultComposition();
-            _root.AddChild(result);
+            _root.AddChildren(creator.GetResultBatch());
         }
         protected override void EditExecuteCommand(object parameter)
         {

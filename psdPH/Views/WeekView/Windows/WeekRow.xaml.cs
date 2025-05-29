@@ -19,8 +19,7 @@ namespace psdPH.Views.WeekView
             HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch,
             Margin = new Thickness(5, 0, 0, 0),
             Content = "Рендер",
-            Command = new RenderCommand(
-                    PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument).Command,
+            Command = new RenderCommand().Command,
             CommandParameter = data
         };
         Button getDeleteButton(WeekData data) => new Button()

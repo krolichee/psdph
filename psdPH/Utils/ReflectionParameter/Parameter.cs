@@ -1,9 +1,12 @@
-﻿using System;
+﻿using psdPH.Utils.ReflectionParameter;
+using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Xml.Serialization;
+using YourNamespace;
 using static psdPH.Logic.PhotoshopDocumentExtension;
 
 namespace psdPH.Logic
@@ -32,6 +35,8 @@ namespace psdPH.Logic
         }
         public static Parameter Choose(ParameterConfig config, object[] options, FieldFunctions fieldFunctions = null)
         {
+            if (options.Length == 0)
+                throw new ArgumentException();
             var result = new Parameter(config, fieldFunctions);
             fieldFunctions = result._fieldFunctions;
             var stack = result._stack;
@@ -40,40 +45,6 @@ namespace psdPH.Logic
             result.Control = cb;
             stack.Children.Add(cb);
             return result;
-        }
-        static FlowDocument ConvertStringToFlowDocument(string text)
-        {
-            if (string.IsNullOrEmpty(text))
-                return new FlowDocument();
-
-            FlowDocument flowDoc = new FlowDocument();
-            Paragraph paragraph = new Paragraph();
-
-            string[] lines = text.Split('\n');
-
-            for (int i = 0; i < lines.Length; i++)
-            {
-                paragraph.Inlines.Add(new Run(lines[i]));
-                if (i < lines.Length - 1)
-                    paragraph.Inlines.Add(new LineBreak());
-            }
-            flowDoc.Blocks.Add(paragraph);
-            return flowDoc;
-        }
-        static string getRtbText(RichTextBox _rtb, string lineSep = "\n")
-        {
-            string _result = "";
-            foreach (Paragraph item in (_rtb).Document.Blocks)
-                foreach (var item1 in item.Inlines)
-                    if (item1 is Run)
-                    {
-                        var run = (Run)item1;
-                        if (_result != "")
-                            _result += lineSep;
-                        _result += run.Text;
-
-                    }
-            return _result;
         }
 
         public static Parameter RichStringInput(ParameterConfig config)
@@ -84,9 +55,9 @@ namespace psdPH.Logic
             var rtb = new RichTextBox() { MinWidth = 70, MinHeight = 40 };
 
             rtb.TextChanged += RichTextBox_TextChanged;
-            result.valueFunc = () => getRtbText(rtb, "\r");
+            result.valueFunc = () => rtb.GetText();
             result.Control = rtb;
-            rtb.Document = ConvertStringToFlowDocument(config.GetValue().ToString());
+            rtb.SetText(config.GetValue() as string); ;
             stack.Children.Add(rtb);
             return result;
 
@@ -95,14 +66,16 @@ namespace psdPH.Logic
                 foreach (Paragraph item in (sender as RichTextBox).Document.Blocks)
                     item.Margin = new Thickness(0, 0, 0, 0);
             }
-            
+
         }
         public static Parameter AlignmentInput(ParameterConfig config)
         {
             var result = new Parameter(config);
             var stack = result._stack;
             var aliControl = new AlignmentControl(config.GetValue() as Alignment);
+            aliControl.Dimension = 30;
             result.Control = aliControl;
+            stack.Children.Add(aliControl);
             result.valueFunc = () => aliControl.GetResultAlignment();
             return result;
         }
@@ -122,9 +95,8 @@ namespace psdPH.Logic
             var result = new Parameter(config);
             var stack = result._stack;
 
-            var ntb = new NumericTextBox();
+            var ntb = new NumericTextBox((int)config.GetValue(), min, max);
             result.Control = ntb;
-            ntb.Text = config.GetValue().ToString();
             stack.Children.Add(ntb);
             result.valueFunc = () => ntb.GetNumber();
             return result;
@@ -147,6 +119,35 @@ namespace psdPH.Logic
             var options = enumValues.ToArray();
             return Parameter.Choose(config, options, FieldFunctions.EnumWrapperFunctions);
         }
+
+        internal static Parameter Date(ParameterConfig config)
+        {
+            var result = new Parameter(config);
+            var stack = result._stack;
+
+            var calendar = new DatePicker();
+            result.Control = calendar;
+
+            stack.Children.Add(calendar);
+            result.valueFunc = () => calendar.SelectedDate;
+
+            return result;
+        }
+
+        internal static Parameter MultiChoose(ParameterConfig config, object[] options)
+        {
+            var result = new Parameter(config);
+            var stack = result._stack;
+
+            var picker = new MultiPicker(options);
+            result.Control = picker;
+
+            stack.Children.Add(picker);
+            result.valueFunc = () => picker.GetSelectedItems();
+
+            return result;
+        }
+
         Parameter(ParameterConfig config, FieldFunctions fieldFunctions = null)
         {
             if (fieldFunctions == null)

@@ -40,6 +40,13 @@ namespace psdPH
         }
         [XmlArray("Children")]
         public Composition[] Children = new Composition[0];
+        internal void AddChildren(Composition[] compositions)
+        {
+            foreach (var item in compositions)
+            {
+                AddChild(item);
+            }
+        }
         public virtual string UIName { get { return ""; } }
         abstract public string ObjName { get; }
         public override string ToString()
@@ -73,11 +80,11 @@ namespace psdPH
         {
             if (parent != null)
                 Parent = parent;
-            if (getChildren() != null)
-                foreach (var item in getChildren())
+            if (GetChildren() != null)
+                foreach (var item in GetChildren())
                     item.Restore(this);
         }
-        virtual public Composition[] getChildren() { return null; }
+        virtual public Composition[] GetChildren() { return null; }
         virtual public T[] getChildren<T>() { return null; }
         public RuleSet RuleSet = new RuleSet();
 
@@ -142,17 +149,6 @@ namespace psdPH
         {
             doc.GetLayerByName(Blob.LayerName).Opacity = 0;
         }
-
-
-        ~PrototypeLeaf()
-        {
-            //var placeholders = Parent.getChildren<PlaceholderLeaf>().Where(p=>p.PrototypeLayerName==LayerName);
-            //foreach (var item in placeholders)
-            //{
-            //    Parent.removeChild(item);
-            //}
-        }
-
         public PrototypeLeaf(Blob blob, string rel_layer_name)
         {
             this.blob = blob;

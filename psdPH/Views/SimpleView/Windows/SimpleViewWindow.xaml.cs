@@ -38,7 +38,7 @@ namespace psdPH.Views.SimpleView.Windows
             InitializeComponent();
             cedStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new SimpleViewHandler(simpleListData)));
             var psApp = PhotoshopWrapper.GetPhotoshopApplication();
-            doc = PhotoshopWrapper.OpenDocument(psApp, Directories.ProjectPsd(PsdPhProject.Instance().ProjectName));
+            doc = PhotoshopWrapper.OpenDocument(psApp, PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
             Closing += (object sender, CancelEventArgs e) => DialogResult = true;
             SimpleListData = simpleListData;
         }

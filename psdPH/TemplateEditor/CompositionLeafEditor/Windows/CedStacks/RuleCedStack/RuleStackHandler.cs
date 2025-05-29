@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic;
 using psdPH.Utils;
+using psdPH.Utils.CedStack;
 using psdPH.Views.WeekView;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Windows.Controls;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
-    public abstract class RuleStackHandler : TemplateStackHandler
+    public abstract class RuleStackHandler : CEDStackHandler
     {
         protected abstract RuleCommand RuleCommand { get; }
         protected RuleSet RuleSet;
@@ -38,22 +39,19 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         }
         override protected UIElement createControl(object rule)
         {
-            return new RuleStackControl((Rule)rule, RuleSet, _doc);
+            return new RuleStackControl((Rule)rule, RuleSet);
         }
         protected override object[] getElements() =>
             RuleSet.Rules.ToArray();
-        public RuleStackHandler(PsdPhContext context) : base(context)
-        {
-            RuleSet.Updated += Refresh;
-        }
-        public RuleStackHandler(RuleSet ruleSet, Document doc) : base(new PsdPhContext(doc, ruleSet.Composition))
+        public RuleStackHandler(RuleSet ruleSet)
         {
             RuleSet = ruleSet;
+            RuleSet.Updated += Refresh;
         }
     }
     public class StructureRuleStackHandler : RuleStackHandler
     {
-        public StructureRuleStackHandler(PsdPhContext context) : base(context){}
+        public StructureRuleStackHandler(RuleSet ruleSet) : base(ruleSet) { }
 
         protected override RuleCommand RuleCommand => new StructureRuleCommand(RuleSet);
     }

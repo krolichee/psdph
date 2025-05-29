@@ -34,15 +34,20 @@ namespace psdPH
                 {  downCenter,Alignment.Create("down","center")},
                 {  downRight,Alignment.Create("down","right")}
             };
-        Size _size = new Size(90, 90);
+        void setDimension(int size)
+        {
+            Height = Width = size;
+        }
+        public int Dimension { get=>(int)Height; set => setDimension(value); }
         Alignment _result=new Alignment(HorizontalAlignment.Center,VerticalAlignment.Center);
         public AlignmentControl(Alignment alignment):this()
         {
-            setAligment(alignment);
+            if (alignment != null)
+                setAligment(alignment);
         }
         public AlignmentControl(int size) : this()
         {
-            Height = Width = size;
+            setDimension(size);
         }
         public AlignmentControl()
         {

@@ -16,7 +16,8 @@ using Condition = psdPH.Logic.Rules.Condition;
 
 namespace psdPH.Logic
 {
-    public interface CoreRule{
+    public interface CoreRule
+    {
         void CoreApply();
     }
     [XmlInclude(typeof(ConditionRule))]
@@ -39,7 +40,7 @@ namespace psdPH.Logic
             Composition = composition;
         }
 
-        
+
 
         [XmlIgnore]
         public abstract Parameter[] Setups { get; }
@@ -105,7 +106,15 @@ namespace psdPH.Logic
         [XmlIgnore]
         public LayerComposition LayerComposition
         {
-            get => Composition.getChildren<LayerComposition>().First((c) => c.LayerName == LayerName); set
+            get
+            {
+                try
+                {
+                    return Composition.getChildren<LayerComposition>().First((c) => c.LayerName == LayerName);
+                }
+                catch { return null; }
+            }
+            set
             {
                 LayerName = value.LayerName;
             }
@@ -213,7 +222,22 @@ namespace psdPH.Logic
     }
     public abstract class AreaRule : LayerRule
     {
+        protected Parameter getAlignmentParameter()
+        {
+            var alingment_config = new ParameterConfig(this, nameof(Alignment), "с выравниванием");
+            return Parameter.AlignmentInput(alingment_config);
+        }
         public string AreaLayerName;
+        protected Parameter getAreaParameter()
+        {
+            var layerNameConfig = new ParameterConfig(this, nameof(this.AreaLeaf), "по зоне");
+            return Parameter.Choose(layerNameConfig, Composition.getChildren<AreaLeaf>());
+        }
+        protected Parameter[] getLayerAndAreaParameters()
+        {
+            return new Parameter[] { getLayerParameter(), getAreaParameter() };
+        }
+
         [XmlIgnore]
         public AreaLeaf AreaLeaf
         {
@@ -222,14 +246,25 @@ namespace psdPH.Logic
                 AreaLayerName = value.LayerName;
             }
         }
+
         public AreaRule(Composition composition) : base(composition) { }
     }
     public class AlignRule : AreaRule
     {
+        public override string ToString() => "выровнять";
         public AlignRule(Composition composition) : base(composition) { }
 
         public Alignment Alignment;
-        public override Parameter[] Setups => new Parameter[0];
+        public override Parameter[] Setups
+        {
+            get
+            {
+                var result = new List<Parameter>() { };
+                result.AddRange(getLayerAndAreaParameters());
+                result.Add(getAlignmentParameter());
+                return result.ToArray();
+            }
+        }
         protected override void _apply(Document doc)
         {
             getRuledLayerWr(doc).AlignLayer(AreaLeaf.ArtLayerWr(doc), Alignment);
@@ -237,6 +272,7 @@ namespace psdPH.Logic
     }
     public class FitRule : AreaRule
     {
+        public override string ToString() => "вместить";
         public bool BalanceFont = false;
         public FitRule(Composition composition) : base(composition) { }
         public Alignment Alignment;
@@ -245,13 +281,12 @@ namespace psdPH.Logic
             get
             {
                 var result = new List<Parameter>();
-                result.Add(getLayerParameter());
+                result.AddRange(getLayerAndAreaParameters());
                 var balance_config = new ParameterConfig(this, nameof(BalanceFont), "балансировать шрифт");
                 if (LayerComposition is TextLeaf)
                     result.Add(Parameter.Check(balance_config));
-                var alingment_config = new ParameterConfig(this, nameof(Alignment), "с выравниванием");
-                result.Add(Parameter.AlignmentInput(alingment_config));
-                return null;
+                result.Add(getAlignmentParameter());
+                return result.ToArray();
             }
 
         }

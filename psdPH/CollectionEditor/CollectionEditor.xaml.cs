@@ -72,7 +72,7 @@ namespace psdPH.CollectionEditor
         }
         void openCollection(string collectionName)
         {
-            string collection_dir = Path.Combine(Directories.CollectionsDirectory, collectionName);
+            string collection_dir = Path.Combine(PsdPhDirectories.CollectionsDirectory, collectionName);
 
             currentCollection = new ImageCollection(collection_dir);
             foreach (var bitmapImage in currentCollection.CollectionImages)
@@ -92,7 +92,7 @@ namespace psdPH.CollectionEditor
         {
             InitializeComponent();
             occ = new OpenCollectionCommand(this);
-            string collections_path = Directories.CollectionsDirectory;
+            string collections_path = PsdPhDirectories.CollectionsDirectory;
             string[] collections_paths = Directory.EnumerateDirectories(collections_path).ToArray();
             foreach (var item in collections_paths)
             {

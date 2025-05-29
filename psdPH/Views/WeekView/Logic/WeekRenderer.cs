@@ -3,17 +3,21 @@ using psdPH.Logic.Compositions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace psdPH.Views.WeekView.Logic
 {
     class WeekRenderer
     {
-        public static void renderWeek(WeekData weekData, Document doc)
+        public static void RenderWeek(WeekData weekData, Document doc)
         {
-            WeekConfig weekConfig = weekData.WeekConfig;
-
             var preparedBlob = weekData.Prepare();
             preparedBlob.Apply(doc);
+        }
+        public static void RenderWeek(WeekData weekData)
+        {
+            var doc = PhotoshopWrapper.OpenDocument(weekData.MainBlob.Path);
+            RenderWeek(weekData, doc);
         }
     }
 }

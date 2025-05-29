@@ -28,7 +28,11 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
         }
         public ParametersInputWindow(Parameter[] parameters, string title = "")
         {
+            
             InitializeComponent();
+            this.CenterByTopmostOrScreen();
+
+
             Title = title;
             _stack = new StackPanel();
             Parameters = parameters;
@@ -36,7 +40,9 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             {
                 parameter.Stack.Orientation = Orientation.Vertical;
                 parameter.Control.HorizontalAlignment = HorizontalAlignment.Left;
-                parameter.Stack.Margin = new Thickness(0, 0, 0, 10);
+                parameter.Control.VerticalAlignment = VerticalAlignment.Top; 
+                parameter.Stack.Margin = new Thickness(10, 10, 0, 10);
+
             }
             MainGrid.Children.Insert(0, _stack);
         }

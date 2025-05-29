@@ -30,13 +30,13 @@ namespace psdPH
 
         public static void saveBlob(Blob blob, string projectName)
         {
-            string xmlFilePath = Directories.ProjectXml(projectName);
+            string xmlFilePath = PsdPhDirectories.ProjectXml(projectName);
             DiskOperations.SaveXml<Blob>(xmlFilePath, blob);
         }
         public static Blob openOrCreateMainBlob(string projectName)
         {
             Blob blob;
-            string xmlFilePath = Directories.ProjectXml(projectName);
+            string xmlFilePath = PsdPhDirectories.ProjectXml(projectName);
             if (File.Exists(xmlFilePath))
             {
                 blob = openMainBlob(projectName);
@@ -47,13 +47,13 @@ namespace psdPH
         }
         public static Blob createMainBlob(string projectName)
         {
-            string psdFilePath = Directories.ProjectPsd(projectName);
+            string psdFilePath = PsdPhDirectories.ProjectPsd(projectName);
             return Blob.PathBlob(Path.GetFileName(psdFilePath));
         }
         public static Blob openMainBlob(string projectName)
         {
             Blob blob;
-            string xmlFilePath = Directories.ProjectXml(projectName);
+            string xmlFilePath = PsdPhDirectories.ProjectXml(projectName);
             blob = DiskOperations.OpenXml<Blob>(xmlFilePath);
             blob.Restore();
             return blob;

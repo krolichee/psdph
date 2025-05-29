@@ -4,28 +4,32 @@ using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
-    public abstract class LeafCreator<T> : ICompositionShapitor where T : Composition, new()
+    public abstract class SingleLeafCreator<T> : IBatchCompositionCreator where T : Composition, new()
     {
         protected T result;
         protected ParametersInputWindow p_w;
-        public Composition GetResultComposition()
-        {
-            return p_w.Applied ? result : null;
-        }
         public bool? ShowDialog()
         {
             return p_w.ShowDialog();
         }
-        protected LeafCreator()
+
+        public Composition[] GetResultBatch()
+        {
+            return p_w.Applied ? new Composition[] { result } : new Composition[0];
+        }
+
+        protected SingleLeafCreator()
         {
             result = new T();
         }
     }
-    public class FlagLeafCreator : LeafCreator<FlagLeaf>
+    public class FlagLeafCreator : SingleLeafCreator<FlagLeaf>
     {
         public FlagLeafCreator() : base()
         {
@@ -33,9 +37,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             var par_config = new ParameterConfig(result, nameof(result.Name), "Имя флага");
             p_w = new ParametersInputWindow(new[] { Parameter.StringInput(par_config) });
         }
-
     }
-    public class PlaceholderLeafCreator : LeafCreator<PlaceholderLeaf>
+    public class PlaceholderLeafCreator : SingleLeafCreator<PlaceholderLeaf>
     {
         public PlaceholderLeafCreator(Document doc, Composition root) : base()
         {
@@ -46,25 +49,24 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             p_w = new ParametersInputWindow(new[] { prototype_parameter, rel_parameter });
         }
     }
-    public class TextLeafCreator : LeafCreator<TextLeaf>
+    public class TextLeafCreator : SingleLeafCreator<TextLeaf>
     {
-        public TextLeafCreator(Document doc) : base()
+        void Single(Document doc)
         {
             result.LayerName = "";
             var ln_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой");
             string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psTextLayer }));
             List<Parameter> parameters = new List<Parameter>();
-            var justificationConfig = new ParameterConfig(result, nameof(result.Justification), "Выравнивание");
-            parameters.Add(Parameter.Choose(justificationConfig, new PsJustification[] {
-                    PsJustification.psRight,
-                    PsJustification.psLeft,
-                    PsJustification.psCenter
-                }.Cast<object>().ToArray(), FieldFunctions.EnumWrapperFunctions));
-            parameters.Add(Parameter.Choose(ln_pconfig, layers_names));
+            var layerParameter = Parameter.Choose(ln_pconfig, layers_names);
+            parameters.Add(layerParameter);
             p_w = new ParametersInputWindow(parameters.ToArray());
         }
+        public TextLeafCreator(Document doc) : base()
+        {
+            Single(doc);
+        }
     }
-    public class PrototypeCreator : LeafCreator<PrototypeLeaf>
+    public class PrototypeCreator : SingleLeafCreator<PrototypeLeaf>
     {
         public PrototypeCreator(Document doc, Composition root) : base()
         {
@@ -79,7 +81,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             p_w = new ParametersInputWindow(new[] { bn_parameter, rel_parameter });
         }
     }
-    public class ImageLeafCreator : LeafCreator<ImageLeaf>
+    public class ImageLeafCreator : SingleLeafCreator<ImageLeaf>
     {
         public ImageLeafCreator(Document doc) : base()
         {
@@ -89,7 +91,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             p_w = new ParametersInputWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
         }
     }
-    public class LayerLeafCreator : LeafCreator<LayerLeaf>
+    public class LayerLeafCreator : SingleLeafCreator<LayerLeaf>
     {
         public LayerLeafCreator(Document doc) : base()
         {
@@ -99,7 +101,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             p_w = new ParametersInputWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
         }
     }
-    public class GroupLeafCreator : LeafCreator<GroupLeaf>
+    public class GroupLeafCreator : SingleLeafCreator<GroupLeaf>
     {
         public GroupLeafCreator(Document doc) : base()
         {
@@ -109,7 +111,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             p_w = new ParametersInputWindow(new[] { Parameter.Choose(ln_pconfig, layers_names) });
         }
     }
-    public class AreaLeafCreator : LeafCreator<AreaLeaf>
+    public class AreaLeafCreator : SingleLeafCreator<AreaLeaf>
     {
         public AreaLeafCreator(Document doc) : base()
         {
@@ -121,7 +123,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             p_w = new ParametersInputWindow(new[] { ln_parameter});
         }
     }
-    public class BlobCreator : LeafCreator<Blob>
+    public class BlobCreator : SingleLeafCreator<Blob>
     {
         public BlobCreator(Document doc, Blob root) : base()
         {

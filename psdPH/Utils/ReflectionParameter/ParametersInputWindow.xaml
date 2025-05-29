@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
-        Title="StackOkWindow" Height="450" Width="400" SizeToContent="Height" Closed="Window_Closed">
+        Title="StackOkWindow"  MinWidth="200" MinHeight="50" SizeToContent="WidthAndHeight" Closed="Window_Closed">
     <StackPanel x:Name="MainGrid">
-        <Button Content="Ok" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="25" Width="40" Margin="0,10,0,0" Click="Button_Click"/>
+        <Button Content="Ok" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="25" Width="40" Margin="0,10,0,10" Click="Button_Click"/>
     </StackPanel>
 </Window>

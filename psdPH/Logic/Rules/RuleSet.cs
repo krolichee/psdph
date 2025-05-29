@@ -1,6 +1,8 @@
 ﻿using Photoshop;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Controls;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic
@@ -18,13 +20,18 @@ namespace psdPH.Logic
         public Composition Composition;
         public ObservableCollection<Rule> Rules = new ObservableCollection<Rule>();
 
-        public void apply(Document doc)
-        {
+        protected Rule[] CoreRules => Rules.Where(item => (item is CoreRule)).ToArray();
+        protected Rule[] NonCoreRules => Rules.Where(item => !(item is CoreRule)).ToArray();
 
-            foreach (var item in Rules)
-            {
+        public void NonCoreApply(Document doc)
+        {
+            foreach (var item in NonCoreRules)
                 item.Apply(doc);
-            }
+        }
+        public void CoreApply()
+        {
+            foreach (CoreRule item in CoreRules)
+                item.CoreApply();
         }
 
         public void RestoreComposition(Composition composition)

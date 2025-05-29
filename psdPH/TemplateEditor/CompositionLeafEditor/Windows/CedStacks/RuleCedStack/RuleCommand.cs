@@ -23,7 +23,7 @@ namespace psdPH
         protected override bool IsEditableCommand(object parameter) => true;
         protected override void CreateExecuteCommand(object parameter)
         {
-            var rc_w = new RuleControlWindow(Rules, Conditions);
+            var rc_w = new RuleEditorWindow(Rules, Conditions);
             if (rc_w.ShowDialog() != true)
                 return;
             RuleSet.AddRule(rc_w.GetResultRule());

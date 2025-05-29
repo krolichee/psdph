@@ -15,7 +15,7 @@ namespace psdPH.Views.SimpleView
             Header = blob.ObjName;
 
             var parameters_stack = new StackPanel();
-            foreach (var child in blob.getChildren())
+            foreach (var child in blob.GetChildren())
             {
                 if (child is Blob)
                 {

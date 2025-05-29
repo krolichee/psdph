@@ -29,7 +29,7 @@ namespace psdPH.Views.WeekView
             Directory.CreateDirectory(ViewDirectory);
         }
 
-        private string ViewDirectory => Path.Combine(Directories.ViewsDirectory(_projectName), "WeekView");
+        private string ViewDirectory => Path.Combine(PsdPhDirectories.ViewsDirectory(_projectName), "WeekView");
         private string ConfigPath => Path.Combine(ViewDirectory, "config.xml");
         private string WeekListDataPath => Path.Combine(ViewDirectory, "data.xml");
 

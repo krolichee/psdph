@@ -10,14 +10,103 @@ using System.Threading.Tasks;
 using static psdPH.Logic.PhotoshopDocumentExtension;
 using System.Windows.Controls;
 using System.Windows;
+using System.Runtime.InteropServices;
+using psdPHTest.Tests;
+using psdPH.Views.WeekView;
+using System.IO;
+using psdPH.RuleEditor;
+using psdPH.Logic.Compositions;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 
 namespace psdPHTest.UI
 {
     [TestClass]
-    public class ApplicationConnectionTest
+    public class TemplateEditorTest
     {
         [TestMethod]
-        pub
+        public void testMultiTextLeaf()
+        {
+            var blob = Blob.PathBlob("test.psd");
+            blob.AddChild(new TextLeaf() { LayerName="text1"});
+            blob.AddChild(new TextLeaf() { LayerName="text2"});
+            var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
+            var c_w = new MultiTextLeafCreator(doc,blob);
+            c_w.ShowDialog();
+            blob.AddChildren(c_w.GetResultBatch());
+            blob.getChildren<TextLeaf>().First(t=>t.LayerName == "text1");
+            blob.getChildren<TextLeaf>().First(t=>t.LayerName == "text2");
+        }
+
+        [TestMethod]
+        public void testMultiPlaceholderLeaf()
+        {
+            var blob = Blob.PathBlob("test.psd");
+            var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
+            try {
+                new MultiPlaceholderLeafCreator(doc, blob); 
+                Assert.Fail(); 
+            } catch {  }
+            blob.AddChild(new PrototypeLeaf() { LayerName = "prototype" });
+            
+            var c_w = new MultiPlaceholderLeafCreator(doc,blob);
+            c_w.ShowDialog();
+            blob.AddChildren(c_w.GetResultBatch());
+            blob.getChildren<PlaceholderLeaf>().First(t => t.LayerName == "layer1");
+            blob.getChildren<PlaceholderLeaf>().First(t => t.LayerName == "layer2");
+            
+        }
+    }
+    
+    [TestClass]
+    public class ParameterTest
+    {
+        public object[] Objects;
+        [TestMethod]
+        public void testMulti()
+        {
+            var options = new string[] { "1", "2", "3" };
+            var cfg = new ParameterConfig(this,nameof(Objects),"каво");
+            var parameters = new Parameter[] { Parameter.MultiChoose(cfg, options)};
+            var pi_w = new ParametersInputWindow(parameters);
+            pi_w.ShowDialog();
+            Assert.IsTrue(Objects[0] as string=="1");
+            Assert.IsTrue(Objects[1] as string=="3");
+        }
+
+    }
+    [TestClass]
+    public class WeekViewWindowTest:WeekViewTest
+    {
+        [TestMethod]
+        public void testWindow()
+        {
+            //PsdPhDirectories.SetBaseDirectory(Directory.GetCurrentDirectory());
+            //PsdPhProject.MakeInstance("test").saveBlob(GetBlob());
+
+            var weekConfig = GetWeekConfig();
+
+            var weekBlob = GetBlob();
+            weekBlob.AddChild(new FlagLeaf() { Name = "testFlag"});
+            var dayBlob = weekConfig.GetDayBlob(weekBlob);
+            dayBlob.AddChild(new FlagLeaf() { Name = "testFlag"});
+
+            var weekListData = WeekListData.Create(weekConfig, weekBlob);
+
+            var wv_w = new WeekViewWindow(weekListData);
+            wv_w.ShowDialog();
+        }
+        [TestMethod]
+        public void testRuleControl()
+        {
+            var weekConfig = GetWeekConfig();
+            var weekBlob = GetBlob();
+
+            weekBlob.AddChild(new FlagLeaf() { Name = "testFlag" });
+            var dayBlob = weekConfig.GetDayBlob(weekBlob);
+            dayBlob.AddChild(new AreaLeaf() { LayerName="area"});
+
+            new RuleEditorWindow(new DayRulesetDefinition(dayBlob)).ShowDialog();
+        }
     }
     [TestClass]
     public class MiscTest
@@ -37,8 +126,19 @@ namespace psdPHTest.UI
             var window = new Window();
             var calendar = new Calendar();
             window.Content = calendar;
+            calendar.BlackoutDates.Add(new CalendarDateRange(new DateTime(2025, 05, 1)));
             window.ShowDialog();
-            // calendar.SelectedDate;
+            Assert.IsTrue(calendar.SelectedDate == new DateTime(2025, 05, 1));
+        }
+        [TestMethod]
+        public void testDatePicker()
+        {
+            var window = new Window();
+            var calendar = new DatePicker();
+            window.Content = calendar;
+            calendar.BlackoutDates.Add(new CalendarDateRange(new DateTime(2025, 05, 1)));
+            window.ShowDialog();
+            Assert.IsTrue(calendar.SelectedDate == new DateTime(2025, 05, 1));
         }
         [TestMethod]
         public void AligmentContolUITest()

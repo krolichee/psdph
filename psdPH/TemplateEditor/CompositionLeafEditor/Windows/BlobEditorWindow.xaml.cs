@@ -19,7 +19,7 @@ namespace psdPH
     /// Логика взаимодействия для TemplateEditor.xaml
     /// </summary>
 
-    public partial class BlobEditorWindow : Window, ICompositionShapitor
+    public partial class BlobEditorWindow : Window, IBatchCompositionCreator
     {
 
         Composition _composition;
@@ -37,7 +37,7 @@ namespace psdPH
             if (blob.Mode != BlobMode.Path)
                 throw new ArgumentException();
             PsApp psApp = PsWr.GetPhotoshopApplication();
-            Document doc = PhotoshopWrapper.OpenDocument(psApp,Directories.ProjectPsd(PsdPhProject.Instance().ProjectName));
+            Document doc = PhotoshopWrapper.OpenDocument(psApp,PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
             return new BlobEditorWindow(doc, blob);
         }
         BlobEditorWindow(Document doc, Blob root)
@@ -49,7 +49,7 @@ namespace psdPH
             structureTab.Content = CEDStackUI.CreateCEDStack(
                 new StructureStackHandler(new PsdPhContext(doc, root)));
             ruleTab.Content = CEDStackUI.CreateCEDStack(
-                new StructureRuleStackHandler(new PsdPhContext(doc, root)));
+                new StructureRuleStackHandler(_composition.RuleSet));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -77,5 +77,10 @@ namespace psdPH
             _composition = Blob.PathBlob("template.psd");
             Close();
         }
+
+        public Composition[] GetResultBatch()
+        {
+            return  new Composition[] { _composition };
+    }
     }
 }

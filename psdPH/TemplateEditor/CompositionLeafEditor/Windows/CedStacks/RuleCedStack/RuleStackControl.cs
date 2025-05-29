@@ -17,7 +17,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 
         public override ICommand EditCommand() =>
             new StructureRuleCommand(RuleSet).EditCommand;
-        public RuleStackControl(Rule rule, RuleSet ruleSet,Document doc)
+        public RuleStackControl(Rule rule, RuleSet ruleSet)
         {
             RuleSet = ruleSet;
             HorizontalAlignment = HorizontalAlignment.Stretch;

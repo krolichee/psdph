@@ -20,15 +20,24 @@ namespace psdPH.Logic
             ruleComboBox.ItemsSource = rules;
         }
 
+        void setupParameterApperiance(Parameter param)
+        {
+            param.Stack.Orientation = Orientation.Horizontal;
+            param.Control.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            param.Control.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            param.Stack.Margin = new System.Windows.Thickness(0, 0, 0, 10);
+        }
+
         private void conditionsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _condition = conditionsComboBox.SelectedItem as Condition;
             conditionParametersStack.Children.Clear();
             var parameters = _condition.Setups;
             _parameters.AddRange(parameters);
-            foreach (var item in parameters)
+            foreach (var param in parameters)
             {
-                conditionParametersStack.Children.Add(item.Stack);
+                setupParameterApperiance(param);
+                conditionParametersStack.Children.Add(param.Stack);
             }
         }
         private void ruleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -37,9 +46,10 @@ namespace psdPH.Logic
             ruleParametersStack.Children.Clear();
             var parameters = _result.Setups;
             _parameters.AddRange(parameters);
-            foreach (var item in parameters)
+            foreach (var param in parameters)
             {
-                ruleParametersStack.Children.Add(item.Stack);
+                setupParameterApperiance(param);
+                ruleParametersStack.Children.Add(param.Stack);
             }
 
         }

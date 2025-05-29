@@ -4,7 +4,7 @@ using Path = System.IO.Path;
 
 namespace psdPH
 {
-    public static class Directories
+    public static class PsdPhDirectories
     {
         public static void SetBaseDirectory(string path)
         {
@@ -13,8 +13,8 @@ namespace psdPH
             //Directory.SetCurrentDirectory(path);
             BaseDirectory = path;
         }
-        public static string ProjectPsd(string projectName) => Path.Combine(Directories.ProjectDirectory(projectName), "template.psd");
-        public static string ProjectXml(string projectName) => Path.Combine(Directories.ProjectDirectory(projectName), "template.xml");
+        public static string ProjectPsd(string projectName) => Path.Combine(PsdPhDirectories.ProjectDirectory(projectName), "template.psd");
+        public static string ProjectXml(string projectName) => Path.Combine(PsdPhDirectories.ProjectDirectory(projectName), "template.xml");
         private static string CreateIfNotExist(string path)
         {
             var V = Directory.CreateDirectory(path);
