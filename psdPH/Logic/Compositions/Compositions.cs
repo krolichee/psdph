@@ -40,6 +40,13 @@ namespace psdPH
         }
         [XmlArray("Children")]
         public Composition[] Children = new Composition[0];
+        internal void AddChildren(Composition[] compositions)
+        {
+            foreach (var item in compositions)
+            {
+                AddChild(item);
+            }
+        }
         public virtual string UIName { get { return ""; } }
         abstract public string ObjName { get; }
         public override string ToString()
@@ -73,11 +80,11 @@ namespace psdPH
         {
             if (parent != null)
                 Parent = parent;
-            if (getChildren() != null)
-                foreach (var item in getChildren())
+            if (GetChildren() != null)
+                foreach (var item in GetChildren())
                     item.Restore(this);
         }
-        virtual public Composition[] getChildren() { return null; }
+        virtual public Composition[] GetChildren() { return null; }
         virtual public T[] getChildren<T>() { return null; }
         public RuleSet RuleSet = new RuleSet();
 

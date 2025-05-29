@@ -9,8 +9,8 @@ namespace psdPH.TemplateEditor
 {
     public static class StructureDicts
     {
-        public delegate ICompositionShapitor CreateComposition(Document doc, Composition root);
-        public delegate ICompositionShapitor EditComposition(Document doc, Composition composition);
+        public delegate IBatchCompositionCreator CreateComposition(Document doc, Composition root);
+        public delegate IBatchCompositionCreator EditComposition(Document doc, Composition composition);
 
         public static Dictionary<Type, CreateComposition>
             CreatorDict = new Dictionary<Type, CreateComposition>
@@ -18,9 +18,9 @@ namespace psdPH.TemplateEditor
         { typeof(Blob),(doc, root) =>new BlobCreator(doc,root as Blob)},
         { typeof(FlagLeaf), (doc, root) =>new FlagLeafCreator()},
         { typeof(PrototypeLeaf),(doc, root) =>new PrototypeCreator(doc, root) },
-        { typeof(PlaceholderLeaf), (doc, root) =>new PlaceholderLeafCreator(doc, root) },
+        { typeof(PlaceholderLeaf), (doc, root) =>new MultiPlaceholderLeafCreator(doc, root) },
         //{ typeof(ImageLeaf),(doc, root) => new ImageLeafCreator(doc) },
-        { typeof(TextLeaf),(doc, root) => new TextLeafCreator(doc)},
+        { typeof(TextLeaf),(doc, root) => new MultiTextLeafCreator(doc,root)},
         { typeof(LayerLeaf),(doc, root) => new LayerLeafCreator(doc)},
         { typeof(GroupLeaf),(doc, root) => new GroupLeafCreator(doc)},
         { typeof(AreaLeaf),(doc, root) => new AreaLeafCreator(doc)} };

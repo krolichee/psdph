@@ -85,6 +85,7 @@ namespace psdPH.Logic.Compositions
         }
         override public void AddChild(Composition child)
         {
+            child.Parent = this;
             var children = Children.ToHashSet();
             children.Add(child);
             Children = children.ToArray();
@@ -97,7 +98,7 @@ namespace psdPH.Logic.Compositions
             Children = children.ToArray();
             invokeChildrenEvent();
         }
-        override public Composition[] getChildren()
+        override public Composition[] GetChildren()
         {
             return Children;
         }
@@ -138,8 +139,6 @@ namespace psdPH.Logic.Compositions
             result.Restore(Parent as Blob);
             return result;
         }
-
-        
 
         public Blob() : base()
         {

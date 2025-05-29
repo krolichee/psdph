@@ -32,7 +32,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             return new StructureStackControl((Composition)item, Context);
         }
         protected override object[] getElements() =>
-            _root.getChildren();
+            _root.GetChildren();
 
         public StructureStackHandler(PsdPhContext context) : base(context)
         {

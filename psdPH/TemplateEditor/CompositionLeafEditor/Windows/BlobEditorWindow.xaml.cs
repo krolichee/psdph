@@ -19,7 +19,7 @@ namespace psdPH
     /// Логика взаимодействия для TemplateEditor.xaml
     /// </summary>
 
-    public partial class BlobEditorWindow : Window, ICompositionShapitor
+    public partial class BlobEditorWindow : Window, IBatchCompositionCreator
     {
 
         Composition _composition;
@@ -77,5 +77,10 @@ namespace psdPH
             _composition = Blob.PathBlob("template.psd");
             Close();
         }
+
+        public Composition[] GetResultBatch()
+        {
+            return  new Composition[] { _composition };
+    }
     }
 }

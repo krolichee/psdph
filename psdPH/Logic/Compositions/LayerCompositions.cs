@@ -72,9 +72,6 @@ namespace psdPH.Logic.Compositions
                 return result.ToArray();
             }
         }
-
-        public PsJustification Justification = PsJustification.psCenter;
-
         override public void Apply(Document doc)
         {
             ArtLayer layer = ArtLayerWr(doc).ArtLayer;

@@ -281,7 +281,7 @@ namespace psdPH.Logic
             get
             {
                 var result = new List<Parameter>();
-                result.Add(getLayerParameter());
+                result.AddRange(getLayerAndAreaParameters());
                 var balance_config = new ParameterConfig(this, nameof(BalanceFont), "балансировать шрифт");
                 if (LayerComposition is TextLeaf)
                     result.Add(Parameter.Check(balance_config));

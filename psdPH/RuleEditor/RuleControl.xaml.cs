@@ -23,7 +23,7 @@ namespace psdPH.Logic
         void setupParameterApperiance(Parameter param)
         {
             param.Stack.Orientation = Orientation.Horizontal;
-            param.Control.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            param.Control.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             param.Control.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             param.Stack.Margin = new System.Windows.Thickness(0, 0, 0, 10);
         }

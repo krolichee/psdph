@@ -1,10 +1,12 @@
 ﻿using psdPH.Utils.ReflectionParameter;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Xml.Serialization;
+using YourNamespace;
 using static psdPH.Logic.PhotoshopDocumentExtension;
 
 namespace psdPH.Logic
@@ -33,6 +35,8 @@ namespace psdPH.Logic
         }
         public static Parameter Choose(ParameterConfig config, object[] options, FieldFunctions fieldFunctions = null)
         {
+            if (options.Length == 0)
+                throw new ArgumentException();
             var result = new Parameter(config, fieldFunctions);
             fieldFunctions = result._fieldFunctions;
             var stack = result._stack;
@@ -53,7 +57,7 @@ namespace psdPH.Logic
             rtb.TextChanged += RichTextBox_TextChanged;
             result.valueFunc = () => rtb.GetText();
             result.Control = rtb;
-            rtb.SetText(config.GetValue() as string);;
+            rtb.SetText(config.GetValue() as string); ;
             stack.Children.Add(rtb);
             return result;
 
@@ -62,7 +66,7 @@ namespace psdPH.Logic
                 foreach (Paragraph item in (sender as RichTextBox).Document.Blocks)
                     item.Margin = new Thickness(0, 0, 0, 0);
             }
-            
+
         }
         public static Parameter AlignmentInput(ParameterConfig config)
         {
@@ -91,7 +95,7 @@ namespace psdPH.Logic
             var result = new Parameter(config);
             var stack = result._stack;
 
-            var ntb = new NumericTextBox((int)config.GetValue(),min,max);
+            var ntb = new NumericTextBox((int)config.GetValue(), min, max);
             result.Control = ntb;
             stack.Children.Add(ntb);
             result.valueFunc = () => ntb.GetNumber();
@@ -116,16 +120,30 @@ namespace psdPH.Logic
             return Parameter.Choose(config, options, FieldFunctions.EnumWrapperFunctions);
         }
 
-        internal static Parameter Calendar(ParameterConfig config)
+        internal static Parameter Date(ParameterConfig config)
         {
             var result = new Parameter(config);
             var stack = result._stack;
 
-            var calendar = new Calendar();
+            var calendar = new DatePicker();
             result.Control = calendar;
 
             stack.Children.Add(calendar);
-            result.valueFunc=()=>calendar.SelectedDate;
+            result.valueFunc = () => calendar.SelectedDate;
+
+            return result;
+        }
+
+        internal static Parameter MultiChoose(ParameterConfig config, object[] options)
+        {
+            var result = new Parameter(config);
+            var stack = result._stack;
+
+            var picker = new MultiPicker(options);
+            result.Control = picker;
+
+            stack.Children.Add(picker);
+            result.valueFunc = () => picker.GetSelectedItems();
 
             return result;
         }

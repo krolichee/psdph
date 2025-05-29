@@ -90,10 +90,14 @@
     <Compile Include="Logic\Rules\ChangeMode.cs" />
     <Compile Include="Logic\Rules\ELayerMode.cs" />
     <Compile Include="RuleEditor\RulesetDefinition.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\MultiCompositionCreator.cs" />
     <Compile Include="Utils\CloneConverter.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Logic\Rules\RuleSet.cs" />
     <Compile Include="Utils\ReflectionParameter\FieldFunctions.cs" />
+    <Compile Include="Utils\ReflectionParameter\MultiPicker.xaml.cs">
+      <DependentUpon>MultiPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\ReflectionParameter\ParameterConfig.cs" />
     <Compile Include="Utils\ReflectionParameter\RtbExtension.cs" />
     <Compile Include="Utils\UIName.cs" />
@@ -243,6 +247,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utils\CedStack\CEDStackUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utils\ReflectionParameter\MultiPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

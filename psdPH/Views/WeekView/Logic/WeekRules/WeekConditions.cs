@@ -23,7 +23,7 @@ namespace psdPH.Views.WeekView.Logic
                 var intervalParameter = Parameter.IntInput(intervalConfig,1,366);
                 
                 var startDateConfig = new ParameterConfig(this, nameof(StartDateTime), "начиная с");
-                var startDateParameter = Parameter.Calendar(startDateConfig);
+                var startDateParameter = Parameter.Date(startDateConfig);
 
                 result.Add(intervalParameter);
                 result.Add(startDateParameter);
