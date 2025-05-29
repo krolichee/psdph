@@ -32,14 +32,18 @@ namespace psdPH
                 {  centerRight,Alignment.Create("center","right")},
                 {  downLeft,Alignment.Create("down","left")},
                 {  downCenter,Alignment.Create("down","center")},
-                {  downRight,Alignment.Create("down","right")}
+                {  downRight,Alignment.Create("down","right")},
+                {  upNone,Alignment.Create("up","none")},
+                {  downNone,Alignment.Create("down","none")},
+                {  noneLeft,Alignment.Create("none","left")},
+                {  noneRight,Alignment.Create("none","right")}
             };
         void setDimension(int size)
         {
             Height = Width = size;
         }
         public int Dimension { get=>(int)Height; set => setDimension(value); }
-        Alignment _result=new Alignment(HorizontalAlignment.Center,VerticalAlignment.Center);
+        Alignment _result= Alignment.Create("center", "center");
         public AlignmentControl(Alignment alignment):this()
         {
             if (alignment != null)
@@ -57,8 +61,8 @@ namespace psdPH
                 button.Command = new RelayCommand(setAligment);
                 button.CommandParameter = btnAli[button];
                 button.ToolTip = btnAli[button].ToLocalizedString();
-                ToolTipService.SetInitialShowDelay(button, 100);    // Задержка перед показом (0.5 сек)
-                ToolTipService.SetBetweenShowDelay(button, 500);   // Время для мгновенного показа следующей подсказки (2 сек)
+                ToolTipService.SetInitialShowDelay(button, 100);  
+                ToolTipService.SetBetweenShowDelay(button, 500);  
                 ToolTipService.SetShowDuration(button, 1000);
             }
             var mainGrid = new Grid();

@@ -24,39 +24,43 @@ namespace psdPH.Logic
 		public static Vector GetAlightmentVector(Rect targetRect, Rect dynamicRect, Alignment alignment = null)
 		{
 			if (alignment == null)
-				alignment = new Alignment(HorizontalAlignment.Left, VerticalAlignment.Top);
+				alignment = new Alignment(HAilgnment.Left, VAilgnment.Top);
 			double x = 0;
 			double y = 0;
 			switch (alignment.H)
 			{
-				case HorizontalAlignment.Left:
+				case HAilgnment.Left:
 					x = targetRect.Left - dynamicRect.Left;
 					break;
-				case HorizontalAlignment.Right:
+				case HAilgnment.Right:
 					x = targetRect.Right - dynamicRect.Right;
 					break;
-				case HorizontalAlignment.Center:
-				case HorizontalAlignment.Stretch:
-					double t_w = targetRect.Width;
-					double d_w = dynamicRect.Width;
-					x = (targetRect.Left + t_w / 2) - (dynamicRect.Left + d_w / 2);
+				case HAilgnment.Center:
+                    double t_w = targetRect.Width;
+                    double d_w = dynamicRect.Width;
+                    x = (targetRect.Left + t_w / 2) - (dynamicRect.Left + d_w / 2);
+                    break;
+                case HAilgnment.None:
+					x = y = 0;
 					break;
 			}
 			switch (alignment.V)
 			{
-				case VerticalAlignment.Top:
+				case VAilgnment.Top:
 					y = targetRect.Top - dynamicRect.Top;
 					break;
-				case VerticalAlignment.Bottom:
+				case VAilgnment.Bottom:
 					y = targetRect.Bottom - dynamicRect.Bottom;
 					break;
-				case VerticalAlignment.Center:
-				case VerticalAlignment.Stretch:
+				case VAilgnment.Center:
 					double t_h = targetRect.Height;
 					double d_h = dynamicRect.Height;
 					y = (targetRect.Top + t_h / 2) - (dynamicRect.Top + d_h / 2);
 					break;
-			}
+                case VAilgnment.None:
+                    x = y = 0;
+                    break;
+            }
 			return new Vector(x, y);
 		}
 	}

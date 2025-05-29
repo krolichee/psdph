@@ -1,17 +1,32 @@
 ﻿using System.Dynamic;
 using System.Windows;
 using System;
+using System.Windows.Media;
 
 namespace psdPH.Logic
 {
+    public enum HAilgnment
+    {
+        Left,
+        Right,
+        Center,
+        None
+    }
+    public enum VAilgnment
+    {
+        Top,
+        Bottom,
+        Center,
+        None
+    }
     public static partial class PhotoshopDocumentExtension
     {
         public class Alignment: IEquatable<Alignment>
         {
             public override int GetHashCode() => (int)H * 4 + (int)V;
-            public HorizontalAlignment H;
-            public VerticalAlignment V;
-            public Alignment(HorizontalAlignment horizontal, VerticalAlignment vertical)
+            public HAilgnment H;
+            public VAilgnment V;
+            public Alignment(HAilgnment horizontal, VAilgnment vertical)
             {
                 H = horizontal;
                 V = vertical;
@@ -20,18 +35,21 @@ namespace psdPH.Logic
             {
                 hStr = hStr.ToLower();
                 vStr = vStr.ToLower();
-                HorizontalAlignment h;
-                VerticalAlignment v;
+                HAilgnment h;
+                VAilgnment v;
                 switch (hStr)
                 {
                     case "left":
-                        h = HorizontalAlignment.Left;
+                        h = HAilgnment.Left;
                         break;
                     case "center":
-                        h = HorizontalAlignment.Center;
+                        h = HAilgnment.Center;
                         break;
                     case "right":
-                        h = HorizontalAlignment.Right;
+                        h = HAilgnment.Right;
+                        break;
+                    case "none":
+                        h = HAilgnment.None;
                         break;
                     default:
                         throw new ArgumentException();
@@ -40,14 +58,17 @@ namespace psdPH.Logic
                 {
                     case "up":
                     case "top":
-                        v = VerticalAlignment.Top;
+                        v = VAilgnment.Top;
                         break;
                     case "center":
-                        v = VerticalAlignment.Center;
+                        v = VAilgnment.Center;
                         break;
                     case "down":
                     case "bottom":
-                        v = VerticalAlignment.Bottom;
+                        v = VAilgnment.Bottom;
+                        break;
+                    case "none":
+                        v = VAilgnment.None;
                         break;
                     default:
                         throw new ArgumentException();

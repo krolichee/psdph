@@ -84,6 +84,24 @@
                 { VerticalAlignment.Bottom, "снизу" }
             }
         },
+    {
+            typeof(HAilgnment), new Dictionary<object, string>
+            {
+                { HAilgnment.Left, "слева" },
+                { HAilgnment.Center, "по центру" },
+                { HAilgnment.Right, "справа" },
+                { HAilgnment.None, "не выравнивать" }
+            }
+        },
+    {
+            typeof(VAilgnment), new Dictionary<object, string>
+            {
+                { VAilgnment.Top, "cверху" },
+                { VAilgnment.Center, "по центру" },
+                { VAilgnment.Bottom, "снизу" },
+                { VAilgnment.None, "не выравнивать" }
+            }
+        },
     };
 
         public static string GetLocalizedDescription<TEnum>(TEnum value)

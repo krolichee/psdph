@@ -52,12 +52,12 @@ namespace psdPH.Logic
             var result = new Parameter(config);
             var stack = result._stack;
 
-            var rtb = new RichTextBox() { MinWidth = 70, MinHeight = 40 };
+            var rtb = new RichTextBox() {MinWidth = 70, MaxWidth = 200, MinHeight = 40,HorizontalAlignment = HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Top};
 
             rtb.TextChanged += RichTextBox_TextChanged;
             result.valueFunc = () => rtb.GetText();
             result.Control = rtb;
-            rtb.SetText(config.GetValue() as string); ;
+            rtb.SetText(config.GetValue() as string);
             stack.Children.Add(rtb);
             return result;
 
