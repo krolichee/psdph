@@ -1,6 +1,6 @@
 ﻿namespace psdPH.Logic
 {
-    public static class UIName
+    public static class UIDescription
     {
         public static string ToString(object value)
         {

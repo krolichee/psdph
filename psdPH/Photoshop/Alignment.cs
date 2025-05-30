@@ -83,7 +83,7 @@ namespace psdPH.Logic
             }
             public override string ToString()
             {
-                return $"H = {this.H}\nV = {this.V}";
+                return $"Гориз. = {this.H}\nВерт. = {this.V}";
             }
             public string ToLocalizedString()
             {

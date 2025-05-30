@@ -102,7 +102,7 @@ namespace psdPH.Logic.Compositions
     [XmlRoot("Area")]
     public class AreaLeaf : LayerComposition
     {
-        public override string UIName => "Область";
+        public override string UIName => "Зона";
         [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
         static Dictionary<PsJustification, HorizontalAlignment> JustificationMatchDict = new Dictionary<PsJustification, HorizontalAlignment>()
@@ -143,7 +143,7 @@ namespace psdPH.Logic.Compositions
     [XmlRoot("Placeholder")]
     public class PlaceholderLeaf : LayerComposition, CoreComposition
     {
-        public override string UIName => "Плейс.";
+        public override string UIName => "Заглуш.";
         [XmlIgnore]
         public PrototypeLeaf Prototype
         {

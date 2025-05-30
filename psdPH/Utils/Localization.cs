@@ -7,6 +7,7 @@
     using System;
     using System.Collections.Generic;
     using System.Windows;
+    using System.Windows.Media.Animation;
 
     public static class TypeLocalization
     {
@@ -35,6 +36,22 @@
             }
             return type.ToString();
         }
+    }
+    public static class Localization
+    {
+        public static string LocalizeObj(this object obj)
+        {
+            if (obj is Enum)
+                return EnumLocalization.GetLocalizedDescription(obj as Enum);
+            else if (obj is bool)
+                return BoolLocalization.LocalizeBool((bool)obj);
+            else
+                return obj.ToString();
+        }
+    }
+    public static class BoolLocalization
+    {
+        public static string LocalizeBool(bool val) => val ? "истина":"ложь";
     }
     public static class EnumLocalization
     {
@@ -113,8 +130,6 @@
             {
                 return description;
             }
-
-            // Если локализация не найдена, возвращаем строковое представление значения
             return value.ToString();
         }
 

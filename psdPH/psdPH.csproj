@@ -101,7 +101,7 @@
     </Compile>
     <Compile Include="Utils\ReflectionParameter\ParameterConfig.cs" />
     <Compile Include="Utils\ReflectionParameter\RtbExtension.cs" />
-    <Compile Include="Utils\UIName.cs" />
+    <Compile Include="Utils\UIDescription.cs" />
     <Compile Include="PsdPhProject.cs" />
     <Compile Include="StringInputWindow.xaml.cs">
       <DependentUpon>StringInputWindow.xaml</DependentUpon>
