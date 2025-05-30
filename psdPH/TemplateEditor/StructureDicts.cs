@@ -21,9 +21,9 @@ namespace psdPH.TemplateEditor
         { typeof(PlaceholderLeaf), (doc, root) =>new MultiPlaceholderLeafCreator(doc, root) },
         //{ typeof(ImageLeaf),(doc, root) => new ImageLeafCreator(doc) },
         { typeof(TextLeaf),(doc, root) => new MultiTextLeafCreator(doc,root)},
-        { typeof(LayerLeaf),(doc, root) => new LayerLeafCreator(doc)},
-        { typeof(GroupLeaf),(doc, root) => new GroupLeafCreator(doc)},
-        { typeof(AreaLeaf),(doc, root) => new AreaLeafCreator(doc)} };
+        { typeof(LayerLeaf),(doc, root) => new MultiLayerLeafCreator(doc,root)},
+        { typeof(GroupLeaf),(doc, root) => new MultiGroupLeafCreator(doc,root)},
+        { typeof(AreaLeaf),(doc, root) => new MultiAreaLeafCreator(doc, root)} };
         public static Dictionary<Type, EditComposition>
             EditorDict = new Dictionary<Type, EditComposition>
             ()

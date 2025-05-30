@@ -1,5 +1,6 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.Utils;
 using psdPH.Views.SimpleView;
 using psdPH.Views.SimpleView.Logic;
 using psdPH.Views.SimpleView.Windows;
@@ -9,6 +10,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Path = System.IO.Path;
@@ -133,11 +136,18 @@ namespace psdPH
             var targerDir = PsdPhDirectories.ProjectsDirectory;
             CopyDirectory(examplesDir, targerDir);
         }
-        public MainWindow():this(Path.Combine(@"C:\", "ProgramData", "psdPH"))
+        public MainWindow():this(Path.Combine(@"C:\", "ProgramData", "psdPH")) { }
+        MainWindow(string baseDirectory)
         {
-        }
-        public MainWindow(string baseDirectory)
-        {
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    TopmostWindow.HideNotTop();
+                    Thread.Sleep(500);
+                }
+                
+            });
             BaseDirectory = baseDirectory;
             // Получаем типы из сборки
             //var psApp = PhotoshopWrapper.GetPhotoshopApplication();
@@ -236,15 +246,8 @@ namespace psdPH
         }
         private void weekViewMenuItem_Execute(object _)
         {
-            var weekView = WeekView.MakeInstance(CurrentProjectName);
-            Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
-            var weekListData = weekView.OpenOrCreateWeekListData(blob);
-            if (weekListData == null)
-                return;
-            var wv_w = new WeekViewWindow(weekListData);
-            wv_w.ShowDialog();
-            if (!wv_w.Deleted)
-                weekView.SaveWeekListData(weekListData);
+            
+           WeekView.ShowWindowDialog(CurrentProjectName);
         }
 
         private void Window_Closed(object sender, EventArgs e)

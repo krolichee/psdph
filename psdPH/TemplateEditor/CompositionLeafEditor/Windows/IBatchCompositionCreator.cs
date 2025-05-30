@@ -1,8 +1,8 @@
 ﻿namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
-    public interface ICompositionShapitor
+    public interface IBatchCompositionCreator
     {
-        Composition GetResultComposition();
+        Composition[] GetResultBatch();
         bool? ShowDialog();
     }
 }

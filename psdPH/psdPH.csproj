@@ -76,6 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\IBatchCompositionCreator.cs" />
     <Compile Include="Utils\ReflectionParameter\AligmentControl.xaml.cs">
       <DependentUpon>AligmentControl.xaml</DependentUpon>
     </Compile>
@@ -186,7 +187,7 @@
     <Compile Include="TemplateEditor\StructureDicts.cs" />
     <Compile Include="Photoshop\PhotoshopWrapper.cs" />
     <Compile Include="Utils\CedStack\CEDCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CompositionCreators.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\SingleCompositionCreators.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
     </Compile>

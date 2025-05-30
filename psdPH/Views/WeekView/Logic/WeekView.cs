@@ -81,5 +81,15 @@ namespace psdPH.Views.WeekView
         {
             Directory.Delete(ViewDirectory, true);
         }
+
+        public static void ShowWindowDialog(string projectName)
+        {
+            WeekView.MakeInstance(projectName);
+            var weekView = WeekView.MakeInstance(projectName);
+            Blob blob = PsdPhProject.openOrCreateMainBlob(projectName);
+            var weekListData = weekView.OpenOrCreateWeekListData(blob);
+            if (weekListData == null)
+                return;
+        }
     }
 }

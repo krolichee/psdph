@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:psdPH.RuleEditor"
         mc:Ignorable="d"
-        Title="RuleControlWindow" HorizontalAlignment="Left" VerticalAlignment="Top" >
-    <StackPanel>
+        Title="RuleControlWindow" HorizontalAlignment="Left" VerticalAlignment="Top" ResizeMode="NoResize" >
+    <StackPanel Margin="9,0,0,0">
         <Grid x:Name="mainGrid">
 
         </Grid>

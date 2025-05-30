@@ -96,7 +96,6 @@ namespace psdPH.Logic.Compositions
         public override string UIName => "Группа";
         [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
-        public override string ObjName => LayerName;
         public override void Apply(Document doc) { }
     }
     [Serializable]

@@ -246,13 +246,13 @@ namespace psdPH.Logic
                 AreaLayerName = value.LayerName;
             }
         }
-
         public AreaRule(Composition composition) : base(composition) { }
     }
     public class AlignRule : AreaRule
     {
         public override string ToString() => "выровнять";
         public AlignRule(Composition composition) : base(composition) { }
+        public AlignRule() : base(null) { }
 
         public Alignment Alignment;
         public override Parameter[] Setups
@@ -269,12 +269,14 @@ namespace psdPH.Logic
         {
             getRuledLayerWr(doc).AlignLayer(AreaLeaf.ArtLayerWr(doc), Alignment);
         }
+
     }
     public class FitRule : AreaRule
     {
         public override string ToString() => "вместить";
         public bool BalanceFont = false;
         public FitRule(Composition composition) : base(composition) { }
+        public FitRule() : base(null) { }
         public Alignment Alignment;
         public override Parameter[] Setups
         {

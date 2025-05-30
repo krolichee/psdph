@@ -21,6 +21,7 @@ namespace psdPH.RuleEditor
             InitializeComponent();
             SizeToContent = SizeToContent.WidthAndHeight;
             _rc = new RuleControl(rules, conditions);
+            _rc.Margin = new Thickness(10, 10, 10, 10);
             mainGrid.Children.Add(_rc);
         }
 

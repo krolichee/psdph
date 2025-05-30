@@ -42,6 +42,7 @@ namespace psdPH
         }
         BlobEditorWindow(Document doc, Blob root)
         {
+            
             _composition = root;
             _doc = doc;
             InitializeComponent();

@@ -12,13 +12,10 @@ using System.Windows.Media.Animation;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
-    public interface IBatchCompositionCreator
-    {
-        Composition[] GetResultBatch();
-        bool? ShowDialog();
-    }
+    
     public abstract class MultiCompositionCreator<T> : IBatchCompositionCreator where T : Composition, new()
     {
+        protected static PsLayerKind[] CommonLayers = new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer, PsLayerKind.psSmartObjectLayer, PsLayerKind.psTextLayer };
         public object[] Inputs
         {
             set
@@ -70,7 +67,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     }
     public class MultiLayerLeafCreator : MultiCompositionCreator<LayerLeaf>
     {
-        protected override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer };
+        protected override PsLayerKind[] Kinds => CommonLayers;
 
         public MultiLayerLeafCreator(Document doc, Composition root) : base(doc, root) { }
 
@@ -91,6 +88,15 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 
         protected override GroupLeaf processInput(object input)=> 
             new GroupLeaf() { LayerName = input as string };
+    }
+    public class MultiAreaLeafCreator : MultiCompositionCreator<AreaLeaf>
+    {
+        protected override PsLayerKind[] Kinds => CommonLayers;
+
+        public MultiAreaLeafCreator(Document doc, Composition root) : base(doc, root) { }
+
+        protected override AreaLeaf processInput(object input) =>
+            new AreaLeaf() { LayerName = input as string };
     }
     public class MultiPlaceholderLeafCreator : MultiCompositionCreator<PlaceholderLeaf>
     {

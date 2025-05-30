@@ -24,6 +24,7 @@ namespace psdPH.Views.WeekView
         public WeekListData WeekListData;
         public WeekViewWindow(WeekListData weekListData)
         {
+
             var root = weekListData.RootBlob;
             var weekConfig = weekListData.WeekConfig;
             InitializeComponent();
@@ -50,6 +51,11 @@ namespace psdPH.Views.WeekView
             weekView.Delete();
             Deleted = true;
             Close();
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            WeekView.Instance().SaveWeekListData(WeekListData);
         }
     }
 }
