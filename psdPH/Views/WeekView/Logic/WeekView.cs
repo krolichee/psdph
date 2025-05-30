@@ -90,6 +90,7 @@ namespace psdPH.Views.WeekView
             var weekListData = weekView.OpenOrCreateWeekListData(blob);
             if (weekListData == null)
                 return;
+            new WeekViewWindow(weekListData).ShowDialog();
         }
     }
 }
