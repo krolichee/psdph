@@ -102,7 +102,7 @@ namespace psdPH.Logic.Rules
                 List<Parameter> result = new List<Parameter>();
                 FlagLeaf[] flagLeaves = Composition.getChildren<FlagLeaf>();
                 var flagConfig = new ParameterConfig(this, nameof(this.FlagLeaf), "");
-                var valueConfig = new ParameterConfig(this, nameof(this.Value),"");
+                var valueConfig = new ParameterConfig(this, nameof(this.Value),"установлено в");
                 result.Add(Parameter.Choose(flagConfig, flagLeaves));
                 result.Add(Parameter.Check(valueConfig));
                 return result.ToArray();
@@ -128,23 +128,5 @@ namespace psdPH.Logic.Rules
         public FlagCondition(Composition composition) : base(composition) { }
         public FlagCondition() : base(null) { }
     }
-    public class FlagRule : ConditionRule, CoreRule
-    {
-        public string FlagName;
-        public FlagRule() : base(null) { }
-        [XmlIgnore]
-        public override Parameter[] Setups => throw new NotImplementedException();
-
-        public void CoreApply()
-        {
-            var flagLeaf = Composition.getChildren<FlagLeaf>().First(f => f.Name == FlagName);
-            flagLeaf.Toggle = Condition.IsValid();
-        }
-
-        protected override void _apply(Document doc) =>
-            CoreApply();
-        protected override void _else(Document doc) =>
-            CoreApply();
-
-    }
+    
 }

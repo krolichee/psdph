@@ -78,7 +78,7 @@
     </ApplicationDefinition>
     <Compile Include="BlockingStack.cs" />
     <Compile Include="KnownTypes.cs" />
-    <Compile Include="Logic\Compositions\UINameAttribute.cs" />
+    <Compile Include="Logic\UINameAttribute.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\IBatchCompositionCreator.cs" />
     <Compile Include="TemplateEditor\StructureRulesDicts.cs" />
     <Compile Include="Utils\ReflectionParameter\AligmentControl.xaml.cs">
@@ -153,6 +153,7 @@
     </Compile>
     <Compile Include="Views\WeekView\Formats\DateFormat.cs" />
     <Compile Include="Views\WeekView\Logic\DowBlob.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekRules.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRules\WeekConditions.cs" />
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
       <DependentUpon>DateFormatWindow.xaml</DependentUpon>

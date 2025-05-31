@@ -21,7 +21,7 @@ namespace psdPHTest.Tests
             {
                 DateTextLeafLayerName = "Число",
                 DayDateFormat = new NoZeroDateFormat(),
-                DayDowFormat = new ShortDowFormat().Lower,
+                DowFormat = new ShortDowFormat().Lower,
                 DowPlaceholderLayernameList = DowLayernamePairs.ToList(),
                 DowTextLeafLayerName = "День недели",
                 WeekDatesTextLeafName = "Даты недели",

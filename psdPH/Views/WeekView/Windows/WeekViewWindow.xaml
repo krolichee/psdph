@@ -25,7 +25,9 @@
         </TabControl>
         <Menu VerticalAlignment="Center" Height="18">
             <MenuItem Header="Вид" >
-                <MenuItem Header="Удалить" Click="MenuItem_Click" />
+                <MenuItem Header="Сохранить" Click="saveMenuItem_Click" />
+                <MenuItem Header="Очистить" Click="clearMenuItem_Click"  />
+                <MenuItem Header="Удалить" Click="deleteMenuItem_Click" />
             </MenuItem>
         </Menu>
     </Grid>

@@ -29,7 +29,7 @@ namespace psdPH.Logic
         public Rule(Composition composition)
         {
             Composition = composition;
-            this.AddToKnowTypes();
+            this.AddTypeToKnownTypes();
         }
         abstract public void Apply(Document doc);
 
@@ -194,16 +194,17 @@ namespace psdPH.Logic
                 var opacityConfig = new ParameterConfig(this, nameof(this.Toggle), "установить");
                 result.Add(getLayerParameter());
                 result.Add(Parameter.Check(opacityConfig));
+                result.Add(Parameter.JustDescrition("и наоборот"));
                 return result.ToArray();
             }
-        }
-        protected override void _else(Document doc)
-        {
-            getRuledLayerWr(doc).Visible = !Toggle;
         }
         protected override void _apply(Document doc)
         {
             getRuledLayerWr(doc).Visible = Toggle;
+        }
+        protected override void _else(Document doc)
+        {
+            getRuledLayerWr(doc).Visible = !Toggle;
         }
         public VisibleRule(Composition composition) : base(composition) { }
         public VisibleRule() : base(null) { }
@@ -284,6 +285,43 @@ namespace psdPH.Logic
         {
             getRuledLayerWr(doc).Fit(AreaLeaf.ArtLayerWr(doc), Alignment);
         }
+    }
+    public class FlagRule : ConditionRule, CoreRule
+    {
+        public override string ToString() => "значение флага";
+        
+        public string FlagName;
+        public bool Value;
+        public FlagRule() : base(null) { }
+        public FlagRule(Composition composition) : base(composition) { }
+        [XmlIgnore]
+        public override Parameter[] Setups
+        {
+            get
+            {
+                List<Parameter> result = new List<Parameter>();
+                FlagLeaf[] flagLeaves = Composition.getChildren<FlagLeaf>();
+                var flagNames = flagLeaves.Select(f => f.Name).ToArray();
+                var flagConfig = new ParameterConfig(this, nameof(this.FlagName), "");
+                var valueConfig = new ParameterConfig(this, nameof(this.Value), "установить в");
+                result.Add(Parameter.Choose(flagConfig, flagNames));
+                result.Add(Parameter.Check(valueConfig));
+                result.Add(Parameter.JustDescrition("и наоборот"));
+                return result.ToArray();
+            }
+        }
+
+        public void CoreApply()
+        {
+            var flagLeaf = Composition.getChildren<FlagLeaf>().First(f => f.Name == FlagName);
+            flagLeaf.Toggle = Condition.IsValid();
+        }
+
+        protected override void _apply(Document doc) =>
+            CoreApply();
+        protected override void _else(Document doc) =>
+            CoreApply();
+
     }
 
 }

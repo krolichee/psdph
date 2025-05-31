@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace psdPH.Views.WeekView.Logic
 {
-    public abstract class DateFormat
+    public abstract class DateFormat:psdPH.ISerializable
     {
-
         public DateFormat Upper => new Upper(this);
         public DateFormat Lower => new Lower(this);
         public DateFormat FirstUpper => new FirstUpper(this);
@@ -17,33 +16,34 @@ namespace psdPH.Views.WeekView.Logic
         {
             return Format(_sampleDateTime);
         }
-
         public abstract string Format(DateTime dt);
 
     }
-    class AffectFormat : DateFormat
+    public abstract class AffectFormat : DateFormat
     {
-        public DateFormat _include;
+        public DateFormat Include;
         protected virtual string affect(string s) => s;
         public override string Format(DateTime dt) =>
-            affect(_include.ToString());
+            affect(Include.Format(dt));
         protected AffectFormat(DateFormat dateFormat)
         {
-            _include = dateFormat;
+            Include = dateFormat;
         }
+        public AffectFormat() : this(null) { }
     }
-    class Upper : AffectFormat
+    public class Upper : AffectFormat
     {
         public Upper(DateFormat dateFormat) : base(dateFormat) { }
-
         protected override string affect(string s) => s.ToUpper();
+        public Upper() :base(null){}
     }
-    class Lower : AffectFormat
+    public class Lower : AffectFormat
     {
         public Lower(DateFormat dateFormat) : base(dateFormat) { }
         protected override string affect(string s) => s.ToLower();
+        public Lower() : base(null) { }
     }
-    class FirstUpper : AffectFormat
+    public class FirstUpper : AffectFormat
     {
         public FirstUpper(DateFormat dateFormat) : base(dateFormat) { }
         protected override string affect(string s)
@@ -54,23 +54,28 @@ namespace psdPH.Views.WeekView.Logic
             result = result.Insert(0, firstLetter);
             return result;
         }
+        public FirstUpper() : base(null) { }
     }
     public abstract class DayFormat : DateFormat { }
     public abstract class DowFormat : DateFormat { }
     public class NoZeroDateFormat : DayFormat
     {
         public override string Format(DateTime dt) => dt.ToString("%d");
+        public NoZeroDateFormat() {}
     }
     public class WithZeroDateFormat : DayFormat
     {
         public override string Format(DateTime dt) => dt.ToString("dd");
+        public WithZeroDateFormat() { }
     }
     public class FullDowFormat : DowFormat
     {
         public override string Format(DateTime dt) => dt.ToString("dddd");
+        public FullDowFormat() { }
     }
     public class ShortDowFormat : DowFormat
     {
         public override string Format(DateTime dt) => dt.ToString("ddd");
+        public ShortDowFormat() { }
     }
 }

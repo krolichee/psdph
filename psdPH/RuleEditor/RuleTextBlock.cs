@@ -14,7 +14,7 @@ namespace psdPH.RuleEditor
             {
                 var config = parameter.Config;
                 parts.Add(config.Desc);
-                parts.Add(parameter.ValueToString());
+                parts.Add($"'{Localization.LocalizeObj(config.GetValue())}'");
             }
             return string.Join(" ", parts);
 

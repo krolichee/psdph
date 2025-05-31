@@ -14,18 +14,18 @@ namespace psdPH.Utils
 {
     public class CloneConverter
     {
-        private static string _getXml(object obj) {
+        public static string GetXml(object obj) {
             var type = obj.GetType();
-            XmlSerializer serializer = new XmlSerializer(type);
+            XmlSerializer serializer = new XmlSerializer(type,KnownTypes.Types.ToArray());
             StringBuilder sb = new StringBuilder();
             StringWriter sw = new StringWriter(sb);
             serializer.Serialize(sw, obj);
             return sb.ToString();
         }
-        private static T _getObj<T>(string xmlString)where T:class
+        public static T GetObj<T>(string xmlString)where T:class
         {
             StringReader sr = new StringReader(xmlString);
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            XmlSerializer serializer = new XmlSerializer(typeof(T), KnownTypes.Types.ToArray());
             T result = serializer.Deserialize(sr) as T;
             return result;
         }
@@ -39,10 +39,14 @@ namespace psdPH.Utils
         public static T Convert<T>(object blob)where T:class,new()
         {
             var dayBlob = new T();
-            var resultXml = _getXml(blob);
+            var resultXml = GetXml(blob);
             resultXml = _changeType<T>(resultXml);
-
-            return _getObj<T>(resultXml);
+            return GetObj<T>(resultXml);
+        }
+        public static T Clone<T>(T obj)where T:class
+        {
+            var resultXml = GetXml(obj);
+            return GetObj<T>(resultXml);
         }
     }
 }

@@ -23,8 +23,8 @@ namespace psdPH
 #pragma warning restore CS0612 // Тип или член устарел
             result.WeekConfig = weekConfig;
             result.RootBlob = root;
-            result.DayRules.Composition = root;
-            result.WeekRules.Composition = weekConfig.GetDayPrototype(root).Blob;
+            result.DayRules.Composition = weekConfig.GetDayBlob(root);
+            result.WeekRules.Composition = root;
             return result;
         }
         [XmlIgnore]
@@ -34,6 +34,8 @@ namespace psdPH
         public Blob RootBlob;
         public void Restore()
         {
+            WeekRules.RestoreComposition(RootBlob);
+            DayRules.RestoreComposition(WeekConfig.GetDayBlob(RootBlob));
             RootBlob.Restore();
             foreach (var week in Weeks)
                 week.Restore(this);

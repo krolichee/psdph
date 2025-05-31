@@ -77,7 +77,10 @@ namespace psdPH.Views.WeekView
             DiskOperations.SaveXml(ConfigPath, weekConfig);
             DiskOperations.SaveXml(WeekListDataPath, weekListData);
         }
-
+        public void Clear()
+        {
+            File.Delete(WeekListDataPath);
+        }
         internal void Delete()
         {
             Directory.Delete(ViewDirectory, true);

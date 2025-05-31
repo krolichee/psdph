@@ -2,6 +2,8 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -119,7 +121,17 @@ namespace psdPH.Logic
             var options = enumValues.ToArray();
             return Parameter.Choose(config, options, FieldFunctions.EnumWrapperFunctions);
         }
+        public static Parameter JustDescrition(string desc)
+        {
+            var label = new Label() { Content = "" };
+            var config = new ParameterConfig(label,nameof(label.Content),desc);
 
+            var result = new Parameter(config);
+            var stack = result._stack;
+            result.Control = label;
+            result.valueFunc = () => ""; ;
+            return result;
+        }
         internal static Parameter Date(ParameterConfig config)
         {
             var result = new Parameter(config);

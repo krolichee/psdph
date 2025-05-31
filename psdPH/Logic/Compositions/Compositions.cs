@@ -80,7 +80,7 @@ namespace psdPH
         public Composition() { 
             ChildrenUpdatedEvent += () => Restore(); 
             RuleSet.Updated += () => RulesetUpdatedEvent?.Invoke(); 
-            this.AddToKnowTypes(); 
+            this.AddTypeToKnownTypes(); 
         }
     }
 
@@ -131,14 +131,16 @@ namespace psdPH
         public string LayerName;
         public Vector GetRelativeLayerAlightmentVector(Document doc)
         {
-            return doc.GetAlightmentVector(RelativeLayerName, LayerName);
+            //Здесь ожидается не вектор выравнивания, а вектор приведение к той же разнице,
+            //то и с опорным слоем, поэтому аргементы меняются местами
+            return doc.GetAlightmentVector(LayerName, RelativeLayerName);
         }
         [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
         public override string ObjName => Blob.LayerName;
         public override void Apply(Document doc)
         {
-            doc.GetLayerByName(Blob.LayerName).Opacity = 0;
+           //doc.GetLayerByName(Blob.LayerName).Opacity = 0;
         }
         public PrototypeLeaf(Blob blob, string rel_layer_name)
         {

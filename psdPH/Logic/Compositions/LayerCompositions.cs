@@ -157,7 +157,10 @@ namespace psdPH.Logic.Compositions
         public override void Apply(Document doc)
         {
             if (Replacement != null)
+            {
                 ReplaceWithFiller(doc, Replacement);
+                Replacement.Apply(doc);
+            }
         }
 
         public PlaceholderLeaf(string layername, string prototypeLayername)
@@ -174,16 +177,18 @@ namespace psdPH.Logic.Compositions
         internal void ReplaceWithFiller(Document doc, Blob blob)
         {
             ArtLayer phLayer = doc.GetLayerByName(LayerName);
-            ArtLayerWr newLayer = new ArtLayerWr(doc.CloneSmartLayer(PrototypeLayerName));
+            ArtLayer originalLayer = doc.GetLayerByName(PrototypeLayerName);
+            originalLayer.Visible = true;
+            ArtLayerWr newLayerWr = new ArtLayerWr(doc.CloneSmartLayer(PrototypeLayerName));
+            originalLayer.Visible = false;
             var prototypeAVector = Prototype.GetRelativeLayerAlightmentVector(doc);
 
-            var phAVector = newLayer.GetAlightmentVector(new ArtLayerWr(phLayer));
+            var phAVector = newLayerWr.GetAlightmentVector(new ArtLayerWr(phLayer));
 
-            newLayer.TranslateV(phAVector);
-            newLayer.TranslateV(prototypeAVector);
+            newLayerWr.TranslateV(phAVector+prototypeAVector);
             //ph_layer.Delete();
             phLayer.Opacity = 0;
-            newLayer.Name = blob.LayerName;
+            newLayerWr.Name = blob.LayerName;
 
             //Parent.addChild(blob);
             //Parent.removeChild(this);

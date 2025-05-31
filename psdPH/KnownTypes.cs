@@ -35,7 +35,7 @@ namespace psdPH
             }
         }
         public static HashSet<Type> Types = new HashSet<Type>();
-        public static void AddToKnowTypes(this object obj)
+        public static void AddTypeToKnownTypes(this object obj)
         {
             Types.Add(obj.GetType());
         }

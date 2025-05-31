@@ -18,6 +18,7 @@ using VAli = System.Windows.VerticalAlignment;
 using psdPH.Views.WeekView;
 using psdPHTest.Tests;
 using psdPH.Utils;
+using Photoshop;
 
 namespace psdPHTest.Automatic
 {
@@ -118,8 +119,6 @@ namespace psdPHTest.Automatic
 
     }
     
-    namespace WeekRules
-    {
         [TestClass]
         public class WeekRules: WeekViewTest
         {
@@ -155,7 +154,7 @@ namespace psdPHTest.Automatic
                 var everynCondition = GetEveryNDayCondition(interval, startDateTime, dayBlob);
 
                 Assert.IsTrue(everynCondition.IsValid() == result);
-
+        
             }
             [DataTestMethod]
             [DataRow(2, DayOfWeek.Monday, true)]
@@ -220,7 +219,7 @@ namespace psdPHTest.Automatic
                 Assert.IsTrue(mondayBlob.getChildren<FlagLeaf>().First(f => f.Name == "test1").Toggle);
             }
         }
-    }
+    
     [TestClass]
     public class CompositionTest
     {
@@ -252,5 +251,5 @@ namespace psdPHTest.Automatic
             Assert.IsTrue(eventRaised);
         }
     }
-}
+
 

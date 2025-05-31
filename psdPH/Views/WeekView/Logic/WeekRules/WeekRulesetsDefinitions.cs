@@ -4,6 +4,8 @@ using psdPH.Views.WeekView.Logic;
 using Condition = psdPH.Logic.Rules.Condition;
 using System;
 using psdPH.RuleEditor;
+using System.Linq;
+using psdPH.Logic.Rules;
 
 namespace psdPH.Views.WeekView
 {
@@ -13,7 +15,12 @@ namespace psdPH.Views.WeekView
     static class WeekRulesetsDefinitions
     {
         public static Rule[] Rules(Composition root) =>
-            new StructureRulesetDefinition(root).Rules;
+            new StructureRulesetDefinition(root).Rules.Concat(
+                new Rule[]
+                {
+                    new FlagRule(root)
+                }
+                ).ToArray();
         [Obsolete]
         public static Condition[] WeekConditions(Composition root) => new Condition[]
         {

@@ -39,8 +39,7 @@ namespace psdPH
         {
 
             Blob blob = PsdPhProject.Instance().openOrCreateMainBlob();
-            PsApp psApp = PsWr.GetPhotoshopApplication();
-            Document doc = PhotoshopWrapper.OpenDocument(psApp,PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
+            Document doc = PhotoshopWrapper.OpenDocument(PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
             var editor = new BlobEditorWindow(doc, blob);
             editor.Show();
             return editor;

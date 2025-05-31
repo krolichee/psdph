@@ -40,22 +40,35 @@ namespace psdPH.Views.WeekView
             {
                 weekListData = WeekListData.Create(weekConfig, root);
             }
-            Closing += (object sender, CancelEventArgs e) => DialogResult = true;
             WeekListData = weekListData;
-
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void deleteMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var weekView = WeekView.Instance();
             weekView.Delete();
-            Deleted = true;
+            Close();
+        }
+        
+        void save()
+        {
+            WeekView.Instance().SaveWeekListData(WeekListData);
+        }
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            save();
+        }
+
+        private void clearMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var weekView = WeekView.Instance();
+            weekView.Clear();
             Close();
         }
 
-        private void Window_Closing(object sender, CancelEventArgs e)
+        private void saveMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            WeekView.Instance().SaveWeekListData(WeekListData);
+            save();
         }
     }
 }

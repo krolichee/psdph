@@ -8,16 +8,13 @@ namespace psdPH.Utils
 
     static class DiskOperations
     {
-        public static T OpenXml<T>(string path)
+        public static T OpenXml<T>(string path)where T:class
         {
             T result = default(T);
-            FileStream fileStream;
-            XmlSerializer serializer = new XmlSerializer(typeof(T), KnownTypes.Types.ToArray());
             if (File.Exists(path))
             {
-                fileStream = new FileStream(path, FileMode.Open);
-                result = (T)serializer.Deserialize(fileStream);
-                fileStream.Close();
+                var stringXml = File.ReadAllText(path, Encoding.Unicode);
+                result = CloneConverter.GetObj<T>(stringXml);
             }
             return result;
         }
@@ -29,21 +26,15 @@ namespace psdPH.Utils
         public static SaveXmlResult SaveXml<T>(string path, T obj)
         {
             SaveXmlResult result = new SaveXmlResult() { Serialized = false,Written = false };
-            XmlSerializer serializer = new XmlSerializer(typeof(T),KnownTypes.Types.ToArray());
-            StringBuilder sb = new StringBuilder();
-            StringWriter sw = new StringWriter(sb);
             try
             {
-                serializer.Serialize(sw, obj);
+                var stringXml = CloneConverter.GetXml(obj);
                 result.Serialized = true;
-                File.WriteAllText(path, sb.ToString(), Encoding.Unicode);
+                File.WriteAllText(path, stringXml, Encoding.Unicode);
                 result.Written = true;
             }
             catch { }
             return result;
-           
-
-            
         }
     }
 }
