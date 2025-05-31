@@ -19,41 +19,34 @@ using Path = System.IO.Path;
 
 namespace psdPH
 {
-
-
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
-
-    public class BlockingStack : StackPanel
-    {
-        public void Add(FrameworkElement control)
-        {
-            Children.Add(control);
-            _refresh();
-        }
-        void _refresh()
-        {
-            for (int i = 0; i < Children.Count-1; i++)
-            {
-                (Children[i] as FrameworkElement).IsEnabled = false;
-            }
-            for (int i = 1; i < Children.Count; i++)
-            {
-                var gap = -(Children[i - 1] as Control).Height*0.95;
-                (Children[i] as FrameworkElement).Margin = new Thickness(0,gap,0,0);
-            }
-        }
-    }
     public partial class MainWindow : Window
     {
-        public static BlockingStack BlockingStack=new BlockingStack();
+        Window _templateWindow;
+        Window _viewWindow;
+        Window TemplateWindow
+        {
+            get => _templateWindow; set
+            {
+                if(value!=null)
+                    value.Closed += (object _, EventArgs __) => TemplateWindow=null;
+                IsEnabled = (_templateWindow = value) == null;
+            }
+        }
+        Window ViewWindow
+        {
+            get => _viewWindow; set
+            {
+                if (value != null)
+                    value.Closed += (object _, EventArgs __) => ViewWindow = null;
+                IsEnabled = (_viewWindow = value) == null;
+            }
+        }
         public static string CurrentProjectName = "";
         void OpenProject(string projectName)
         {
             PsdPhProject.MakeInstance(projectName);
             CurrentProjectName = projectName;
-            projectNameTextBlock.Text= CurrentProjectName;
+            projectNameTextBlock.Text = CurrentProjectName;
         }
         void CloseProject_Execute(object _)
         {
@@ -83,7 +76,7 @@ namespace psdPH
         }
         bool AnyViews()
         {
-           return Directory.EnumerateFileSystemEntries(PsdPhDirectories.ViewsDirectory(CurrentProjectName)).Any();
+            return Directory.EnumerateFileSystemEntries(PsdPhDirectories.ViewsDirectory(CurrentProjectName)).Any();
         }
         void NewProject()
         {
@@ -119,7 +112,7 @@ namespace psdPH
             foreach (string file in Directory.GetFiles(sourceDir))
             {
                 string destFile = Path.Combine(targetDir, Path.GetFileName(file));
-                File.Copy(file, destFile, true); 
+                File.Copy(file, destFile, true);
             }
             foreach (string directory in Directory.GetDirectories(sourceDir))
             {
@@ -132,22 +125,14 @@ namespace psdPH
             //if (Directory.Exists(BaseDirectory))
             //    return;
             Directory.CreateDirectory(BaseDirectory);
-            var examplesDir = Path.Combine(Directory.GetCurrentDirectory(),"Examples");
+            var examplesDir = Path.Combine(Directory.GetCurrentDirectory(), "Examples");
             var targerDir = PsdPhDirectories.ProjectsDirectory;
             CopyDirectory(examplesDir, targerDir);
         }
-        public MainWindow():this(Path.Combine(@"C:\", "ProgramData", "psdPH")) { }
+        public MainWindow() : this(Path.Combine(@"C:\", "ProgramData", "psdPH")) { }
         MainWindow(string baseDirectory)
         {
-            Task.Run(() =>
-            {
-                while (true)
-                {
-                    TopmostWindow.HideNotTop();
-                    Thread.Sleep(500);
-                }
-                
-            });
+
             BaseDirectory = baseDirectory;
             // Получаем типы из сборки
             //var psApp = PhotoshopWrapper.GetPhotoshopApplication();
@@ -162,18 +147,16 @@ namespace psdPH
             //layer.TextItem.Size -= 10;
 
             InitializeComponent();
-            Content = BlockingStack;
-            BlockingStack.Add(MainGrid);
 
             InitializeBaseDirectory();
             ExportExamples();
-            
+
             LoadFoldersIntoMenu();
             RelayCommand projectOpenDepended(Action<object> action) => new RelayCommand(action, isProjectOpen);
             RelayCommand notDepended(Action<object> action) => new RelayCommand(action, (object _) => true);
             //Проект
             newProjectMenuItem.Command = notDepended(NewProjectMenuItem_Execute);
-            openMenuItem.Command = new RelayCommand(noneCommand_Execute,isAnyProject);
+            openMenuItem.Command = new RelayCommand(noneCommand_Execute, isAnyProject);
             closeProjectMenuItem.Command = projectOpenDepended(CloseProject_Execute);
             openInExplorerMenuItem.Command = projectOpenDepended(openInExplorer_Execute);
             //Шаблон
@@ -182,7 +165,8 @@ namespace psdPH
             weekViewMenuItem.Command = projectOpenDepended(weekViewMenuItem_Execute);
             simpleViewMenuItem.Command = projectOpenDepended(simpleViewMenuItem_Execute);
         }
-        private void openInExplorer_Execute(object _) {
+        private void openInExplorer_Execute(object _)
+        {
             string folderPath = PsdPhDirectories.ProjectDirectory(CurrentProjectName);
             Process.Start("explorer.exe", folderPath);
         }
@@ -232,22 +216,17 @@ namespace psdPH
         }
         private void templateMenuItem_Execute(object _)
         {
-            if(AnyViews())
+            if (AnyViews())
             {
                 MessageBox.Show("Изменения шаблона не будут отображаться на уже созданных видах. После редактирования необходимо будет заново создать виды");
-            }    
+            }
+            TemplateWindow = BlobEditorWindow.OpenFromDisk();
 
 
-            Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
-            BlobEditorWindow editor = BlobEditorWindow.OpenFromDisk(blob);
-            editor.ShowDialog();
-            
-            PsdPhProject.saveBlob(editor.GetResultComposition() as Blob, CurrentProjectName);
         }
         private void weekViewMenuItem_Execute(object _)
         {
-            
-           WeekView.ShowWindowDialog(CurrentProjectName);
+            ViewWindow= WeekView.ShowWindowDialog();
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -263,7 +242,7 @@ namespace psdPH
         private void simpleViewMenuItem_Execute(object _)
         {
             var weekView = SimpleView.MakeInstance(CurrentProjectName);
-            Blob blob = PsdPhProject.openOrCreateMainBlob(CurrentProjectName);
+            Blob blob = PsdPhProject.Instance().openOrCreateMainBlob(CurrentProjectName);
             var simpleListData = weekView.OpenOrCreateSimpleListData(blob);
             if (simpleListData == null)
                 return;

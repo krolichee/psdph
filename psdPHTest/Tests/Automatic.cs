@@ -17,9 +17,33 @@ using HAli = System.Windows.HorizontalAlignment;
 using VAli = System.Windows.VerticalAlignment;
 using psdPH.Views.WeekView;
 using psdPHTest.Tests;
+using psdPH.Utils;
 
 namespace psdPHTest.Automatic
 {
+    [TestClass]
+    public class XMLSerializationTest
+    {
+        [TestMethod]
+        public void testSave()
+        {
+           var blob= Blob.PathBlob("очень сильно заболел хуй");
+            Assert.IsTrue(DiskOperations.SaveXml("test.xml", blob).Serialized);
+        }
+        [TestMethod]
+        public void testOpen()
+        {
+            DiskOperations.OpenXml<Blob>("test.xml");
+        }
+        [TestMethod]
+        public void testKnownTypes()
+        {
+            var blob = Blob.PathBlob("test.xml");
+            var cond = new DummyCondition(null);
+            blob.RuleSet.AddRule(new AlignRule(blob) { Alignment = Alignment.Create("up","left"),AreaLayerName = "2",LayerName = "2"});
+            Assert.IsTrue(DiskOperations.SaveXml("test.xml", blob).Serialized);
+        }
+    }
     [TestClass]
     public class AligmentRuleTest
     {
@@ -91,35 +115,6 @@ namespace psdPHTest.Automatic
 
         }
     }
-    [TestClass]
-    public class SimpleView
-    {
-        [ClassInitialize]
-        public void Initialize()
-        {
-            string baseDirectory = @"C:\\Users\\Puziko\\source\\repos\\psdPH\\psdPH\\testResources\\TestProjects\\";
-            PsdPhDirectories.SetBaseDirectory(baseDirectory);
-            var project = PsdPhProject.MakeInstance("simple");
-        }
-        [TestMethod]
-        public void OpenView()
-        {
-        }
-        [TestMethod]
-        public void OpenOrCreateView()
-        {
-        }
-        public void CreateView()
-        {
-        }
-        [TestMethod]
-        public void SaveView()
-        {
-        }
-        [TestMethod]
-        public void NewRow()
-        {
-        }
 
     }
     
@@ -226,50 +221,36 @@ namespace psdPHTest.Automatic
             }
         }
     }
-}
-
-
-[TestClass]
-public class CompositionTest
-{
-
-    [TestMethod]
-    public void CompositionChildrenObserving()
+    [TestClass]
+    public class CompositionTest
     {
-        bool eventRaised = false;
-        void a()
+
+        [TestMethod]
+        public void CompositionChildrenObserving()
         {
-            eventRaised = true;
+            bool eventRaised = false;
+            void a()
+            {
+                eventRaised = true;
+            }
+            Composition composition = new Blob();
+            composition.ChildrenUpdatedEvent += a;
+            composition.AddChild(new TextLeaf());
+            Assert.IsTrue(eventRaised);
         }
-        Composition composition = new Blob();
-        composition.ChildrenUpdatedEvent += a;
-        composition.AddChild(new TextLeaf());
-        Assert.IsTrue(eventRaised);
-    }
-    [TestMethod]
-    public void RuleSetChildrenObserving()
-    {
-        bool eventRaised = false;
-        void a()
+        [TestMethod]
+        public void RuleSetChildrenObserving()
         {
-            eventRaised = true;
+            bool eventRaised = false;
+            void a()
+            {
+                eventRaised = true;
+            }
+            Composition composition = new Blob();
+            composition.RulesetUpdatedEvent += a;
+            composition.RuleSet.Rules.Add(new TextFontSizeRule());
+            Assert.IsTrue(eventRaised);
         }
-        Composition composition = new Blob();
-        composition.RulesetUpdatedEvent += a;
-        composition.RuleSet.Rules.Add(new TextFontSizeRule());
-        Assert.IsTrue(eventRaised);
     }
 }
-[TestClass]
-public class ConcreteRuleTest
-{
-    string testDirectory = "C:\\Users\\Puziko\\source\\repos\\psdPHTest\\psdPHTest";
-    [TestMethod]
-    public void Fitting()
-    {
-        PsdPhDirectories.BaseDirectory = testDirectory;
-        Blob blob = PsdPhProject.openOrCreateMainBlob("Fitting");
-        blob.AddChild(new TextLeaf());
-    }
 
-}

@@ -4,6 +4,7 @@ using psdPH.Utils;
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Animation;
 
 namespace psdPH.Views.WeekView
 {
@@ -82,15 +83,17 @@ namespace psdPH.Views.WeekView
             Directory.Delete(ViewDirectory, true);
         }
 
-        public static void ShowWindowDialog(string projectName)
+        public static Window ShowWindowDialog()
         {
-            WeekView.MakeInstance(projectName);
-            var weekView = WeekView.MakeInstance(projectName);
-            Blob blob = PsdPhProject.openOrCreateMainBlob(projectName);
+            var project = PsdPhProject.Instance();
+            var weekView = WeekView.MakeInstance(project.ProjectName);
+            Blob blob = project.openOrCreateMainBlob();
             var weekListData = weekView.OpenOrCreateWeekListData(blob);
             if (weekListData == null)
-                return;
-            new WeekViewWindow(weekListData).ShowDialog();
+                return null;
+            var window = new WeekViewWindow(weekListData);
+            window.Show();
+            return window;
         }
     }
 }

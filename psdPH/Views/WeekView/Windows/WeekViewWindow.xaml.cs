@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
 using psdPH.RuleEditor;
-using static psdPH.TemplateEditor.RuleDicts;
+using static psdPH.TemplateEditor.StructureRulesetDefinition;
 using System.Media;
 using static psdPH.WeekConfig;
 

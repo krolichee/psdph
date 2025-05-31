@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:psdPH.Logic"
              mc:Ignorable="d" 
              d:DesignHeight="450" HorizontalAlignment="Left" VerticalAlignment="Top">
-    <Grid Background="#FFF7E4E4">
+    <Grid>
 
         <StackPanel x:Name="stackPanel" Orientation="Horizontal" >
             <Label Content="Если" RenderTransformOrigin="-0.716,-2.504" VerticalAlignment="Center"/>

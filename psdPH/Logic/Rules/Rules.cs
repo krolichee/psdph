@@ -20,18 +20,16 @@ namespace psdPH.Logic
     {
         void CoreApply();
     }
-    [XmlInclude(typeof(ConditionRule))]
-
-    [XmlInclude(typeof(LayerRule))]
-
-    [XmlInclude(typeof(TextRule))]
-    public abstract class Rule : ISetupable
+    [Serializable]
+    [PsdPhSerializable]
+    public abstract class Rule : ISetupable, psdPH.ISerializable
     {
         [XmlIgnore]
         public Composition Composition;
         public Rule(Composition composition)
         {
             Composition = composition;
+            this.AddToKnowTypes();
         }
         abstract public void Apply(Document doc);
 
@@ -39,8 +37,6 @@ namespace psdPH.Logic
         {
             Composition = composition;
         }
-
-
 
         [XmlIgnore]
         public abstract Parameter[] Setups { get; }
@@ -58,8 +54,6 @@ namespace psdPH.Logic
             return result;
         }
     }
-
-    [XmlInclude(typeof(Condition))]
     public abstract class ConditionRule : Rule
     {
         public Condition Condition;
@@ -95,10 +89,6 @@ namespace psdPH.Logic
             return result;
         }
     };
-
-    [XmlInclude(typeof(TranslateRule))]
-    [XmlInclude(typeof(OpacityRule))]
-    [XmlInclude(typeof(VisibleRule))]
     public abstract class LayerRule : ConditionRule
     {
         public ChangeMode ChangeMode = ChangeMode.Abs;
@@ -128,8 +118,6 @@ namespace psdPH.Logic
             doc.GetLayerWrByName(LayerName);
         protected LayerRule(Composition composition) : base(composition) { }
     };
-    [Serializable]
-    [XmlRoot("TranslateRule")]
     public class TranslateRule : LayerRule
     {
         public override string ToString() => "положение";

@@ -76,7 +76,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BlockingStack.cs" />
+    <Compile Include="KnownTypes.cs" />
+    <Compile Include="Logic\Compositions\UINameAttribute.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\IBatchCompositionCreator.cs" />
+    <Compile Include="TemplateEditor\StructureRulesDicts.cs" />
     <Compile Include="Utils\ReflectionParameter\AligmentControl.xaml.cs">
       <DependentUpon>AligmentControl.xaml</DependentUpon>
     </Compile>
@@ -132,7 +136,7 @@
     <Compile Include="Utils\CedStack\CEDStackControl.cs" />
     <Compile Include="Utils\PsdPhContext.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
-    <Compile Include="TemplateEditor\RuleDicts.cs" />
+    <Compile Include="TemplateEditor\StructureRulesetDefinition.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
     <Compile Include="Utils\DataInputWindow.cs" />
     <Compile Include="Utils\EnumWrapper.cs" />
@@ -167,7 +171,7 @@
     <Compile Include="Utils\ReflectionParameter\ISetupable.cs" />
     <Compile Include="Photoshop\PhotoshopDocumentExtension.cs" />
     <Compile Include="Logic\Rules\Conditions.cs" />
-    <Compile Include="RuleEditor\IRuleEditor.cs" />
+    <Compile Include="RuleEditor\IBatchRuleEditor.cs" />
     <Compile Include="RuleEditor\RuleControl.xaml.cs">
       <DependentUpon>RuleControl.xaml</DependentUpon>
     </Compile>

@@ -31,6 +31,11 @@ namespace psdPH.Logic
                 H = horizontal;
                 V = vertical;
             }
+            public Alignment()
+            {
+                H = HAilgnment.None;
+                V = VAilgnment.None;
+            }
             public static Alignment Create(string vStr, string hStr)
             {
                 hStr = hStr.ToLower();

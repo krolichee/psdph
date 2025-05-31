@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace psdPH.Utils
@@ -10,7 +12,7 @@ namespace psdPH.Utils
         {
             T result = default(T);
             FileStream fileStream;
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            XmlSerializer serializer = new XmlSerializer(typeof(T), KnownTypes.Types.ToArray());
             if (File.Exists(path))
             {
                 fileStream = new FileStream(path, FileMode.Open);
@@ -19,14 +21,29 @@ namespace psdPH.Utils
             }
             return result;
         }
-
-        public static void SaveXml<T>(string path, T obj)
+        public struct SaveXmlResult
         {
-            FileStream fileStream;
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
-            fileStream = new FileStream(path, FileMode.Create);
-            serializer.Serialize(fileStream, obj);
-            fileStream.Close();
+            public bool Serialized;
+            public bool Written;
+        }
+        public static SaveXmlResult SaveXml<T>(string path, T obj)
+        {
+            SaveXmlResult result = new SaveXmlResult() { Serialized = false,Written = false };
+            XmlSerializer serializer = new XmlSerializer(typeof(T),KnownTypes.Types.ToArray());
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+            try
+            {
+                serializer.Serialize(sw, obj);
+                result.Serialized = true;
+                File.WriteAllText(path, sb.ToString(), Encoding.Unicode);
+                result.Written = true;
+            }
+            catch { }
+            return result;
+           
+
+            
         }
     }
 }

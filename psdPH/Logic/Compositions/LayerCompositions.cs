@@ -9,14 +9,6 @@ using static psdPH.Logic.PhotoshopDocumentExtension;
 
 namespace psdPH.Logic.Compositions
 {
-    [XmlInclude(typeof(ImageLeaf))]
-    [XmlInclude(typeof(TextLeaf))]
-
-    [XmlInclude(typeof(LayerLeaf))]
-    [XmlInclude(typeof(GroupLeaf))]
-
-    [XmlInclude(typeof(AreaLeaf))]
-
     public abstract class LayerComposition : Composition
     {
         public string LayerName;
@@ -31,9 +23,9 @@ namespace psdPH.Logic.Compositions
     }
     [Serializable]
     [XmlRoot("Image")]
+    [UIName("Изображение")]
     public class ImageLeaf : LayerComposition
     {
-        public override string UIName => "Изобр.";
         public string Path;
         [XmlIgnore]
         public override Parameter[] Setups
@@ -56,10 +48,9 @@ namespace psdPH.Logic.Compositions
         Path
     }
     [Serializable]
-    [XmlRoot("Text")]
+    [UIName("Текст")]
     public class TextLeaf : LayerComposition
     {
-        public override string UIName => "Текст";
         public string Text = string.Empty;
         [XmlIgnore]
         public override Parameter[] Setups
@@ -80,29 +71,26 @@ namespace psdPH.Logic.Compositions
     }
 
     [Serializable]
-    [XmlRoot("Layer")]
+    [UIName("Слой")]
     public class LayerLeaf : LayerComposition
     {
-        public override string UIName => "Слой";
         [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
 
         public override void Apply(Document doc) { }
     }
     [Serializable]
-    [XmlRoot("Group")]
+    [UIName("Группа")]
     public class GroupLeaf : LayerComposition
     {
-        public override string UIName => "Группа";
         [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
         public override void Apply(Document doc) { }
     }
     [Serializable]
-    [XmlRoot("Area")]
+    [UIName("Зона")]
     public class AreaLeaf : LayerComposition
     {
-        public override string UIName => "Зона";
         [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
         static Dictionary<PsJustification, HorizontalAlignment> JustificationMatchDict = new Dictionary<PsJustification, HorizontalAlignment>()
@@ -140,10 +128,9 @@ namespace psdPH.Logic.Compositions
         public override void Apply(Document doc) { }
     }
     [Serializable]
-    [XmlRoot("Placeholder")]
+    [UIName("Заглушка")]
     public class PlaceholderLeaf : LayerComposition, CoreComposition
     {
-        public override string UIName => "Заглуш.";
         [XmlIgnore]
         public PrototypeLeaf Prototype
         {

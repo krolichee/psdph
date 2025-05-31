@@ -7,9 +7,9 @@ using System.Xml.Serialization;
 
 namespace psdPH.Logic.Rules
 {
-    [XmlInclude(typeof(TextCondition))]
-    [XmlInclude(typeof(FlagCondition))]
-    public abstract class Condition : ISetupable
+    [Serializable]
+    [PsdPhSerializable]
+    public abstract class Condition : ISetupable,psdPH.ISerializable
     {
         [XmlIgnore]
         public Composition Composition;
@@ -25,13 +25,17 @@ namespace psdPH.Logic.Rules
         public Condition(Composition composition)
         {
             Composition = composition;
+            KnownTypes.Types.Add(this.GetType());
         }
     }
     public class DummyCondition : Condition
     {
+        public override string ToString() => "(безусловно)";
         public DummyCondition(Composition composition) : base(composition) { }
+        public DummyCondition() : base(null) { }
         [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];
+
 
         public override bool IsValid() => true;
     }
@@ -40,6 +44,7 @@ namespace psdPH.Logic.Rules
         public string TextLeafLayerName;
 
         protected TextCondition(Composition composition) : base(composition) { }
+
 
         [XmlIgnore]
         public TextLeaf TextLeaf
@@ -123,7 +128,6 @@ namespace psdPH.Logic.Rules
         public FlagCondition(Composition composition) : base(composition) { }
         public FlagCondition() : base(null) { }
     }
-    [Serializable]
     public class FlagRule : ConditionRule, CoreRule
     {
         public string FlagName;

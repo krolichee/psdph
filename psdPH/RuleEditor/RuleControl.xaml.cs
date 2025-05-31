@@ -1,5 +1,8 @@
 ﻿using psdPH.Logic.Rules;
+using psdPH.RuleEditor;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using Condition = psdPH.Logic.Rules.Condition;
 
@@ -8,14 +11,16 @@ namespace psdPH.Logic
     /// <summary>
     /// Логика взаимодействия для RuleControl.xaml
     /// </summary>
-    public partial class RuleControl : UserControl
+    public partial class RuleControl : UserControl,IBatchRuleEditor
     {
         ConditionRule _result;
         Condition _condition;
         List<Parameter> _parameters = new List<Parameter>();
+        public RuleControl(RulesetDefinition rulesetDef) : this(rulesetDef.Rules, rulesetDef.Conditions) { }
         public RuleControl(Rule[] rules, Condition[] conditions)
         {
             InitializeComponent();
+
             conditionsComboBox.ItemsSource = conditions;
             ruleComboBox.ItemsSource = rules;
         }
@@ -59,11 +64,24 @@ namespace psdPH.Logic
                 item.Accept();
         }
 
-        public ConditionRule GetResultRule()
+        ConditionRule GetResultRule()
         {
+            if (_result == null || _condition==null)
+                return null;
             acceptParameters();
             _result.Condition = _condition;
             return _result;
+        }
+
+        public bool? ShowDialog()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Rule[] GetResultBatch()
+        {
+            var rule = GetResultRule();
+            return rule != null ? new[] { rule } : new Rule[0];
         }
     }
 }

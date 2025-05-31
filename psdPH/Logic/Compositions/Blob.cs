@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace psdPH.Logic.Compositions
 {
-    [Serializable]
+    [UIName("Поддокумент")]
     public class Blob : LayerComposition,CoreComposition
     {
         [XmlIgnore]
@@ -24,7 +24,6 @@ namespace psdPH.Logic.Compositions
                 return result.ToArray();
             }
         }
-        public override string UIName => "Подфайл";
         public BlobMode Mode;
         
         public string Path;

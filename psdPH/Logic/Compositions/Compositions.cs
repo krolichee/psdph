@@ -13,32 +13,22 @@ namespace psdPH
         void CoreApply();
     }
     [Serializable]
-    [XmlInclude(typeof(Blob))]
-
-    [XmlInclude(typeof(FlagLeaf))]
-    [XmlInclude(typeof(PrototypeLeaf))]
-    [XmlInclude(typeof(PlaceholderLeaf))]
-
-    [XmlInclude(typeof(LayerComposition))]
-
-
-    [XmlInclude(typeof(Rule))]
-    public abstract class Composition : ISetupable
+    [PsdPhSerializable]
+    public abstract class Composition : ISetupable, psdPH.ISerializable
     {
         public delegate void RulesetUpdated();
         public delegate void ChildrenUpdated();
         public event ChildrenUpdated ChildrenUpdatedEvent;
         public event RulesetUpdated RulesetUpdatedEvent;
-        public string XmlName
+        public string UIName
         {
             get
             {
                 Type type = this.GetType();
-                XmlRootAttribute rootAttribute = (XmlRootAttribute)Attribute.GetCustomAttribute(type, typeof(XmlRootAttribute));
-                return rootAttribute.ElementName;
+                UINameAttribute rootAttribute = (UINameAttribute)Attribute.GetCustomAttribute(type, typeof(UINameAttribute));
+                return rootAttribute.PositionalString;
             }
         }
-        [XmlArray("Children")]
         public Composition[] Children = new Composition[0];
         internal void AddChildren(Composition[] compositions)
         {
@@ -47,7 +37,6 @@ namespace psdPH
                 AddChild(item);
             }
         }
-        public virtual string UIName { get { return ""; } }
         abstract public string ObjName { get; }
         public override string ToString()
         {
@@ -88,14 +77,17 @@ namespace psdPH
         virtual public T[] getChildren<T>() { return null; }
         public RuleSet RuleSet = new RuleSet();
 
-        public Composition() { ChildrenUpdatedEvent += () => Restore(); RuleSet.Updated += () => RulesetUpdatedEvent?.Invoke(); }
+        public Composition() { 
+            ChildrenUpdatedEvent += () => Restore(); 
+            RuleSet.Updated += () => RulesetUpdatedEvent?.Invoke(); 
+            this.AddToKnowTypes(); 
+        }
     }
 
     [Serializable]
-    [XmlRoot("Flag")]
+    [UIName("Флаг")]
     public partial class FlagLeaf : Composition
     {
-        public override string UIName => "Флаг";
         public bool Toggle;
         public string Name;
         public override string ObjName => Name;
@@ -121,7 +113,7 @@ namespace psdPH
     }
 
     [Serializable]
-    [XmlRoot("PrototypeLeaf")]
+    [UIName("Прототип")]
     public class PrototypeLeaf : Composition
     {
         Blob blob;
@@ -135,7 +127,6 @@ namespace psdPH
             }
             set { LayerName = value.LayerName; }
         }
-        public override string UIName => "Прототип";
         public string RelativeLayerName;
         public string LayerName;
         public Vector GetRelativeLayerAlightmentVector(Document doc)

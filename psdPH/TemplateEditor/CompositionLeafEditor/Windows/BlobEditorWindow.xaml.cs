@@ -28,25 +28,29 @@ namespace psdPH
         {
             if (blob.Mode != BlobMode.Layer)
                 throw new ArgumentException();
+           
             Document new_doc;
             new_doc = doc.OpenSmartLayer(blob.LayerName);
-            return new BlobEditorWindow(new_doc, blob);
+            var result = new BlobEditorWindow(new_doc, blob);
+            result.templateMenu.Visibility = Visibility.Hidden;
+            return result;
         }
-        public static BlobEditorWindow OpenFromDisk(Blob blob)
+        public static BlobEditorWindow OpenFromDisk()
         {
-            if (blob.Mode != BlobMode.Path)
-                throw new ArgumentException();
+
+            Blob blob = PsdPhProject.Instance().openOrCreateMainBlob();
             PsApp psApp = PsWr.GetPhotoshopApplication();
             Document doc = PhotoshopWrapper.OpenDocument(psApp,PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
-            return new BlobEditorWindow(doc, blob);
+            var editor = new BlobEditorWindow(doc, blob);
+            editor.Show();
+            return editor;
         }
         BlobEditorWindow(Document doc, Blob root)
         {
-            
             _composition = root;
             _doc = doc;
             InitializeComponent();
-            Closing += (object sender, CancelEventArgs e) => DialogResult = true;
+            
             structureTab.Content = CEDStackUI.CreateCEDStack(
                 new StructureStackHandler(new PsdPhContext(doc, root)));
             ruleTab.Content = CEDStackUI.CreateCEDStack(
@@ -68,12 +72,18 @@ namespace psdPH
                 _doc.Close(PsSaveOptions.psDoNotSaveChanges);
             else
                 throw new Exception();
+            if ((_composition as Blob).Mode == BlobMode.Path)
+                save();
+        }
+        void save()
+        {
+            PsdPhProject.Instance().saveBlob(GetResultComposition() as Blob);
         }
         private void Window_Activated(object sender, EventArgs e)
         {
 
         }
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void clearMenuItem_Click(object sender, RoutedEventArgs e)
         {
             _composition = Blob.PathBlob("template.psd");
             Close();
@@ -83,5 +93,10 @@ namespace psdPH
         {
             return  new Composition[] { _composition };
     }
+
+        private void saveMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            save();
+        }
     }
 }
