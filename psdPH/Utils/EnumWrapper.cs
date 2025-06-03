@@ -12,7 +12,7 @@ namespace psdPH.Utils
         }
         public override string ToString()
         {
-            return Value.GetDescription();
+            return Localization.LocalizeObj(Value);
         }
     }
 }

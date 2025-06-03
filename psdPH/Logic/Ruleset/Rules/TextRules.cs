@@ -31,18 +31,20 @@ namespace psdPH.Logic.Rules
         [XmlIgnore]
         public TextLeaf TextLeaf
         {
-            get => Composition.getChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName);
-            set => TextLeafLayerName = value.LayerName;
+           protected get =>Composition.getChildren<TextLeaf>().FirstOrDefault(t => t.LayerName == TextLeafLayerName);
+            set => TextLeafLayerName = value?.LayerName;
         }
-
+        public override bool IsSetUp()
+        {
+            return base.IsSetUp()&&TextLeafLayerName!=null;
+        }
     };
     [Serializable]
     [XmlRoot("TextFontSizeRule")]
     public class TextFontSizeRule : TextRule
     {
-
-        public int FontSize;
-
+        protected static int notSetFontSize => 0;
+        public int FontSize = notSetFontSize;
         public TextFontSizeRule(Composition composition) : base(composition) { }
         public TextFontSizeRule() : base(null) { }
         [XmlIgnore]
@@ -67,14 +69,16 @@ namespace psdPH.Logic.Rules
                 (doc.ActiveLayer as ArtLayer).TextItem.Size = FontSize;
         }
         public override string ToString() => "размер шрифта";
+        public override bool IsSetUp()
+        {
+            return base.IsSetUp()&&FontSize!=notSetFontSize;
+        }
     };
     [Serializable]
     [XmlRoot("TextAnchorRule")]
     public class TextAnchorRule : TextRule
     {
-
         public PsJustification Justification;
-
         public TextAnchorRule(Composition composition) : base(composition) { }
         public TextAnchorRule() : base(null) { }
         [XmlIgnore]

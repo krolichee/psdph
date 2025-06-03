@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Orientation="Horizontal" Background="#FFFFEBEB">
+    <StackPanel Orientation="Horizontal">
         <StackPanel>
             <Label Content="Исходные"/>
             <ListBox x:Name="listbox1" Width="150" Height="300" MouseDoubleClick="ListBox1_MouseDoubleClick"/>

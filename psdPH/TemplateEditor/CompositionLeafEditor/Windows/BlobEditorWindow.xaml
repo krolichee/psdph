@@ -14,9 +14,10 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Menu VerticalAlignment="Center" Height="18">
+        <Menu x:Name="templateMenu" VerticalAlignment="Center" Height="18" >
             <MenuItem Header="Шаблон" >
-                <MenuItem Header="Удалить" Click="MenuItem_Click" />
+                <MenuItem Header="Очистить" Click="clearMenuItem_Click" />
+                <MenuItem Header="Сохранить" Click="saveMenuItem_Click" />
             </MenuItem>
         </Menu>
         <Grid Grid.Row="1">

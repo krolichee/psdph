@@ -22,7 +22,7 @@ namespace psdPH
                 var psAppCom__ = Marshal.GetActiveObject("Photoshop.Application");
                 psApp = psAppCom__ as Application;
             }
-
+            psApp.DisplayDialogs = PsDialogModes.psDisplayNoDialogs;
             psApp.Visible = true;
             return psApp;
         }

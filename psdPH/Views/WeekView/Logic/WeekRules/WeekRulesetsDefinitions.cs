@@ -4,16 +4,23 @@ using psdPH.Views.WeekView.Logic;
 using Condition = psdPH.Logic.Rules.Condition;
 using System;
 using psdPH.RuleEditor;
+using System.Linq;
+using psdPH.Logic.Rules;
 
 namespace psdPH.Views.WeekView
 {
     /// <summary>
     /// Логика взаимодействия для WeekGalery.xaml
     /// </summary>
-    public static class WeekRulesetsDefinitions
+    static class WeekRulesetsDefinitions
     {
         public static Rule[] Rules(Composition root) =>
-            RuleDicts.Rules(root);
+            new StructureRulesetDefinition(root).Rules.Concat(
+                new Rule[]
+                {
+                    new FlagRule(root)
+                }
+                ).ToArray();
         [Obsolete]
         public static Condition[] WeekConditions(Composition root) => new Condition[]
         {
@@ -26,12 +33,21 @@ namespace psdPH.Views.WeekView
             new DayOfWeekCondition(root)
         };
     };
+    [Obsolete]
+    public class WeekRulesetDefinition: RulesetDefinition
+    {
+        public WeekRulesetDefinition(Composition root) : base(
+            WeekRulesetsDefinitions.Rules(root),
+            WeekRulesetsDefinitions.WeekConditions(root)
+            )
+        { }
+    }
     public class DayRulesetDefinition: RulesetDefinition
     {
-        public override Rule[] Rules => WeekRulesetsDefinitions.Rules(_root);
-        public override Condition[] Conditions=> WeekRulesetsDefinitions.DayConditions(_root);
-        public DayRulesetDefinition(Composition root) : base(root) { }
-        
-
+        public DayRulesetDefinition(Composition root):base(
+            WeekRulesetsDefinitions.Rules(root),
+            WeekRulesetsDefinitions.DayConditions(root)
+            )
+        { }
     }
 }

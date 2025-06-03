@@ -1,41 +1,12 @@
 ﻿namespace psdPH
 {
     using global::Photoshop;
-    using Photoshop;
     using psdPH.Logic;
-    using psdPH.Logic.Compositions;
     using System;
     using System.Collections.Generic;
     using System.Windows;
+    using static psdPH.Photoshop.LayerWr;
 
-    public static class TypeLocalization
-    {
-        private static readonly Dictionary<Type, string> Localizations = new Dictionary<Type, string>
-        {
-                {typeof(Blob), "Поддокумент" },
-
-                {typeof(FlagLeaf), "Флаг"},
-                {typeof(PrototypeLeaf), "Прототип" },
-                {typeof(PlaceholderLeaf), "Заглушка" },
-
-                {typeof(ImageLeaf), "Изображение" },
-                {typeof(TextLeaf), "Текст" },
-                {typeof(LayerLeaf), "Слой" },
-                {typeof(GroupLeaf), "Группа" },
-                {typeof(AreaLeaf),"Зона" },
-
-                {typeof(Rule), "Правило" },
-
-        };
-        public static string GetLocalizedDescription(Type type)
-        {
-            if (Localizations.TryGetValue(type, out var description))
-            {
-                return description;
-            }
-            return type.ToString();
-        }
-    }
     public static class EnumLocalization
     {
         private static readonly Dictionary<Type, Dictionary<object, string>> Localizations = new Dictionary<Type, Dictionary<object, string>>()
@@ -84,9 +55,34 @@
                 { VerticalAlignment.Bottom, "снизу" }
             }
         },
+    {
+            typeof(HAilgnment), new Dictionary<object, string>
+            {
+                { HAilgnment.Left, "слева" },
+                { HAilgnment.Center, "по центру" },
+                { HAilgnment.Right, "справа" },
+                { HAilgnment.None, "не выравнивать" }
+            }
+        },
+    {
+            typeof(VAilgnment), new Dictionary<object, string>
+            {
+                { VAilgnment.Top, "cверху" },
+                { VAilgnment.Center, "по центру" },
+                { VAilgnment.Bottom, "снизу" },
+                { VAilgnment.None, "не выравнивать" }
+            }
+        },
+    {
+            typeof(ConsiderFx), new Dictionary<object, string>
+            {
+                { ConsiderFx.WithFx, "с эффектами" },
+                { ConsiderFx.NoFx, "без эффектов" }
+            }
+        }
     };
 
-        public static string GetLocalizedDescription<TEnum>(TEnum value)
+        public static string GetLocalizedDescription<TEnum>(this TEnum value)
         {
             Type enumType = value.GetType();
 
@@ -95,8 +91,6 @@
             {
                 return description;
             }
-
-            // Если локализация не найдена, возвращаем строковое представление значения
             return value.ToString();
         }
 

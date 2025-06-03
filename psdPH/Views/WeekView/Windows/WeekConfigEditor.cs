@@ -61,13 +61,13 @@ namespace psdPH.Views.WeekView
                 DowPrototypeLayernameDict = dwpm_w.GetResultDict(),
                 PrototypeLayerName = prototype.LayerName
             };
-            ParameterConfig resultConfig(string fieldname, string desc) => new ParameterConfig(result, nameof(fieldname), desc);
+            ParameterConfig resultConfig(string fieldname, string desc) => new ParameterConfig(result, fieldname, desc);
             var dayTextLeafConfig = resultConfig(nameof(WeekConfig.DateTextLeafLayerName), "Текстовое поле числа дня");
             var dowTextLeafConfig = resultConfig(nameof(WeekConfig.DowTextLeafLayerName), "Текстовое поле дня недели");
             var previewTextLeafConfig = resultConfig(nameof(WeekConfig.TilePreviewTextLeafName), "Текстовое поле для предпросмотра");
             var weekDatesTextLeafConfig = resultConfig(nameof(WeekConfig.WeekDatesTextLeafName), "Текстовое поле дат недели");
             var dayDateFormatConfig = resultConfig(nameof(WeekConfig.DayDateFormat), "Формат даты дня");
-            var dowFormatConfig = resultConfig(nameof(WeekConfig.DayDateFormat), "Формат дня недели");
+            var dowFormatConfig = resultConfig(nameof(WeekConfig.DowFormat), "Формат дня недели");
 
             var dayDateFormats = new DateFormat[]
             {
@@ -86,9 +86,10 @@ namespace psdPH.Views.WeekView
             parameters.Add(Parameter.Choose(dayTextLeafConfig, textLeafs_names));
             parameters.Add(Parameter.Choose(dayDateFormatConfig, dayDateFormats));
             parameters.Add(Parameter.Choose(dowTextLeafConfig, textLeafs_names));
+            parameters.Add(Parameter.Choose(dowFormatConfig, dowFormats));
             parameters.Add(Parameter.Choose(previewTextLeafConfig, textLeafs_names));
             parameters.Add(Parameter.Choose(weekDatesTextLeafConfig , root_textLeafs_names ));
-            parameters.Add(Parameter.Choose(dowFormatConfig, dowFormats));
+            
 
             var conf_w = new ParametersInputWindow(parameters.ToArray(), "Настройка конфигурации недельного вида");
             if (conf_w.ShowDialog() != true)

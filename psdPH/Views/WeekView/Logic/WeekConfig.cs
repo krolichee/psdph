@@ -40,7 +40,7 @@ namespace psdPH
         }
         public List<DowLayernamePair> DowPlaceholderLayernameList = new List<DowLayernamePair>();
         public DateFormat DayDateFormat;
-        public DateFormat DayDowFormat;
+        public DateFormat DowFormat;
 
         public string TilePreviewTextLeafName;
         public string PrototypeLayerName;
@@ -81,7 +81,7 @@ namespace psdPH
             var dateTextLeaf = GetDateTextLeaf(dayBlob);
             var dowTextLeaf = GetDowTextLeaf(dayBlob);
             dateTextLeaf.Text =DayDateFormat.Format(dateTime);
-            dowTextLeaf.Text = DayDowFormat.Format(dateTime);
+            dowTextLeaf.Text = DowFormat.Format(dateTime);
         }
 
         internal string GetWeekDatesString(int week)

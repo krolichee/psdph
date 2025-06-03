@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using static psdPH.Logic.PhotoshopDocumentExtension;
 using psdPH.Logic;
 using System.Runtime.InteropServices;
+using System.Windows.Controls;
+using System.Windows;
+using Application = Photoshop.Application;
 
 
 namespace psdPHTest.Tests.Ps
@@ -46,6 +49,47 @@ namespace psdPHTest.Tests.Ps
         }
     }
     [TestClass]
+    public class TextLayerTest
+    {
+        static Application psApp;
+        Document doc => psApp.ActiveDocument;
+        [TestInitialize]
+        public void Init()
+        {
+            ArtLayer a;
+            Type psType = Type.GetTypeFromProgID("Photoshop.Application");
+            psApp = Activator.CreateInstance(psType) as Application;
+        }
+        [TestMethod]
+        public void testTextAndNameMatch()
+        { var layer = doc.ActiveLayer as ArtLayer;
+            var first_name = layer.Name;
+            var layer_text = layer.TextItem.Contents;
+            var text = "333";
+            layer.Name = first_name;
+            layer.TextItem.Contents = text;
+            Assert.IsTrue(first_name != text);
+        }
+        [TestMethod]
+        public void testFix()
+        {
+            doc.FixTextLayersNames();
+        }
+        [TestMethod]
+        public void testApplyStyle()
+        {
+            psApp.DisplayDialogs = PsDialogModes.psDisplayNoDialogs;
+            (doc.ActiveLayer as ArtLayer).ApplyStyle("sdasd");
+        }
+        [TestMethod]
+        public void testChtoto()
+        {
+            ArtLayer a = doc.ActiveLayer as ArtLayer;
+            a.Chtoto();
+        }
+    }
+    
+    [TestClass]
     public class ManualPhotoshopTests
     {
         static Application psApp;
@@ -59,6 +103,10 @@ namespace psdPHTest.Tests.Ps
             Type psType = Type.GetTypeFromProgID("Photoshop.Application");
             psApp = Activator.CreateInstance(psType) as Application;
             doc.ResetHistory();
+        }
+        [TestMethod]
+        public void testNotLastHistory()
+        {
         }
         public void OpenImage()
         {
@@ -161,7 +209,7 @@ namespace psdPHTest.Tests.Ps
                 {
                     TextLayerWr textLayer = _doc.GetLayerByName($"text{i}").TextWrapper();
                     ArtLayerWr areaLayer = _doc.GetLayerByName($"area{i}").Wrapper();
-                    textLayer.FitWithEqualize(areaLayer, Alignment.Create("center", "center"));
+                    textLayer.FitWithEqualize(areaLayer, PhotoshopLayerExtension.AlignOptions.Default);
                 }
             }
             [TestMethod]
@@ -178,7 +226,7 @@ namespace psdPHTest.Tests.Ps
                 {
                     TextLayerWr textLayer = doc.GetLayerByName($"text{i}").TextWrapper();
                     ArtLayerWr areaLayer = doc.GetLayerByName($"area{i}").Wrapper();
-                    textLayer.FitWithEqualize(areaLayer, Alignment.Create("center", "center"));
+                    textLayer.FitWithEqualize(areaLayer, PhotoshopLayerExtension.AlignOptions.Default);
                     Console.WriteLine($"обработка пары {i} в документе {doc.Name}");
                 }
             }

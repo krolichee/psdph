@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
+using psdPH.Utils;
 using psdPH.Views.WeekView.Logic;
 using System;
 using System.Collections.Generic;
@@ -41,12 +42,7 @@ namespace psdPH.Views.WeekView
         }
         public WeekData Clone()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(WeekData));
-            StringBuilder sb = new StringBuilder();
-            StringWriter sw = new StringWriter(sb);
-            serializer.Serialize(sw, this);
-            StringReader sr = new StringReader(sb.ToString());
-            WeekData result = serializer.Deserialize(sr) as WeekData;
+            WeekData result = CloneConverter.Convert<WeekData>(this);
             result.Restore(WeekListData);
             return result;
         }
@@ -75,7 +71,7 @@ namespace psdPH.Views.WeekView
                 ph.Replacement = dayBlob;
             }
             WeekConfig.GetWeekDatesTextLeaf(weekData_clone.MainBlob).Text = WeekConfig.GetWeekDatesString(Week);
-            WeekListData.InjectRules(weekData_clone);
+            WeekListData.WeekRulesets.InjectRules(weekData_clone);
             weekData_clone.MainBlob.CoreApply();
             return weekData_clone.MainBlob;
         }

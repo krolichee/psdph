@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace psdPH.Utils
@@ -6,27 +8,33 @@ namespace psdPH.Utils
 
     static class DiskOperations
     {
-        public static T OpenXml<T>(string path)
+        public static T OpenXml<T>(string path)where T:class
         {
             T result = default(T);
-            FileStream fileStream;
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
             if (File.Exists(path))
             {
-                fileStream = new FileStream(path, FileMode.Open);
-                result = (T)serializer.Deserialize(fileStream);
-                fileStream.Close();
+                var stringXml = File.ReadAllText(path, Encoding.Unicode);
+                result = CloneConverter.GetObj<T>(stringXml);
             }
             return result;
         }
-
-        public static void SaveXml<T>(string path, T obj)
+        public struct SaveXmlResult
         {
-            FileStream fileStream;
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
-            fileStream = new FileStream(path, FileMode.Create);
-            serializer.Serialize(fileStream, obj);
-            fileStream.Close();
+            public bool Serialized;
+            public bool Written;
+        }
+        public static SaveXmlResult SaveXml<T>(string path, T obj)
+        {
+            SaveXmlResult result = new SaveXmlResult() { Serialized = false,Written = false };
+            try
+            {
+                var stringXml = CloneConverter.GetXml(obj);
+                result.Serialized = true;
+                File.WriteAllText(path, stringXml, Encoding.Unicode);
+                result.Written = true;
+            }
+            catch { }
+            return result;
         }
     }
 }

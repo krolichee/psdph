@@ -5,10 +5,4 @@
         Composition GetResultComposition();
         bool? ShowDialog();
     }
-
-    public enum EditorMode
-    {
-        Edit,
-        Create
-    }
 }

@@ -39,7 +39,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         }
         override protected UIElement createControl(object rule)
         {
-            return new RuleStackControl((Rule)rule, RuleSet);
+            return new RuleStackControl((Rule)rule, RuleCommand);
         }
         protected override object[] getElements() =>
             RuleSet.Rules.ToArray();
@@ -52,7 +52,6 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     public class StructureRuleStackHandler : RuleStackHandler
     {
         public StructureRuleStackHandler(RuleSet ruleSet) : base(ruleSet) { }
-
         protected override RuleCommand RuleCommand => new StructureRuleCommand(RuleSet);
     }
 }

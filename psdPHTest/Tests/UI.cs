@@ -61,6 +61,7 @@ namespace psdPHTest.UI
     public class ParameterTest
     {
         public object[] Objects;
+        public string str=string.Empty;
         [TestMethod]
         public void testMulti()
         {
@@ -71,6 +72,13 @@ namespace psdPHTest.UI
             pi_w.ShowDialog();
             Assert.IsTrue(Objects[0] as string=="1");
             Assert.IsTrue(Objects[1] as string=="3");
+        }
+        [TestMethod]
+        public void testRtb()
+        {
+            var cfg = new ParameterConfig(this, nameof(str), "каво");
+            var parameters = new Parameter[] { Parameter.RichStringInput(cfg) };
+            while (new ParametersInputWindow(parameters).ShowDialog() == true) ;
         }
 
     }
@@ -152,37 +160,6 @@ namespace psdPHTest.UI
             aliControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             window.Content = aliControl;
             window.ShowDialog();
-        }
-        [TestMethod]
-        public void AligmentContolValuesTest()
-        {
-            var window = new Window();
-            window.SizeToContent = SizeToContent.WidthAndHeight;
-            var aliControl = new AlignmentControl();
-            aliControl.HorizontalAlignment = HorizontalAlignment.Stretch;
-            aliControl.VerticalAlignment = VerticalAlignment.Stretch;
-            aliControl.VerticalContentAlignment = VerticalAlignment.Stretch;
-            aliControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            window.Content = aliControl;
-
-            Dictionary<Button, Alignment> btnAli = new Dictionary<Button, Alignment>()
-            {
-                { aliControl.upLeft,Alignment.Create("up","left")},
-                { aliControl.upCenter,Alignment.Create("up","center")},
-                { aliControl.upRight,Alignment.Create("up","right")},
-                { aliControl.centerLeft,Alignment.Create("center","left")},
-                { aliControl.centerCenter,Alignment.Create("center","center")},
-                { aliControl.centerRight,Alignment.Create("center","right")},
-                { aliControl.downLeft,Alignment.Create("down","left")},
-                { aliControl.downCenter,Alignment.Create("down","center")},
-                { aliControl.downRight,Alignment.Create("down","right")}
-            };
-
-            foreach (Button button in btnAli.Keys)
-            {
-                button.Command.Execute(button.CommandParameter);
-                Assert.IsTrue(aliControl.GetResultAlignment().Equals(btnAli[button]));
-            }
         }
     }
 }

@@ -6,5 +6,6 @@ namespace psdPH.Logic
     {
         [XmlIgnore]
         Parameter[] Setups { get; }
+        bool IsSetUp();
     }
 }

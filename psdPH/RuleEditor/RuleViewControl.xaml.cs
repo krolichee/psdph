@@ -42,7 +42,7 @@ namespace psdPH.RuleEditor
             {
                 var config = parameter.Config;
                 parts.Add(config.Desc);
-                parts.Add(UIName.ToString(config.GetValue()));
+                parts.Add($"'{Localization.LocalizeObj(config.GetValue())}'");
             }
             return string.Join(" ", parts);
 

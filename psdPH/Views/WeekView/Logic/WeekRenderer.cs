@@ -16,7 +16,7 @@ namespace psdPH.Views.WeekView.Logic
         }
         public static void RenderWeek(WeekData weekData)
         {
-            var doc = PhotoshopWrapper.OpenDocument(weekData.MainBlob.Path);
+            var doc = PhotoshopWrapper.OpenDocument(PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
             RenderWeek(weekData, doc);
         }
     }

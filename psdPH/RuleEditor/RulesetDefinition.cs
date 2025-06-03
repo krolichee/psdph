@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace psdPH.RuleEditor
 {
-    public abstract class RulesetDefinition
+    public class RulesetDefinition
     {
-        protected readonly Composition _root;
-        public abstract Rule[] Rules{ get;}
-        public abstract Condition[] Conditions { get; }
-        public RulesetDefinition(Composition root)
+        public Rule[] Rules;
+        public Condition[] Conditions;
+        public RulesetDefinition(Rule[] rules, Condition[] conditions)
         {
-            _root = root;
+            Rules = rules;
+            Conditions = conditions;
         }
     }
 }

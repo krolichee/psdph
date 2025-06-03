@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Logic.PhotoshopLayerExtension;
 using Application = Photoshop.Application;
 
 namespace psdPH.Photoshop
@@ -25,18 +26,37 @@ namespace psdPH.Photoshop
         //LibProperties
         public abstract Application Application { get; }
         public abstract double[] Bounds { get; }
+        public abstract double[] BoundsNoEffects { get; }
         public abstract dynamic Parent { get; }
         public abstract dynamic Name { get; set; }
         public abstract bool Visible { get; set; }
         public abstract double Opacity { get; set; }
         //CustomMethods
-        public Rect GetBoundRect()
+        public bool DoEffectsAffectBounds()
         {
-            double[] bounds = Bounds;
+            return GetRect(BoundsNoEffects) != GetRect(Bounds);
+        }
+        Rect GetRect(double[] bounds)
+        {
             return new Rect(new Point(bounds[0], bounds[1]),
                 new Point(bounds[2], bounds[3]));
         }
+        public Rect GetNoFxBoundRect() => GetRect(BoundsNoEffects);
+        public Size GetNoFxBoundsSize() => GetNoFxBoundRect().Size;
+        public Rect GetBoundRect()=>GetRect(Bounds);
         public Size GetBoundsSize()=>GetBoundRect().Size;
+        public bool HasStyle()
+        {
+            bool result = false;
+            result = new KostylExecutor().tryAction(this.OffStyle);
+            if (result)
+            {
+                var doc = this.GetActiveDocument();
+                var lastIndex = doc.HistoryStates.Count - 1;
+                doc.ActiveHistoryState = doc.HistoryStates[lastIndex];
+            }
+            return result;
+        }
         public void OffStyle()
         {
             MakeActive();
@@ -87,7 +107,24 @@ namespace psdPH.Photoshop
             Move(newLayerSet, PsElementPlacement.psPlaceInside);
             return newLayerSet.Wrapper() ;
         }
-        
+        delegate Rect BoundFunction(LayerWr layerWr);
+        public Rect GetBoundRect(ConsiderFx considerFx)=>
+            getBoundFunc(considerFx)(this);
+        static BoundFunction getBoundFunc(ConsiderFx considerFx)
+        {
+            BoundFunction func;
+            if (considerFx == ConsiderFx.WithFx)
+                func = (LayerWr l) => l.GetBoundRect();
+            else
+                func = (LayerWr l) => l.GetNoFxBoundRect();
+            return func;
+        }
+        public enum ConsiderFx
+        {
+            WithFx,
+            NoFx
+        }
+
     }
     public partial class ArtLayerWr : LayerWr
     {
@@ -108,7 +145,7 @@ namespace psdPH.Photoshop
         {
             LayerSets parentLayersets = GetParentLayerSets();
             LayerSet linesLayerSet = parentLayersets.Add();
-            linesLayerSet.Name = "NewGroup";
+            linesLayerSet.Name = $"{Name}_Split";
             var linesLayerSetWr = new LayerSetWr(linesLayerSet);
             List<ArtLayer> lineLayers = new List<ArtLayer>();
 

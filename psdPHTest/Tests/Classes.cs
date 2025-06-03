@@ -12,16 +12,16 @@ namespace psdPHTest.Tests
 {
     public class WeekViewTest
     {
-        public static DowLayernamePair GetPair(DayOfWeek dow) => new DowLayernamePair(dow, dow.GetDescription());
+        public static DowLayernamePair GetPair(DayOfWeek dow) => new DowLayernamePair(dow,Localization.LocalizeObj(dow));
         public static DowLayernamePair[] DowLayernamePairs => Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Select(e => GetPair(e)).ToArray();
-        public static string[] DayOfWeekNames => Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Select(e => e.GetDescription()).ToArray();
+        public static string[] DayOfWeekNames => Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Select(e => Localization.LocalizeObj(e)).ToArray();
         public static WeekConfig GetWeekConfig()
         {
             return new WeekConfig()
             {
                 DateTextLeafLayerName = "Число",
                 DayDateFormat = new NoZeroDateFormat(),
-                DayDowFormat = new ShortDowFormat().Lower,
+                DowFormat = new ShortDowFormat().Lower,
                 DowPlaceholderLayernameList = DowLayernamePairs.ToList(),
                 DowTextLeafLayerName = "День недели",
                 WeekDatesTextLeafName = "Даты недели",

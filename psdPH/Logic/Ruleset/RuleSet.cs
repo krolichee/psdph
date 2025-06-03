@@ -15,6 +15,11 @@ namespace psdPH.Logic
             rule.RestoreComposition(Composition);
             Rules.Add(rule);
         }
+        public void AddRules(Rule[] rules)
+        {
+            foreach (var rule in rules)
+                AddRule(rule);
+        }
         public event Action Updated;
         [XmlIgnore]
         public Composition Composition;

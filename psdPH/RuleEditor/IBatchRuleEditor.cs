@@ -2,9 +2,9 @@
 
 namespace psdPH.RuleEditor
 {
-    public interface IRuleEditor
+    public interface IBatchRuleEditor
     {
         bool? ShowDialog();
-        ConditionRule GetResultRule();
+        Rule[] GetResultBatch();
     }
 }

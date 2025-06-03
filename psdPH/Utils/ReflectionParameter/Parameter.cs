@@ -2,6 +2,8 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -40,7 +42,15 @@ namespace psdPH.Logic
             var result = new Parameter(config, fieldFunctions);
             fieldFunctions = result._fieldFunctions;
             var stack = result._stack;
+
+            var index = options.ToList().IndexOf(config.GetValue());
+
             var cb = new ComboBox() { ItemsSource = options.Select(fieldFunctions.ConvertFunction) };
+            //var value = fieldFunctions.ConvertFunction(config.GetValue());
+
+            cb.SelectedIndex = index;
+
+
             result.valueFunc = () => fieldFunctions.RevertFunction(cb.SelectedValue);
             result.Control = cb;
             stack.Children.Add(cb);
@@ -52,12 +62,12 @@ namespace psdPH.Logic
             var result = new Parameter(config);
             var stack = result._stack;
 
-            var rtb = new RichTextBox() { MinWidth = 70, MinHeight = 40 };
+            var rtb = new RichTextBox() {MinWidth = 70, MaxWidth = 200, MinHeight = 40,HorizontalAlignment = HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Top};
 
             rtb.TextChanged += RichTextBox_TextChanged;
             result.valueFunc = () => rtb.GetText();
             result.Control = rtb;
-            rtb.SetText(config.GetValue() as string); ;
+            rtb.SetText(config.GetValue() as string);
             stack.Children.Add(rtb);
             return result;
 
@@ -119,13 +129,26 @@ namespace psdPH.Logic
             var options = enumValues.ToArray();
             return Parameter.Choose(config, options, FieldFunctions.EnumWrapperFunctions);
         }
+        public static Parameter JustDescrition(string desc)
+        {
+            var label = new Label() { Content = "" };
+            var config = new ParameterConfig(label,nameof(label.Content),desc);
 
+            var result = new Parameter(config);
+            var stack = result._stack;
+            result.Control = label;
+            result.valueFunc = () => ""; ;
+            return result;
+        }
         internal static Parameter Date(ParameterConfig config)
         {
             var result = new Parameter(config);
             var stack = result._stack;
 
             var calendar = new DatePicker();
+            var date = config.GetValue() as DateTime?;
+            if (date!=null)
+                calendar.SelectedDate = date;
             result.Control = calendar;
 
             stack.Children.Add(calendar);

@@ -41,7 +41,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
                 parameter.Stack.Orientation = Orientation.Vertical;
                 parameter.Control.HorizontalAlignment = HorizontalAlignment.Left;
                 parameter.Control.VerticalAlignment = VerticalAlignment.Top; 
-                parameter.Stack.Margin = new Thickness(10, 10, 0, 10);
+                parameter.Stack.Margin = new Thickness(10, 10, 10, 10);
 
             }
             MainGrid.Children.Insert(0, _stack);
