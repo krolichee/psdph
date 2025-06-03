@@ -22,11 +22,15 @@ namespace psdPH.Utils
             serializer.Serialize(sw, obj);
             return sb.ToString();
         }
-        public static T GetObj<T>(string xmlString)where T:class
+        public static T GetObj<T>(string xmlString) where T:class
+        {
+            return GetObj(xmlString,typeof(T)) as T;
+        }
+        public static object GetObj(string xmlString,Type type)
         {
             StringReader sr = new StringReader(xmlString);
-            XmlSerializer serializer = new XmlSerializer(typeof(T), KnownTypes.Types.ToArray());
-            T result = serializer.Deserialize(sr) as T;
+            XmlSerializer serializer = new XmlSerializer(type, KnownTypes.Types.ToArray());
+            object result = serializer.Deserialize(sr);
             return result;
         }
         private static string _changeType<T>(string xmlString) where T : class
@@ -36,17 +40,18 @@ namespace psdPH.Utils
             xmlString = xDoc.ToString();
             return xmlString;
         }
-        public static T Convert<T>(object blob)where T:class,new()
+        public static T Convert<T>(object obj)where T:class,new()
         {
             var dayBlob = new T();
-            var resultXml = GetXml(blob);
+            var resultXml = GetXml(obj);
             resultXml = _changeType<T>(resultXml);
             return GetObj<T>(resultXml);
         }
-        public static T Clone<T>(T obj)where T:class
+        public static object Clone(object obj)
         {
+            var type = obj.GetType();
             var resultXml = GetXml(obj);
-            return GetObj<T>(resultXml);
+            return GetObj(resultXml, type);
         }
     }
 }

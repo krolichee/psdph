@@ -12,8 +12,8 @@ namespace psdPH.Views.WeekView.Logic
     public class EveryNDayCondition : Condition
     {
         public override string ToString() => "каждый 'n' день";
-        public DateTime StartDateTime=new DateTime(1970,1,1);
-        public int Interval=1;
+        public DateTime? StartDateTime;
+        public int Interval=0;
         public override Parameter[] Setups
         {
             get
@@ -32,11 +32,18 @@ namespace psdPH.Views.WeekView.Logic
         }
 
         public EveryNDayCondition(Composition composition) : base(composition) { }
+        public override bool IsSetUp()
+        {
+            return base.IsSetUp()&&StartDateTime!=null&&Interval!=0;
+        }
         public override bool IsValid()
         {
+            if (StartDateTime == null)
+                return false;
+            DateTime startDateTime =(DateTime)StartDateTime;
             var dayBlob = Composition as DowBlob;
             var dateTime = WeekTime.GetDateByWeekAndDay(dayBlob.Week, dayBlob.Dow);
-            TimeSpan timeSinceFirstWeek = dateTime - StartDateTime;
+            TimeSpan timeSinceFirstWeek = dateTime - startDateTime;
             return timeSinceFirstWeek.TotalDays % Interval == 0;
         }
         public EveryNDayCondition() : base(null) { }

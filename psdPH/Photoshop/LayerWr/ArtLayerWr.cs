@@ -14,8 +14,9 @@ namespace psdPH.Photoshop
         public override dynamic Name { get => _layer.Name; set => _layer.Name = value; }
         public override bool Visible { get => _layer.Visible; set => _layer.Visible = value; }
         public override double Opacity { get => _layer.Opacity; set => _layer.Opacity = value; }
+        public override double[] BoundsNoEffects => (_layer.Layer.BoundsNoEffects as dynamic[]).Cast<double>().ToArray();
         public override void Duplicate() => _layer.Duplicate();
-        public override void MakeActive()=>
+        public override void MakeActive() =>
             GetActiveDocument().ActiveLayer = _layer;
 
         public override void Move(object dest, PsElementPlacement placement) =>

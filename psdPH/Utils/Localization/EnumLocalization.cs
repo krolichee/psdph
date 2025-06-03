@@ -1,58 +1,12 @@
 ﻿namespace psdPH
 {
     using global::Photoshop;
-    using Photoshop;
     using psdPH.Logic;
-    using psdPH.Logic.Compositions;
     using System;
     using System.Collections.Generic;
     using System.Windows;
-    using System.Windows.Media.Animation;
+    using static psdPH.Photoshop.LayerWr;
 
-    public static class TypeLocalization
-    {
-        private static readonly Dictionary<Type, string> Localizations = new Dictionary<Type, string>
-        {
-                {typeof(Blob), "Поддокумент" },
-
-                {typeof(FlagLeaf), "Флаг"},
-                {typeof(PrototypeLeaf), "Прототип" },
-                {typeof(PlaceholderLeaf), "Заглушка" },
-
-                {typeof(ImageLeaf), "Изображение" },
-                {typeof(TextLeaf), "Текст" },
-                {typeof(LayerLeaf), "Слой" },
-                {typeof(GroupLeaf), "Группа" },
-                {typeof(AreaLeaf),"Зона" },
-
-                {typeof(Rule), "Правило" },
-
-        };
-        public static string GetLocalizedDescription(Type type)
-        {
-            if (Localizations.TryGetValue(type, out var description))
-            {
-                return description;
-            }
-            return type.ToString();
-        }
-    }
-    public static class Localization
-    {
-        public static string LocalizeObj(this object obj)
-        {
-            if (obj is Enum)
-                return EnumLocalization.GetLocalizedDescription(obj as Enum);
-            else if (obj is bool)
-                return BoolLocalization.LocalizeBool((bool)obj);
-            else
-                return obj.ToString();
-        }
-    }
-    public static class BoolLocalization
-    {
-        public static string LocalizeBool(bool val) => val ? "истина":"ложь";
-    }
     public static class EnumLocalization
     {
         private static readonly Dictionary<Type, Dictionary<object, string>> Localizations = new Dictionary<Type, Dictionary<object, string>>()
@@ -119,9 +73,16 @@
                 { VAilgnment.None, "не выравнивать" }
             }
         },
+    {
+            typeof(ConsiderFx), new Dictionary<object, string>
+            {
+                { ConsiderFx.WithFx, "с эффектами" },
+                { ConsiderFx.NoFx, "без эффектов" }
+            }
+        }
     };
 
-        public static string GetLocalizedDescription<TEnum>(TEnum value)
+        public static string GetLocalizedDescription<TEnum>(this TEnum value)
         {
             Type enumType = value.GetType();
 

@@ -10,7 +10,9 @@ namespace psdPH.Logic
 
         public static FieldFunctions EnumWrapperFunctions => new FieldFunctions()
         {
-            ConvertFunction = (o => new EnumWrapper(o as Enum)),
+            ConvertFunction = (
+            o => new EnumWrapper(o as Enum)
+            ),
             RevertFunction = (o) => (o as EnumWrapper).Value
         };
     }

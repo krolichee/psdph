@@ -10,7 +10,7 @@
         <Grid x:Name="mainGrid">
 
         </Grid>
-        <Button Width="40" Height="25" Margin="0,5,6,6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click">
+        <Button x:Name="okButton" Width="40" Height="25" Margin="0,5,6,6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click">
             Ok
         </Button>
     </StackPanel>

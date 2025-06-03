@@ -13,17 +13,20 @@ namespace psdPH.Logic
 {
 	public static partial class PhotoshopLayerExtension
 	{
-		public static Vector GetAlightmentVector(this LayerWr dynamicLayer, LayerWr targetLayer, Alignment alignment = null)
+		public static Vector GetAlightmentVector(this LayerWr dynamicLayer, LayerWr targetLayer, AlignOptions options)
 		{
-			return GetAlightmentVector(targetLayer.GetBoundRect(), dynamicLayer.GetBoundRect(), alignment);
+			return GetAlightmentVector(
+				targetLayer.GetBoundRect(options.ConsiderFx), 
+				dynamicLayer.GetBoundRect(options.ConsiderFx), 
+				options.Alignment);
 		}
-		public static void AlignLayer(this LayerWr dynamicLayer, LayerWr targetLayer, Alignment alignment)
+		public static void AlignLayer(this LayerWr dynamicLayer, LayerWr targetLayer, AlignOptions options)
 		{
-			dynamicLayer.TranslateV(dynamicLayer.GetAlightmentVector(targetLayer, alignment));
+			dynamicLayer.TranslateV(dynamicLayer.GetAlightmentVector(targetLayer, options));
         }
-		public static Vector GetAlightmentVector(Rect targetRect, Rect dynamicRect, Alignment alignment = null)
+		public static Vector GetAlightmentVector(Rect targetRect, Rect dynamicRect, Alignment alignment)
 		{
-			if (alignment == null)
+            if (alignment == null)
 				alignment = new Alignment(HAilgnment.Left, VAilgnment.Top);
 			double x = 0;
 			double y = 0;

@@ -78,15 +78,55 @@ namespace psdPH.Logic
         {
             doc.ActiveHistoryState = doc.HistoryStates[1];
         }
-        public static LayerWr GetLayerWrByName(this Document doc, string layerName, LayerListing listing = DefaultListing) {
+        public static bool IsNonFile(this Document doc)
+        {
             try
             {
-                return doc.GetLayerByName(layerName, listing).Wrapper();
+                doc.GetDocPath();
+                return false;
+            }
+            catch {
+                return true;
+            }
+        }
+        public static void FixTextLayersNames(this Document doc)
+        {
+            var layers = doc.GetLayersByKind(PsLayerKind.psTextLayer);
+            foreach (var layer in layers)
+            {
+                var name = layer.Name;
+                layer.Name = "_";
+                layer.Name = name;
+            }
+            var smartLayers = doc.GetLayersByKind(PsLayerKind.psSmartObjectLayer);
+            foreach (var layer in smartLayers)
+            {
+                var smart_doc = doc.OpenSmartLayer(layer);
+                smart_doc.FixTextLayersNames();
+                smart_doc.Close(PsSaveOptions.psSaveChanges);
+            }
+
+        }
+        public static LayerWr GetLayerWrByName(this Document doc, string layerName, LayerListing listing = DefaultListing) {
+            LayerWr result;
+            try
+            {
+
+                var layer = doc.GetLayerByName(layerName, listing);
+                try
+                {
+                    result =layer.TextWrapper();
+                }
+                catch
+                {
+                    result = layer.Wrapper();
+                }
             }
             catch
             {
-                return doc.GetLayerSetByName(layerName, listing).Wrapper();
+                result= doc.GetLayerSetByName(layerName, listing).Wrapper();
             }
+            return result;
         }
     }
 }

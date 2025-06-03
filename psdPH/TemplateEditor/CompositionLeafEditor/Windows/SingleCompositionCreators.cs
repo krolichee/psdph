@@ -44,7 +44,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         {
             var prototype_pconfig = new ParameterConfig(result, nameof(result.PrototypeLayerName), "Прототип");
             var rel_pconfig = new ParameterConfig(result, nameof(result.LayerName), "Слой вставки");
-            var prototype_parameter = Parameter.Choose(prototype_pconfig, root.getChildren<PrototypeLeaf>().Select(p => p.LayerName).ToArray());
+            var prototypeNames = root.getChildren<PrototypeLeaf>().Select(p => p.LayerName).ToArray();
+            var prototype_parameter = Parameter.Choose(prototype_pconfig, prototypeNames);
             var rel_parameter = Parameter.Choose(rel_pconfig, doc.GetLayersNames());
             p_w = new ParametersInputWindow(new[] { prototype_parameter, rel_parameter });
         }

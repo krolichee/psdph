@@ -1,7 +1,9 @@
 ﻿using psdPH.Logic.Rules;
 using psdPH.RuleEditor;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using Condition = psdPH.Logic.Rules.Condition;
@@ -13,16 +15,50 @@ namespace psdPH.Logic
     /// </summary>
     public partial class RuleControl : UserControl,IBatchRuleEditor
     {
-        ConditionRule _result;
+        ConditionRule _rule;
         Condition _condition;
         List<Parameter> _parameters = new List<Parameter>();
-        public RuleControl(RulesetDefinition rulesetDef) : this(rulesetDef.Rules, rulesetDef.Conditions) { }
-        public RuleControl(Rule[] rules, Condition[] conditions)
+        void initComboBoxes(Rule[] rules, Condition[] conditions)
         {
-            InitializeComponent();
-
             conditionsComboBox.ItemsSource = conditions;
             ruleComboBox.ItemsSource = rules;
+        }
+        void initComboBoxes(RulesetDefinition rulesetDef)
+        {
+            initComboBoxes(rulesetDef.Rules, rulesetDef.Conditions);
+        }
+        public RuleControl(RulesetDefinition rulesetDef) {
+            InitializeComponent();
+            initComboBoxes(rulesetDef);
+        }
+        void replaceIfSameType<T>(List<T> list,T replacement)
+        {
+            T inList;
+            try
+            {
+                var type = replacement.GetType();
+                inList = list.First(r => r.GetType() == type);
+            }
+            catch { return; }
+            var index = list.IndexOf(inList);
+            list.RemoveAt(index);
+            list.Insert(index, replacement);
+        }
+        public RuleControl(ConditionRule rule_original, RulesetDefinition rulesetDef)
+        {
+            var rule = rule_original.Clone() as ConditionRule;
+            var condition = rule.Condition;
+
+            var conditions = rulesetDef.Conditions.ToList();
+            var rules = rulesetDef.Rules.ToList();
+
+            replaceIfSameType(conditions, condition);
+            replaceIfSameType(rules, rule);
+
+            InitializeComponent();
+            initComboBoxes(rules.ToArray(),conditions.ToArray());
+            conditionsComboBox.SelectedItem = condition;
+            ruleComboBox.SelectedItem = rule;
         }
 
         void setupParameterApperiance(Parameter param)
@@ -47,9 +83,9 @@ namespace psdPH.Logic
         }
         private void ruleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _result = ruleComboBox.SelectedItem as ConditionRule;
+            _rule = ruleComboBox.SelectedItem as ConditionRule;
             ruleParametersStack.Children.Clear();
-            var parameters = _result.Setups;
+            var parameters = _rule.Setups;
             _parameters.AddRange(parameters);
             foreach (var param in parameters)
             {
@@ -63,14 +99,19 @@ namespace psdPH.Logic
             foreach (var item in _parameters)
                 item.Accept();
         }
-
+        bool IsRuleSetUp()
+        {
+            return _rule?.IsSetUp() == true &&
+                _condition?.IsSetUp() == true;
+        }
         ConditionRule GetResultRule()
         {
-            if (_result == null || _condition==null)
-                return null;
             acceptParameters();
-            _result.Condition = _condition;
-            return _result;
+            if (!IsRuleSetUp())
+                return null;
+
+            _rule.Condition = _condition;
+            return _rule;
         }
 
         public bool? ShowDialog()

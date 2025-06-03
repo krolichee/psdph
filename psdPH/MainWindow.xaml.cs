@@ -1,4 +1,5 @@
-﻿using psdPH.Logic.Compositions;
+﻿using psdPH.Logic;
+using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.Utils;
 using psdPH.Views.SimpleView;
@@ -92,7 +93,16 @@ namespace psdPH
             var si_w = new StringInputWindow("Введите название нового проекта");
             if (si_w.ShowDialog() != true)
                 return;
-            var filePath = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument.FullName;
+            var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
+            if (doc.IsNonFile())
+            {
+                MessageBox.Show("Балуетесь! Документ не сохранён на диск");
+                return;
+            }
+            doc.FixTextLayersNames();
+            if (!doc.Saved)
+                doc.Save();
+            var filePath =doc.GetDocPath();
             var projectName = si_w.GetResultString();
             if (tryCreateProject(filePath, projectName))
                 OpenProject(projectName);
@@ -218,11 +228,9 @@ namespace psdPH
         {
             if (AnyViews())
             {
-                MessageBox.Show("Изменения шаблона не будут отображаться на уже созданных видах. После редактирования необходимо будет заново создать виды");
+                MessageBox.Show("Изменения шаблона не будут отображаться на уже созданных видах. После редактирования необходимо будет заново создавать либо очищать виды");
             }
             TemplateWindow = BlobEditorWindow.OpenFromDisk();
-
-
         }
         private void weekViewMenuItem_Execute(object _)
         {

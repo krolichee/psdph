@@ -78,9 +78,27 @@
     </ApplicationDefinition>
     <Compile Include="BlockingStack.cs" />
     <Compile Include="KnownTypes.cs" />
+    <Compile Include="Logic\Ruleset\Conditions\DummyCondition.cs" />
+    <Compile Include="Logic\Ruleset\Conditions\EmptyTextCondition.cs" />
+    <Compile Include="Logic\Ruleset\Conditions\FlagCondition.cs" />
+    <Compile Include="Logic\Ruleset\Conditions\NonEmptyTextCondition.cs" />
+    <Compile Include="Logic\Ruleset\Conditions\TextCondition.cs" />
+    <Compile Include="Logic\Ruleset\Rules\AlignRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\AreaRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ConditionRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\FitRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\FlagRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\LayerRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\OpacityRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\TranslateRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\VisibleRule.cs" />
     <Compile Include="Logic\UINameAttribute.cs" />
+    <Compile Include="Photoshop\AlignOptions.cs" />
+    <Compile Include="Photoshop\KostylExecutor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\IBatchCompositionCreator.cs" />
     <Compile Include="TemplateEditor\StructureRulesDicts.cs" />
+    <Compile Include="Utils\EnumWrapper.cs" />
+    <Compile Include="Utils\Localization\EnumLocalization.cs" />
     <Compile Include="Utils\ReflectionParameter\AligmentControl.xaml.cs">
       <DependentUpon>AligmentControl.xaml</DependentUpon>
     </Compile>
@@ -92,20 +110,19 @@
     <Compile Include="Photoshop\LayerWr\LayerSetWr.cs" />
     <Compile Include="Photoshop\PhotoshopLayerExtension.Adjust.cs" />
     <Compile Include="Photoshop\LayerWr\LayerWr.cs" />
-    <Compile Include="Logic\Rules\ChangeMode.cs" />
-    <Compile Include="Logic\Rules\ELayerMode.cs" />
+    <Compile Include="Logic\Ruleset\ChangeMode.cs" />
+    <Compile Include="Logic\Ruleset\ELayerMode.cs" />
     <Compile Include="RuleEditor\RulesetDefinition.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\MultiCompositionCreator.cs" />
     <Compile Include="Utils\CloneConverter.cs" />
-    <Compile Include="Utils\EnumExtensions.cs" />
-    <Compile Include="Logic\Rules\RuleSet.cs" />
+    <Compile Include="Logic\Ruleset\RuleSet.cs" />
     <Compile Include="Utils\ReflectionParameter\FieldFunctions.cs" />
     <Compile Include="Utils\ReflectionParameter\MultiPicker.xaml.cs">
       <DependentUpon>MultiPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\ReflectionParameter\ParameterConfig.cs" />
     <Compile Include="Utils\ReflectionParameter\RtbExtension.cs" />
-    <Compile Include="Utils\UIDescription.cs" />
+    <Compile Include="Utils\Localization\TypeLocalization.cs" />
     <Compile Include="PsdPhProject.cs" />
     <Compile Include="StringInputWindow.xaml.cs">
       <DependentUpon>StringInputWindow.xaml</DependentUpon>
@@ -128,7 +145,7 @@
     <Compile Include="Logic\Compositions\Compositions.cs" />
     <Compile Include="Logic\Compositions\LayerCompositions.cs" />
     <Compile Include="Photoshop\PhotoshopLayerExtension.cs" />
-    <Compile Include="Logic\Rules\TextRules.cs" />
+    <Compile Include="Logic\Ruleset\Rules\TextRules.cs" />
     <Compile Include="MainWindow.BlobSave.cs" />
     <Compile Include="Utils\CedStack\CEDStackUI.xaml.cs">
       <DependentUpon>CEDStackUI.xaml</DependentUpon>
@@ -139,7 +156,6 @@
     <Compile Include="TemplateEditor\StructureRulesetDefinition.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
     <Compile Include="Utils\DataInputWindow.cs" />
-    <Compile Include="Utils\EnumWrapper.cs" />
     <Compile Include="Utils\TopmostWindow.cs" />
     <Compile Include="Utils\UpcomingAttribute.cs" />
     <Compile Include="Utils\XmlClone.cs" />
@@ -164,24 +180,21 @@
     <Compile Include="Views\WeekView\Windows\DowPlaceholderMatchWindow.xaml.cs">
       <DependentUpon>DowPlaceholderMatchWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\Localization.cs" />
+    <Compile Include="Utils\Localization\Localization.cs" />
     <Compile Include="CollectionEditor\Cropper.xaml.cs">
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
     <Compile Include="Utils\ReflectionParameter\ISetupable.cs" />
     <Compile Include="Photoshop\PhotoshopDocumentExtension.cs" />
-    <Compile Include="Logic\Rules\Conditions.cs" />
+    <Compile Include="Logic\Ruleset\Conditions\Condition.cs" />
     <Compile Include="RuleEditor\IBatchRuleEditor.cs" />
     <Compile Include="RuleEditor\RuleControl.xaml.cs">
       <DependentUpon>RuleControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\ReflectionParameter\Parameter.cs" />
-    <Compile Include="Logic\Rules\Rules.cs" />
+    <Compile Include="Logic\Ruleset\Rules\Rule.cs" />
     <Compile Include="Utils\NumericTextBox.cs" />
-    <Compile Include="PsdTemplateDropWindow.xaml.cs">
-      <DependentUpon>PsdTemplateDropWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="RuleEditor\RuleEditorWindow.xaml.cs">
       <DependentUpon>RuleEditorWindow.xaml</DependentUpon>
     </Compile>
@@ -293,10 +306,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="CollectionEditor\Cropper.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PsdTemplateDropWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

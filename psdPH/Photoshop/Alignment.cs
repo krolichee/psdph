@@ -26,6 +26,9 @@ namespace psdPH.Logic
             public override int GetHashCode() => (int)H * 4 + (int)V;
             public HAilgnment H;
             public VAilgnment V;
+
+            public static Alignment Default => new Alignment();
+
             public Alignment(HAilgnment horizontal, VAilgnment vertical)
             {
                 H = horizontal;

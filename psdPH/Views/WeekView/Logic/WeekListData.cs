@@ -14,19 +14,32 @@ namespace psdPH
     [XmlInclude(typeof(Blob))]
     public class WeekListData
     {
-        public RuleSet DayRules = new RuleSet();
-        public RuleSet WeekRules = new RuleSet();
-        public static WeekListData Create(WeekConfig weekConfig, Blob root)
+        
+        public static WeekListData Create(WeekConfig weekConfig,WeekRulesets weekRulesets, Blob root)
         {
 #pragma warning disable CS0612 // Тип или член устарел
             var result = new WeekListData();
 #pragma warning restore CS0612 // Тип или член устарел
             result.WeekConfig = weekConfig;
             result.RootBlob = root;
-            result.DayRules.Composition = weekConfig.GetDayBlob(root);
-            result.WeekRules.Composition = root;
+            result.WeekRulesets = weekRulesets;
+            result.WeekRulesets.Restore(root,weekConfig);
             return result;
         }
+        public static WeekListData Create(WeekConfig weekConfig, Blob root)
+        {
+            var weekRulesets = new WeekRulesets();
+#pragma warning disable CS0612 // Тип или член устарел
+            var result = new WeekListData();
+#pragma warning restore CS0612 // Тип или член устарел
+            result.WeekConfig = weekConfig;
+            result.RootBlob = root;
+            result.WeekRulesets = weekRulesets;
+            result.WeekRulesets.Restore(root, weekConfig);
+            return result;
+        }
+        [XmlIgnore]
+        public WeekRulesets WeekRulesets = new WeekRulesets();
         [XmlIgnore]
         public WeekConfig WeekConfig;
         public ObservableCollection<WeekData> Weeks = new ObservableCollection<WeekData>();
@@ -34,8 +47,7 @@ namespace psdPH
         public Blob RootBlob;
         public void Restore()
         {
-            WeekRules.RestoreComposition(RootBlob);
-            DayRules.RestoreComposition(WeekConfig.GetDayBlob(RootBlob));
+            WeekRulesets.Restore(RootBlob, WeekConfig);
             RootBlob.Restore();
             foreach (var week in Weeks)
                 week.Restore(this);
@@ -54,22 +66,7 @@ namespace psdPH
             var new_weekData = new WeekData(new_week, this);
             Weeks.Add(new_weekData);
         }
-        public void InjectDayRules(DowBlob dayBlob)
-        {
-            foreach (var item in DayRules.Rules)
-                dayBlob.RuleSet.AddRule(item.Clone());
-        }
-        internal void InjectWeekRules(WeekData weekData)
-        {
-            foreach (var item in WeekRules.Rules)
-                weekData.MainBlob.RuleSet.AddRule(item.Clone());
-        }
-        internal void InjectRules(WeekData weekData)
-        {
-            foreach (var item in weekData.DowBlobList)
-                InjectDayRules(item);
-            InjectWeekRules(weekData);
-        }
+        
         [Obsolete]
         public WeekListData() { }
     }

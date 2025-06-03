@@ -22,7 +22,7 @@ namespace psdPH
             get => _dow; set
             {
                 _dow = value;
-                dowLabel.Content = Dow.GetDescription();
+                dowLabel.Content = Localization.LocalizeObj(Dow);
             }
         }
         private DayOfWeek _dow;

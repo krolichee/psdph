@@ -8,6 +8,7 @@ using psdPH.Utils.CedStack;
 using psdPH.Views.WeekView;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using PsApp = Photoshop.Application;
@@ -35,9 +36,9 @@ namespace psdPH
             result.templateMenu.Visibility = Visibility.Hidden;
             return result;
         }
+        
         public static BlobEditorWindow OpenFromDisk()
         {
-
             Blob blob = PsdPhProject.Instance().openOrCreateMainBlob();
             Document doc = PhotoshopWrapper.OpenDocument(PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
             var editor = new BlobEditorWindow(doc, blob);

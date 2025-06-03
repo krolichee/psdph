@@ -5,7 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml.Serialization;
+using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Logic.PhotoshopLayerExtension;
 
 namespace psdPH
 {
@@ -75,6 +78,9 @@ namespace psdPH
         }
         virtual public Composition[] GetChildren() { return null; }
         virtual public T[] getChildren<T>() { return null; }
+        [Obsolete]
+        public bool IsSetUp() => true;
+
         public RuleSet RuleSet = new RuleSet();
 
         public Composition() { 
@@ -133,7 +139,8 @@ namespace psdPH
         {
             //Здесь ожидается не вектор выравнивания, а вектор приведение к той же разнице,
             //то и с опорным слоем, поэтому аргементы меняются местами
-            return doc.GetAlightmentVector(LayerName, RelativeLayerName);
+            var options = new AlignOptions(Alignment.Create("up","left"),Photoshop.LayerWr.ConsiderFx.NoFx);
+            return doc.GetAlightmentVector(LayerName, RelativeLayerName, options);
         }
         [XmlIgnore]
         public override Parameter[] Setups => new Parameter[0];

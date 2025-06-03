@@ -105,8 +105,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         protected override Parameter[] GetParameters(Document doc, Composition root)
         {
             var prototype_pconfig = new ParameterConfig(this, nameof(PrototypeLayerName), "Прототип");
-            var prototype_parameter = Parameter.Choose(prototype_pconfig, root.getChildren<PrototypeLeaf>().Select(p => p.LayerName).ToArray());
-
+            var prototypeNames = root.getChildren<PrototypeLeaf>().Select(p => p.LayerName).ToArray();
+            var prototype_parameter = Parameter.Choose(prototype_pconfig, prototypeNames); 
             return new[] { prototype_parameter, multiLayerParameter(doc) };
         }
 

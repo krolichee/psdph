@@ -30,6 +30,23 @@ namespace psdPH
         {
             RuleSet.Rules.Remove(parameter as Rule);
         }
+        protected override void EditExecuteCommand(object parameter)
+        {
+            var rule = parameter as ConditionRule;
+            var rc_w = new RuleEditorWindow(rule, RulesetDefinition);
+            rc_w.ShowDialog();
+            var index = RuleSet.Rules.IndexOf(rule);
+
+            if (index >= 0)
+            {
+                RuleSet.Rules.Remove(rule);
+                var resultBatch = rc_w.GetResultBatch();
+                foreach (var brule in resultBatch)
+                {
+                    RuleSet.Rules.Insert(index, brule);
+                }
+            }
+        }
     }
     public class StructureRuleCommand : RuleCommand
     {

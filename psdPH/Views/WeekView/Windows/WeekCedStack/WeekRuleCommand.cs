@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic;
+using psdPH.RuleEditor;
 using System;
 using Condition = psdPH.Logic.Rules.Condition;
 
@@ -16,5 +17,6 @@ namespace psdPH.Views.WeekView
         public WeekDayRuleCommand(RuleSet ruleSet) : base(ruleSet) {
             RulesetDefinition = new DayRulesetDefinition(ruleSet.Composition);
         }
+        
     }
 }

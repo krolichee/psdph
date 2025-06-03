@@ -13,33 +13,26 @@ using psdPH.RuleEditor;
 using static psdPH.TemplateEditor.StructureRulesetDefinition;
 using System.Media;
 using static psdPH.WeekConfig;
+using psdPH.Views.WeekView.Logic;
 
 namespace psdPH.Views.WeekView
 {
     public partial class WeekViewWindow : Window
     {
-        private bool _deleted;
-        public bool Deleted { private set { _deleted = value; } get => _deleted; }
+        private bool _doSave = true;
         public WeekConfig WeekConfig => WeekListData.WeekConfig;
         public WeekListData WeekListData;
         public WeekViewWindow(WeekListData weekListData)
         {
-
-            var root = weekListData.RootBlob;
-            var weekConfig = weekListData.WeekConfig;
             InitializeComponent();
 
             //var psApp = PhotoshopWrapper.GetPhotoshopApplication();
             //doc = PhotoshopWrapper.OpenDocument(psApp, PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
 
             cedStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekStackHandler(weekListData)));
-            dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekDayRulesetStackHandler(weekListData.DayRules)));
+            dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekDayRulesetStackHandler(weekListData.WeekRulesets.DayRules)));
             //dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekRulesetStackHandler(weekListData.WeekRules, doc)));
-
-            if (weekListData == null)
-            {
-                weekListData = WeekListData.Create(weekConfig, root);
-            }
+            
             WeekListData = weekListData;
         }
 
@@ -47,12 +40,14 @@ namespace psdPH.Views.WeekView
         {
             var weekView = WeekView.Instance();
             weekView.Delete();
+            _doSave = false;
             Close();
         }
         
         void save()
         {
-            WeekView.Instance().SaveWeekListData(WeekListData);
+            if (_doSave)
+                WeekView.Instance().SaveWeekListData(WeekListData);
         }
         private void Window_Closing(object sender, CancelEventArgs e)
         {
@@ -63,9 +58,9 @@ namespace psdPH.Views.WeekView
         {
             var weekView = WeekView.Instance();
             weekView.Clear();
+            _doSave = false;
             Close();
         }
-
         private void saveMenuItem_Click(object sender, RoutedEventArgs e)
         {
             save();

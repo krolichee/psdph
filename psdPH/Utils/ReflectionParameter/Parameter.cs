@@ -42,7 +42,15 @@ namespace psdPH.Logic
             var result = new Parameter(config, fieldFunctions);
             fieldFunctions = result._fieldFunctions;
             var stack = result._stack;
+
+            var index = options.ToList().IndexOf(config.GetValue());
+
             var cb = new ComboBox() { ItemsSource = options.Select(fieldFunctions.ConvertFunction) };
+            //var value = fieldFunctions.ConvertFunction(config.GetValue());
+
+            cb.SelectedIndex = index;
+
+
             result.valueFunc = () => fieldFunctions.RevertFunction(cb.SelectedValue);
             result.Control = cb;
             stack.Children.Add(cb);
@@ -138,6 +146,9 @@ namespace psdPH.Logic
             var stack = result._stack;
 
             var calendar = new DatePicker();
+            var date = config.GetValue() as DateTime?;
+            if (date!=null)
+                calendar.SelectedDate = date;
             result.Control = calendar;
 
             stack.Children.Add(calendar);

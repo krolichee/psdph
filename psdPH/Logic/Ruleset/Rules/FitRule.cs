@@ -1,0 +1,38 @@
+﻿using Photoshop;
+using psdPH.Logic.Compositions;
+using psdPH.Photoshop;
+using System.Collections.Generic;
+
+namespace psdPH.Logic
+{
+    public class FitRule : AreaRule
+    {
+        public override string ToString() => "вместить";
+        public bool BalanceFont = false;
+        public FitRule(Composition composition) : base(composition) { }
+        public FitRule() : base(null) { }
+        public override Parameter[] Setups
+        {
+            get
+            {
+                var result = new List<Parameter>();
+                result.AddRange(getLayerAndAreaParameters());
+                var balance_config = new ParameterConfig(this, nameof(BalanceFont), "балансировать шрифт");
+                result.Add(Parameter.Check(balance_config));
+                result.AddRange(getAlignOptionsParameters());
+                return result.ToArray();
+            }
+
+        }
+        protected override void _apply(Document doc)
+        {
+            LayerWr layer = getRuledLayerWr(doc);
+            ArtLayerWr area = AreaLeaf.ArtLayerWr(doc);
+            if (BalanceFont && layer is TextLayerWr)
+                (layer as TextLayerWr).FitWithEqualize(area, AlignOptions);
+            else
+                layer.Fit(area, AlignOptions);
+        }
+    }
+
+}

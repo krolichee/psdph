@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Xml.Serialization;
 using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Logic.PhotoshopLayerExtension;
 
 namespace psdPH.Logic.Compositions
 {
@@ -15,11 +16,11 @@ namespace psdPH.Logic.Compositions
         public override string ObjName => LayerName;
         public ArtLayerWr ArtLayerWr(Document doc)
         {
-            return new ArtLayerWr(doc.GetLayerByName(LayerName));
+            return doc.GetLayerByName(LayerName).Wrapper();
         }
         public LayerComposition(string layername) { LayerName = layername; }
         public LayerComposition() { LayerName = string.Empty; }
-        protected LayerWr getLayer(Document doc, string layerName) => doc.GetLayerWrByName(layerName);
+        protected LayerWr getLayerWr(Document doc, string layerName) => doc.GetLayerWrByName(layerName);
     }
     [Serializable]
     [XmlRoot("Image")]
@@ -101,31 +102,9 @@ namespace psdPH.Logic.Compositions
     },
                 { PsJustification.psCenter,HorizontalAlignment.Center },
             };
-
-        public void Fit(Document doc, LayerComposition layerLeaf, Alignment alignment)
-        {
-            //TextLeaf textLeaf;
-            //if (layerLeaf is TextLeaf)
-            //    textLeaf = layerLeaf as TextLeaf;
-            //else
-            //    throw new NotImplementedException();
-
-            //var dynamicLayer = doc.GetLayerByName(layerLeaf.LayerName);
-
-            //var areaLayer = doc.GetLayerByName(LayerName);
-
-            //areaLayer.Opacity = 0;
-            //if (textLeaf.Text == "")
-            //    return;
-            //textLeaf.Apply(doc);
-
-            //dynamicLayer.AdjustTextLayerTo(areaLayer);
-
-            ////alignment.H = JustificationMatchDict[textLeaf.Justification];
-
-            //dynamicLayer.AlignLayer(areaLayer, alignment);
+        public override void Apply(Document doc) {
+            ArtLayerWr(doc).Visible = false;
         }
-        public override void Apply(Document doc) { }
     }
     [Serializable]
     [UIName("Заглушка")]
@@ -182,8 +161,8 @@ namespace psdPH.Logic.Compositions
             ArtLayerWr newLayerWr = new ArtLayerWr(doc.CloneSmartLayer(PrototypeLayerName));
             originalLayer.Visible = false;
             var prototypeAVector = Prototype.GetRelativeLayerAlightmentVector(doc);
-
-            var phAVector = newLayerWr.GetAlightmentVector(new ArtLayerWr(phLayer));
+            var options = new AlignOptions(Alignment.Create("up", "left"), LayerWr.ConsiderFx.NoFx);
+            var phAVector = newLayerWr.GetAlightmentVector(new ArtLayerWr(phLayer), options);
 
             newLayerWr.TranslateV(phAVector+prototypeAVector);
             //ph_layer.Delete();

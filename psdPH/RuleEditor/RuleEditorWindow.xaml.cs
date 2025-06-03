@@ -16,6 +16,43 @@ namespace psdPH.RuleEditor
 
         Rule[] _result = new Rule[0];
         RuleControl _rc;
+
+        void init()
+        {
+            this.CenterByTopmostOrScreen();
+            InitializeComponent();
+            SizeToContent = SizeToContent.WidthAndHeight;
+        }
+        RulesetDefinition validateRulesetDef(RulesetDefinition rulesetDef)
+        {
+            var valid_rulesetDef = getValidatedRuleset(rulesetDef);
+            if (!anyRulesAndConditions(valid_rulesetDef))
+            {
+                MessageBox.Show("Нет подходящих правил или условий для данного подшаблона. Попробуйте изменить структуру");
+                IsEnabled = false;
+            }
+            return valid_rulesetDef;
+        }
+        public RuleEditorWindow(RulesetDefinition rulesetDef)
+        {
+            init();
+            var valid_rulesetDef = validateRulesetDef(rulesetDef);
+            _rc = new RuleControl(valid_rulesetDef);
+
+            _rc.Margin = new Thickness(10, 10, 10, 10);
+            mainGrid.Children.Add(_rc);
+        }
+        public RuleEditorWindow(ConditionRule rule,RulesetDefinition rulesetDef)
+        {
+            _result = new Rule[] { rule };
+
+            init();
+            var valid_rulesetDef = validateRulesetDef(rulesetDef);
+            _rc = new RuleControl(rule.Clone() as ConditionRule,valid_rulesetDef);
+
+            _rc.Margin = new Thickness(10, 10, 10, 10);
+            mainGrid.Children.Add(_rc);
+        }
         RulesetDefinition getValidatedRuleset(RulesetDefinition rulesetDef)
         {
             bool canBeSetUp(ISetupable s)
@@ -34,33 +71,27 @@ namespace psdPH.RuleEditor
         {
             return rulesetDef.Conditions.Any() && rulesetDef.Rules.Any();
         }
-        public RuleEditorWindow(RulesetDefinition rulesetDef)
-        {
-            this.CenterByTopmostOrScreen();
-            InitializeComponent();
-            SizeToContent = SizeToContent.WidthAndHeight;
-
-            var valid_rulesetDef = getValidatedRuleset(rulesetDef);
-            if (!anyRulesAndConditions(valid_rulesetDef))
-            {
-                MessageBox.Show("Нет подходящих правил или условий для данного подшаблона. Попробуйте изменить структуру");
-                IsEnabled = false;
-            }
-
-            _rc = new RuleControl(valid_rulesetDef);
-
-            _rc.Margin = new Thickness(10, 10, 10, 10);
-            mainGrid.Children.Add(_rc);
-        }
 
         public Rule[] GetResultBatch()
         {
-            return  _result;
+            return _result;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _result = _rc.GetResultBatch();
+            bool success = false;
+            Rule[] ruleBatch;
+            try
+            {
+                ruleBatch = _rc.GetResultBatch();
+                success = ruleBatch.Length != 0;
+                if (success)
+                    _result = ruleBatch;
+            }
+            catch { }
+            
+            if (!success)
+                MessageBox.Show("Правило является некорректным. Возможно, были пропущены какие-либо параметры");
             Close();
         }
     }
