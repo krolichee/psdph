@@ -102,7 +102,12 @@ namespace psdPHTest.Tests.Ps
         {
             Type psType = Type.GetTypeFromProgID("Photoshop.Application");
             psApp = Activator.CreateInstance(psType) as Application;
-            doc.ResetHistory();
+            //doc.ResetHistory();
+        }
+        [TestMethod]
+        public void testSaved()
+        {
+            Assert.IsTrue(doc.Saved);
         }
         [TestMethod]
         public void testNotLastHistory()

@@ -10,11 +10,11 @@ namespace psdPH.Logic
         public override string ToString() => "выровнять";
         public AlignRule(Composition composition) : base(composition) { }
         public AlignRule() : base(null) { }
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                var result = new List<Parameter>() { };
+                var result = new List<Setup>() { };
                 result.AddRange(getLayerAndAreaParameters());
                 result.AddRange(getAlignOptionsParameters());
                 return result.ToArray();

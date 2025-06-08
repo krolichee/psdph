@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace psdPH.Logic
 {
-    public class ParameterConfig
+    public class SetupConfig
     {
         public object Obj;
         public string FieldName;
@@ -39,7 +39,7 @@ namespace psdPH.Logic
             else
                 throw new ArgumentException($"Поле или свойство с именем '{FieldName}' не найдено в объекте типа '{objType.Name}'.");
         }
-        public ParameterConfig(object obj, string fieldname, string desc)
+        public SetupConfig(object obj, string fieldname, string desc)
         {
             this.Obj = obj;
             this.FieldName = fieldname;

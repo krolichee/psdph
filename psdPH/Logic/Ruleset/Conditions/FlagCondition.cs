@@ -10,16 +10,16 @@ namespace psdPH.Logic.Rules
         public string FlagName;
         public bool Value=true;
         [XmlIgnore]
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                List<Parameter> result = new List<Parameter>();
+                List<Setup> result = new List<Setup>();
                 FlagLeaf[] flagLeaves = Composition.getChildren<FlagLeaf>();
-                var flagConfig = new ParameterConfig(this, nameof(this.FlagLeaf), "");
-                var valueConfig = new ParameterConfig(this, nameof(this.Value),"установлено в");
-                result.Add(Parameter.Choose(flagConfig, flagLeaves));
-                result.Add(Parameter.Check(valueConfig));
+                var flagConfig = new SetupConfig(this, nameof(this.FlagLeaf), "");
+                var valueConfig = new SetupConfig(this, nameof(this.Value),"установлено в");
+                result.Add(Setup.Choose(flagConfig, flagLeaves));
+                result.Add(Setup.Check(valueConfig));
                 return result.ToArray();
             }
         }

@@ -17,14 +17,14 @@ namespace psdPH.Logic.Rules
             set => TextLeafLayerName = value?.LayerName;
         }
         [XmlIgnore]
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                var result = new List<Parameter>();
-                var textLeafConfig = new ParameterConfig(this, nameof(this.TextLeafLayerName), "поля");
+                var result = new List<Setup>();
+                var textLeafConfig = new SetupConfig(this, nameof(this.TextLeafLayerName), "поля");
                 var textLeavesNames = Composition.getChildren<TextLeaf>().Select(t => t.LayerName).ToArray();
-                result.Add(Parameter.Choose(textLeafConfig, textLeavesNames));
+                result.Add(Setup.Choose(textLeafConfig, textLeavesNames));
                 return result.ToArray();
             }
         }

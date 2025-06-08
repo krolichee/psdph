@@ -1,4 +1,5 @@
-﻿using psdPH.Logic;
+﻿using Photoshop;
+using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.Utils;
@@ -28,8 +29,8 @@ namespace psdPH
         {
             get => _templateWindow; set
             {
-                if(value!=null)
-                    value.Closed += (object _, EventArgs __) => TemplateWindow=null;
+                if (value != null)
+                    value.Closed += (object _, EventArgs __) => TemplateWindow = null;
                 IsEnabled = (_templateWindow = value) == null;
             }
         }
@@ -54,26 +55,18 @@ namespace psdPH
             CurrentProjectName = "";
             projectNameTextBlock.Text = CurrentProjectName;
         }
-        bool tryCreateProject(string templatePath, string projectName)
+
+        bool tryCreateProject(string projectName)
         {
-            string projectDirectory = Path.Combine(PsdPhDirectories.ProjectsDirectory, projectName);
+            string projectDirectory = PsdPhDirectories.ProjectDirectory(projectName);
             if (Directory.Exists(projectDirectory))
             {
                 MessageBox.Show("Такой проект уже существует");
                 return false;
             }
             Directory.CreateDirectory(projectDirectory);
-            string destinationPath = Path.Combine(projectDirectory, "template.psd");
-            try
-            {
-                File.Copy(templatePath, destinationPath, overwrite: true);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при копировании файла: {ex.Message}");
-                return false;
-            }
+            Directory.CreateDirectory(PsdPhDirectories.ViewsDirectory(projectName));
+            return true;
         }
         bool AnyViews()
         {
@@ -88,26 +81,56 @@ namespace psdPH
                 if (result == MessageBoxResult.Cancel)
                     return;
             } while (!PhotoshopWrapper.HasOpenDocuments());
+
+            var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
+
+            
+
             if (result == MessageBoxResult.Cancel)
                 return;
             var si_w = new StringInputWindow("Введите название нового проекта");
             if (si_w.ShowDialog() != true)
                 return;
-            var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
-            if (doc.IsNonFile())
-            {
-                MessageBox.Show("Балуетесь! Документ не сохранён на диск");
-                return;
-            }
-            doc.FixTextLayersNames();
-            if (!doc.Saved)
-                doc.Save();
-            var filePath =doc.GetDocPath();
             var projectName = si_w.GetResultString();
-            if (tryCreateProject(filePath, projectName))
-                OpenProject(projectName);
-            Directory.CreateDirectory(PsdPhDirectories.ViewsDirectory(projectName));
+
+            if (!tryCreateProject(projectName))
+                return;
+            OpenProject(projectName);
+
+            if (doc.IsNonFile())
+                copyPsdBySaving(doc, projectName);
+            else
+
+            if (!doc.Saved)
+            {
+                var dialogResult = MessageBox.Show("Документ имеет несохранённые изменения. Сохранить их в новом проекте?", "", MessageBoxButton.YesNoCancel);
+                if (dialogResult == MessageBoxResult.Yes)
+                    copyPsdBySaving(doc, projectName);
+                else if (dialogResult == MessageBoxResult.No)
+                    copyPsdByCopying(doc, projectName);
+                else
+                    return;
+            }
+            else
+                copyPsdByCopying(doc, projectName);
+
             LoadFoldersIntoMenu();
+        }
+        void copyPsdByCopying(Document doc, string projectName)
+        {
+            var filePath = doc.GetDocPath();
+            string destinationPath = PsdPhDirectories.ProjectPsd(projectName);
+            try
+            {
+                File.Copy(filePath, destinationPath, overwrite: true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при копировании файла: {ex.Message}");
+            }
+        }
+        void copyPsdBySaving(Document doc, string projectName){
+            doc.SaveDocument(PsdPhDirectories.ProjectPsd(projectName));
         }
         public string BaseDirectory;
         public void InitializeBaseDirectory()
@@ -234,7 +257,7 @@ namespace psdPH
         }
         private void weekViewMenuItem_Execute(object _)
         {
-            ViewWindow= WeekView.ShowWindowDialog();
+            ViewWindow = WeekView.ShowWindowDialog();
         }
 
         private void Window_Closed(object sender, EventArgs e)

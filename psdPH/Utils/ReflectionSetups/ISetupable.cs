@@ -5,7 +5,7 @@ namespace psdPH.Logic
     public interface ISetupable
     {
         [XmlIgnore]
-        Parameter[] Setups { get; }
+        Setup[] Setups { get; }
         bool IsSetUp();
     }
 }

@@ -13,7 +13,6 @@ namespace psdPH.Logic
 {
     public static partial class PhotoshopLayerExtension
     {
-        
         public static void AdjustToWidth(this LayerWr layer, double width, ConsiderFx considerFx)
         {
             var bounds = layer.GetBoundRect(considerFx);

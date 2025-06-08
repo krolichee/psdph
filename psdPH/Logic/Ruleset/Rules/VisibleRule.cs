@@ -9,15 +9,15 @@ namespace psdPH.Logic
         public override string ToString() => "видимость";
         public bool Toggle = true;
         [XmlIgnore]
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                var result = new List<Parameter>();
-                var opacityConfig = new ParameterConfig(this, nameof(this.Toggle), "установить");
+                var result = new List<Setup>();
+                var opacityConfig = new SetupConfig(this, nameof(this.Toggle), "установить");
                 result.Add(getLayerParameter());
-                result.Add(Parameter.Check(opacityConfig));
-                result.Add(Parameter.JustDescrition("и наоборот"));
+                result.Add(Setup.Check(opacityConfig));
+                result.Add(Setup.JustDescrition("и наоборот"));
                 return result.ToArray();
             }
         }

@@ -1,12 +1,24 @@
-﻿namespace psdPH
+﻿using global::Photoshop;
+using psdPH.Logic;
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using static psdPH.Photoshop.LayerWr;
+namespace psdPH
 {
-    using global::Photoshop;
-    using psdPH.Logic;
-    using System;
-    using System.Collections.Generic;
-    using System.Windows;
-    using static psdPH.Photoshop.LayerWr;
-
+   
+    public class EnumWrapper
+    {
+        public Enum Value;
+        public EnumWrapper(Enum value)
+        {
+            Value = value;
+        }
+        public override string ToString()
+        {
+            return Localization.LocalizeObj(Value);
+        }
+    }
     public static class EnumLocalization
     {
         private static readonly Dictionary<Type, Dictionary<object, string>> Localizations = new Dictionary<Type, Dictionary<object, string>>()

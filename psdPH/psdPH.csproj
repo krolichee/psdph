@@ -78,6 +78,20 @@
     </ApplicationDefinition>
     <Compile Include="BlockingStack.cs" />
     <Compile Include="KnownTypes.cs" />
+    <Compile Include="Logic\Compositions\AreaLeaf.cs" />
+    <Compile Include="Logic\Compositions\FlagLeaf.cs" />
+    <Compile Include="Logic\Compositions\GroupLeaf.cs" />
+    <Compile Include="Logic\Compositions\ImageLeaf.cs" />
+    <Compile Include="Logic\MatchingResult.cs" />
+    <Compile Include="Logic\Parameters\Parameter.cs" />
+    <Compile Include="Logic\Parameters\StringParameter.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CoreRules\CoreRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CoreRules\TextAssignRule.cs" />
+    <Compile Include="Photoshop\LayerWr\LayerDescriptor.cs" />
+    <Compile Include="Logic\Compositions\LayerLeaf.cs" />
+    <Compile Include="Logic\Compositions\PlaceholderLeaf.cs" />
+    <Compile Include="Logic\Compositions\PrototypeLeaf.cs" />
+    <Compile Include="Logic\Compositions\TextLeaf.cs" />
     <Compile Include="Logic\Ruleset\Conditions\DummyCondition.cs" />
     <Compile Include="Logic\Ruleset\Conditions\EmptyTextCondition.cs" />
     <Compile Include="Logic\Ruleset\Conditions\FlagCondition.cs" />
@@ -87,7 +101,7 @@
     <Compile Include="Logic\Ruleset\Rules\AreaRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\ConditionRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\FitRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\FlagRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CoreRules\FlagRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\LayerRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\OpacityRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\TranslateRule.cs" />
@@ -97,9 +111,8 @@
     <Compile Include="Photoshop\KostylExecutor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\IBatchCompositionCreator.cs" />
     <Compile Include="TemplateEditor\StructureRulesDicts.cs" />
-    <Compile Include="Utils\EnumWrapper.cs" />
     <Compile Include="Utils\Localization\EnumLocalization.cs" />
-    <Compile Include="Utils\ReflectionParameter\AligmentControl.xaml.cs">
+    <Compile Include="Utils\ReflectionSetups\Controls\AligmentControl.xaml.cs">
       <DependentUpon>AligmentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
@@ -116,12 +129,12 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\MultiCompositionCreator.cs" />
     <Compile Include="Utils\CloneConverter.cs" />
     <Compile Include="Logic\Ruleset\RuleSet.cs" />
-    <Compile Include="Utils\ReflectionParameter\FieldFunctions.cs" />
-    <Compile Include="Utils\ReflectionParameter\MultiPicker.xaml.cs">
+    <Compile Include="Utils\ReflectionSetups\FieldFunctions.cs" />
+    <Compile Include="Utils\ReflectionSetups\Controls\MultiPicker.xaml.cs">
       <DependentUpon>MultiPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\ReflectionParameter\ParameterConfig.cs" />
-    <Compile Include="Utils\ReflectionParameter\RtbExtension.cs" />
+    <Compile Include="Utils\ReflectionSetups\SetupConfig.cs" />
+    <Compile Include="Utils\ReflectionSetups\Controls\RtbExtension.cs" />
     <Compile Include="Utils\Localization\TypeLocalization.cs" />
     <Compile Include="PsdPhProject.cs" />
     <Compile Include="StringInputWindow.xaml.cs">
@@ -142,8 +155,8 @@
       <DependentUpon>ImageSelectorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\Compositions\Blob.cs" />
-    <Compile Include="Logic\Compositions\Compositions.cs" />
-    <Compile Include="Logic\Compositions\LayerCompositions.cs" />
+    <Compile Include="Logic\Compositions\Composition.cs" />
+    <Compile Include="Logic\Compositions\LayerComposition.cs" />
     <Compile Include="Photoshop\PhotoshopLayerExtension.cs" />
     <Compile Include="Logic\Ruleset\Rules\TextRules.cs" />
     <Compile Include="MainWindow.BlobSave.cs" />
@@ -155,10 +168,9 @@
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="TemplateEditor\StructureRulesetDefinition.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
-    <Compile Include="Utils\DataInputWindow.cs" />
+    <Compile Include="Utils\ReflectionSetups\Controls\DataInputWindow.cs" />
     <Compile Include="Utils\TopmostWindow.cs" />
     <Compile Include="Utils\UpcomingAttribute.cs" />
-    <Compile Include="Utils\XmlClone.cs" />
     <Compile Include="Views\SimpleView\CompositionTreeControl.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleView.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleListData.cs" />
@@ -169,6 +181,7 @@
     </Compile>
     <Compile Include="Views\WeekView\Formats\DateFormat.cs" />
     <Compile Include="Views\WeekView\Logic\DowBlob.cs" />
+    <Compile Include="Photoshop\OutputSaver.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRules.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRules\WeekConditions.cs" />
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
@@ -185,16 +198,16 @@
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
-    <Compile Include="Utils\ReflectionParameter\ISetupable.cs" />
+    <Compile Include="Utils\ReflectionSetups\ISetupable.cs" />
     <Compile Include="Photoshop\PhotoshopDocumentExtension.cs" />
     <Compile Include="Logic\Ruleset\Conditions\Condition.cs" />
     <Compile Include="RuleEditor\IBatchRuleEditor.cs" />
     <Compile Include="RuleEditor\RuleControl.xaml.cs">
       <DependentUpon>RuleControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\ReflectionParameter\Parameter.cs" />
+    <Compile Include="Utils\ReflectionSetups\Setup.cs" />
     <Compile Include="Logic\Ruleset\Rules\Rule.cs" />
-    <Compile Include="Utils\NumericTextBox.cs" />
+    <Compile Include="Utils\ReflectionSetups\Controls\NumericTextBox.cs" />
     <Compile Include="RuleEditor\RuleEditorWindow.xaml.cs">
       <DependentUpon>RuleEditorWindow.xaml</DependentUpon>
     </Compile>
@@ -211,8 +224,8 @@
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\ICompositionShapitor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
-    <Compile Include="Utils\ReflectionParameter\ParametersInputWindow.xaml.cs">
-      <DependentUpon>ParametersInputWindow.xaml</DependentUpon>
+    <Compile Include="Utils\ReflectionSetups\Controls\SetupInputWindow.xaml.cs">
+      <DependentUpon>SetupInputWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml.cs">
       <DependentUpon>StringChoiceControl.xaml</DependentUpon>
@@ -249,7 +262,7 @@
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
-    <Page Include="Utils\ReflectionParameter\AligmentControl.xaml">
+    <Page Include="Utils\ReflectionSetups\Controls\AligmentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -269,7 +282,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utils\ReflectionParameter\MultiPicker.xaml">
+    <Page Include="Utils\ReflectionSetups\Controls\MultiPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -321,7 +334,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utils\ReflectionParameter\ParametersInputWindow.xaml">
+    <Page Include="Utils\ReflectionSetups\Controls\SetupInputWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -380,16 +393,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="testResources\TestProjects\Projects\simple\template.psd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="testResources\sobolcoin phonk.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="testResources\European_Brown_Bear.jpg" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Photoshop">
@@ -426,12 +432,7 @@
   <ItemGroup>
     <Resource Include="TODO.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="testResources\TestProjects\Projects\simple\Views\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="testResources\TestProjects\Projects\simple\template.xml" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

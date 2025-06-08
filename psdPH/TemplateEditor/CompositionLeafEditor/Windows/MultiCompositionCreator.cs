@@ -15,6 +15,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     
     public abstract class MultiCompositionCreator<T> : IBatchCompositionCreator where T : Composition, new()
     {
+        protected Document _doc;
         protected static PsLayerKind[] CommonLayers = new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer, PsLayerKind.psSmartObjectLayer, PsLayerKind.psTextLayer };
         public object[] Inputs
         {
@@ -43,30 +44,39 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             result = new List<T>();
         }
         protected abstract PsLayerKind[] Kinds { get; }
-        protected virtual Parameter multiLayerParameter(Document doc)
+        protected virtual Setup multiLayerParameter(Document doc)
         {
             string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(Kinds));
-            var ln_pconfig = new ParameterConfig(this, nameof(Inputs), "Слой");
-            return Parameter.MultiChoose(ln_pconfig, layers_names); 
+            var ln_pconfig = new SetupConfig(this, nameof(Inputs), "Слой");
+            return Setup.MultiChoose(ln_pconfig, layers_names); 
         }
-        protected virtual Parameter[] GetParameters(Document doc, Composition root)
+        protected virtual Setup[] GetParameters(Document doc, Composition root)
         {
-            return new Parameter[] { multiLayerParameter(doc) };
+            return new Setup[] { multiLayerParameter(doc) };
         }
         public MultiCompositionCreator(Document doc, Composition root)
         {
             p_w = new ParametersInputWindow(GetParameters(doc, root));
+            _doc = doc;
         }
     }
     public class MultiTextLeafCreator: MultiCompositionCreator<TextLeaf>
     {
+        
         protected override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psTextLayer };
-        protected override TextLeaf processInput(object input) => 
-            new TextLeaf() { LayerName = input as string };
-        public MultiTextLeafCreator(Document doc, Composition root) : base(doc,root) { }
+        protected override TextLeaf processInput(object input)
+        {
+            var layername = input as string;
+            var layerWr =  _doc.GetLayerWrByName(layername);
+            layerWr.FixLayerName();
+            return new TextLeaf() { LayerName = layername };
+        }
+            
+        public MultiTextLeafCreator(Document doc, Composition root) : base(doc,root) {  }
     }
     public class MultiLayerLeafCreator : MultiCompositionCreator<LayerLeaf>
     {
+        
         protected override PsLayerKind[] Kinds => CommonLayers;
 
         public MultiLayerLeafCreator(Document doc, Composition root) : base(doc, root) { }
@@ -76,11 +86,11 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     }
     public class MultiGroupLeafCreator : MultiCompositionCreator<GroupLeaf>
     {
-        protected override Parameter multiLayerParameter(Document doc)
+        protected override Setup multiLayerParameter(Document doc)
         {
             string[] layers_names = doc.GetLayerSetsNames(doc.GetLayerSets());
-            var ln_pconfig = new ParameterConfig(this, nameof(Inputs), "Группа");
-            return Parameter.MultiChoose(ln_pconfig, layers_names);
+            var ln_pconfig = new SetupConfig(this, nameof(Inputs), "Группа");
+            return Setup.MultiChoose(ln_pconfig, layers_names);
         }
         public MultiGroupLeafCreator(Document doc, Composition root) : base(doc, root) { }
 
@@ -102,11 +112,11 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     {
         public string PrototypeLayerName;
         protected override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer };
-        protected override Parameter[] GetParameters(Document doc, Composition root)
+        protected override Setup[] GetParameters(Document doc, Composition root)
         {
-            var prototype_pconfig = new ParameterConfig(this, nameof(PrototypeLayerName), "Прототип");
+            var prototype_pconfig = new SetupConfig(this, nameof(PrototypeLayerName), "Прототип");
             var prototypeNames = root.getChildren<PrototypeLeaf>().Select(p => p.LayerName).ToArray();
-            var prototype_parameter = Parameter.Choose(prototype_pconfig, prototypeNames); 
+            var prototype_parameter = Setup.Choose(prototype_pconfig, prototypeNames); 
             return new[] { prototype_parameter, multiLayerParameter(doc) };
         }
 
