@@ -11,14 +11,14 @@ namespace psdPH.Logic
 
         public int Opacity=notSetOpacity;
         [XmlIgnore]
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                var result = new List<Parameter>();
-                var opacityConfig = new ParameterConfig(this, nameof(this.Opacity), "установить");
+                var result = new List<Setup>();
+                var opacityConfig = new SetupConfig(this, nameof(this.Opacity), "установить");
                 result.Add(getLayerParameter());
-                result.Add(Parameter.IntInput(opacityConfig, 0, 100));
+                result.Add(Setup.IntInput(opacityConfig, 0, 100));
                 return result.ToArray();
             }
         }

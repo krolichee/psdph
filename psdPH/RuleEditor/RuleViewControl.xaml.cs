@@ -11,7 +11,7 @@ namespace psdPH.RuleEditor
     public partial class RuleViewControl : UserControl
     {
         StackPanel _sp;
-        void addToSP(Parameter[] parameters)
+        void addToSP(Setup[] parameters)
         {
             var sp_ch = _sp.Children;
             foreach (var parameter in parameters)
@@ -25,8 +25,8 @@ namespace psdPH.RuleEditor
         {
             _sp = new StackPanel() { Orientation = Orientation.Horizontal };
             Content = _sp;
-            Parameter[] conditionParameters = rule.Condition.Setups;
-            Parameter[] ruleParameters = rule.Setups;
+            Setup[] conditionParameters = rule.Condition.Setups;
+            Setup[] ruleParameters = rule.Setups;
             var sp_ch = _sp.Children;
             sp_ch.Add(new Label() { Content = "Если" });
             sp_ch.Add(new Label() { Content = rule.Condition.ToString() });
@@ -35,7 +35,7 @@ namespace psdPH.RuleEditor
             sp_ch.Add(new Label() { Content = rule.ToString() });
             addToSP(ruleParameters);
         }
-        string getText(Parameter[] parameters)
+        string getText(Setup[] parameters)
         {
             List<string> parts = new List<string>();
             foreach (var parameter in parameters)
@@ -49,8 +49,8 @@ namespace psdPH.RuleEditor
         }
         void textblockView(ConditionRule rule)
         {
-            Parameter[] conditionParameters = rule.Condition.Setups;
-            Parameter[] ruleParameters = rule.Setups;
+            Setup[] conditionParameters = rule.Condition.Setups;
+            Setup[] ruleParameters = rule.Setups;
 
             var tb = new TextBlock();
             tb.HorizontalAlignment = HorizontalAlignment.Stretch;

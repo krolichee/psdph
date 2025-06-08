@@ -20,7 +20,7 @@ using psdPHTest.Tests;
 using psdPH.Utils;
 using Photoshop;
 
-namespace psdPHTest.Automatic
+namespace psdPHTest.Tests.Automatic
 {
     [TestClass]
     public class XMLSerializationTest
@@ -124,8 +124,8 @@ namespace psdPHTest.Automatic
         public void testEnumAuto()
         {
             var initVal = HA;
-            var config = new ParameterConfig(this, nameof(HA), "aaa");
-            var parameter = Parameter.EnumChoose(config, typeof(HorizontalAlignment));
+            var config = new SetupConfig(this, nameof(HA), "aaa");
+            var parameter = Setup.EnumChoose(config, typeof(HorizontalAlignment));
             HorizontalAlignment comboboxValue = (HorizontalAlignment)((parameter.Control as ComboBox).SelectedValue as EnumWrapper).Value ;
             Assert.IsNotNull(comboboxValue);
             Assert.IsTrue(comboboxValue  == initVal);
@@ -237,8 +237,8 @@ public class WeekRules : WeekViewTest
         [TestMethod]
         public void testEnumAuto()
         {
-            var config = new ParameterConfig(this, nameof(HA), "aaa");
-            var parameter = Parameter.EnumChoose(config, typeof(HorizontalAlignment));
+            var config = new SetupConfig(this, nameof(HA), "aaa");
+            var parameter = Setup.EnumChoose(config, typeof(HorizontalAlignment));
             Console.WriteLine(parameter.Control as ComboBox);
         }
     }

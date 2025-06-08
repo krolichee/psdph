@@ -14,8 +14,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
         bool _applied = false;
         public bool Applied => _applied;
         StackPanel _stack;
-        Parameter[] _parameters;
-        Parameter[] Parameters
+        Setup[] _parameters;
+        Setup[] Parameters
         {
             set
             {
@@ -26,7 +26,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             }
             get => _parameters;
         }
-        public ParametersInputWindow(Parameter[] parameters, string title = "")
+        public ParametersInputWindow(Setup[] parameters, string title = "")
         {
             
             InitializeComponent();

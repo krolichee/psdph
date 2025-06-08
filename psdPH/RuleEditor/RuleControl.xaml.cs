@@ -17,7 +17,7 @@ namespace psdPH.Logic
     {
         ConditionRule _rule;
         Condition _condition;
-        List<Parameter> _parameters = new List<Parameter>();
+        List<Setup> _parameters = new List<Setup>();
         void initComboBoxes(Rule[] rules, Condition[] conditions)
         {
             conditionsComboBox.ItemsSource = conditions;
@@ -61,7 +61,7 @@ namespace psdPH.Logic
             ruleComboBox.SelectedItem = rule;
         }
 
-        void setupParameterApperiance(Parameter param)
+        void setupParameterApperiance(Setup param)
         {
             param.Stack.Orientation = Orientation.Horizontal;
             param.Control.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;

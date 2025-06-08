@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Photoshop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -89,6 +90,7 @@ namespace psdPH.Logic
                 return true;
             }
         }
+        [Obsolete]
         public static void FixTextLayersNames(this Document doc)
         {
             var layers = doc.GetLayersByKind(PsLayerKind.psTextLayer);

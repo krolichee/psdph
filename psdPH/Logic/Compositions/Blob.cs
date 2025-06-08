@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,11 +14,11 @@ namespace psdPH.Logic.Compositions
     public class Blob : LayerComposition,CoreComposition
     {
         [XmlIgnore]
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                var result = new List<Parameter>();
+                var result = new List<Setup>();
                 if (!IsPrototyped())
                     foreach (var item in Children)
                         result.AddRange(item.Setups);
@@ -37,28 +38,25 @@ namespace psdPH.Logic.Compositions
             bool result = prototypes.Any(p => p.LayerName == LayerName);
             return result;
         }
-        ~Blob()
-        {
-            //if (Parent == null)
-            //    return;
-            //var prototypes = Parent.getChildren<PrototypeLeaf>().Where(p => p.LayerName==LayerName);
-            //foreach (var item in prototypes)
-            //{
-            //    Parent.removeChild(item);
-            //}
-        }
         public override string ObjName => Mode == BlobMode.Layer ? LayerName : System.IO.Path.GetFileNameWithoutExtension(Path);
 
         protected Composition[] CoreChildren => Children.Where(item => (item is CoreComposition)).ToArray();
         protected Composition[] NonCoreChildren => Children.Where(item => !(item is CoreComposition)).ToArray();
+
+        
+
+        Document DocOfThis(Document doc)
+        {
+            if (Mode == BlobMode.Layer)
+                return doc.OpenSmartLayer(LayerName);
+            else
+                return doc;
+        }
         override public void Apply(Document doc)
         {
             if (IsPrototyped())
                 return;
-            Document cur_doc=doc;
-
-            if (Mode == BlobMode.Layer)
-                cur_doc = doc.OpenSmartLayer(LayerName);
+            Document cur_doc = DocOfThis(doc);
 
             CoreApply();
             RuleSet.CoreApply();
@@ -129,18 +127,44 @@ namespace psdPH.Logic.Compositions
         }
         public Blob Clone()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Composition));
-            StringBuilder sb = new StringBuilder();
-            StringWriter sw = new StringWriter(sb);
-            serializer.Serialize(sw, this);
-            StringReader sr = new StringReader(sb.ToString());
-            Blob result = serializer.Deserialize(sr) as Blob;
+            Blob result = CloneConverter.Clone(this) as Blob;
             result.Restore(Parent as Blob);
+            return result;
+        }
+        public override bool IsMatching(Document doc)
+        {
+            if (Mode == BlobMode.Layer)
+                return LayerDescriptor.Layer(LayerName).DoesDocHas(doc);
+            else
+                return true;
+
+        }
+        public override MatchingResult IsMatchingRouted(Document doc)
+        {
+            MatchingResult result = new MatchingResult(this,IsMatching(doc));
+            
+            if (!result)
+                return result;
+            var cur_doc = DocOfThis(doc);
+            foreach (var child in Children)
+            {
+                var r = child.IsMatchingRouted(cur_doc);
+                result.Match &= r;
+                
+                if (!result)
+                {
+                    result.MismatchRoute.AddRange(r.MismatchRoute);
+                    break;
+                }
+            }
+            if (Mode == BlobMode.Layer)
+                cur_doc.Close(PsSaveOptions.psSaveChanges);
             return result;
         }
 
         public Blob() : base()
         {
+
         }
     }
 }

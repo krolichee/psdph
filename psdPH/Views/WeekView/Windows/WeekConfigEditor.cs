@@ -61,7 +61,7 @@ namespace psdPH.Views.WeekView
                 DowPrototypeLayernameDict = dwpm_w.GetResultDict(),
                 PrototypeLayerName = prototype.LayerName
             };
-            ParameterConfig resultConfig(string fieldname, string desc) => new ParameterConfig(result, fieldname, desc);
+            SetupConfig resultConfig(string fieldname, string desc) => new SetupConfig(result, fieldname, desc);
             var dayTextLeafConfig = resultConfig(nameof(WeekConfig.DateTextLeafLayerName), "Текстовое поле числа дня");
             var dowTextLeafConfig = resultConfig(nameof(WeekConfig.DowTextLeafLayerName), "Текстовое поле дня недели");
             var previewTextLeafConfig = resultConfig(nameof(WeekConfig.TilePreviewTextLeafName), "Текстовое поле для предпросмотра");
@@ -82,13 +82,13 @@ namespace psdPH.Views.WeekView
                 new FullDowFormat().Lower,
                 new FullDowFormat().FirstUpper,
             };
-            List<Parameter> parameters = new List<Parameter>();
-            parameters.Add(Parameter.Choose(dayTextLeafConfig, textLeafs_names));
-            parameters.Add(Parameter.Choose(dayDateFormatConfig, dayDateFormats));
-            parameters.Add(Parameter.Choose(dowTextLeafConfig, textLeafs_names));
-            parameters.Add(Parameter.Choose(dowFormatConfig, dowFormats));
-            parameters.Add(Parameter.Choose(previewTextLeafConfig, textLeafs_names));
-            parameters.Add(Parameter.Choose(weekDatesTextLeafConfig , root_textLeafs_names ));
+            List<Setup> parameters = new List<Setup>();
+            parameters.Add(Setup.Choose(dayTextLeafConfig, textLeafs_names));
+            parameters.Add(Setup.Choose(dayDateFormatConfig, dayDateFormats));
+            parameters.Add(Setup.Choose(dowTextLeafConfig, textLeafs_names));
+            parameters.Add(Setup.Choose(dowFormatConfig, dowFormats));
+            parameters.Add(Setup.Choose(previewTextLeafConfig, textLeafs_names));
+            parameters.Add(Setup.Choose(weekDatesTextLeafConfig , root_textLeafs_names ));
             
 
             var conf_w = new ParametersInputWindow(parameters.ToArray(), "Настройка конфигурации недельного вида");

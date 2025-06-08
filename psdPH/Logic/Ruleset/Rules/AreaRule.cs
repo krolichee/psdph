@@ -9,14 +9,14 @@ namespace psdPH.Logic
 {
     public abstract class AreaRule : LayerRule
     {
-        protected Parameter[] getAlignOptionsParameters()
+        protected Setup[] getAlignOptionsParameters()
         {
-            var alingment_config = new ParameterConfig(this, nameof(Alignment), "с выравниванием");
-            var considerfx_config = new ParameterConfig(this, nameof(ConsiderFx), "по границам");
+            var alingment_config = new SetupConfig(this, nameof(Alignment), "с выравниванием");
+            var considerfx_config = new SetupConfig(this, nameof(ConsiderFx), "по границам");
 
-            return new Parameter[]{
-            Parameter.AlignmentInput(alingment_config),
-            Parameter.EnumChoose(considerfx_config,typeof(ConsiderFx))
+            return new Setup[]{
+            Setup.AlignmentInput(alingment_config),
+            Setup.EnumChoose(considerfx_config,typeof(ConsiderFx))
             };
         }
         public string AreaLayerName;
@@ -32,15 +32,15 @@ namespace psdPH.Logic
                 ConsiderFx = value.ConsiderFx;
             }
         }
-        protected Parameter getAreaParameter()
+        protected Setup getAreaParameter()
         {
-            var layerNameConfig = new ParameterConfig(this, nameof(this.AreaLayerName), "по зоне");
+            var layerNameConfig = new SetupConfig(this, nameof(this.AreaLayerName), "по зоне");
             var layerNames = Composition.getChildren<AreaLeaf>().Select(a => a.LayerName).ToArray();
-            return Parameter.Choose(layerNameConfig, layerNames);
+            return Setup.Choose(layerNameConfig, layerNames);
         }
-        protected Parameter[] getLayerAndAreaParameters()
+        protected Setup[] getLayerAndAreaParameters()
         {
-            return new Parameter[] { getLayerParameter(), getAreaParameter() };
+            return new Setup[] { getLayerParameter(), getAreaParameter() };
         }
 
         [XmlIgnore]

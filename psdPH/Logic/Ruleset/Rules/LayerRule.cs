@@ -16,11 +16,11 @@ namespace psdPH.Logic
             protected get => Composition.getChildren<TextLeaf>().First(t => t.LayerName == LayerName);
             set => LayerName = value?.LayerName;
         }
-        protected Parameter getLayerParameter()
+        protected Setup getLayerParameter()
         {
             var layerNames = Composition.getChildren<LayerComposition>().Select(c => c.LayerName).ToArray();
-            var layerNameConfig = new ParameterConfig(this, nameof(this.LayerName), "для слоя");
-            return Parameter.Choose(layerNameConfig, layerNames);
+            var layerNameConfig = new SetupConfig(this, nameof(this.LayerName), "для слоя");
+            return Setup.Choose(layerNameConfig, layerNames);
         }
         protected LayerWr getRuledLayerWr(Document doc) =>
             doc.GetLayerWrByName(LayerName);

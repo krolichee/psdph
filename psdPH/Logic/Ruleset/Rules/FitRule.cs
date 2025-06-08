@@ -11,14 +11,14 @@ namespace psdPH.Logic
         public bool BalanceFont = false;
         public FitRule(Composition composition) : base(composition) { }
         public FitRule() : base(null) { }
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                var result = new List<Parameter>();
+                var result = new List<Setup>();
                 result.AddRange(getLayerAndAreaParameters());
-                var balance_config = new ParameterConfig(this, nameof(BalanceFont), "балансировать шрифт");
-                result.Add(Parameter.Check(balance_config));
+                var balance_config = new SetupConfig(this, nameof(BalanceFont), "балансировать шрифт");
+                result.Add(Setup.Check(balance_config));
                 result.AddRange(getAlignOptionsParameters());
                 return result.ToArray();
             }
