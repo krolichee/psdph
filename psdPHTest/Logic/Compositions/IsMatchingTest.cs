@@ -30,7 +30,7 @@ namespace psdPHTest.Logic.Compositions
             string tempFilePath = Path.GetTempFileName() + ".psd"; // или с нужным расширением
 
             // Запись ресурса во временный файл
-            File.WriteAllBytes(tempFilePath, Properties.TestResources.IsMatchingTest);
+            File.WriteAllBytes(tempFilePath, Properties.TestResources.Basic);
             var doc = psApp.Open(tempFilePath);
             var areaLD = LayerDescriptor.Layer("area");
             var blobLD = LayerDescriptor.Layer("smartObject");
