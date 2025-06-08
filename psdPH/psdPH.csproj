@@ -95,6 +95,9 @@
     <Compile Include="Logic\UINameAttribute.cs" />
     <Compile Include="Photoshop\AlignOptions.cs" />
     <Compile Include="Photoshop\KostylExecutor.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterHandler.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\IBatchCompositionCreator.cs" />
     <Compile Include="TemplateEditor\StructureRulesDicts.cs" />
     <Compile Include="Utils\EnumWrapper.cs" />
