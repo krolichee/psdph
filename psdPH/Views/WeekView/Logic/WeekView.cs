@@ -31,10 +31,14 @@ namespace psdPH.Views.WeekView
             Directory.CreateDirectory(ViewDirectory);
         }
 
-        private string ViewDirectory => Path.Combine(PsdPhDirectories.ViewsDirectory(_projectName), "WeekView");
-        private string ConfigPath => Path.Combine(ViewDirectory, "config.xml");
-        private string WeekListDataPath => Path.Combine(ViewDirectory, "data.xml");
-        private string WeekRulesetsPath => Path.Combine(ViewDirectory, "rules.xml");
+        public string ViewDirectory => Path.Combine(PsdPhDirectories.ViewsDirectory(_projectName), "WeekView");
+        public string ConfigPath => Path.Combine(ViewDirectory, "config.xml");
+        public string WeekListDataPath => Path.Combine(ViewDirectory, "data.xml");
+        public string WeekRulesetsPath => Path.Combine(ViewDirectory, "rules.xml");
+        public string OutputsDirectory => Path.Combine(ViewDirectory, "output");
+        public string OutputDirectory(string outputName) => Path.Combine(OutputsDirectory, outputName);
+        public void CreateOutputsDirectory() => Directory.CreateDirectory(OutputsDirectory);
+        public void CreateOutputDirectory(string outputName) => Directory.CreateDirectory(OutputDirectory(outputName));
 
         public static WeekConfig CreateWeekConfig(Blob root)
         {

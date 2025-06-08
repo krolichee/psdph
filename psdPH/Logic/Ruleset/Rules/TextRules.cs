@@ -13,15 +13,18 @@ namespace psdPH.Logic.Rules
     {
 
         public string TextLeafLayerName;
+        protected Setup getTextLeafSetup()
+        {
+            TextLeaf[] textLeaves = Composition.getChildren<TextLeaf>();
+            var textLeafConfig = new SetupConfig(this, nameof(this.TextLeaf), "поля");
+            return Setup.Choose(textLeafConfig, textLeaves);
+        }
         [XmlIgnore]
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                TextLeaf[] textLeaves = Composition.getChildren<TextLeaf>();
-                var result = new List<Parameter>();
-                var textLeafConfig = new ParameterConfig(this, nameof(this.TextLeaf), "поля");
-                result.Add(Parameter.Choose(textLeafConfig, textLeaves));
+                var result = new List<Setup>() { getTextLeafSetup() };
                 return result.ToArray();
             }
         }
@@ -48,15 +51,15 @@ namespace psdPH.Logic.Rules
         public TextFontSizeRule(Composition composition) : base(composition) { }
         public TextFontSizeRule() : base(null) { }
         [XmlIgnore]
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                List<Parameter> result = base.Setups.ToList();
-                var modeConfig = new ParameterConfig(this, nameof(this.ChangeMode), "");
-                var fontSizeConfig = new ParameterConfig(this, nameof(this.FontSize), "");
-                result.Add(Parameter.EnumChoose(modeConfig, typeof(ChangeMode)));
-                result.Add(Parameter.IntInput(fontSizeConfig));
+                List<Setup> result = base.Setups.ToList();
+                var modeConfig = new SetupConfig(this, nameof(this.ChangeMode), "");
+                var fontSizeConfig = new SetupConfig(this, nameof(this.FontSize), "");
+                result.Add(Setup.EnumChoose(modeConfig, typeof(ChangeMode)));
+                result.Add(Setup.IntInput(fontSizeConfig));
                 return result.ToArray();
             }
         }
@@ -66,7 +69,7 @@ namespace psdPH.Logic.Rules
             if (ChangeMode == ChangeMode.Rel)
                 doc.GetLayerByName(LayerName).TextItem.Size += FontSize;
             else
-                (doc.ActiveLayer as ArtLayer).TextItem.Size = FontSize;
+                doc.GetLayerByName(LayerName).TextItem.Size = FontSize;
         }
         public override string ToString() => "размер шрифта";
         public override bool IsSetUp()
@@ -82,13 +85,13 @@ namespace psdPH.Logic.Rules
         public TextAnchorRule(Composition composition) : base(composition) { }
         public TextAnchorRule() : base(null) { }
         [XmlIgnore]
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                List<Parameter> result = base.Setups.ToList();
-                var justificationConfig = new ParameterConfig(this, nameof(this.Justification), "установить");
-                result.Add(Parameter.Choose(justificationConfig, new PsJustification[] {
+                List<Setup> result = base.Setups.ToList();
+                var justificationConfig = new SetupConfig(this, nameof(this.Justification), "установить");
+                result.Add(Setup.Choose(justificationConfig, new PsJustification[] {
                     PsJustification.psRight,
                     PsJustification.psLeft,
                     PsJustification.psCenter

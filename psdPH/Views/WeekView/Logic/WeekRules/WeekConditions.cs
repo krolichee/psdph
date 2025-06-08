@@ -14,16 +14,16 @@ namespace psdPH.Views.WeekView.Logic
         public override string ToString() => "каждый 'n' день";
         public DateTime? StartDateTime;
         public int Interval=0;
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                var result = new List<Parameter>();
-                var intervalConfig = new ParameterConfig(this, nameof(Interval), "каждый...");
-                var intervalParameter = Parameter.IntInput(intervalConfig,1,366);
+                var result = new List<Setup>();
+                var intervalConfig = new SetupConfig(this, nameof(Interval), "каждый...");
+                var intervalParameter = Setup.IntInput(intervalConfig,1,366);
                 
-                var startDateConfig = new ParameterConfig(this, nameof(StartDateTime), "начиная с");
-                var startDateParameter = Parameter.Date(startDateConfig);
+                var startDateConfig = new SetupConfig(this, nameof(StartDateTime), "начиная с");
+                var startDateParameter = Setup.Date(startDateConfig);
 
                 result.Add(intervalParameter);
                 result.Add(startDateParameter);
@@ -53,13 +53,13 @@ namespace psdPH.Views.WeekView.Logic
         public override string ToString() => "день недели";
         public DayOfWeek DayOfWeek;
 
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                var result = new List<Parameter>();
-                var dowConfig = new ParameterConfig(this, nameof(DayOfWeek), "");
-                var dowParameter = Parameter.EnumChoose(dowConfig, typeof(DayOfWeek));
+                var result = new List<Setup>();
+                var dowConfig = new SetupConfig(this, nameof(DayOfWeek), "");
+                var dowParameter = Setup.EnumChoose(dowConfig, typeof(DayOfWeek));
                 result.Add(dowParameter);
                 return result.ToArray();
             }
@@ -79,7 +79,7 @@ namespace psdPH.Views.WeekView.Logic
         public override string ToString() => "неделя";
         public int Week;
         public WeekCondition(Composition composition) : base(composition) { }
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {

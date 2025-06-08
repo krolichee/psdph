@@ -25,7 +25,7 @@ namespace psdPH
 
         public static string CollectionsDirectory => Path.Combine(BaseDirectory, "Collections");
 
-        public static string ProjectDirectory(string projectName) => Path.Combine(ProjectsDirectory, MainWindow.CurrentProjectName);
+        public static string ProjectDirectory(string projectName) => Path.Combine(ProjectsDirectory, projectName);
         public static string ViewsDirectory(string projectName) => CreateIfNotExist(Path.Combine(ProjectDirectory(projectName), "Views"));
     }
 }

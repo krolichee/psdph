@@ -12,18 +12,18 @@ namespace psdPH.Logic
         public int X { get => (int)Shift.X; set { Shift.X = (double)value; } }
         public int Y { get => (int)Shift.Y; set { Shift.Y = (double)value; } }
         [XmlIgnore]
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                var result = new List<Parameter>();
-                var modeConfig = new ParameterConfig(this, nameof(this.ChangeMode), "");
-                var xConfig = new ParameterConfig(this, nameof(this.X), "x");
-                var yConfig = new ParameterConfig(this, nameof(this.Y), "y");
+                var result = new List<Setup>();
+                var modeConfig = new SetupConfig(this, nameof(this.ChangeMode), "");
+                var xConfig = new SetupConfig(this, nameof(this.X), "x");
+                var yConfig = new SetupConfig(this, nameof(this.Y), "y");
                 result.Add(getLayerParameter());
-                result.Add(Parameter.EnumChoose(modeConfig, typeof(ChangeMode)));
-                result.Add(Parameter.IntInput(xConfig));
-                result.Add(Parameter.IntInput(yConfig));
+                result.Add(Setup.EnumChoose(modeConfig, typeof(ChangeMode)));
+                result.Add(Setup.IntInput(xConfig));
+                result.Add(Setup.IntInput(yConfig));
                 return result.ToArray();
             }
         }

@@ -67,17 +67,15 @@ namespace psdPH
             return _composition;
         }
         private void Window_Closed(object sender, EventArgs e)
-        {
-            if (_doc.Application.ActiveDocument == _doc)
-                _doc.Close(PsSaveOptions.psDoNotSaveChanges);
-            else
-                throw new Exception();
+        {                
             if ((_composition as Blob).Mode == BlobMode.Path)
                 save();
+            _doc.Close(PsSaveOptions.psSaveChanges);
         }
         void save()
         {
             PsdPhProject.Instance().saveBlob(GetResultComposition() as Blob);
+            
         }
         private void Window_Activated(object sender, EventArgs e)
         {

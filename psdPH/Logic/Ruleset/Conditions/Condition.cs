@@ -11,7 +11,7 @@ namespace psdPH.Logic.Rules
         [XmlIgnore]
         public Composition Composition;
         [XmlIgnore]
-        public abstract Parameter[] Setups { get; }
+        public abstract Setup[] Setups { get; }
         public abstract bool IsValid();
 
         public void RestoreComposition(Composition composition)

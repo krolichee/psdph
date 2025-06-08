@@ -13,19 +13,19 @@ using static psdPH.Logic.PhotoshopDocumentExtension;
 
 namespace psdPH.Logic
 {
-    public class Parameter
+    public class Setup
     {
         public delegate void AcceptedEvent();
         public event AcceptedEvent Accepted;
-        public Parameter() { }
+        public Setup() { }
         public Control Control;
         FieldFunctions _fieldFunctions;
         StackPanel _stack;
 
         Func<object> valueFunc;
 
-        private ParameterConfig _config;
-        public ParameterConfig Config => _config;
+        private SetupConfig _config;
+        public SetupConfig Config => _config;
         public void Accept()
         {
             _config.SetValue(valueFunc());
@@ -35,11 +35,11 @@ namespace psdPH.Logic
         {
             return _fieldFunctions.ConvertFunction(_config.GetValue()).ToString();
         }
-        public static Parameter Choose(ParameterConfig config, object[] options, FieldFunctions fieldFunctions = null)
+        public static Setup Choose(SetupConfig config, object[] options, FieldFunctions fieldFunctions = null)
         {
             if (options.Length == 0)
                 throw new ArgumentException();
-            var result = new Parameter(config, fieldFunctions);
+            var result = new Setup(config, fieldFunctions);
             fieldFunctions = result._fieldFunctions;
             var stack = result._stack;
 
@@ -57,9 +57,9 @@ namespace psdPH.Logic
             return result;
         }
 
-        public static Parameter RichStringInput(ParameterConfig config)
+        public static Setup RichStringInput(SetupConfig config)
         {
-            var result = new Parameter(config);
+            var result = new Setup(config);
             var stack = result._stack;
 
             var rtb = new RichTextBox() {MinWidth = 70, MaxWidth = 200, MinHeight = 40,HorizontalAlignment = HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Top};
@@ -78,9 +78,9 @@ namespace psdPH.Logic
             }
 
         }
-        public static Parameter AlignmentInput(ParameterConfig config)
+        public static Setup AlignmentInput(SetupConfig config)
         {
-            var result = new Parameter(config);
+            var result = new Setup(config);
             var stack = result._stack;
             var aliControl = new AlignmentControl(config.GetValue() as Alignment);
             aliControl.Dimension = 30;
@@ -89,9 +89,9 @@ namespace psdPH.Logic
             result.valueFunc = () => aliControl.GetResultAlignment();
             return result;
         }
-        public static Parameter StringInput(ParameterConfig config)
+        public static Setup StringInput(SetupConfig config)
         {
-            var result = new Parameter(config);
+            var result = new Setup(config);
             var stack = result._stack;
             var tb = new TextBox() { Width = 40 };
             tb.Text = config.GetValue().ToString();
@@ -100,9 +100,9 @@ namespace psdPH.Logic
             result.valueFunc = () => tb.Text;
             return result;
         }
-        public static Parameter IntInput(ParameterConfig config, int? min = null, int? max = null)
+        public static Setup IntInput(SetupConfig config, int? min = null, int? max = null)
         {
-            var result = new Parameter(config);
+            var result = new Setup(config);
             var stack = result._stack;
 
             var ntb = new NumericTextBox((int)config.GetValue(), min, max);
@@ -111,9 +111,9 @@ namespace psdPH.Logic
             result.valueFunc = () => ntb.GetNumber();
             return result;
         }
-        public static Parameter Check(ParameterConfig config)
+        public static Setup Check(SetupConfig config)
         {
-            var result = new Parameter(config);
+            var result = new Setup(config);
             var stack = result._stack;
 
             var chb = new CheckBox();
@@ -123,26 +123,26 @@ namespace psdPH.Logic
             result.valueFunc = () => chb.IsChecked; ;
             return result;
         }
-        public static Parameter EnumChoose(ParameterConfig config, Type @enum)
+        public static Setup EnumChoose(SetupConfig config, Type @enum)
         {
             var enumValues = Enum.GetValues(@enum).Cast<Enum>();
             var options = enumValues.ToArray();
-            return Parameter.Choose(config, options, FieldFunctions.EnumWrapperFunctions);
+            return Setup.Choose(config, options, FieldFunctions.EnumWrapperFunctions);
         }
-        public static Parameter JustDescrition(string desc)
+        public static Setup JustDescrition(string desc)
         {
             var label = new Label() { Content = "" };
-            var config = new ParameterConfig(label,nameof(label.Content),desc);
+            var config = new SetupConfig(label,nameof(label.Content),desc);
 
-            var result = new Parameter(config);
+            var result = new Setup(config);
             var stack = result._stack;
             result.Control = label;
             result.valueFunc = () => ""; ;
             return result;
         }
-        internal static Parameter Date(ParameterConfig config)
+        internal static Setup Date(SetupConfig config)
         {
-            var result = new Parameter(config);
+            var result = new Setup(config);
             var stack = result._stack;
 
             var calendar = new DatePicker();
@@ -157,9 +157,9 @@ namespace psdPH.Logic
             return result;
         }
 
-        internal static Parameter MultiChoose(ParameterConfig config, object[] options)
+        internal static Setup MultiChoose(SetupConfig config, object[] options)
         {
-            var result = new Parameter(config);
+            var result = new Setup(config);
             var stack = result._stack;
 
             var picker = new MultiPicker(options);
@@ -171,7 +171,7 @@ namespace psdPH.Logic
             return result;
         }
 
-        Parameter(ParameterConfig config, FieldFunctions fieldFunctions = null)
+        Setup(SetupConfig config, FieldFunctions fieldFunctions = null)
         {
             if (fieldFunctions == null)
                 fieldFunctions = new FieldFunctions();
