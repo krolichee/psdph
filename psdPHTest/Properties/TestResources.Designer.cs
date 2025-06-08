@@ -63,9 +63,9 @@ namespace psdPHTest.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] IsMatchingTest {
+        internal static byte[] Basic {
             get {
-                object obj = ResourceManager.GetObject("IsMatchingTest", resourceCulture);
+                object obj = ResourceManager.GetObject("Basic", resourceCulture);
                 return ((byte[])(obj));
             }
         }
