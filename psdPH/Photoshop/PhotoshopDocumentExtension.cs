@@ -47,7 +47,7 @@ namespace psdPH.Logic
         }
         public static void SaveDocument(this Document doc, string savePath)
         {
-            doc.SaveAs(savePath, new PsSaveOptions(), true, PsExtensionType.psLowercase);
+            doc.SaveAs(savePath);///,PsSaveOptions.psSaveChanges, true, PsExtensionType.psLowercase);
         }
 
         public static string GetDocPath(this Document doc)

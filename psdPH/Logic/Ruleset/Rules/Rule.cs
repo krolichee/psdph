@@ -8,10 +8,6 @@ using System.Xml.Serialization;
 
 namespace psdPH.Logic
 {
-    public interface CoreRule
-    {
-        void CoreApply();
-    }
     [Serializable]
     [PsdPhSerializable]
     public abstract class Rule : ISetupable, psdPH.ISerializable
@@ -32,7 +28,7 @@ namespace psdPH.Logic
         }
 
         [XmlIgnore]
-        public abstract Parameter[] Setups { get; }
+        public abstract Setup[] Setups { get; }
 
         public virtual Rule Clone()
         {

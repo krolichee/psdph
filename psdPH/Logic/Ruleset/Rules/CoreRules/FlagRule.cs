@@ -15,18 +15,18 @@ namespace psdPH.Logic
         public FlagRule() : base(null) { }
         public FlagRule(Composition composition) : base(composition) { }
         [XmlIgnore]
-        public override Parameter[] Setups
+        public override Setup[] Setups
         {
             get
             {
-                List<Parameter> result = new List<Parameter>();
+                List<Setup> result = new List<Setup>();
                 FlagLeaf[] flagLeaves = Composition.getChildren<FlagLeaf>();
                 var flagNames = flagLeaves.Select(f => f.Name).ToArray();
-                var flagConfig = new ParameterConfig(this, nameof(this.FlagName), "");
-                var valueConfig = new ParameterConfig(this, nameof(this.Value), "установить в");
-                result.Add(Parameter.Choose(flagConfig, flagNames));
-                result.Add(Parameter.Check(valueConfig));
-                result.Add(Parameter.JustDescrition("и наоборот"));
+                var flagConfig = new SetupConfig(this, nameof(this.FlagName), "");
+                var valueConfig = new SetupConfig(this, nameof(this.Value), "установить в");
+                result.Add(Setup.Choose(flagConfig, flagNames));
+                result.Add(Setup.Check(valueConfig));
+                result.Add(Setup.JustDescrition("и наоборот"));
                 return result.ToArray();
             }
         }

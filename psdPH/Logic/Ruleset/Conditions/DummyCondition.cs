@@ -8,7 +8,7 @@ namespace psdPH.Logic.Rules
         public DummyCondition(Composition composition) : base(composition) { }
         public DummyCondition() : base(null) { }
         [XmlIgnore]
-        public override Parameter[] Setups => new Parameter[0];
+        public override Setup[] Setups => new Setup[0];
 
 
         public override bool IsValid() => true;

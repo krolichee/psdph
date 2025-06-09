@@ -119,6 +119,14 @@ namespace psdPH.Photoshop
                 func = (LayerWr l) => l.GetNoFxBoundRect();
             return func;
         }
+
+        internal void FixLayerName()
+        {
+            var layername = Name;
+            Name = "_";
+            Name = layername;
+        }
+
         public enum ConsiderFx
         {
             WithFx,

@@ -1,14 +1,12 @@
 ﻿using Photoshop;
 using psdPH.Logic;
-using psdPH.Logic.Compositions;
+using psdPH.Logic.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Xml.Serialization;
-using static psdPH.Logic.PhotoshopDocumentExtension;
-using static psdPH.Logic.PhotoshopLayerExtension;
 
 namespace psdPH
 {
@@ -19,6 +17,7 @@ namespace psdPH
     [PsdPhSerializable]
     public abstract class Composition : ISetupable, psdPH.ISerializable
     {
+        public List<Parameter> Parameters = new List<Parameter>();
         public delegate void RulesetUpdated();
         public delegate void ChildrenUpdated();
         public event ChildrenUpdated ChildrenUpdatedEvent;
@@ -54,7 +53,7 @@ namespace psdPH
             return Parent.getChildren<T>().ToArray();
         }
         [XmlIgnore]
-        public abstract Parameter[] Setups { get; }
+        public abstract Setup[] Setups { get; }
 
         abstract public void Apply(Document doc);
         protected void invokeChildrenEvent()
@@ -88,74 +87,11 @@ namespace psdPH
             RuleSet.Updated += () => RulesetUpdatedEvent?.Invoke(); 
             this.AddTypeToKnownTypes(); 
         }
-    }
-
-    [Serializable]
-    [UIName("Флаг")]
-    public partial class FlagLeaf : Composition
-    {
-        public bool Toggle;
-        public string Name;
-        public override string ObjName => Name;
-        [XmlIgnore]
-        public override Parameter[] Setups
+        public abstract bool IsMatching(Document doc);
+        public virtual MatchingResult IsMatchingRouted(Document doc)
         {
-            get
-            {
-                var result = new List<Parameter>();
-                var toggleConfig = new ParameterConfig(this, nameof(this.Toggle), Name);
-                result.Add(Parameter.Check(toggleConfig));
-                return result.ToArray();
-            }
+            return new MatchingResult(this,IsMatching(doc));
         }
-
-        public FlagLeaf(string name)
-        {
-            Name = name;
-        }
-        public FlagLeaf() : base() { }
-
-        public override void Apply(Document doc) { }
-    }
-
-    [Serializable]
-    [UIName("Прототип")]
-    public class PrototypeLeaf : Composition
-    {
-        Blob blob;
-        [XmlIgnore]
-        public Blob Blob
-        {
-            get
-            {
-                if (blob == null)
-                    blob = Parent.getChildren<Blob>().First(b => b.LayerName == LayerName); return blob;
-            }
-            set { LayerName = value.LayerName; }
-        }
-        public string RelativeLayerName;
-        public string LayerName;
-        public Vector GetRelativeLayerAlightmentVector(Document doc)
-        {
-            //Здесь ожидается не вектор выравнивания, а вектор приведение к той же разнице,
-            //то и с опорным слоем, поэтому аргементы меняются местами
-            var options = new AlignOptions(Alignment.Create("up","left"),Photoshop.LayerWr.ConsiderFx.NoFx);
-            return doc.GetAlightmentVector(LayerName, RelativeLayerName, options);
-        }
-        [XmlIgnore]
-        public override Parameter[] Setups => new Parameter[0];
-        public override string ObjName => Blob.LayerName;
-        public override void Apply(Document doc)
-        {
-           //doc.GetLayerByName(Blob.LayerName).Opacity = 0;
-        }
-        public PrototypeLeaf(Blob blob, string rel_layer_name)
-        {
-            this.blob = blob;
-            LayerName = blob.LayerName;
-            RelativeLayerName = rel_layer_name;
-        }
-        public PrototypeLeaf() { }
     }
     
     

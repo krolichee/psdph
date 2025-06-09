@@ -1,6 +1,10 @@
 ﻿using Photoshop;
+using psdPH.Logic;
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows;
+using Application = Photoshop.Application;
 
 namespace psdPH
 {
@@ -15,7 +19,7 @@ namespace psdPH
             {
                 Type psType = Type.GetTypeFromProgID("Photoshop.Application");
                 var psAppCom__ = Activator.CreateInstance(psType);
-               psApp = psAppCom__ as Application;
+                psApp = psAppCom__ as Application;
             }
             if (psApp == null)
             {
@@ -31,10 +35,36 @@ namespace psdPH
             if (psApp != null)
                 Marshal.ReleaseComObject(psApp);
         }
-
-        // Открывает PSD-файл
-        public static Document OpenDocument(string filePath)
+        static bool isPathIs(this Document doc, string path)
         {
+            if (doc.IsNonFile())
+                return false;
+            return doc.GetDocPath() == path;
+        }
+        public static Document Opened(string path)
+        {
+             bool hasDocs = PhotoshopWrapper.HasOpenDocuments();
+            return hasDocs ? PhotoshopWrapper.GetPhotoshopApplication().Documents.Cast<Document>().FirstOrDefault(d => d.isPathIs(path)):null;
+        }
+
+
+        
+        // Открывает PSD-файл
+        public static Document OpenDocument(string filePath, bool reopenIfOpened = false)
+        {
+            Document doc = Opened(filePath);
+            if (reopenIfOpened ? doc != null : false)
+            {
+                if (!doc.Saved)
+                {
+                    var dialogResult = MessageBox.Show("Документ имеет несохранённые изменения. Сохранить?", "", MessageBoxButton.YesNoCancel);
+                    if (dialogResult == MessageBoxResult.Yes)
+                        doc.Save();
+                    else if (dialogResult == MessageBoxResult.Cancel)
+                        return null;
+                }
+                doc.Close(PsSaveOptions.psDoNotSaveChanges);
+            }
             GetPhotoshopApplication().Open(filePath);
             return psApp.ActiveDocument;
         }

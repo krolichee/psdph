@@ -18,7 +18,7 @@ using psdPH.RuleEditor;
 using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 
-namespace psdPHTest.UI
+namespace psdPHTest.Tests.UI
 {
     [TestClass]
     public class TemplateEditorTest
@@ -66,8 +66,8 @@ namespace psdPHTest.UI
         public void testMulti()
         {
             var options = new string[] { "1", "2", "3" };
-            var cfg = new ParameterConfig(this,nameof(Objects),"каво");
-            var parameters = new Parameter[] { Parameter.MultiChoose(cfg, options)};
+            var cfg = new SetupConfig(this,nameof(Objects),"каво");
+            var parameters = new Setup[] { Setup.MultiChoose(cfg, options)};
             var pi_w = new ParametersInputWindow(parameters);
             pi_w.ShowDialog();
             Assert.IsTrue(Objects[0] as string=="1");
@@ -76,8 +76,8 @@ namespace psdPHTest.UI
         [TestMethod]
         public void testRtb()
         {
-            var cfg = new ParameterConfig(this, nameof(str), "каво");
-            var parameters = new Parameter[] { Parameter.RichStringInput(cfg) };
+            var cfg = new SetupConfig(this, nameof(str), "каво");
+            var parameters = new Setup[] { Setup.RichStringInput(cfg) };
             while (new ParametersInputWindow(parameters).ShowDialog() == true) ;
         }
 
@@ -124,8 +124,8 @@ namespace psdPHTest.UI
         [TestMethod]
         public void ParameterWindowTest()
         {
-            ParameterConfig config = new ParameterConfig(this, nameof(this.m), "Строка");
-            Parameter[] parameters = new Parameter[] { Parameter.RichStringInput(config) };
+            SetupConfig config = new SetupConfig(this, nameof(this.m), "Строка");
+            Setup[] parameters = new Setup[] { Setup.RichStringInput(config) };
             while (new ParametersInputWindow(parameters).ShowDialog() == true) ;
         }
         [TestMethod]

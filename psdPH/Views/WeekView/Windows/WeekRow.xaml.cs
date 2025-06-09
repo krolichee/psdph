@@ -46,6 +46,7 @@ namespace psdPH.Views.WeekView
             var deleteButton = getDeleteButton(data);
             rowStack.Children.Add(renderButton);
             rowStack.Children.Add(deleteButton);
+            Margin = new Thickness(0, 0, 0, 5);
         }
     }
 }
