@@ -120,8 +120,8 @@
     <Compile Include="TemplateEditor\ParameterDicts.cs" />
     <Compile Include="TemplateEditor\StructureRulesDicts.cs" />
     <Compile Include="Utils\Localization\EnumLocalization.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\AligmentControl.xaml.cs">
-      <DependentUpon>AligmentControl.xaml</DependentUpon>
+    <Compile Include="Utils\ReflectionSetups\Controls\AlignmentControl.xaml.cs">
+      <DependentUpon>AlignmentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
       <DependentUpon>CollectionEditor.xaml</DependentUpon>
@@ -269,7 +269,7 @@
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
-    <Page Include="Utils\ReflectionSetups\Controls\AligmentControl.xaml">
+    <Page Include="Utils\ReflectionSetups\Controls\AlignmentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
