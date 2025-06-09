@@ -13,12 +13,12 @@ namespace psdPH.Logic
         [XmlIgnore]
         public LayerComposition LayerComposition
         {
-            protected get => Composition.getChildren<TextLeaf>().First(t => t.LayerName == LayerName);
+            protected get => Composition.GetChildren<TextLeaf>().First(t => t.LayerName == LayerName);
             set => LayerName = value?.LayerName;
         }
         protected Setup getLayerParameter()
         {
-            var layerNames = Composition.getChildren<LayerComposition>().Select(c => c.LayerName).ToArray();
+            var layerNames = Composition.GetChildren<LayerComposition>().Select(c => c.LayerName).ToArray();
             var layerNameConfig = new SetupConfig(this, nameof(this.LayerName), "для слоя");
             return Setup.Choose(layerNameConfig, layerNames);
         }

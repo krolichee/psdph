@@ -1,7 +1,6 @@
 ﻿using psdPH.Logic;
 using psdPH.Logic.Rules;
 using psdPH.RuleEditor;
-using psdPH.TemplateEditor;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.Utils;
 using psdPH.Views.WeekView;
@@ -19,7 +18,6 @@ namespace psdPH
         public RuleCommand(RuleSet ruleSet) {
             RuleSet = ruleSet;
         }
-        protected override bool IsEditableCommand(object parameter) => true;
         protected override void CreateExecuteCommand(object parameter)
         {
             var rc_w = new RuleEditorWindow(RulesetDefinition);
@@ -46,12 +44,6 @@ namespace psdPH
                     RuleSet.Rules.Insert(index, brule);
                 }
             }
-        }
-    }
-    public class StructureRuleCommand : RuleCommand
-    {
-        public StructureRuleCommand(RuleSet ruleSet) : base(ruleSet) {
-            RulesetDefinition = new StructureRulesetDefinition(ruleSet.Composition);
         }
     }
 }

@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ReflectionSetups\Controls\RtbExtension.cs" />
     <Compile Include="Utils\ReflectionSetups\Setup.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekRulesTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -96,7 +97,6 @@
     <Folder Include="CollectionEditor\" />
     <Folder Include="RuleEditor\" />
     <Folder Include="TemplateEditor\" />
-    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\TestResources.resx">

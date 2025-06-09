@@ -24,6 +24,7 @@ namespace psdPH.TemplateEditor
                 new VisibleRule(root),
                 new AlignRule(root),
                 new FitRule(root),
+                new FlagRule(root),
             };
         public delegate IBatchRuleEditor CreateRule(Document doc, Composition composition);
         public delegate IBatchRuleEditor EditRule(Document doc, Rule rule);

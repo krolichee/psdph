@@ -8,9 +8,9 @@ using System.Xml.Serialization;
 namespace psdPH.Logic
 {
     [Serializable]
-    [XmlRoot("Ruleset")]
     public class RuleSet
-    {public void AddRule(Rule rule)
+    {
+        public void AddRule(Rule rule)
         {
             rule.RestoreComposition(Composition);
             Rules.Add(rule);

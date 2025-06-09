@@ -17,6 +17,7 @@ using System.IO;
 using psdPH.RuleEditor;
 using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.Logic.Parameters;
 
 namespace psdPHTest.Tests.UI
 {
@@ -33,8 +34,8 @@ namespace psdPHTest.Tests.UI
             var c_w = new MultiTextLeafCreator(doc,blob);
             c_w.ShowDialog();
             blob.AddChildren(c_w.GetResultBatch());
-            blob.getChildren<TextLeaf>().First(t=>t.LayerName == "text1");
-            blob.getChildren<TextLeaf>().First(t=>t.LayerName == "text2");
+            blob.GetChildren<TextLeaf>().First(t=>t.LayerName == "text1");
+            blob.GetChildren<TextLeaf>().First(t=>t.LayerName == "text2");
         }
 
         [TestMethod]
@@ -51,8 +52,8 @@ namespace psdPHTest.Tests.UI
             var c_w = new MultiPlaceholderLeafCreator(doc,blob);
             c_w.ShowDialog();
             blob.AddChildren(c_w.GetResultBatch());
-            blob.getChildren<PlaceholderLeaf>().First(t => t.LayerName == "layer1");
-            blob.getChildren<PlaceholderLeaf>().First(t => t.LayerName == "layer2");
+            blob.GetChildren<PlaceholderLeaf>().First(t => t.LayerName == "layer1");
+            blob.GetChildren<PlaceholderLeaf>().First(t => t.LayerName == "layer2");
             
         }
     }
@@ -94,9 +95,9 @@ namespace psdPHTest.Tests.UI
             var weekConfig = GetWeekConfig();
 
             var weekBlob = GetBlob();
-            weekBlob.AddChild(new FlagLeaf() { Name = "testFlag"});
+            weekBlob.ParameterSet.Add(new FlagParameter("testFlag"));
             var dayBlob = weekConfig.GetDayBlob(weekBlob);
-            dayBlob.AddChild(new FlagLeaf() { Name = "testFlag"});
+            dayBlob.ParameterSet.Add(new FlagParameter("testFlag"));
 
             var weekListData = WeekListData.Create(weekConfig, weekBlob);
 
@@ -109,7 +110,7 @@ namespace psdPHTest.Tests.UI
             var weekConfig = GetWeekConfig();
             var weekBlob = GetBlob();
 
-            weekBlob.AddChild(new FlagLeaf() { Name = "testFlag" });
+            weekBlob.ParameterSet.Add(new FlagParameter("testFlag"));
             var dayBlob = weekConfig.GetDayBlob(weekBlob);
             dayBlob.AddChild(new AreaLeaf() { LayerName="area"});
 

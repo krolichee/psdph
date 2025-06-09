@@ -29,22 +29,13 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             result = new T();
         }
     }
-    public class FlagLeafCreator : SingleLeafCreator<FlagLeaf>
-    {
-        public FlagLeafCreator() : base()
-        {
-            result.Name = "";
-            var par_config = new SetupConfig(result, nameof(result.Name), "Имя флага");
-            p_w = new ParametersInputWindow(new[] { Setup.StringInput(par_config) });
-        }
-    }
     public class PlaceholderLeafCreator : SingleLeafCreator<PlaceholderLeaf>
     {
         public PlaceholderLeafCreator(Document doc, Composition root) : base()
         {
             var prototype_pconfig = new SetupConfig(result, nameof(result.PrototypeLayerName), "Прототип");
             var rel_pconfig = new SetupConfig(result, nameof(result.LayerName), "Слой вставки");
-            var prototypeNames = root.getChildren<PrototypeLeaf>().Select(p => p.LayerName).ToArray();
+            var prototypeNames = root.GetChildren<PrototypeLeaf>().Select(p => p.LayerName).ToArray();
             var prototype_parameter = Setup.Choose(prototype_pconfig, prototypeNames);
             var rel_parameter = Setup.Choose(rel_pconfig, doc.GetLayersNames());
             p_w = new ParametersInputWindow(new[] { prototype_parameter, rel_parameter });
@@ -71,7 +62,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     {
         public PrototypeCreator(Document doc, Composition root) : base()
         {
-            string[] blobs_names = root.getChildren<Blob>().Select(b => b.LayerName).ToArray();
+            string[] blobs_names = root.GetChildren<Blob>().Select(b => b.LayerName).ToArray();
             var bn_pconfig = new SetupConfig(result, nameof(result.LayerName), "Поддокумент");
             var bn_parameter = Setup.Choose(bn_pconfig, blobs_names);
 

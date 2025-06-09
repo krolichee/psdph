@@ -21,7 +21,7 @@ namespace psdPH
             InitializeComponent();
             Closed += Window_Closed;
             Blob root = prot.Parent as Blob;
-            var placeholders = root.getChildren<PlaceholderLeaf>()
+            var placeholders = root.GetChildren<PlaceholderLeaf>()
             .Where(cmp => cmp.PrototypeLayerName == prot.LayerName);
             var phNames = placeholders.Select(p => p.LayerName).ToArray();
             var days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Skip(1).Append(DayOfWeek.Sunday);

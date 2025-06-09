@@ -49,15 +49,15 @@ namespace psdPH
         public string DateTextLeafLayerName;
         internal TextLeaf GetWeekDatesTextLeaf(Blob blob)
         {
-            return blob.getChildren<TextLeaf>().First(_ => _.LayerName == WeekDatesTextLeafName);
+            return blob.GetChildren<TextLeaf>().First(_ => _.LayerName == WeekDatesTextLeafName);
         }
         internal TextLeaf GetDateTextLeaf(Blob blob)
         {
-            return blob.getChildren<TextLeaf>().First(_ => _.LayerName == DateTextLeafLayerName);
+            return blob.GetChildren<TextLeaf>().First(_ => _.LayerName == DateTextLeafLayerName);
         }
         internal TextLeaf GetDowTextLeaf(Blob blob)
         {
-            return blob.getChildren<TextLeaf>().First(_ => _.LayerName == DowTextLeafLayerName);
+            return blob.GetChildren<TextLeaf>().First(_ => _.LayerName == DowTextLeafLayerName);
         }
         internal Blob GetDayBlob(Blob blob)
         {
@@ -66,11 +66,11 @@ namespace psdPH
 
         internal PrototypeLeaf GetDayPrototype(Blob blob)
         {
-            return blob.getChildren<PrototypeLeaf>().First(p => p.LayerName == PrototypeLayerName);
+            return blob.GetChildren<PrototypeLeaf>().First(p => p.LayerName == PrototypeLayerName);
         }
         internal TextLeaf GetTilePreviewTextLeaf(Blob blob)
         {
-            return blob.getChildren<TextLeaf>().First(p => p.LayerName == TilePreviewTextLeafName);
+            return blob.GetChildren<TextLeaf>().First(p => p.LayerName == TilePreviewTextLeafName);
         }
 
         public void FillDateAndDow(DowBlob dayBlob)

@@ -27,26 +27,26 @@ namespace psdPH.Views.WeekView
 
         StringChoiceWindow DayPrototypeChoiceWindow()
         {
-            PrototypeLeaf[] prototypes = root.getChildren<PrototypeLeaf>().ToArray();
+            PrototypeLeaf[] prototypes = root.GetChildren<PrototypeLeaf>().ToArray();
             string[] prototypes_names = prototypes.Select(l => l.LayerName).ToArray();
             StringChoiceWindow pscc_w = new StringChoiceWindow(prototypes_names.ToArray(), "Выбор прототип для дня");
             return pscc_w;
         }
         PrototypeLeaf _getPrototypeByLayerName(string layername)
         {
-            PrototypeLeaf[] prototypes = root.getChildren<PrototypeLeaf>().ToArray();
+            PrototypeLeaf[] prototypes = root.GetChildren<PrototypeLeaf>().ToArray();
             return prototypes.First(l => l.LayerName == layername);
         }
         internal bool ShowDialog()
         {
-            string[] root_textLeafs_names = root.getChildren<TextLeaf>().Select(l => l.LayerName).ToArray();
+            string[] root_textLeafs_names = root.GetChildren<TextLeaf>().Select(l => l.LayerName).ToArray();
             StringChoiceWindow pscc_w = DayPrototypeChoiceWindow();
             if (pscc_w.ShowDialog() != true)
                 return false;
 
             PrototypeLeaf prototype = _getPrototypeByLayerName(pscc_w.GetResultString());
 
-            TextLeaf[] textLeafs = prototype.Blob.getChildren<TextLeaf>();
+            TextLeaf[] textLeafs = prototype.Blob.GetChildren<TextLeaf>();
             string[] textLeafs_names = textLeafs.Select(l => l.LayerName).ToArray();
             
 

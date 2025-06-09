@@ -2,6 +2,7 @@
 using psdPH;
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
+using psdPH.Logic.Parameters;
 using psdPH.Logic.Rules;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +26,7 @@ namespace psdPHTest.Logic
                 var rule = new TextAssignRule(blob) { TextLeaf = textLeaf, Parameter = parameter, Condition = new DummyCondition() };
             blob.AddChild(textLeaf);
             blob.RuleSet.AddRule(rule);
-            blob.Parameters.Add(parameter);
+            blob.ParameterSet.Add(parameter);
             string tempFilePath = Path.GetTempFileName() + ".psd"; // или с нужным расширением
                 File.WriteAllBytes(tempFilePath, Properties.TestResources.Basic);
             var doc = PhotoshopWrapper.OpenDocument(tempFilePath);

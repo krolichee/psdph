@@ -3,6 +3,7 @@ using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.RuleEditor;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows.CedStacks.ParameterCedStack;
 using psdPH.Utils;
 using psdPH.Utils.CedStack;
 using psdPH.Views.WeekView;
@@ -55,6 +56,8 @@ namespace psdPH
                 new StructureStackHandler(new PsdPhContext(doc, root)));
             ruleTab.Content = CEDStackUI.CreateCEDStack(
                 new StructureRuleStackHandler(_composition.RuleSet));
+            paramTab.Content = CEDStackUI.CreateCEDStack(
+                new ParameterHandler(_composition.ParameterSet));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

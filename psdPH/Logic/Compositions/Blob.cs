@@ -32,9 +32,9 @@ namespace psdPH.Logic.Compositions
         {
             if (Parent == null)
                 return false;
-            if (!Parent.getChildren<Blob>().Contains(this))
+            if (!Parent.GetChildren<Blob>().Contains(this))
                 return false;
-            var prototypes = Parent.getChildren<PrototypeLeaf>();
+            var prototypes = Parent.GetChildren<PrototypeLeaf>();
             bool result = prototypes.Any(p => p.LayerName == LayerName);
             return result;
         }
@@ -59,10 +59,7 @@ namespace psdPH.Logic.Compositions
             Document cur_doc = DocOfThis(doc);
 
             CoreApply();
-            RuleSet.CoreApply();
-
             NonCoreApply(cur_doc);
-            RuleSet.NonCoreApply(cur_doc);
 
             if (Mode == BlobMode.Layer)
                 cur_doc.Close(PsSaveOptions.psSaveChanges);
@@ -74,11 +71,13 @@ namespace psdPH.Logic.Compositions
                 return;
             foreach (CoreComposition item in CoreChildren)
                 item.CoreApply();
+            RuleSet.CoreApply();
         }
         public void NonCoreApply(Document doc)
         {
             foreach (var item in Children)
                 item.Apply(doc);
+            RuleSet.NonCoreApply(doc);
         }
         override public void AddChild(Composition child)
         {
@@ -99,7 +98,7 @@ namespace psdPH.Logic.Compositions
         {
             return Children;
         }
-        override public T[] getChildren<T>()
+        override public T[] GetChildren<T>()
         {
             return Children.Where(l => l is T).Cast<T>().ToArray();
         }

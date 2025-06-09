@@ -58,7 +58,7 @@ namespace psdPH.Views.WeekView
                 return whereLayernameIs(p.LayerName, pairs).Dow;
             }
             WeekData weekData_clone = Clone();
-            PlaceholderLeaf[] placeholders = weekData_clone.MainBlob.getChildren<PlaceholderLeaf>();
+            PlaceholderLeaf[] placeholders = weekData_clone.MainBlob.GetChildren<PlaceholderLeaf>();
 
             Dictionary<DayOfWeek, PlaceholderLeaf> dowPlaceholderDict = placeholders.ToDictionary(getMatchingDow, p => p);
 

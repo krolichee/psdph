@@ -35,7 +35,7 @@ namespace psdPH.Logic
         protected Setup getAreaParameter()
         {
             var layerNameConfig = new SetupConfig(this, nameof(this.AreaLayerName), "по зоне");
-            var layerNames = Composition.getChildren<AreaLeaf>().Select(a => a.LayerName).ToArray();
+            var layerNames = Composition.GetChildren<AreaLeaf>().Select(a => a.LayerName).ToArray();
             return Setup.Choose(layerNameConfig, layerNames);
         }
         protected Setup[] getLayerAndAreaParameters()
@@ -46,7 +46,7 @@ namespace psdPH.Logic
         [XmlIgnore]
         public AreaLeaf AreaLeaf
         {
-            protected get => Composition.getChildren<AreaLeaf>().First((c) => c.LayerName == AreaLayerName); set
+            protected get => Composition.GetChildren<AreaLeaf>().First((c) => c.LayerName == AreaLayerName); set
             {
                 AreaLayerName = value.LayerName;
             }

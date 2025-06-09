@@ -16,7 +16,6 @@ namespace psdPH.TemplateEditor
             CreatorDict = new Dictionary<Type, CreateComposition>
             (){
         { typeof(Blob),(doc, root) =>new BlobCreator(doc,root as Blob)},
-        { typeof(FlagLeaf), (doc, root) =>new FlagLeafCreator()},
         { typeof(PrototypeLeaf),(doc, root) =>new PrototypeCreator(doc, root) },
         { typeof(PlaceholderLeaf), (doc, root) =>new MultiPlaceholderLeafCreator(doc, root) },
         //{ typeof(ImageLeaf),(doc, root) => new ImageLeafCreator(doc) },

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using psdPH.Logic.Parameters;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -9,14 +11,15 @@ namespace psdPH.Logic.Rules
         public override string ToString() => "значение флага";
         public string FlagName;
         public bool Value=true;
+        bool predicate(Parameter p) => p.Name == FlagName && p is FlagParameter;
         [XmlIgnore]
         public override Setup[] Setups
         {
             get
             {
                 List<Setup> result = new List<Setup>();
-                FlagLeaf[] flagLeaves = Composition.getChildren<FlagLeaf>();
-                var flagConfig = new SetupConfig(this, nameof(this.FlagLeaf), "");
+                Parameter[] flagLeaves = Composition.ParameterSet.ToArray();
+                var flagConfig = new SetupConfig(this, nameof(this.FlagParameter), "");
                 var valueConfig = new SetupConfig(this, nameof(this.Value),"установлено в");
                 result.Add(Setup.Choose(flagConfig, flagLeaves));
                 result.Add(Setup.Check(valueConfig));
@@ -25,11 +28,11 @@ namespace psdPH.Logic.Rules
         }
 
         [XmlIgnore]
-        public FlagLeaf FlagLeaf
+        public FlagParameter FlagParameter
         {
-            get
+            protected get
             {
-                return Composition.getChildren<FlagLeaf>().FirstOrDefault(t => t.Name == FlagName);
+                return Composition.ParameterSet.FirstOrDefault(predicate) as FlagParameter;
             }
             set
             {
@@ -38,7 +41,7 @@ namespace psdPH.Logic.Rules
         }
         public override bool IsValid()
         {
-            return FlagLeaf.Toggle== Value;
+            return FlagParameter.Toggle == Value;
         }
         public FlagCondition(Composition composition) : base(composition) { }
         public FlagCondition() : base(null) { }

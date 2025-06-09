@@ -79,11 +79,12 @@
     <Compile Include="BlockingStack.cs" />
     <Compile Include="KnownTypes.cs" />
     <Compile Include="Logic\Compositions\AreaLeaf.cs" />
-    <Compile Include="Logic\Compositions\FlagLeaf.cs" />
     <Compile Include="Logic\Compositions\GroupLeaf.cs" />
     <Compile Include="Logic\Compositions\ImageLeaf.cs" />
     <Compile Include="Logic\MatchingResult.cs" />
+    <Compile Include="Logic\Parameters\FlagParameter.cs" />
     <Compile Include="Logic\Parameters\Parameter.cs" />
+    <Compile Include="Logic\Parameters\ParameterSet.cs" />
     <Compile Include="Logic\Parameters\StringParameter.cs" />
     <Compile Include="Logic\Ruleset\Rules\CoreRules\CoreRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\CoreRules\TextAssignRule.cs" />
@@ -111,8 +112,12 @@
     <Compile Include="Photoshop\KostylExecutor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\StructureRuleCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\IBatchParameterCreator.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\ParameterCreator.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterHandler.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\IBatchCompositionCreator.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\IBatchCompositionCreator.cs" />
+    <Compile Include="TemplateEditor\ParameterDicts.cs" />
     <Compile Include="TemplateEditor\StructureRulesDicts.cs" />
     <Compile Include="Utils\Localization\EnumLocalization.cs" />
     <Compile Include="Utils\ReflectionSetups\Controls\AligmentControl.xaml.cs">
@@ -129,7 +134,7 @@
     <Compile Include="Logic\Ruleset\ChangeMode.cs" />
     <Compile Include="Logic\Ruleset\ELayerMode.cs" />
     <Compile Include="RuleEditor\RulesetDefinition.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\MultiCompositionCreator.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\MultiCompositionCreator.cs" />
     <Compile Include="Utils\CloneConverter.cs" />
     <Compile Include="Logic\Ruleset\RuleSet.cs" />
     <Compile Include="Utils\ReflectionSetups\FieldFunctions.cs" />
@@ -221,11 +226,10 @@
     <Compile Include="TemplateEditor\StructureDicts.cs" />
     <Compile Include="Photoshop\PhotoshopWrapper.cs" />
     <Compile Include="Utils\CedStack\CEDCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\SingleCompositionCreators.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\SingleCompositionCreators.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\ICompositionShapitor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
     <Compile Include="Utils\ReflectionSetups\Controls\SetupInputWindow.xaml.cs">
       <DependentUpon>SetupInputWindow.xaml</DependentUpon>

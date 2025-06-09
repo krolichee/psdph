@@ -1,4 +1,6 @@
 ﻿using Photoshop;
+using psdPH.Logic.Parameters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -14,27 +16,37 @@ namespace psdPH.Logic
         public bool Value;
         public FlagRule() : base(null) { }
         public FlagRule(Composition composition) : base(composition) { }
+        bool predicate(Parameter p) => p.Name == FlagName && p is FlagParameter;
         [XmlIgnore]
         public override Setup[] Setups
         {
             get
             {
                 List<Setup> result = new List<Setup>();
-                FlagLeaf[] flagLeaves = Composition.getChildren<FlagLeaf>();
-                var flagNames = flagLeaves.Select(f => f.Name).ToArray();
-                var flagConfig = new SetupConfig(this, nameof(this.FlagName), "");
+                Parameter[] flagParameters = Composition.ParameterSet.ToArray();
+                var flagConfig = new SetupConfig(this, nameof(this.FlagParameter), "");
                 var valueConfig = new SetupConfig(this, nameof(this.Value), "установить в");
-                result.Add(Setup.Choose(flagConfig, flagNames));
+                result.Add(Setup.Choose(flagConfig, flagParameters));
                 result.Add(Setup.Check(valueConfig));
                 result.Add(Setup.JustDescrition("и наоборот"));
                 return result.ToArray();
             }
         }
-
         public void CoreApply()
         {
-            var flagLeaf = Composition.getChildren<FlagLeaf>().First(f => f.Name == FlagName);
-            flagLeaf.Toggle = Condition.IsValid();
+            FlagParameter.Value = Condition.IsValid();
+        }
+        [XmlIgnore]
+        public FlagParameter FlagParameter
+        {
+            protected get
+            {
+                return Composition.ParameterSet.FirstOrDefault(predicate) as FlagParameter;
+            }
+            set
+            {
+                FlagName = value.Name;
+            }
         }
 
         protected override void _apply(Document doc) =>
