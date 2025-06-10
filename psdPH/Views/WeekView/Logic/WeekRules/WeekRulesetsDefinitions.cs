@@ -29,7 +29,7 @@ namespace psdPH.Views.WeekView
 
         public static Condition[] DayConditions(Composition root) => new Condition[]
         {
-            new EveryNDayCondition(root),
+            new EveryNDayCondition(null),
             new DayOfWeekCondition(root)
         };
     };

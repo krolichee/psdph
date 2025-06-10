@@ -18,7 +18,7 @@ namespace psdPHTest.Logic.Parameters
         [XmlIgnore]
         public StringParameter Parameter
         {
-            protected get => Composition.ParameterSet.FirstOrDefault(p => p.Name == ParameterName && p is StringParameter) as StringParameter;
+            protected get => Composition.ParameterSet.AsCollection().FirstOrDefault(p => p.Name == ParameterName && p is StringParameter) as StringParameter;
             set => ParameterName = value?.Name;
         }
         public override Setup[] Setups => throw new NotImplementedException();

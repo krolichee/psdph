@@ -3,6 +3,7 @@ using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.Utils;
 using System;
 using System.Media;
+using System.Windows;
 using static psdPH.TemplateEditor.StructureDicts;
 
 namespace psdPH
@@ -15,9 +16,18 @@ namespace psdPH
         {
             Type type = parameter as Type;
             CreateComposition creator_func;
-            if (!StructureDicts.CreatorDict.TryGetValue(type, out creator_func))
-                throw new ArgumentException();
-            IBatchCompositionCreator creator = creator_func(_doc, _root);
+            IBatchCompositionCreator creator;
+            try
+            {
+                if (!StructureDicts.CreatorDict.TryGetValue(type, out creator_func))
+                    throw new ArgumentException();
+                creator = creator_func(_doc, _root);
+            }
+            catch(ArgumentException e) {
+                MessageBox.Show("В данный момент этот элемент нельзя создать");
+                return;
+            }
+            
             if (creator.ShowDialog() != true)
                 return;
             _root.AddChildren(creator.GetResultBatch());

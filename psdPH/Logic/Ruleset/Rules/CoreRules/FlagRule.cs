@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic.Parameters;
+using psdPH.Views.WeekView.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ using Condition = psdPH.Logic.Rules.Condition;
 
 namespace psdPH.Logic
 {
-    public class FlagRule : ConditionRule, CoreRule
+    public class FlagRule : ConditionRule, ParameterSetRule
     {
         public override string ToString() => "значение флага";
-        
+        public ParameterSet ParameterSet;
         public string FlagName;
-        public bool Value;
+        public bool Value=true;
         public FlagRule() : base(null) { }
         public FlagRule(Composition composition) : base(composition) { }
         bool predicate(Parameter p) => p.Name == FlagName && p is FlagParameter;
@@ -23,7 +24,7 @@ namespace psdPH.Logic
             get
             {
                 List<Setup> result = new List<Setup>();
-                Parameter[] flagParameters = Composition.ParameterSet.ToArray();
+                FlagParameter[] flagParameters = Composition.ParameterSet.GetByType<FlagParameter>().ToArray();
                 var flagConfig = new SetupConfig(this, nameof(this.FlagParameter), "");
                 var valueConfig = new SetupConfig(this, nameof(this.Value), "установить в");
                 result.Add(Setup.Choose(flagConfig, flagParameters));
@@ -34,14 +35,15 @@ namespace psdPH.Logic
         }
         public void CoreApply()
         {
-            FlagParameter.Value = Condition.IsValid();
+            FlagParameter.Value = Condition.IsValid()==Value;
         }
         [XmlIgnore]
         public FlagParameter FlagParameter
         {
             protected get
             {
-                return Composition.ParameterSet.FirstOrDefault(predicate) as FlagParameter;
+                var parset = ParameterSet == null ? Composition.ParameterSet : ParameterSet;
+                return parset.AsCollection().FirstOrDefault(predicate) as FlagParameter;
             }
             set
             {
@@ -56,6 +58,13 @@ namespace psdPH.Logic
         public override bool IsSetUp()
         {
             return base.IsSetUp()&&FlagName!=null;
+        }
+
+        public void SetParameterSet(ParameterSet parset)
+        {
+            ParameterSet = parset;
+            if (Condition is ParameterSetCondition)
+                (Condition as ParameterSetCondition).SetParameterSet(parset);
         }
     }
 

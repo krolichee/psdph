@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace psdPHTest.Logic.Compositions
 {
+    [TestCategory(TestCatagories.Automatic)]
     [TestClass]
     public class BlobTest
     {
-
         [TestMethod]
         public void Clone()
         {

@@ -32,7 +32,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.CedStacks.Parameter
         }
         protected override void DeleteExecuteCommand(object parameter)
         {
-            ParameterSet.Remove(parameter as Parameter);
+            ParameterSet.AsCollection().Remove(parameter as Parameter);
         }
     }
 }

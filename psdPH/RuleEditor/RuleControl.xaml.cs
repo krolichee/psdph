@@ -101,8 +101,10 @@ namespace psdPH.Logic
         }
         bool IsRuleSetUp()
         {
-            return _rule?.IsSetUp() == true &&
-                _condition?.IsSetUp() == true;
+            bool? ruleSetUp = _rule?.IsSetUp();
+            bool? conditionSetUp = _condition?.IsSetUp();
+            return ruleSetUp  == true &&
+                 conditionSetUp == true;
         }
         ConditionRule GetResultRule()
         {

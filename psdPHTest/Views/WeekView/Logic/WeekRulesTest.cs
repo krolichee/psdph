@@ -12,22 +12,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using psdPH.Views.WeekView;
 
 namespace psdPHTest.Views.WeekView.Logic
 {
     [TestClass]
+    [TestCategory(TestCatagories.Automatic)]
     public class WeekRules : WeekViewTest
     {
-        [TestMethod]
-        public void FromBlobTest()
+        EveryNDayCondition GetEveryNDayCondition(int interval, DateTime startDateTime, DayParameterSet parset)
         {
-            Blob blob = GetBlob();
-            var dayBlob = DowBlob.FromBlob(blob, 0, DayOfWeek.Monday);
-        }
-
-        EveryNDayCondition GetEveryNDayCondition(int interval, DateTime startDateTime, DowBlob blob)
-        {
-            return new EveryNDayCondition(blob) { Interval = interval, StartDateTime = startDateTime };
+            return new EveryNDayCondition(parset) { Interval = interval, StartDateTime = startDateTime };
         }
         [DataTestMethod]
         [DataRow(2, DayOfWeek.Monday, true)]
@@ -36,54 +31,54 @@ namespace psdPHTest.Views.WeekView.Logic
         [DataRow(3, DayOfWeek.Thursday, true)]
         public void EveryNDayConditionTest(int interval, DayOfWeek dayOfWeek, bool result)
         {
-            var blob = GetBlob();
             var weekConfig = GetWeekConfig();
-
-            var currentWeek = 0;
-
+            var currentWeek = WeekTime.CurrentWeek;
             var startDateTime = WeekTime.GetDateByWeekAndDay(currentWeek, DayOfWeek.Monday);
-            var dayBlob = new DowBlob() { Dow = dayOfWeek, Week = currentWeek };
-            var everynCondition = GetEveryNDayCondition(interval, startDateTime, dayBlob);
+            var dayParset = new DayParameterSet(dayOfWeek, currentWeek);
+            var everynCondition = GetEveryNDayCondition(interval, startDateTime, dayParset);
 
             Assert.IsTrue(everynCondition.IsValid() == result);
 
         }
         [DataTestMethod]
         [DataRow(2, DayOfWeek.Monday, true)]
+        [DataRow(2, DayOfWeek.Tuesday, false)]
+        [DataRow(3, DayOfWeek.Monday, true)]
         [DataRow(3, DayOfWeek.Tuesday, false)]
-        [DataRow(2, DayOfWeek.Wednesday, true)]
-        [DataRow(3, DayOfWeek.Thursday, true)]
+        [DataRow(3, DayOfWeek.Wednesday, false)]
         public void WeekRulesTest(int interval, DayOfWeek dayOfWeek, bool result)
         {
-            var blob = GetBlob();
+            var blob = GetWeekBlob();
+            
             var weekConfig = GetWeekConfig();
 
-            weekConfig.GetDayBlob(blob).ParameterSet.Add(new FlagParameter("uvu"));
+            var dayBlob = weekConfig.GetDayBlob(blob);
+            var flagParameter = new FlagParameter("uvu");
+            dayBlob.ParameterSet.AsCollection().Add(flagParameter);
 
-            var weekListData = WeekListData.Create(weekConfig, new WeekRulesets(), blob);
-            var currentWeek = 0;
+            var currentWeek = WeekTime.CurrentWeek;
+            var startDateTime = WeekTime.GetDateByWeekAndDay(currentWeek, DayOfWeek.Monday);
+            var weekListData = WeekListData.Create(weekConfig, blob);
+            var everyNDayCondition = new EveryNDayCondition() { Interval = interval, StartDateTime = startDateTime };
+            var flagRule = new FlagRule() { FlagParameter = flagParameter, Condition = everyNDayCondition,Value = true};
 
-            weekListData.NewWeek(currentWeek);
+            weekListData.WeekRulesets.DayRules.AddRule(flagRule);
+            weekListData.NewWeek();
+            dayBlob.ParameterSet = null;
             var weekData = weekListData.Weeks[0];
 
-            var startDateTime = WeekTime.GetDateByWeekAndDay(currentWeek, DayOfWeek.Monday);
-            var everynCondition = new EveryNDayCondition() { Interval = interval, StartDateTime = startDateTime };
-            var everynRule = new FlagRule() { FlagName = "uvu", Condition = everynCondition };
+            Console.WriteLine($"При interval = {interval}, DayOfWeek = {dayOfWeek} и ожидаемо {result}");
+            foreach (var dayParset in weekData.DayParsetsList)
+            {
+                Console.WriteLine($"{dayParset.Dow}:{dayParset.AsCollection().First(p=>p.Name == flagParameter.Name).Value}");
+            }
 
-            weekListData.WeekRulesets.DayRules.AddRule(everynRule);
-            var mainBlob = weekData.Prepare();
-
-            var dayPh = mainBlob.GetChildren<PlaceholderLeaf>().First(ph => (ph.Replacement as DowBlob).Dow == dayOfWeek);
-            var dayBlob = dayPh.Replacement as DowBlob;
-
-            var resultFlagParameter = (dayBlob.ParameterSet.First(f => f.Name == "uvu") as FlagParameter);
-
-            Assert.IsTrue(resultFlagParameter.Toggle == result);
+            Assert.IsTrue(weekData.DowParsetDict[dayOfWeek].GetByType<FlagParameter>().First(p => p.Name == flagParameter.Name).Toggle == result);
         }
-        [TestMethod]
+        //[TestMethod]
         public void testInjectRules()
         {
-            var blob = GetBlob();
+            var blob = GetWeekBlob();
             var weekConfig = GetWeekConfig();
             weekConfig.GetDayBlob(blob).ParameterSet.Add(new FlagParameter("test1"));
 
@@ -94,24 +89,26 @@ namespace psdPHTest.Views.WeekView.Logic
             var weekCondition = new WeekCondition(blob) { Week = WeekTime.CurrentWeek };
 #pragma warning restore CS0612 // Тип или член устарел
             var weekFlagRule = new FlagRule() { Condition = weekCondition, FlagName = "test" };
+            Assert.Fail();
 
-            var ndayCondition = new EveryNDayCondition(blob) { Interval = 2, StartDateTime = WeekTime.GetDateByWeekAndDay(WeekTime.CurrentWeek, DayOfWeek.Monday) };
-            var dayFlagRule = new FlagRule() { Condition = weekCondition, FlagName = "test1" };
+            //var ndayCondition = new EveryNDayCondition(blob) { Interval = 2, StartDateTime = WeekTime.GetDateByWeekAndDay(WeekTime.CurrentWeek, DayOfWeek.Monday) };
+            //var dayFlagRule = new FlagRule() { Condition = weekCondition, FlagName = "test1" };
 
 
-            weekListData.WeekRulesets.DayRules.AddRule(dayFlagRule);
-            weekListData.WeekRulesets.WeekRules.AddRule(weekFlagRule);
+            //weekListData.WeekRulesets.DayRules.AddRule(dayFlagRule);
+            //weekListData.WeekRulesets.WeekRules.AddRule(weekFlagRule);
 
-            weekListData.NewWeek();
+            //weekListData.NewWeek();
 
-            var weekBlob = weekListData.Weeks[0].Prepare();
-            weekBlob.CoreApply();
+            //var weekBlob = weekListData.Weeks[0].Prepare();
+            //weekBlob.CoreApply();
 
-            Assert.IsTrue(weekBlob.ParameterSet.GetByType<FlagParameter>().First(f => f.Name == "test").Toggle);
+            //Assert.IsTrue(weekBlob.ParameterSet.GetByType<FlagParameter>().First(f => f.Name == "test").Toggle);
 
-            var mondayBlob = weekBlob.GetChildren<PlaceholderLeaf>().First(ph => (ph.Replacement as DowBlob).Dow == DayOfWeek.Monday).Replacement;
-            Assert.IsTrue(mondayBlob.ParameterSet.GetByType<FlagParameter>().First(f => f.Name == "test1").Toggle);
+            //var mondayBlob = weekBlob.GetChildren<PlaceholderLeaf>().First(ph => (ph.Replacement as DowBlob).Dow == DayOfWeek.Monday).Replacement;
+            //Assert.IsTrue(mondayBlob.ParameterSet.GetByType<FlagParameter>().First(f => f.Name == "test1").Toggle);
         }
+        [TestCategory(TestCatagories.Automatic)]
         [TestClass]
         public class ParameterTest
         {

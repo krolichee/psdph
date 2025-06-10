@@ -87,6 +87,7 @@
     <Compile Include="Logic\Parameters\ParameterSet.cs" />
     <Compile Include="Logic\Parameters\StringParameter.cs" />
     <Compile Include="Logic\Ruleset\Rules\CoreRules\CoreRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CoreRules\ParameterSetRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\CoreRules\TextAssignRule.cs" />
     <Compile Include="Photoshop\LayerWr\LayerDescriptor.cs" />
     <Compile Include="Logic\Compositions\LayerLeaf.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\StructureRuleCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TypeAndNameGrid.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\IBatchParameterCreator.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\ParameterCreator.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterHandler.cs" />
@@ -176,9 +178,10 @@
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="TemplateEditor\StructureRulesetDefinition.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\DataInputWindow.cs" />
+    <Compile Include="Views\DataInputWindow.cs" />
     <Compile Include="Utils\TopmostWindow.cs" />
     <Compile Include="Utils\UpcomingAttribute.cs" />
+    <Compile Include="Views\ParsetInputWindow.cs" />
     <Compile Include="Views\SimpleView\CompositionTreeControl.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleView.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleListData.cs" />
@@ -188,8 +191,8 @@
       <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WeekView\Formats\DateFormat.cs" />
-    <Compile Include="Views\WeekView\Logic\DowBlob.cs" />
     <Compile Include="Photoshop\OutputSaver.cs" />
+    <Compile Include="Views\WeekView\Logic\DayParameterSet.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRules.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRules\WeekConditions.cs" />
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">

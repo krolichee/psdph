@@ -1,5 +1,7 @@
 ﻿
 
+using psdPH.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace psdPH.Logic.Parameters
@@ -16,7 +18,15 @@ namespace psdPH.Logic.Parameters
         {
             Name = name;
         }
+        public Parameter() { }
         public override string ToString()=>Name;
-        
+
+        internal Parameter Clone()
+        {
+            Parameter result =  Activator.CreateInstance(this.GetType()) as Parameter;
+            result.Name = Name;
+            result.Value = Value;
+            return result;
+        }
     }
 }

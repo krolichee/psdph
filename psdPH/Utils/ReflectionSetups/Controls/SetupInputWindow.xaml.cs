@@ -9,7 +9,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
     /// <summary>
     /// Логика взаимодействия для StackOkWindow.xaml
     /// </summary>
-    public partial class ParametersInputWindow : Window
+    public partial class SetupsInputWindow : Window
     {
         bool _applied = false;
         public bool Applied => _applied;
@@ -26,7 +26,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             }
             get => _parameters;
         }
-        public ParametersInputWindow(Setup[] parameters, string title = "")
+        public SetupsInputWindow(Setup setup, string title = "") : this(new Setup[] { setup }, title) { }
+        public SetupsInputWindow(Setup[] setups, string title = "")
         {
             
             InitializeComponent();
@@ -35,8 +36,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
 
             Title = title;
             _stack = new StackPanel();
-            Parameters = parameters;
-            foreach (var parameter in parameters)
+            Parameters = setups;
+            foreach (var parameter in setups)
             {
                 parameter.Stack.Orientation = Orientation.Vertical;
                 parameter.Control.HorizontalAlignment = HorizontalAlignment.Left;

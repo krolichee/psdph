@@ -42,7 +42,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.CedStacks.Parameter
 
         protected override object[] getElements()
         {
-            return ParameterSet.ToArray();
+            return ParameterSet.AsCollection().ToArray();
         }
 
         public ParameterHandler(ParameterSet parameterSet)

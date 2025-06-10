@@ -27,7 +27,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.CedStacks.Parameter
             ICommand deleteCommand = DeleteCommand();
             
             Height = 28;
-            Content = new Label() { Content = parameter.Name};
+            Content = TypeAndNameGrid.Get(Localization.LocalizeObj(parameter.GetType()),parameter.Name);
             CommandParameter = parameter;
             Command = editCommand;
             setContextMenu(this, parameter);

@@ -1,8 +1,10 @@
 ﻿using psdPH.Utils.ReflectionParameter;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
@@ -118,7 +120,7 @@ namespace psdPH.Logic
 
             var chb = new CheckBox();
             result.Control = chb;
-            chb.IsChecked = (bool)config.GetValue();
+            chb.IsChecked = (bool?)config.GetValue();
             stack.Children.Add(chb);
             result.valueFunc = () => chb.IsChecked; ;
             return result;
@@ -168,6 +170,19 @@ namespace psdPH.Logic
             stack.Children.Add(picker);
             result.valueFunc = () => picker.GetSelectedItems();
 
+            return result;
+        }
+
+        internal static Setup JustSeparator()
+        {
+            var label = new Label() { Content = "" };
+            var separator = new Separator() { };
+            var config = new SetupConfig(label, nameof(label.Content), "");
+
+            var result = new Setup(config);
+            var stack = result._stack;
+            result.Control = separator;
+            result.valueFunc = () => ""; ;
             return result;
         }
 

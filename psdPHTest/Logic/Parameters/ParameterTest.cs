@@ -14,6 +14,7 @@ namespace psdPHTest.Logic
 {
     namespace Parameters
     {
+    [TestCategory(TestCatagories.PhotoshopTestDocs)]
     [TestClass]
     public class ParameterTest
     {

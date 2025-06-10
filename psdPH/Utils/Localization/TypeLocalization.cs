@@ -23,8 +23,8 @@
 
                 {typeof(Rule), "Правило" },
 
-            {typeof(FlagParameter),"Логический параметр" },
-            {typeof(StringParameter),"Строковый параметр" },
+                {typeof(FlagParameter),"Флаг" },
+                {typeof(StringParameter),"Строка" },
 
         };
         public static string GetLocalizedDescription(this Type type)

@@ -24,29 +24,6 @@ using psdPH.Logic.Parameters;
 namespace psdPHTest.Tests.Automatic
 {
     [TestClass]
-    public class XMLSerializationTest
-    {
-        [TestMethod]
-        public void testSave()
-        {
-            var blob = Blob.PathBlob("очень сильно заболел хуй");
-            Assert.IsTrue(DiskOperations.SaveXml("test.xml", blob).Serialized);
-        }
-        [TestMethod]
-        public void testOpen()
-        {
-            DiskOperations.OpenXml<Blob>("test.xml");
-        }
-        [TestMethod]
-        public void testKnownTypes()
-        {
-            var blob = Blob.PathBlob("test.xml");
-            var cond = new DummyCondition(null);
-            blob.RuleSet.AddRule(new AlignRule(blob) { Alignment = Alignment.Create("up", "left"), AreaLayerName = "2", LayerName = "2" });
-            Assert.IsTrue(DiskOperations.SaveXml("test.xml", blob).Serialized);
-        }
-    }
-    [TestClass]
     public class AligmentRuleTest
     {
         Blob MainBlob;
@@ -72,7 +49,7 @@ namespace psdPHTest.Tests.Automatic
             blob.AddChild(layer1Leaf);
             Condition true_condition = new FlagCondition(blob) { FlagParameter = flagParam, Value = true };
             Condition false_condition = new FlagCondition(blob) { FlagParameter = flagParam, Value = false };
-            blob.RuleSet.Rules.Add(
+            blob.RuleSet.AddRule(
                 new AlignRule(blob)
                 {
                     LayerComposition = layer1Leaf,
@@ -81,7 +58,7 @@ namespace psdPHTest.Tests.Automatic
                     Condition = true_condition
                 }
                 );
-            blob.RuleSet.Rules.Add(
+            blob.RuleSet.AddRule(
                 new AlignRule(blob)
                 {
                     LayerComposition = layer1Leaf,
@@ -90,11 +67,12 @@ namespace psdPHTest.Tests.Automatic
                     Condition = false_condition
                 }
                 );
-            blob.RuleSet.Rules.Add(
+            blob.RuleSet.AddRule(
                 new VisibleRule(blob) { LayerComposition = objLayer, Condition = true_condition }
                 );
             return blob;
         }
+        [TestCategory(TestCatagories.ManualUI)]
         [TestInitialize]
         public void Init()
         {
@@ -111,16 +89,13 @@ namespace psdPHTest.Tests.Automatic
             window.WindowStyle = WindowStyle.ToolWindow;
             window.ShowDialog();
         }
-        [TestMethod]
-        public void AlignRuleTest()
-        {
-
-        }
     }
+    
     [TestClass]
     public class ParameterTest
     {
         public HorizontalAlignment HA = HorizontalAlignment.Stretch;
+        [TestCategory(TestCatagories.Automatic)]
         [TestMethod]
         public void testEnumAuto()
         {

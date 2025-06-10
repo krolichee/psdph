@@ -30,7 +30,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         }
         protected abstract T processInput(object input);
         protected List<T> result=new List<T>();
-        protected ParametersInputWindow p_w;
+        protected SetupsInputWindow p_w;
         public Composition[] GetResultBatch()
         {
             return p_w.Applied ? result.ToArray() : new Composition[0];
@@ -56,7 +56,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         }
         public MultiCompositionCreator(Document doc, Composition root)
         {
-            p_w = new ParametersInputWindow(GetParameters(doc, root));
+            p_w = new SetupsInputWindow(GetParameters(doc, root));
             _doc = doc;
         }
     }

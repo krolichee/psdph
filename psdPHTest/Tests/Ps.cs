@@ -17,6 +17,7 @@ using Application = Photoshop.Application;
 
 namespace psdPHTest.Tests.Ps
 {
+    [TestCategory(TestCatagories.PhotoshopManual)]
     [TestClass]
     public class ApplicationConnectionTest
     {
@@ -48,6 +49,7 @@ namespace psdPHTest.Tests.Ps
             Assert.IsNotNull(psApp);
         }
     }
+    [TestCategory(TestCatagories.ManualUI)]
     [TestClass]
     public class TextLayerTest
     {
@@ -88,7 +90,7 @@ namespace psdPHTest.Tests.Ps
             a.Chtoto();
         }
     }
-    
+    [TestCategory(TestCatagories.PhotoshopManual)]
     [TestClass]
     public class ManualPhotoshopTests
     {
@@ -163,6 +165,7 @@ namespace psdPHTest.Tests.Ps
     }
     namespace Duration
     {
+        [TestCategory(TestCatagories.PhotoshopManual)]
         [TestClass]
         public class DurationTest
         {
@@ -191,6 +194,7 @@ namespace psdPHTest.Tests.Ps
 
     namespace Adjust
     {
+        [TestCategory(TestCatagories.ManualUI)]
         [TestClass]
         public class AdjustTest
         {

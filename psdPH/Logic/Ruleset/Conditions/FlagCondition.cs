@@ -18,7 +18,7 @@ namespace psdPH.Logic.Rules
             get
             {
                 List<Setup> result = new List<Setup>();
-                Parameter[] flagLeaves = Composition.ParameterSet.ToArray();
+                Parameter[] flagLeaves = Composition.ParameterSet.AsCollection().ToArray();
                 var flagConfig = new SetupConfig(this, nameof(this.FlagParameter), "");
                 var valueConfig = new SetupConfig(this, nameof(this.Value),"установлено в");
                 result.Add(Setup.Choose(flagConfig, flagLeaves));
@@ -32,7 +32,7 @@ namespace psdPH.Logic.Rules
         {
             protected get
             {
-                return Composition.ParameterSet.FirstOrDefault(predicate) as FlagParameter;
+                return Composition.ParameterSet.AsCollection().FirstOrDefault(predicate) as FlagParameter;
             }
             set
             {

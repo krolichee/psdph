@@ -7,7 +7,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Creators.ParameterC
     public class ParameterCreator<T> : IBatchParameterCreator where T :Parameter,new()
     {
         protected T _result;
-        protected ParametersInputWindow p_w;
+        protected SetupsInputWindow p_w;
         public Parameter[] GetResultBatch()
         {
             return p_w.Applied ? new T[] { _result } : new Parameter[0];
@@ -22,7 +22,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Creators.ParameterC
             
             _result = new T();
             _result.Name = "";
-            p_w = new ParametersInputWindow(GetSetups());
+            p_w = new SetupsInputWindow(GetSetups());
         }
         protected Setup getNameSetup(T par)
         {

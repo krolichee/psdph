@@ -21,6 +21,7 @@ using psdPH.Logic.Parameters;
 
 namespace psdPHTest.Tests.UI
 {
+    [TestCategory(TestCatagories.PhotoshopManual)]
     [TestClass]
     public class TemplateEditorTest
     {
@@ -57,7 +58,7 @@ namespace psdPHTest.Tests.UI
             
         }
     }
-    
+    [TestCategory(TestCatagories.ManualUI)]
     [TestClass]
     public class ParameterTest
     {
@@ -69,7 +70,7 @@ namespace psdPHTest.Tests.UI
             var options = new string[] { "1", "2", "3" };
             var cfg = new SetupConfig(this,nameof(Objects),"каво");
             var parameters = new Setup[] { Setup.MultiChoose(cfg, options)};
-            var pi_w = new ParametersInputWindow(parameters);
+            var pi_w = new SetupsInputWindow(parameters);
             pi_w.ShowDialog();
             Assert.IsTrue(Objects[0] as string=="1");
             Assert.IsTrue(Objects[1] as string=="3");
@@ -79,10 +80,11 @@ namespace psdPHTest.Tests.UI
         {
             var cfg = new SetupConfig(this, nameof(str), "каво");
             var parameters = new Setup[] { Setup.RichStringInput(cfg) };
-            while (new ParametersInputWindow(parameters).ShowDialog() == true) ;
+            while (new SetupsInputWindow(parameters).ShowDialog() == true) ;
         }
 
     }
+    [TestCategory(TestCatagories.ManualUI)]
     [TestClass]
     public class WeekViewWindowTest:WeekViewTest
     {
@@ -94,7 +96,7 @@ namespace psdPHTest.Tests.UI
 
             var weekConfig = GetWeekConfig();
 
-            var weekBlob = GetBlob();
+            var weekBlob = GetWeekBlob();
             weekBlob.ParameterSet.Add(new FlagParameter("testFlag"));
             var dayBlob = weekConfig.GetDayBlob(weekBlob);
             dayBlob.ParameterSet.Add(new FlagParameter("testFlag"));
@@ -108,15 +110,16 @@ namespace psdPHTest.Tests.UI
         public void testRuleControl()
         {
             var weekConfig = GetWeekConfig();
-            var weekBlob = GetBlob();
+            var weekBlob = GetWeekBlob();
 
-            weekBlob.ParameterSet.Add(new FlagParameter("testFlag"));
+            weekBlob.ParameterSet.AsCollection().Add(new FlagParameter("testFlag"));
             var dayBlob = weekConfig.GetDayBlob(weekBlob);
             dayBlob.AddChild(new AreaLeaf() { LayerName="area"});
 
             new RuleEditorWindow(new DayRulesetDefinition(dayBlob)).ShowDialog();
         }
     }
+    [TestCategory(TestCatagories.ManualUI)]
     [TestClass]
     public class MiscTest
     {
@@ -127,7 +130,7 @@ namespace psdPHTest.Tests.UI
         {
             SetupConfig config = new SetupConfig(this, nameof(this.m), "Строка");
             Setup[] parameters = new Setup[] { Setup.RichStringInput(config) };
-            while (new ParametersInputWindow(parameters).ShowDialog() == true) ;
+            while (new SetupsInputWindow(parameters).ShowDialog() == true) ;
         }
         [TestMethod]
         public void CalendarTest()

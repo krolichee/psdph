@@ -13,7 +13,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     public abstract class SingleLeafCreator<T> : IBatchCompositionCreator where T : Composition, new()
     {
         protected T result;
-        protected ParametersInputWindow p_w;
+        protected SetupsInputWindow p_w;
         public bool? ShowDialog()
         {
             return p_w.ShowDialog();
@@ -38,7 +38,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             var prototypeNames = root.GetChildren<PrototypeLeaf>().Select(p => p.LayerName).ToArray();
             var prototype_parameter = Setup.Choose(prototype_pconfig, prototypeNames);
             var rel_parameter = Setup.Choose(rel_pconfig, doc.GetLayersNames());
-            p_w = new ParametersInputWindow(new[] { prototype_parameter, rel_parameter });
+            p_w = new SetupsInputWindow(new[] { prototype_parameter, rel_parameter });
         }
     }
     public class TextLeafCreator : SingleLeafCreator<TextLeaf>
@@ -51,7 +51,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             List<Setup> parameters = new List<Setup>();
             var layerParameter = Setup.Choose(ln_pconfig, layers_names);
             parameters.Add(layerParameter);
-            p_w = new ParametersInputWindow(parameters.ToArray());
+            p_w = new SetupsInputWindow(parameters.ToArray());
         }
         public TextLeafCreator(Document doc) : base()
         {
@@ -70,7 +70,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
                 doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer }));
             var rel_pconfig = new SetupConfig(result, nameof(result.RelativeLayerName), "Опорный слой");
             var rel_parameter = Setup.Choose(rel_pconfig, rel_layers_names);
-            p_w = new ParametersInputWindow(new[] { bn_parameter, rel_parameter });
+            p_w = new SetupsInputWindow(new[] { bn_parameter, rel_parameter });
         }
     }
     public class ImageLeafCreator : SingleLeafCreator<ImageLeaf>
@@ -80,7 +80,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             result.LayerName = "";
             var ln_pconfig = new SetupConfig(result, nameof(result.LayerName), "Слой");
             string[] layers_names = doc.GetLayersNames(doc.GetLayersByKind(PsLayerKind.psNormalLayer));
-            p_w = new ParametersInputWindow(new[] { Setup.Choose(ln_pconfig, layers_names) });
+            p_w = new SetupsInputWindow(new[] { Setup.Choose(ln_pconfig, layers_names) });
         }
     }
     public class LayerLeafCreator : SingleLeafCreator<LayerLeaf>
@@ -90,7 +90,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             result.LayerName = "";
             var ln_pconfig = new SetupConfig(result, nameof(result.LayerName), "Слой");
             string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer }));
-            p_w = new ParametersInputWindow(new[] { Setup.Choose(ln_pconfig, layers_names) });
+            p_w = new SetupsInputWindow(new[] { Setup.Choose(ln_pconfig, layers_names) });
         }
     }
     public class GroupLeafCreator : SingleLeafCreator<GroupLeaf>
@@ -100,7 +100,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             result.LayerName = "";
             var ln_pconfig = new SetupConfig(result, nameof(result.LayerName), "Группа");
             string[] layers_names = doc.GetLayerSetsNames(doc.GetLayerSets());
-            p_w = new ParametersInputWindow(new[] { Setup.Choose(ln_pconfig, layers_names) });
+            p_w = new SetupsInputWindow(new[] { Setup.Choose(ln_pconfig, layers_names) });
         }
     }
     public class AreaLeafCreator : SingleLeafCreator<AreaLeaf>
@@ -112,7 +112,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             var ln_pconfig = new SetupConfig(result, nameof(result.LayerName), "Слой поля");
             var ln_parameter = Setup.Choose(ln_pconfig, layers_names);
 
-            p_w = new ParametersInputWindow(new[] { ln_parameter});
+            p_w = new SetupsInputWindow(new[] { ln_parameter});
         }
     }
     public class BlobCreator : SingleLeafCreator<Blob>
@@ -123,7 +123,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psSmartObjectLayer }));
             var ln_pconfig = new SetupConfig(result, nameof(result.LayerName), "Слой");
             var ln_parameter = Setup.Choose(ln_pconfig, layers_names);
-            p_w = new ParametersInputWindow(new[] { ln_parameter });
+            p_w = new SetupsInputWindow(new[] { ln_parameter });
         }
     }
 

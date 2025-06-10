@@ -21,7 +21,7 @@ namespace psdPH
             var result = new WeekListData();
 #pragma warning restore CS0612 // Тип или член устарел
             result.WeekConfig = weekConfig;
-            result.RootBlob = root;
+            result.MainBlob = root;
             result.WeekRulesets = weekRulesets;
             result.WeekRulesets.Restore(root,weekConfig);
             return result;
@@ -33,7 +33,7 @@ namespace psdPH
             var result = new WeekListData();
 #pragma warning restore CS0612 // Тип или член устарел
             result.WeekConfig = weekConfig;
-            result.RootBlob = root;
+            result.MainBlob = root;
             result.WeekRulesets = weekRulesets;
             result.WeekRulesets.Restore(root, weekConfig);
             return result;
@@ -44,11 +44,11 @@ namespace psdPH
         public WeekConfig WeekConfig;
         public ObservableCollection<WeekData> Weeks = new ObservableCollection<WeekData>();
         [XmlIgnore]
-        public Blob RootBlob;
+        public Blob MainBlob;
         public void Restore()
         {
-            WeekRulesets.Restore(RootBlob, WeekConfig);
-            RootBlob.Restore();
+            WeekRulesets.Restore(MainBlob, WeekConfig);
+            MainBlob.Restore();
             foreach (var week in Weeks)
                 week.Restore(this);
         }
@@ -66,7 +66,6 @@ namespace psdPH
             var new_weekData = new WeekData(new_week, this);
             Weeks.Add(new_weekData);
         }
-        
         [Obsolete]
         public WeekListData() { }
     }
