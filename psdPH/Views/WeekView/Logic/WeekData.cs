@@ -22,7 +22,7 @@ namespace psdPH.Views.WeekView
         public int Week;
         [XmlIgnore]
         public Blob MainBlob => WeekListData.MainBlob;
-        public ParameterSet ParameterSet;
+        public ParameterSet ParameterSet = new ParameterSet();
         public List<DayParameterSet> DayParsetsList = new List<DayParameterSet>();
 
         [XmlIgnore]

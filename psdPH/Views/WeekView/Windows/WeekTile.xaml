@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:psdPH"
              mc:Ignorable="d" 
-             Width="250" Height="100">
+             Width="180" Height="180">
     <Grid>
         <Button Click="Button_Click"></Button>
-        <Label x:Name="weekDateLabel" Content="03.03 - 09.03" FontFamily="Arial Black" Foreground="#FFCA9999" FontSize="20" VerticalAlignment="Bottom" HorizontalAlignment="Center"></Label>
+        <Label x:Name="weekDateLabel" Content="03.03 - 09.03" FontFamily="Arial Black" Foreground="#FFA4A0CC" FontSize="20" VerticalAlignment="Bottom" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+        </Label>
     </Grid>
 </UserControl>

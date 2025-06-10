@@ -5,13 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:psdPH" xmlns:windows="clr-namespace:psdPH.TemplateEditor.CompositionLeafEditor.Windows"
         xmlns:CedStack="clr-namespace:psdPH.Utils.CedStack" x:Class="psdPH.Views.WeekView.WeekViewWindow"
-        mc:Ignorable="d" Background="#FFC3C3C3" Width="1095" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Height="425" Closing="Window_Closing">
+        mc:Ignorable="d" Background="#FFC3C3C3" Width="1095" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" Height="425" Closing="Window_Closing" WindowStyle="ToolWindow">
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="18"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TabControl  Grid.Row="1">
+        <TabControl  Grid.Row="1" RenderTransformOrigin="0.5,0.5">
+            <TabControl.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="0"/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TabControl.RenderTransform>
             <TabItem Header="Данные">
                 <Grid x:Name="cedStackGrid" Grid.Row="1">
                     <CedStack:CEDStackUI Margin="0,0,0,0"/>
@@ -23,7 +31,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Menu VerticalAlignment="Center" Height="18">
+        <Menu VerticalAlignment="Center" Height="18" RenderTransformOrigin="0.5,0.5">
             <MenuItem Header="Вид" >
                 <MenuItem Header="Сохранить" Click="saveMenuItem_Click" />
                 <MenuItem Header="Очистить" Click="clearMenuItem_Click"  />
