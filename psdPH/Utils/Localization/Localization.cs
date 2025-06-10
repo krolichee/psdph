@@ -19,6 +19,6 @@
     }
     public static class BoolLocalization
     {
-        public static string LocalizeBool(bool val) => val ? "истина":"ложь";
+        public static string LocalizeBool(bool val) => val ? "да":"нет";
     }
 }

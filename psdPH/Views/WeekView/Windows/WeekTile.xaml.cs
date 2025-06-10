@@ -1,4 +1,6 @@
 ﻿using psdPH.Logic.Compositions;
+using psdPH.Logic.Parameters;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,24 +11,16 @@ namespace psdPH.Views.WeekView
     /// </summary>
     public partial class WeekTile : UserControl
     {
-        Composition[] exclude = new Composition[0];
-        Blob blob;
-        Composition[] getExcludes(WeekConfig weekConfig, Blob blob) =>
-            new Composition[] {
-                weekConfig.GetWeekDatesTextLeaf(blob)
-            };
-
-        public WeekTile(WeekData data, WeekConfig weekConfig)
+        ParameterSet Parset;
+        public WeekTile(WeekData weekData)
         {
-            blob = data.MainBlob;
-            exclude = getExcludes(weekConfig, blob);
+            Parset = weekData.ParameterSet;
             InitializeComponent();
-            weekDateLabel.Content = WeekFormat.getShortWeekDatesString(data.Week);
+            weekDateLabel.Content = WeekFormat.getShortWeekDatesString(weekData.Week);
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            new DataInputWindow(blob, exclude).ShowDialog();
+            new ParsetInputWindow(Parset).ShowDialog();
         }
     }
 }

@@ -20,6 +20,7 @@ namespace psdPH.Utils
             StringBuilder sb = new StringBuilder();
             StringWriter sw = new StringWriter(sb);
             serializer.Serialize(sw, obj);
+            Console.WriteLine(sb);
             return sb.ToString();
         }
         public static T GetObj<T>(string xmlString) where T:class

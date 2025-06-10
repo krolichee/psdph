@@ -12,7 +12,9 @@ using System.Threading.Tasks;
 
 namespace psdPHTest.Logic.Compositions
 {
- [TestClass]  public class IsMatchingTest
+    [TestCategory(TestCatagories.PhotoshopTestDocs)]
+    [TestClass]  
+    public class IsMatchingTest
     {
         static Application psApp;
         Document doc => psApp.ActiveDocument;

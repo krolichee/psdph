@@ -25,7 +25,6 @@ namespace psdPH.Views.WeekView
         public WeekViewWindow(WeekListData weekListData)
         {
             InitializeComponent();
-
             //var psApp = PhotoshopWrapper.GetPhotoshopApplication();
             //doc = PhotoshopWrapper.OpenDocument(psApp, PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
 

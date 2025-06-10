@@ -2,6 +2,7 @@
 {
     using psdPH.Logic;
     using psdPH.Logic.Compositions;
+    using psdPH.Logic.Parameters;
     using System;
     using System.Collections.Generic;
 
@@ -11,7 +12,6 @@
         {
                 {typeof(Blob), "Поддокумент" },
 
-                {typeof(FlagLeaf), "Флаг"},
                 {typeof(PrototypeLeaf), "Прототип" },
                 {typeof(PlaceholderLeaf), "Заглушка" },
 
@@ -22,6 +22,9 @@
                 {typeof(AreaLeaf),"Зона" },
 
                 {typeof(Rule), "Правило" },
+
+                {typeof(FlagParameter),"Флаг" },
+                {typeof(StringParameter),"Строка" },
 
         };
         public static string GetLocalizedDescription(this Type type)

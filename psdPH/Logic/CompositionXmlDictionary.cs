@@ -28,7 +28,6 @@ namespace psdPH.Logic
                     KV.NewKV(typeof(Blob)),
                     KV.NewKV(typeof(PlaceholderLeaf)),
                     KV.NewKV(typeof(ImageLeaf)),
-                    KV.NewKV(typeof(FlagLeaf)),
                     KV.NewKV(typeof(TextLeaf)),
                     KV.NewKV(typeof(LayerLeaf)),
                     KV.NewKV(typeof(PrototypeLeaf)),

@@ -1,9 +1,13 @@
 ﻿using psdPH.Logic;
 using psdPH.Logic.Compositions;
+using psdPH.Logic.Parameters;
+using psdPH.Views;
 using psdPH.Views.WeekView;
 using psdPH.Views.WeekView.Logic;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,9 +18,7 @@ namespace psdPH
     /// </summary>
     public partial class DayTile : UserControl
     {
-        public WeekData WeekData;
-        WeekConfig _weekConfig => WeekData.WeekConfig;
-        DowBlob _dayBlob => WeekData.DowBlobsDict[Dow];
+        ParameterSet Parset;
         public DayOfWeek Dow
         {
             get => _dow; set
@@ -27,29 +29,29 @@ namespace psdPH
         }
         private DayOfWeek _dow;
 
+        string getParametersText()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var par in Parset.AsCollection())
+            {
+                sb.Append($"{par.Name}: {Localization.LocalizeObj(par.Value)}\n");
+            }
+            return sb.ToString();
+        }
         void refreshPreview()
         {
-            previewTextBlock.Text = WeekData.WeekConfig.GetTilePreviewTextLeaf(_dayBlob).Text;
+            previewTextBlock.Text = getParametersText();
         }
-
-        Composition[] getExcludes()
+        public DayTile(DayParameterSet parset)
         {
-            return new Composition[] {
-                _weekConfig.GetDowTextLeaf(_dayBlob),
-                _weekConfig.GetDateTextLeaf(_dayBlob),
-            };
-
-        }
-        public DayTile(WeekData weekData, DayOfWeek dow)
-        {
+            Parset = parset;
             InitializeComponent();
-            WeekData = weekData;
-            this.Dow = dow;
+            this.Dow = parset.Dow;
             refreshPreview();
         }
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            new DataInputWindow(_dayBlob, getExcludes()).ShowDialog();
+            new ParsetInputWindow(Parset).ShowDialog();
             refreshPreview();
         }
     }

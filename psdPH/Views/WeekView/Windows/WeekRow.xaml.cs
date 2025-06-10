@@ -36,12 +36,11 @@ namespace psdPH.Views.WeekView
         };
         public WeekRow(WeekData data)
         {
-            var weekConfig = data.WeekConfig;
             InitializeComponent();
             var interDowMargin = Margin = new Thickness(2, 0, 0, 0);
-            rowStack.Children.Add(new WeekTile(data, weekConfig));
-            foreach (var item in data.DowBlobList)
-                rowStack.Children.Add(new DayTile(data,item.Dow) { Margin = interDowMargin });
+            rowStack.Children.Add(new WeekTile(data));
+            foreach (var dowParset in data.DayParsetsList)
+                rowStack.Children.Add(new DayTile(dowParset) { Margin = interDowMargin });
             var renderButton = getRenderButton(data);
             var deleteButton = getDeleteButton(data);
             rowStack.Children.Add(renderButton);

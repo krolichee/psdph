@@ -9,7 +9,7 @@ namespace psdPH.Logic
         public Condition Condition;
         protected ConditionRule(Composition composition) : base(composition)
         {
-            Condition = new DummyCondition(Composition);
+            Condition = new DummyCondition();
         }
         public override void RestoreComposition(Composition composition)
         {

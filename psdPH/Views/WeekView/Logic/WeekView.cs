@@ -74,12 +74,12 @@ namespace psdPH.Views.WeekView
             else
             {
                 weeksListData.WeekConfig = weekConfig;
-                weeksListData.RootBlob = root;
+                weeksListData.MainBlob = root;
                 weeksListData.WeekRulesets = weekRules;
             }
 
             weeksListData.Restore();
-            weeksListData.RootBlob = root;
+            weeksListData.MainBlob = root;
             return weeksListData;
         }
         public void SaveWeekListData(WeekListData weekListData)

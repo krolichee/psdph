@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 
 namespace psdPHTest.Photoshop
 {
+    [TestCategory(TestCatagories.PhotoshopManual)]
     [TestClass]
     public class OutputSaverTest
     {
+        
         [TestMethod]
         public void testSave()
         {

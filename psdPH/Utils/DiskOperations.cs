@@ -33,7 +33,9 @@ namespace psdPH.Utils
                 File.WriteAllText(path, stringXml, Encoding.Unicode);
                 result.Written = true;
             }
-            catch { }
+            catch {
+                ;
+            }
             return result;
         }
     }

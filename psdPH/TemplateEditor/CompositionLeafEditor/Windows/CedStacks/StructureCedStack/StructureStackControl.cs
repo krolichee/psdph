@@ -1,11 +1,10 @@
 ﻿using psdPH.Utils;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
-    class StructureStackControl : TemplateStackControl<Composition>
+    partial class StructureStackControl : TemplateStackControl<Composition>
     {
         public override ICommand DeleteCommand() =>
             new StructureCommand(Context).DeleteCommand;
@@ -19,21 +18,9 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             _root = context.root;
             ICommand editCommand = EditCommand();
             ICommand deleteCommand = DeleteCommand();
-            var grid = new Grid();
-            grid.Children.Add(new Label()
-            {
-                Content = composition.UIName,
-                Foreground = SystemColors.ActiveBorderBrush,
-                HorizontalAlignment = HorizontalAlignment.Left
-            });
-            grid.Children.Add(new Label()
-            {
-                Content = composition.ObjName,
-                Foreground = SystemColors.ActiveCaptionTextBrush,
-                HorizontalAlignment = HorizontalAlignment.Center
-            });
+            
             Height = 28;
-            Content = grid;
+            Content = TypeAndNameGrid.Get(composition.UIName, composition.ObjName);
             CommandParameter = composition;
             Command = editCommand;
             setContextMenu(this, composition);

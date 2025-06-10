@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using psdPH.Logic.Parameters;
 
 namespace psdPHTest.Tests
 {
@@ -19,29 +20,28 @@ namespace psdPHTest.Tests
         {
             return new WeekConfig()
             {
-                DateTextLeafLayerName = "Число",
+                DateParameterName = "Число",
                 DayDateFormat = new NoZeroDateFormat(),
                 DowFormat = new ShortDowFormat().Lower,
                 DowPlaceholderLayernameList = DowLayernamePairs.ToList(),
-                DowTextLeafLayerName = "День недели",
-                WeekDatesTextLeafName = "Даты недели",
-                PrototypeLayerName = "Прототип дня",
-                TilePreviewTextLeafName = "День недели"
+                DowParameterName = "День недели",
+                WeekDatesParameterName = "Даты недели",
+                PrototypeLayerName = "Прототип дня"
             };
         }
-        public static Blob GetBlob()
+        public static Blob GetWeekBlob()
         {
             var blob = Blob.PathBlob("C:\\ProgramData\\psdPH\\Projects\\№пример\\template.psd");
             var dayBlob = Blob.LayerBlob("Прототип дня");
-            dayBlob.AddChild(new TextLeaf() { LayerName = "Число" });
-            dayBlob.AddChild(new TextLeaf() { LayerName = "День недели" });
+            dayBlob.ParameterSet.Add(new StringParameter() { Name = "Число" });
+            dayBlob.ParameterSet.Add(new StringParameter() { Name = "День недели" });
             var dayPrototype = new PrototypeLeaf() { Blob = dayBlob, RelativeLayerName = "Пн", LayerName = "Прототип дня" };
             blob.AddChild(dayBlob);
             blob.AddChild(dayPrototype);
             foreach (var dow in DayOfWeekNames)
                 blob.AddChild(new PlaceholderLeaf() { Prototype = dayPrototype, LayerName = dow });
-            var weekDatesTextLeaf = new TextLeaf() { LayerName = "Даты недели" };
-            blob.AddChild(weekDatesTextLeaf);
+            var weekDatesParameter = new StringParameter() { Name = "Даты недели" };
+            blob.ParameterSet.Add(weekDatesParameter);
             return blob;
         }
     }

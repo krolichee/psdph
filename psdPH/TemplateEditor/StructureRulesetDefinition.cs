@@ -13,17 +13,19 @@ namespace psdPH.TemplateEditor
                 new FlagCondition(root),
                 new NonEmptyTextCondition(root),
                 new EmptyTextCondition(root),
-                new DummyCondition(root)
+                new DummyCondition()
             };
         static Rule[] getRules(Composition root) => new Rule[]
             {
                 new TextFontSizeRule(root),
-                new TextAnchorRule(root),
+                new TextJustifRule(root),
                 new TranslateRule(root),
                 new OpacityRule(root),
                 new VisibleRule(root),
                 new AlignRule(root),
                 new FitRule(root),
+                new FlagRule(root),
+                new TextLeafTextRule(root),
             };
         public delegate IBatchRuleEditor CreateRule(Document doc, Composition composition);
         public delegate IBatchRuleEditor EditRule(Document doc, Rule rule);

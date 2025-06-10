@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Serialization;
 using psdPH.Logic.Rules;
+using psdPH.Logic.Parameters;
 
 namespace psdPH
 {
@@ -42,46 +43,52 @@ namespace psdPH
         public DateFormat DayDateFormat;
         public DateFormat DowFormat;
 
-        public string TilePreviewTextLeafName;
         public string PrototypeLayerName;
-        public string WeekDatesTextLeafName;
-        public string DowTextLeafLayerName;
-        public string DateTextLeafLayerName;
-        internal TextLeaf GetWeekDatesTextLeaf(Blob blob)
-        {
-            return blob.getChildren<TextLeaf>().First(_ => _.LayerName == WeekDatesTextLeafName);
-        }
-        internal TextLeaf GetDateTextLeaf(Blob blob)
-        {
-            return blob.getChildren<TextLeaf>().First(_ => _.LayerName == DateTextLeafLayerName);
-        }
-        internal TextLeaf GetDowTextLeaf(Blob blob)
-        {
-            return blob.getChildren<TextLeaf>().First(_ => _.LayerName == DowTextLeafLayerName);
-        }
-        internal Blob GetDayBlob(Blob blob)
-        {
-            return GetDayPrototype(blob).Blob;
-        }
-
+        public string WeekDatesParameterName;
+        public string DowParameterName;
+        public string DateParameterName;
+        StringParameter GetStringParameter(Blob blob, string name) => 
+            blob.ParameterSet.GetByType<StringParameter>().First(_ => _.Name == name);
+        internal StringParameter GetWeekDatesPar(Blob blob) => GetStringParameter(blob,WeekDatesParameterName);
+        
+        internal StringParameter GetDatePar(Blob blob) => GetStringParameter(blob, DateParameterName);
+        
+        internal StringParameter GetDowPar(Blob blob) => GetStringParameter(blob, DowParameterName);
+        
+        internal Blob GetDayBlob(Blob blob)=> GetDayPrototype(blob).Blob;
+        
         internal PrototypeLeaf GetDayPrototype(Blob blob)
         {
-            return blob.getChildren<PrototypeLeaf>().First(p => p.LayerName == PrototypeLayerName);
-        }
-        internal TextLeaf GetTilePreviewTextLeaf(Blob blob)
-        {
-            return blob.getChildren<TextLeaf>().First(p => p.LayerName == TilePreviewTextLeafName);
+            return blob.GetChildren<PrototypeLeaf>().First(p => p.LayerName == PrototypeLayerName);
         }
 
-        public void FillDateAndDow(DowBlob dayBlob)
+        //public void FillDateAndDow(DowBlob dayBlob)
+        //{
+        //    var week = dayBlob.Week;
+        //    var dow = dayBlob.Dow;
+        //    var dateTime = WeekTime.GetDateByWeekAndDay(week, dow);
+        //    var dateTextLeaf = GetDatePar(dayBlob);
+        //    var dowTextLeaf = GetDowPar(dayBlob);
+        //    dateTextLeaf.Text = DayDateFormat.Format(dateTime);
+        //    dowTextLeaf.Text = DowFormat.Format(dateTime);
+        //}
+        public void FillDateAndDow(DayParameterSet parameters)
         {
-            var week = dayBlob.Week;
-            var dow = dayBlob.Dow;
+            FillDateAndDow(parameters, parameters.Week,parameters.Dow);
+        }
+        public void FillDateAndDow(ParameterSet parameters,int week,DayOfWeek dow)
+        {
             var dateTime = WeekTime.GetDateByWeekAndDay(week, dow);
-            var dateTextLeaf = GetDateTextLeaf(dayBlob);
-            var dowTextLeaf = GetDowTextLeaf(dayBlob);
-            dateTextLeaf.Text =DayDateFormat.Format(dateTime);
-            dowTextLeaf.Text = DowFormat.Format(dateTime);
+            FillDateAndDow(parameters, dateTime);
+        }
+        public void FillDateAndDow(ParameterSet parameters,DateTime dateTime)
+        {
+            parameters.Set(DateParameterName, DayDateFormat.Format(dateTime));
+            parameters.Set(DowParameterName, DowFormat.Format(dateTime));
+        }
+        public void FillWeekDate(ParameterSet parameters,int week)
+        {
+            parameters.Set(WeekDatesParameterName, GetWeekDatesString(week));
         }
 
         internal string GetWeekDatesString(int week)

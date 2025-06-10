@@ -19,59 +19,37 @@ using psdPH.Views.WeekView;
 using psdPHTest.Tests;
 using psdPH.Utils;
 using Photoshop;
+using psdPH.Logic.Parameters;
 
 namespace psdPHTest.Tests.Automatic
 {
     [TestClass]
-    public class XMLSerializationTest
-    {
-        [TestMethod]
-        public void testSave()
-        {
-            var blob = Blob.PathBlob("очень сильно заболел хуй");
-            Assert.IsTrue(DiskOperations.SaveXml("test.xml", blob).Serialized);
-        }
-        [TestMethod]
-        public void testOpen()
-        {
-            DiskOperations.OpenXml<Blob>("test.xml");
-        }
-        [TestMethod]
-        public void testKnownTypes()
-        {
-            var blob = Blob.PathBlob("test.xml");
-            var cond = new DummyCondition(null);
-            blob.RuleSet.AddRule(new AlignRule(blob) { Alignment = Alignment.Create("up", "left"), AreaLayerName = "2", LayerName = "2" });
-            Assert.IsTrue(DiskOperations.SaveXml("test.xml", blob).Serialized);
-        }
-    }
-    [TestClass]
     public class AligmentRuleTest
     {
         Blob MainBlob;
-        FlagLeaf flagLeaf;
+        FlagParameter flagParam;
         void _(object sender, RoutedEventArgs e)
         {
             var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
-            flagLeaf.Toggle = (sender as CheckBox).IsChecked == true;
+            flagParam.Toggle = (sender as CheckBox).IsChecked == true;
             MainBlob.Apply(doc);
         }
         Blob GetBlob()
         {
             var blob = Blob.PathBlob("");
-            flagLeaf = new FlagLeaf("sadism") { Toggle = true };
+            flagParam = new FlagParameter("sadism") { Toggle = true};
             var on_area = new AreaLeaf() { LayerName = "on_area" };
             var off_area = new AreaLeaf() { LayerName = "off_area" };
             var layer1Leaf = new TextLeaf() { LayerName = "lorem", Text = "Lorem Ipsum" };
             var objLayer = new TextLeaf() { LayerName = "obj" };
             var controlLayer = new LayerLeaf() { LayerName = "control" };
-            blob.AddChild(flagLeaf);
+            blob.ParameterSet.Add(flagParam);
             blob.AddChild(on_area);
             blob.AddChild(off_area);
             blob.AddChild(layer1Leaf);
-            Condition true_condition = new FlagCondition(blob) { FlagLeaf = flagLeaf, Value = true };
-            Condition false_condition = new FlagCondition(blob) { FlagLeaf = flagLeaf, Value = false };
-            blob.RuleSet.Rules.Add(
+            Condition true_condition = new FlagCondition(blob) { FlagParameter = flagParam, Value = true };
+            Condition false_condition = new FlagCondition(blob) { FlagParameter = flagParam, Value = false };
+            blob.RuleSet.AddRule(
                 new AlignRule(blob)
                 {
                     LayerComposition = layer1Leaf,
@@ -80,7 +58,7 @@ namespace psdPHTest.Tests.Automatic
                     Condition = true_condition
                 }
                 );
-            blob.RuleSet.Rules.Add(
+            blob.RuleSet.AddRule(
                 new AlignRule(blob)
                 {
                     LayerComposition = layer1Leaf,
@@ -89,11 +67,12 @@ namespace psdPHTest.Tests.Automatic
                     Condition = false_condition
                 }
                 );
-            blob.RuleSet.Rules.Add(
+            blob.RuleSet.AddRule(
                 new VisibleRule(blob) { LayerComposition = objLayer, Condition = true_condition }
                 );
             return blob;
         }
+        [TestCategory(TestCatagories.ManualUI)]
         [TestInitialize]
         public void Init()
         {
@@ -110,16 +89,13 @@ namespace psdPHTest.Tests.Automatic
             window.WindowStyle = WindowStyle.ToolWindow;
             window.ShowDialog();
         }
-        [TestMethod]
-        public void AlignRuleTest()
-        {
-
-        }
     }
+    
     [TestClass]
     public class ParameterTest
     {
         public HorizontalAlignment HA = HorizontalAlignment.Stretch;
+        [TestCategory(TestCatagories.Automatic)]
         [TestMethod]
         public void testEnumAuto()
         {
@@ -135,145 +111,5 @@ namespace psdPHTest.Tests.Automatic
 
 }
 
-[TestClass]
-public class WeekRules : WeekViewTest
-{
-    [TestMethod]
-    public void FromBlobTest()
-    {
-        Blob blob = GetBlob();
-        var dayBlob = DowBlob.FromBlob(blob, 0, DayOfWeek.Monday);
-    }
-
-    EveryNDayCondition GetEveryNDayCondition(int interval, DateTime startDateTime, DowBlob blob)
-    {
-        return new EveryNDayCondition(blob) { Interval = interval, StartDateTime = startDateTime };
-    }
-    [DataTestMethod]
-    [DataRow(2, DayOfWeek.Monday, true)]
-    [DataRow(3, DayOfWeek.Tuesday, false)]
-    [DataRow(2, DayOfWeek.Wednesday, true)]
-    [DataRow(3, DayOfWeek.Thursday, true)]
-    public void EveryNDayConditionTest(int interval, DayOfWeek dayOfWeek, bool result)
-    {
-        var blob = GetBlob();
-        var weekConfig = GetWeekConfig();
-
-        var currentWeek = WeekTime.CurrentWeek;
-
-        var startDateTime = WeekTime.GetDateByWeekAndDay(currentWeek, DayOfWeek.Monday);
-        var dayBlob = new DowBlob() { Dow = dayOfWeek, Week = currentWeek };
-        var everynCondition = GetEveryNDayCondition(interval, startDateTime, dayBlob);
-
-        Assert.IsTrue(everynCondition.IsValid() == result);
-
-    }
-    [DataTestMethod]
-    [DataRow(2, DayOfWeek.Monday, true)]
-    [DataRow(3, DayOfWeek.Tuesday, false)]
-    [DataRow(2, DayOfWeek.Wednesday, true)]
-    [DataRow(3, DayOfWeek.Thursday, true)]
-    public void WeekRulesTest(int interval, DayOfWeek dayOfWeek, bool result)
-    {
-        var blob = GetBlob();
-        var weekConfig = GetWeekConfig();
-
-        weekConfig.GetDayPrototype(blob).Blob.AddChild(new FlagLeaf("uvu"));
-
-        var weekListData = WeekListData.Create(weekConfig, new WeekRulesets(), blob);
-        var currentWeek = WeekTime.CurrentWeek;
-
-        weekListData.NewWeek(currentWeek);
-        var weekData = weekListData.Weeks[0];
-
-        var startDateTime = WeekTime.GetDateByWeekAndDay(currentWeek, DayOfWeek.Monday);
-        var everynCondition = new EveryNDayCondition() { Interval = interval, StartDateTime = startDateTime };
-        var everynRule = new FlagRule() { FlagName = "uvu", Condition = everynCondition };
-
-        weekListData.WeekRulesets.DayRules.AddRule(everynRule);
-        var mainBlob = weekData.Prepare();
-
-        var dayPh = mainBlob.getChildren<PlaceholderLeaf>().First(ph => (ph.Replacement as DowBlob).Dow == dayOfWeek);
-        var dayBlob = dayPh.Replacement as DowBlob;
-
-        Assert.IsTrue(dayBlob.getChildren<FlagLeaf>().First(f => f.Name == "uvu").Toggle == result);
-    }
-    [TestMethod]
-    public void testInjectRules()
-    {
-        var blob = GetBlob();
-        var weekConfig = GetWeekConfig();
-        weekConfig.GetDayPrototype(blob).Blob.AddChild(new FlagLeaf("test1"));
-
-        blob.AddChild(new FlagLeaf("test"));
-
-        var weekListData = WeekListData.Create(weekConfig, new WeekRulesets(), blob);
-#pragma warning disable CS0612 // Тип или член устарел
-        var weekCondition = new WeekCondition(blob) { Week = WeekTime.CurrentWeek };
-#pragma warning restore CS0612 // Тип или член устарел
-        var weekFlagRule = new FlagRule() { Condition = weekCondition, FlagName = "test" };
-
-        var ndayCondition = new EveryNDayCondition(blob) { Interval = 2, StartDateTime = WeekTime.GetDateByWeekAndDay(WeekTime.CurrentWeek, DayOfWeek.Monday) };
-        var dayFlagRule = new FlagRule() { Condition = weekCondition, FlagName = "test1" };
-
-
-        weekListData.WeekRulesets.DayRules.AddRule(dayFlagRule);
-        weekListData.WeekRulesets.WeekRules.AddRule(weekFlagRule);
-
-        weekListData.NewWeek();
-
-        var weekBlob = weekListData.Weeks[0].Prepare();
-        weekBlob.CoreApply();
-
-        Assert.IsTrue(weekBlob.getChildren<FlagLeaf>().First(f => f.Name == "test").Toggle);
-
-        var mondayBlob = weekBlob.getChildren<PlaceholderLeaf>().First(ph => (ph.Replacement as DowBlob).Dow == DayOfWeek.Monday).Replacement;
-        Assert.IsTrue(mondayBlob.getChildren<FlagLeaf>().First(f => f.Name == "test1").Toggle);
-    }
-    [TestClass]
-    public class ParameterTest
-    {
-        public HorizontalAlignment HA;
-        [TestMethod]
-        public void testEnumAuto()
-        {
-            var config = new SetupConfig(this, nameof(HA), "aaa");
-            var parameter = Setup.EnumChoose(config, typeof(HorizontalAlignment));
-            Console.WriteLine(parameter.Control as ComboBox);
-        }
-    }
-}
-
-[TestClass]
-public class CompositionTest
-{
-
-    [TestMethod]
-    public void CompositionChildrenObserving()
-    {
-        bool eventRaised = false;
-        void a()
-        {
-            eventRaised = true;
-        }
-        Composition composition = new Blob();
-        composition.ChildrenUpdatedEvent += a;
-        composition.AddChild(new TextLeaf());
-        Assert.IsTrue(eventRaised);
-    }
-    [TestMethod]
-    public void RuleSetChildrenObserving()
-    {
-        bool eventRaised = false;
-        void a()
-        {
-            eventRaised = true;
-        }
-        Composition composition = new Blob();
-        composition.RulesetUpdatedEvent += a;
-        composition.RuleSet.Rules.Add(new TextFontSizeRule());
-        Assert.IsTrue(eventRaised);
-    }
-}
 
 

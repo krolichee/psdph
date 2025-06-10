@@ -17,7 +17,7 @@ namespace psdPH
     [PsdPhSerializable]
     public abstract class Composition : ISetupable, psdPH.ISerializable
     {
-        public List<Parameter> Parameters = new List<Parameter>();
+        public ParameterSet ParameterSet = new ParameterSet();
         public delegate void RulesetUpdated();
         public delegate void ChildrenUpdated();
         public event ChildrenUpdated ChildrenUpdatedEvent;
@@ -50,7 +50,7 @@ namespace psdPH
         {
             if (Parent == null)
                 return new Composition[0] as T[];
-            return Parent.getChildren<T>().ToArray();
+            return Parent.GetChildren<T>().ToArray();
         }
         [XmlIgnore]
         public abstract Setup[] Setups { get; }
@@ -76,7 +76,7 @@ namespace psdPH
                     item.Restore(this);
         }
         virtual public Composition[] GetChildren() { return null; }
-        virtual public T[] getChildren<T>() { return null; }
+        virtual public T[] GetChildren<T>() { return null; }
         [Obsolete]
         public bool IsSetUp() => true;
 

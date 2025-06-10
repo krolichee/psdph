@@ -7,8 +7,12 @@
              mc:Ignorable="d" 
              >
     <Grid>
-        <StackPanel x:Name="rowStack" Orientation="Horizontal" >
-            
-        </StackPanel>
+        <Viewbox Stretch="Uniform">
+            <UniformGrid x:Name="DaysPanel" Rows="1">
+                <StackPanel x:Name="rowStack" Orientation="Horizontal" >
+
+                </StackPanel>
+            </UniformGrid>
+        </Viewbox>
     </Grid>
 </UserControl>

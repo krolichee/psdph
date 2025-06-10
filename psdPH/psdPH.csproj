@@ -79,13 +79,15 @@
     <Compile Include="BlockingStack.cs" />
     <Compile Include="KnownTypes.cs" />
     <Compile Include="Logic\Compositions\AreaLeaf.cs" />
-    <Compile Include="Logic\Compositions\FlagLeaf.cs" />
     <Compile Include="Logic\Compositions\GroupLeaf.cs" />
     <Compile Include="Logic\Compositions\ImageLeaf.cs" />
     <Compile Include="Logic\MatchingResult.cs" />
+    <Compile Include="Logic\Parameters\FlagParameter.cs" />
     <Compile Include="Logic\Parameters\Parameter.cs" />
+    <Compile Include="Logic\Parameters\ParameterSet.cs" />
     <Compile Include="Logic\Parameters\StringParameter.cs" />
     <Compile Include="Logic\Ruleset\Rules\CoreRules\CoreRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CoreRules\ParameterSetRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\CoreRules\TextAssignRule.cs" />
     <Compile Include="Photoshop\LayerWr\LayerDescriptor.cs" />
     <Compile Include="Logic\Compositions\LayerLeaf.cs" />
@@ -111,12 +113,17 @@
     <Compile Include="Photoshop\KostylExecutor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\StructureRuleCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TypeAndNameGrid.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\IBatchParameterCreator.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\ParameterCreator.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterHandler.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\IBatchCompositionCreator.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\IBatchCompositionCreator.cs" />
+    <Compile Include="TemplateEditor\ParameterDicts.cs" />
     <Compile Include="TemplateEditor\StructureRulesDicts.cs" />
     <Compile Include="Utils\Localization\EnumLocalization.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\AligmentControl.xaml.cs">
-      <DependentUpon>AligmentControl.xaml</DependentUpon>
+    <Compile Include="Utils\ReflectionSetups\Controls\AlignmentControl.xaml.cs">
+      <DependentUpon>AlignmentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
       <DependentUpon>CollectionEditor.xaml</DependentUpon>
@@ -129,7 +136,7 @@
     <Compile Include="Logic\Ruleset\ChangeMode.cs" />
     <Compile Include="Logic\Ruleset\ELayerMode.cs" />
     <Compile Include="RuleEditor\RulesetDefinition.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\MultiCompositionCreator.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\MultiCompositionCreator.cs" />
     <Compile Include="Utils\CloneConverter.cs" />
     <Compile Include="Logic\Ruleset\RuleSet.cs" />
     <Compile Include="Utils\ReflectionSetups\FieldFunctions.cs" />
@@ -171,9 +178,10 @@
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="TemplateEditor\StructureRulesetDefinition.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\DataInputWindow.cs" />
+    <Compile Include="Views\DataInputWindow.cs" />
     <Compile Include="Utils\TopmostWindow.cs" />
     <Compile Include="Utils\UpcomingAttribute.cs" />
+    <Compile Include="Views\ParsetInputWindow.cs" />
     <Compile Include="Views\SimpleView\CompositionTreeControl.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleView.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleListData.cs" />
@@ -183,8 +191,8 @@
       <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WeekView\Formats\DateFormat.cs" />
-    <Compile Include="Views\WeekView\Logic\DowBlob.cs" />
     <Compile Include="Photoshop\OutputSaver.cs" />
+    <Compile Include="Views\WeekView\Logic\DayParameterSet.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRules.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRules\WeekConditions.cs" />
     <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
@@ -221,11 +229,10 @@
     <Compile Include="TemplateEditor\StructureDicts.cs" />
     <Compile Include="Photoshop\PhotoshopWrapper.cs" />
     <Compile Include="Utils\CedStack\CEDCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\SingleCompositionCreators.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\SingleCompositionCreators.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\ICompositionShapitor.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
     <Compile Include="Utils\ReflectionSetups\Controls\SetupInputWindow.xaml.cs">
       <DependentUpon>SetupInputWindow.xaml</DependentUpon>
@@ -265,7 +272,7 @@
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
-    <Page Include="Utils\ReflectionSetups\Controls\AligmentControl.xaml">
+    <Page Include="Utils\ReflectionSetups\Controls\AlignmentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

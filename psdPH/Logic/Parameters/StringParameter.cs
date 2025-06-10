@@ -1,9 +1,16 @@
-﻿using psdPH.Logic.Parameters;
+﻿using System.Xml.Serialization;
 
-namespace psdPHTest.Logic.Parameters
+namespace psdPH.Logic.Parameters
 {
     public class StringParameter : Parameter
     {
-        public string Value;
+        [XmlIgnore]
+        public string Text { get => Value as string; set => Value=value; }
+        public override Setup[] Setups
+        {
+            get => new Setup[] { Setup.StringInput(getValueSetupConfig()) };
+        }
+        public StringParameter():base(null) { }
+        public StringParameter(string name):base(name) { }
     }
 }

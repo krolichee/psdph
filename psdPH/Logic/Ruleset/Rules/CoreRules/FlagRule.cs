@@ -1,4 +1,7 @@
 ﻿using Photoshop;
+using psdPH.Logic.Parameters;
+using psdPH.Views.WeekView.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -6,35 +9,46 @@ using Condition = psdPH.Logic.Rules.Condition;
 
 namespace psdPH.Logic
 {
-    public class FlagRule : ConditionRule, CoreRule
+    public class FlagRule : ConditionRule, ParameterSetRule
     {
         public override string ToString() => "значение флага";
-        
+        public ParameterSet ParameterSet;
         public string FlagName;
-        public bool Value;
+        public bool Value=true;
         public FlagRule() : base(null) { }
         public FlagRule(Composition composition) : base(composition) { }
+        bool predicate(Parameter p) => p.Name == FlagName && p is FlagParameter;
         [XmlIgnore]
         public override Setup[] Setups
         {
             get
             {
                 List<Setup> result = new List<Setup>();
-                FlagLeaf[] flagLeaves = Composition.getChildren<FlagLeaf>();
-                var flagNames = flagLeaves.Select(f => f.Name).ToArray();
-                var flagConfig = new SetupConfig(this, nameof(this.FlagName), "");
+                FlagParameter[] flagParameters = Composition.ParameterSet.GetByType<FlagParameter>().ToArray();
+                var flagConfig = new SetupConfig(this, nameof(this.FlagParameter), "");
                 var valueConfig = new SetupConfig(this, nameof(this.Value), "установить в");
-                result.Add(Setup.Choose(flagConfig, flagNames));
+                result.Add(Setup.Choose(flagConfig, flagParameters));
                 result.Add(Setup.Check(valueConfig));
                 result.Add(Setup.JustDescrition("и наоборот"));
                 return result.ToArray();
             }
         }
-
         public void CoreApply()
         {
-            var flagLeaf = Composition.getChildren<FlagLeaf>().First(f => f.Name == FlagName);
-            flagLeaf.Toggle = Condition.IsValid();
+            FlagParameter.Value = Condition.IsValid()==Value;
+        }
+        [XmlIgnore]
+        public FlagParameter FlagParameter
+        {
+            protected get
+            {
+                var parset = ParameterSet == null ? Composition.ParameterSet : ParameterSet;
+                return parset.AsCollection().FirstOrDefault(predicate) as FlagParameter;
+            }
+            set
+            {
+                FlagName = value.Name;
+            }
         }
 
         protected override void _apply(Document doc) =>
@@ -44,6 +58,13 @@ namespace psdPH.Logic
         public override bool IsSetUp()
         {
             return base.IsSetUp()&&FlagName!=null;
+        }
+
+        public void SetParameterSet(ParameterSet parset)
+        {
+            ParameterSet = parset;
+            if (Condition is ParameterSetCondition)
+                (Condition as ParameterSetCondition).SetParameterSet(parset);
         }
     }
 

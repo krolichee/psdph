@@ -10,7 +10,6 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
     public class RuleStackControl : CEDStackControl<Rule>
     {
-        [Upcoming("asd")]
         readonly RuleCommand RuleCommand;
         public override ICommand DeleteCommand() =>
             RuleCommand.DeleteCommand;

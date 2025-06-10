@@ -57,19 +57,23 @@
     <Compile Include="Logic\Compositions\BlobTest.cs" />
     <Compile Include="Logic\Compositions\IsMatchingTest.cs" />
     <Compile Include="Logic\Parameters\ParameterTest.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CoreRules\FlagRuleTest.cs" />
     <Compile Include="Photoshop\OutputSaverTest.cs" />
     <Compile Include="Properties\TestResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TestCatagories.cs" />
     <Compile Include="Tests\Automatic.cs" />
     <Compile Include="Tests\Classes.cs" />
     <Compile Include="Tests\Ps.cs" />
     <Compile Include="Tests\UI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\CloneConverterTest.cs" />
     <Compile Include="Utils\ReflectionSetups\Controls\RtbExtension.cs" />
     <Compile Include="Utils\ReflectionSetups\Setup.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekRulesTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -96,7 +100,6 @@
     <Folder Include="CollectionEditor\" />
     <Folder Include="RuleEditor\" />
     <Folder Include="TemplateEditor\" />
-    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\TestResources.resx">

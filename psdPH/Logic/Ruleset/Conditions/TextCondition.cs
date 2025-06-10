@@ -13,7 +13,7 @@ namespace psdPH.Logic.Rules
         [XmlIgnore]
         public TextLeaf TextLeaf
         {
-            protected get => Composition.getChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName);
+            protected get => Composition.GetChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName);
             set => TextLeafLayerName = value?.LayerName;
         }
         [XmlIgnore]
@@ -23,7 +23,7 @@ namespace psdPH.Logic.Rules
             {
                 var result = new List<Setup>();
                 var textLeafConfig = new SetupConfig(this, nameof(this.TextLeafLayerName), "поля");
-                var textLeavesNames = Composition.getChildren<TextLeaf>().Select(t => t.LayerName).ToArray();
+                var textLeavesNames = Composition.GetChildren<TextLeaf>().Select(t => t.LayerName).ToArray();
                 result.Add(Setup.Choose(textLeafConfig, textLeavesNames));
                 return result.ToArray();
             }

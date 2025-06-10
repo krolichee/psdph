@@ -8,9 +8,10 @@ using System.Xml.Serialization;
 namespace psdPH.Logic
 {
     [Serializable]
-    [XmlRoot("Ruleset")]
-    public class RuleSet
-    {public void AddRule(Rule rule)
+    public class RuleSet: ISerializable
+    {
+        public ObservableCollection<Rule> Rules = new ObservableCollection<Rule>();
+        public void AddRule(Rule rule)
         {
             rule.RestoreComposition(Composition);
             Rules.Add(rule);
@@ -23,7 +24,6 @@ namespace psdPH.Logic
         public event Action Updated;
         [XmlIgnore]
         public Composition Composition;
-        public ObservableCollection<Rule> Rules = new ObservableCollection<Rule>();
 
         protected Rule[] CoreRules => Rules.Where(item => (item is CoreRule)).ToArray();
         protected Rule[] NonCoreRules => Rules.Where(item => !(item is CoreRule)).ToArray();

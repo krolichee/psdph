@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic;
+using psdPH.Logic.Parameters;
 using psdPH.Logic.Rules;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,13 @@ using static psdPH.WeekConfig;
 
 namespace psdPH.Views.WeekView.Logic
 {
-    public class EveryNDayCondition : Condition
+    public interface ParameterSetCondition
     {
+        void SetParameterSet(ParameterSet parset);
+    }
+    public class EveryNDayCondition : Condition, ParameterSetCondition
+    {
+        DayParameterSet ParameterSet;
         public override string ToString() => "каждый 'n' день";
         public DateTime? StartDateTime;
         public int Interval=0;
@@ -31,25 +37,36 @@ namespace psdPH.Views.WeekView.Logic
             }
         }
 
-        public EveryNDayCondition(Composition composition) : base(composition) { }
+        //public EveryNDayCondition(Composition composition) : base(composition) { }
         public override bool IsSetUp()
         {
             return base.IsSetUp()&&StartDateTime!=null&&Interval!=0;
         }
         public override bool IsValid()
         {
-            if (StartDateTime == null)
-                return false;
+            var week = ParameterSet.Week;
+            var dow = ParameterSet.Dow;
             DateTime startDateTime =(DateTime)StartDateTime;
-            var dayBlob = Composition as DowBlob;
-            var dateTime = WeekTime.GetDateByWeekAndDay(dayBlob.Week, dayBlob.Dow);
+            var dateTime = WeekTime.GetDateByWeekAndDay(week, dow);
             TimeSpan timeSinceFirstWeek = dateTime - startDateTime;
             return timeSinceFirstWeek.TotalDays % Interval == 0;
+        }
+
+        public void SetParameterSet(ParameterSet parset)
+        {
+            ParameterSet = parset as DayParameterSet;
+            
+        }
+
+        public EveryNDayCondition(DayParameterSet parset) : base(null)
+        {
+            ParameterSet = parset;
         }
         public EveryNDayCondition() : base(null) { }
     }
     public class DayOfWeekCondition : Condition
     {
+        public DayParameterSet ParameterSet;
         public override string ToString() => "день недели";
         public DayOfWeek DayOfWeek;
 
@@ -68,14 +85,14 @@ namespace psdPH.Views.WeekView.Logic
         public DayOfWeekCondition(Composition composition) : base(composition) { }
         public override bool IsValid()
         {
-            var dayBlob = Composition as DowBlob;
-            return dayBlob.Dow == DayOfWeek;
+            return ParameterSet.Dow == DayOfWeek;
         }
         public DayOfWeekCondition() : base(null) { }
     }
     [Obsolete]
     public class WeekCondition : Condition
     {
+        DayParameterSet ParameterSet;
         public override string ToString() => "неделя";
         public int Week;
         public WeekCondition(Composition composition) : base(composition) { }
@@ -93,7 +110,7 @@ namespace psdPH.Views.WeekView.Logic
         }
         public override bool IsValid()
         {
-            return (Composition as WeekBlob).Week == Week;
+            return ParameterSet.Week == Week;
         }
         public WeekCondition() : base(null) { }
     }
