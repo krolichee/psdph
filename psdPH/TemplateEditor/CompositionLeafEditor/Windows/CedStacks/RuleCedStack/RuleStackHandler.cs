@@ -4,6 +4,7 @@ using psdPH.Utils;
 using psdPH.Utils.CedStack;
 using psdPH.Views.WeekView;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -37,7 +38,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         {
             RuleCommand.CreateCommand.Execute(null);
         }
-        override protected UIElement createControl(object rule)
+        override protected FrameworkElement createControl(object rule)
         {
             return new RuleStackControl((Rule)rule, RuleCommand);
         }
@@ -48,6 +49,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             RuleSet = ruleSet;
             RuleSet.Updated += Refresh;
         }
+        protected override IList Items => (IList)this.RuleSet.Rules;
     }
     public class StructureRuleStackHandler : RuleStackHandler
     {
