@@ -1,6 +1,7 @@
 ﻿using psdPH.Logic.Parameters;
 using psdPH.Utils.CedStack;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -33,9 +34,10 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.CedStacks.Parameter
                 items.Add(CreateAddMenuItem(ruleType));
             contextMenu.ItemsSource = items;
             button.ContextMenu = contextMenu;
+           
         }
 
-        protected override UIElement createControl(object item)
+        protected override FrameworkElement createControl(object item)
         {
             return new ParameterControl(item as Parameter, ParameterSet);
         }
@@ -44,6 +46,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.CedStacks.Parameter
         {
             return ParameterSet.AsCollection().ToArray();
         }
+        protected override IList Items => this.ParameterSet.Parameters as IList;
 
         public ParameterHandler(ParameterSet parameterSet)
         {

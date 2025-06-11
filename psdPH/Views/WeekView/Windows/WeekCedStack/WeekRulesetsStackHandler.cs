@@ -16,4 +16,5 @@ namespace psdPH.Views.WeekView
         public WeekDayRulesetStackHandler(RuleSet ruleSet) : base(ruleSet) { }
         protected override RuleCommand RuleCommand => new WeekDayRuleCommand(RuleSet);
     }
+
 }

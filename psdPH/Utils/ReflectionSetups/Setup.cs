@@ -20,7 +20,7 @@ namespace psdPH.Logic
         public delegate void AcceptedEvent();
         public event AcceptedEvent Accepted;
         public Setup() { }
-        public Control Control;
+        public FrameworkElement Control;
         FieldFunctions _fieldFunctions;
         StackPanel _stack;
 
@@ -184,6 +184,51 @@ namespace psdPH.Logic
             result.Control = separator;
             result.valueFunc = () => ""; ;
             return result;
+        }
+
+        internal static Setup ComboString(SetupConfig config, List<string> strings)
+        {
+            
+
+            var result = new Setup(config);
+            var stack = result._stack;
+
+            
+            var cbStack = new StackPanel() { Orientation = Orientation.Horizontal };
+
+            var cb = new ComboBox() { ItemsSource = strings, IsEditable = true ,MinWidth = 70};
+            var chb = new CheckBox() { IsChecked = false };
+
+            chb.ToolTip = "Добавить в список";
+            ToolTipService.SetInitialShowDelay(chb, 100);
+            ToolTipService.SetBetweenShowDelay(chb, 500);
+            ToolTipService.SetShowDuration(chb, 2000);
+
+            void addIfChecked()
+            {
+                if (chb.IsChecked != true)
+                    return;
+                var value = config.GetValue();
+                if (!strings.Contains(value) && value != null)
+                    strings.Add(value as string);
+            }
+            cbStack.Children.Add(cb);
+            cbStack.Children.Add(chb);
+
+            var index = -1;// = strings.ToList().IndexOf(config.GetValue().ToString());
+            cb.SelectedIndex = index;
+
+            result.Accepted += addIfChecked;
+            result.valueFunc = () => cb.Text;
+
+            stack.Children.Add(cbStack);
+            result.Control = cb;
+            return result;
+        }
+
+        private static void abs(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         Setup(SetupConfig config, FieldFunctions fieldFunctions = null)

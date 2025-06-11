@@ -26,7 +26,7 @@
                 <TabItem x:Name="structureTab" Header="Структура">
                     <CedStack:CEDStackUI/>
                 </TabItem>
-                <TabItem x:Name="paramTab" Header="Параметры" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58">
+                <TabItem x:Name="paramTab" Header="Параметры" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="76">
                     <CedStack:CEDStackUI/>
                 </TabItem>
                 <TabItem x:Name="ruleTab" Header="Правила" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58">

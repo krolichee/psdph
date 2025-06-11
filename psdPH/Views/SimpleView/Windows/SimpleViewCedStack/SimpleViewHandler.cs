@@ -4,6 +4,7 @@ using psdPH.Views.SimpleView.Logic;
 using psdPH.Views.SimpleView.SimpleViewCedStack;
 using psdPH.Views.WeekView;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +21,9 @@ namespace psdPH.Views.SimpleView.Windows.SimpleViewCedStack
             SimpleViewList = simpleViewList;
             simpleViewList.Variants.CollectionChanged += (_, __) => Refresh();
         }
-        protected override UIElement createControl(object item)=>new CompositionTreeControl((Blob)item);
+        protected override FrameworkElement createControl(object item)=>new CompositionTreeControl((Blob)item);
         protected override object[] getElements()=>SimpleViewList.Variants.ToArray();
         protected override void AddButtonAction()=>new SimpleViewCommand(SimpleViewList).CreateCommand.Execute(SimpleViewList);
+        protected override IList Items => this.SimpleViewList.Variants as IList;
     }
 }

@@ -77,6 +77,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BlockingStack.cs" />
+    <Compile Include="DragRect.xaml.cs">
+      <DependentUpon>DragRect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="KnownTypes.cs" />
     <Compile Include="Logic\Compositions\AreaLeaf.cs" />
     <Compile Include="Logic\Compositions\GroupLeaf.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="Logic\Parameters\FlagParameter.cs" />
     <Compile Include="Logic\Parameters\Parameter.cs" />
     <Compile Include="Logic\Parameters\ParameterSet.cs" />
+    <Compile Include="Logic\Parameters\StringChooseParameter.cs" />
     <Compile Include="Logic\Parameters\StringParameter.cs" />
     <Compile Include="Logic\Ruleset\Rules\CoreRules\CoreRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\CoreRules\ParameterSetRule.cs" />
@@ -272,6 +276,10 @@
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
+    <Page Include="DragRect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Utils\ReflectionSetups\Controls\AlignmentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,6 +1,8 @@
 ﻿using psdPH.Utils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,12 +30,14 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             button.ContextMenu = contextMenu;
         }
 
-        protected override UIElement createControl(object item)
+        protected override FrameworkElement createControl(object item)
         {
             return new StructureStackControl((Composition)item, Context);
         }
         protected override object[] getElements() =>
             _root.GetChildren();
+
+        protected override IList Items => this._root.Children as IList;
 
         public StructureStackHandler(PsdPhContext context) : base(context)
         {
