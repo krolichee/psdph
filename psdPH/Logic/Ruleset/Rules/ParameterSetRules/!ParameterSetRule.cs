@@ -2,7 +2,7 @@
 
 namespace psdPH.Logic
 {
-    public interface ParameterSetRule : CoreRule
+    public interface ParameterSetRule
     {
         void SetParameterSet(ParameterSet parset);
     }

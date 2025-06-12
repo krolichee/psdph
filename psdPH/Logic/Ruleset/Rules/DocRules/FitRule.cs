@@ -1,11 +1,12 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
+using psdPH.Logic.Ruleset.Rules.DocRules;
 using psdPH.Photoshop;
 using System.Collections.Generic;
 
 namespace psdPH.Logic
 {
-    public class FitRule : AreaRule
+    public class FitRule : AreaRule, DocRule
     {
         public override string ToString() => "вместить";
         public bool BalanceFont = false;

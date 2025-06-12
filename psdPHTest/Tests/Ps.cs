@@ -58,7 +58,6 @@ namespace psdPHTest.Tests.Ps
         [TestInitialize]
         public void Init()
         {
-            ArtLayer a;
             Type psType = Type.GetTypeFromProgID("Photoshop.Application");
             psApp = Activator.CreateInstance(psType) as Application;
         }
@@ -72,11 +71,7 @@ namespace psdPHTest.Tests.Ps
             layer.TextItem.Contents = text;
             Assert.IsTrue(first_name != text);
         }
-        [TestMethod]
-        public void testFix()
-        {
-            doc.FixTextLayersNames();
-        }
+
         [TestMethod]
         public void testApplyStyle()
         {

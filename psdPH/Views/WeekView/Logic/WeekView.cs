@@ -23,7 +23,7 @@ namespace psdPH.Views.WeekView
         {
             return _instance = new WeekView(projectName);
         }
-        
+
 
         protected WeekView(string projectName)
         {
@@ -104,7 +104,19 @@ namespace psdPH.Views.WeekView
             var project = PsdPhProject.Instance();
             var weekView = WeekView.MakeInstance(project.ProjectName);
             Blob blob = project.openOrCreateMainBlob();
-            var weekListData = weekView.OpenOrCreateWeekListData(blob);
+            WeekListData weekListData;
+            try { 
+                weekListData = weekView.OpenOrCreateWeekListData(blob); 
+            }
+            catch
+            {
+                var result = MessageBox.Show("Во время открытия данных вида произошла ошибка. Удалить вид?", "Ошибка", MessageBoxButton.YesNo,MessageBoxImage.Error);
+
+                if (result == MessageBoxResult.Yes)
+                    WeekView.Instance().Delete();
+                return null;
+            }
+
             if (weekListData == null)
                 return null;
             var window = new WeekViewWindow(weekListData);

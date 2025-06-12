@@ -10,9 +10,6 @@ using System.Xml.Serialization;
 
 namespace psdPH
 {
-    public interface CoreComposition {
-        void CoreApply();
-    }
     [Serializable]
     [PsdPhSerializable]
     public abstract class Composition : ISetupable, psdPH.ISerializable
@@ -31,7 +28,7 @@ namespace psdPH
                 return rootAttribute.PositionalString;
             }
         }
-        public Composition[] Children = new Composition[0];
+        public List<Composition> Children = new List<Composition>();
         internal void AddChildren(Composition[] compositions)
         {
             foreach (var item in compositions)

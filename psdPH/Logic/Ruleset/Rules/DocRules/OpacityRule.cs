@@ -1,10 +1,11 @@
 ﻿using Photoshop;
+using psdPH.Logic.Ruleset.Rules.DocRules;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic
 {
-    public class OpacityRule : LayerRule
+    public class OpacityRule : LayerRule, DocRule
     {
         protected static int notSetOpacity => -1;
         public override string ToString() => "прозрачность";

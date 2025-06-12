@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="KnownTypes.cs" />
     <Compile Include="Logic\Compositions\AreaLeaf.cs" />
+    <Compile Include="Logic\Compositions\CoreComposition.cs" />
     <Compile Include="Logic\Compositions\GroupLeaf.cs" />
     <Compile Include="Logic\Compositions\ImageLeaf.cs" />
     <Compile Include="Logic\MatchingResult.cs" />
@@ -90,9 +91,13 @@
     <Compile Include="Logic\Parameters\ParameterSet.cs" />
     <Compile Include="Logic\Parameters\StringChooseParameter.cs" />
     <Compile Include="Logic\Parameters\StringParameter.cs" />
-    <Compile Include="Logic\Ruleset\Rules\CoreRules\CoreRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\CoreRules\ParameterSetRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\CoreRules\TextAssignRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CompositionRules\!CompositionRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CompositionRules\SplitForAreaRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\!DocRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\!ParameterSetRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\TextRules\TextFontSizeRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\TextRules\TextJustifRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CompositionRules\TextAssignRule.cs" />
     <Compile Include="Photoshop\LayerWr\LayerDescriptor.cs" />
     <Compile Include="Logic\Compositions\LayerLeaf.cs" />
     <Compile Include="Logic\Compositions\PlaceholderLeaf.cs" />
@@ -103,15 +108,15 @@
     <Compile Include="Logic\Ruleset\Conditions\FlagCondition.cs" />
     <Compile Include="Logic\Ruleset\Conditions\NonEmptyTextCondition.cs" />
     <Compile Include="Logic\Ruleset\Conditions\TextCondition.cs" />
-    <Compile Include="Logic\Ruleset\Rules\AlignRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\AlignRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\AreaRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\ConditionRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\FitRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\CoreRules\FlagRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\LayerRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\OpacityRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\TranslateRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\VisibleRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\FitRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\FlagRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\LayerRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\OpacityRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\TranslateRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\VisibleRule.cs" />
     <Compile Include="Logic\UINameAttribute.cs" />
     <Compile Include="Photoshop\AlignOptions.cs" />
     <Compile Include="Photoshop\KostylExecutor.cs" />
@@ -147,6 +152,7 @@
     <Compile Include="Utils\ReflectionSetups\Controls\MultiPicker.xaml.cs">
       <DependentUpon>MultiPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\ReflectionSetups\QuestionableSetups.cs" />
     <Compile Include="Utils\ReflectionSetups\SetupConfig.cs" />
     <Compile Include="Utils\ReflectionSetups\Controls\RtbExtension.cs" />
     <Compile Include="Utils\Localization\TypeLocalization.cs" />
@@ -172,7 +178,7 @@
     <Compile Include="Logic\Compositions\Composition.cs" />
     <Compile Include="Logic\Compositions\LayerComposition.cs" />
     <Compile Include="Photoshop\PhotoshopLayerExtension.cs" />
-    <Compile Include="Logic\Ruleset\Rules\TextRules.cs" />
+    <Compile Include="Logic\Ruleset\Rules\TextRule.cs" />
     <Compile Include="MainWindow.BlobSave.cs" />
     <Compile Include="Utils\CedStack\CEDStackUI.xaml.cs">
       <DependentUpon>CEDStackUI.xaml</DependentUpon>
@@ -182,6 +188,7 @@
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="TemplateEditor\StructureRulesetDefinition.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
+    <Compile Include="Utils\Splitter.cs" />
     <Compile Include="Views\DataInputWindow.cs" />
     <Compile Include="Utils\TopmostWindow.cs" />
     <Compile Include="Utils\UpcomingAttribute.cs" />

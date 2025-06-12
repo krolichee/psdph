@@ -1,6 +1,5 @@
 ﻿using psdPH.Logic.Parameters;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Creators.ParameterCreators;
-using psdPHTest.Logic.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;

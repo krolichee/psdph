@@ -1,11 +1,12 @@
 ﻿using Photoshop;
+using psdPH.Logic.Ruleset.Rules.DocRules;
 using System.Collections.Generic;
 using System.Windows;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic
 {
-    public class TranslateRule : LayerRule
+    public class TranslateRule : LayerRule, DocRule
     {
         public override string ToString() => "положение";
         public Point Shift;

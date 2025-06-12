@@ -16,7 +16,7 @@ namespace psdPH.Logic.Compositions
             get
             {
                 var result = new List<Setup>();
-                var textConfig = new SetupConfig(this, nameof(this.Text), LayerName);
+                var textConfig = new SetupConfig(this, nameof(this.Text),"текст " + LayerName);
                 result.Add(Setup.RichStringInput(textConfig));
                 return result.ToArray();
             }
@@ -24,7 +24,7 @@ namespace psdPH.Logic.Compositions
         override public void Apply(Document doc)
         {
             ArtLayer layer = ArtLayerWr(doc).ArtLayer;
-            layer.TextItem.Contents = Text.Replace("\n", "\r");
+            layer.TextItem.Contents = Text?.Replace("\n", "\r");
         }
         public override bool IsMatching(Document doc)
         {

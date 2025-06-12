@@ -96,7 +96,7 @@ namespace psdPH.Logic
             var result = new Setup(config);
             var stack = result._stack;
             var tb = new TextBox() { MinWidth = 40 };
-            tb.Text = config.GetValue().ToString();
+            tb.Text = config.GetValue() as string;
             result.Control = tb;
             stack.Children.Add(tb);
             result.valueFunc = () => tb.Text;

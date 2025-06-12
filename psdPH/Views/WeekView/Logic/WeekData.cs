@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Controls;
 using System.Xml;
@@ -99,13 +100,13 @@ namespace psdPH.Views.WeekView
         {
             foreach (ParameterSetRule rule in WeekListData.WeekRulesets.WeekRules.Rules)
                 rule.SetParameterSet(ParameterSet);
-            WeekListData.WeekRulesets.WeekRules.CoreApply();
+            WeekListData.WeekRulesets.WeekRules.Apply<ParameterSetRule>(null);
 
             foreach (var dayParset in DayParsetsList)
             {
                 foreach (ParameterSetRule rule in WeekListData.WeekRulesets.DayRules.Rules)
                     rule.SetParameterSet(dayParset);
-                WeekListData.WeekRulesets.DayRules.CoreApply();
+                WeekListData.WeekRulesets.DayRules.Apply<ParameterSetRule>(null);
             }
 
 

@@ -1,10 +1,11 @@
 ﻿using Photoshop;
+using psdPH.Logic.Ruleset.Rules.DocRules;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic
 {
-    public class VisibleRule : LayerRule
+    public class VisibleRule : LayerRule, DocRule
     {
         public override string ToString() => "видимость";
         public bool Toggle = true;

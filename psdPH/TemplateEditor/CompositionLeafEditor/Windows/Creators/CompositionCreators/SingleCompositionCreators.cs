@@ -2,6 +2,7 @@
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -73,6 +74,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             p_w = new SetupsInputWindow(new[] { bn_parameter, rel_parameter });
         }
     }
+    [Obsolete]
     public class ImageLeafCreator : SingleLeafCreator<ImageLeaf>
     {
         public ImageLeafCreator(Document doc) : base()

@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 
 namespace psdPH.Logic.Compositions
 {
+    [Obsolete]
     [Serializable]
     [UIName("Изображение")]
     public class ImageLeaf : LayerComposition

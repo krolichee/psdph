@@ -10,7 +10,7 @@ namespace psdPH.Logic.Compositions
 {
     [Serializable]
     [UIName("Заглушка")]
-    public class PlaceholderLeaf : LayerComposition, CoreComposition
+    public class PlaceholderLeaf : LayerComposition
     {
         [XmlIgnore]
         public PrototypeLeaf Prototype
@@ -27,7 +27,7 @@ namespace psdPH.Logic.Compositions
         public string PrototypeLayerName;
         public override string ObjName => LayerName;
 
-        public override Setup[] Setups => new Setup[0];
+        public override Setup[] Setups => Replacement.Setups;
         Blob _replacement;
         [XmlIgnore]
         public Blob Replacement
@@ -77,7 +77,7 @@ namespace psdPH.Logic.Compositions
 
         public void CoreApply()
         {
-            ((CoreComposition)Replacement).CoreApply();
+            Replacement.CoreApply();
         }
 
         public override bool IsMatching(Document doc)

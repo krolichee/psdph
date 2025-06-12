@@ -1,10 +1,11 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
+using psdPH.Logic.Ruleset.Rules.DocRules;
 using System.Collections.Generic;
 
 namespace psdPH.Logic
 {
-    public class AlignRule : AreaRule
+    public class AlignRule : AreaRule, DocRule
     {
         
         public override string ToString() => "выровнять";

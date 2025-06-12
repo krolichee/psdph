@@ -49,7 +49,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             RuleSet = ruleSet;
             RuleSet.Updated += Refresh;
         }
-        protected override IList Items => (IList)this.RuleSet.Rules;
+        protected override IList Items => this.RuleSet.Rules;
     }
     public class StructureRuleStackHandler : RuleStackHandler
     {

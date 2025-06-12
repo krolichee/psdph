@@ -1,5 +1,7 @@
 ﻿using Photoshop;
+using psdPH.Logic.Ruleset.Rules.CompositionRules;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
@@ -25,18 +27,11 @@ namespace psdPH.Logic
         [XmlIgnore]
         public Composition Composition;
 
-        protected Rule[] CoreRules => Rules.Where(item => (item is CoreRule)).ToArray();
-        protected Rule[] NonCoreRules => Rules.Where(item => !(item is CoreRule)).ToArray();
-
-        public void NonCoreApply(Document doc)
+        public void Apply<T>(Document doc)
         {
-            foreach (var item in NonCoreRules)
-                item.Apply(doc);
-        }
-        public void CoreApply()
-        {
-            foreach (CoreRule item in CoreRules)
-                item.CoreApply();
+            foreach (var item in Rules)
+                if (item is T)
+                    item.Apply(doc);
         }
 
         public void RestoreComposition(Composition composition)
@@ -46,8 +41,8 @@ namespace psdPH.Logic
             {
                 rule.RestoreComposition(composition);
             }
-
         }
+
         public RuleSet()
         {
             Rules.CollectionChanged += (_, __) => Updated?.Invoke();
