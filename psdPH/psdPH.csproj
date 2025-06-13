@@ -120,6 +120,7 @@
     <Compile Include="Logic\UINameAttribute.cs" />
     <Compile Include="Photoshop\AlignOptions.cs" />
     <Compile Include="Photoshop\KostylExecutor.cs" />
+    <Compile Include="ProjectCreator.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\StructureRuleCommand.cs" />
@@ -130,6 +131,9 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\IBatchCompositionCreator.cs" />
     <Compile Include="TemplateEditor\ParameterDicts.cs" />
     <Compile Include="TemplateEditor\StructureRulesDicts.cs" />
+    <Compile Include="Utils\CedStack\IStackPanelManipulation.cs" />
+    <Compile Include="Utils\CedStack\PanelManipulation.cs" />
+    <Compile Include="Utils\CedStack\StackPanelManipulation.cs" />
     <Compile Include="Utils\Localization\EnumLocalization.cs" />
     <Compile Include="Utils\ReflectionSetups\Controls\AlignmentControl.xaml.cs">
       <DependentUpon>AlignmentControl.xaml</DependentUpon>
@@ -163,7 +167,7 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateCEDCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackHandler.cs" />
-    <Compile Include="Utils\CedStack\CEDStackHandler.cs" />
+    <Compile Include="Utils\CedStack\CEDPanelHandler.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\RuleStackControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\RuleStackHandler.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureStackControl.cs" />
@@ -194,8 +198,12 @@
     <Compile Include="Utils\UpcomingAttribute.cs" />
     <Compile Include="Views\ParsetInputWindow.cs" />
     <Compile Include="Views\SimpleView\CompositionTreeControl.cs" />
+    <Compile Include="Views\SimpleView\Logic\SimpleData.cs" />
+    <Compile Include="Views\SimpleView\Logic\SimpleRenderCommand.cs" />
+    <Compile Include="Views\SimpleView\Logic\SimpleRenderer.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleView.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleListData.cs" />
+    <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleControl.cs" />
     <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleViewCommand.cs" />
     <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleViewHandler.cs" />
     <Compile Include="Views\SimpleView\Windows\SimpleViewWindow.xaml.cs">

@@ -4,7 +4,7 @@ using psdPH.Utils.CedStack;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
-    abstract public class TemplateStackHandler : CEDStackHandler
+    abstract public class TemplateStackHandler : CEDPanelHandler
     {
         protected PsdPhContext Context
         {

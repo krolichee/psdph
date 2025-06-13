@@ -52,6 +52,10 @@ namespace psdPH.Views.WeekView
         {
             save();
         }
+        private void saveMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            save();
+        }
 
         private void clearMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -60,9 +64,6 @@ namespace psdPH.Views.WeekView
             _doSave = false;
             Close();
         }
-        private void saveMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            save();
-        }
+        
     }
 }

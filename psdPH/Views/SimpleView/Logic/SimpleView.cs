@@ -1,56 +1,84 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.Utils;
+using psdPH.Views.SimpleView.Windows;
+using psdPH.Views.WeekView;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace psdPH.Views.SimpleView.Logic
 {
-    class SimpleView
+    public class SimpleView
     {
-            private static SimpleView _instance;
-            private readonly string _projectName;
-            public static SimpleView Instance()
-            {
-                if (_instance == null)
-                    throw new System.Exception();
-                return _instance;
-            }
-            public static SimpleView MakeInstance(string projectName)
-            {
-                return _instance = new SimpleView(projectName);
-            }
-            protected SimpleView(string projectName)
-            {
-                _projectName = projectName;
-                Directory.CreateDirectory(ViewDirectory);
-            }
+        private static SimpleView _instance;
+        private readonly string _projectName;
+        public static SimpleView Instance()
+        {
+            if (_instance == null)
+                throw new System.Exception();
+            return _instance;
+        }
+        public static SimpleView MakeInstance(string projectName)
+        {
+            return _instance = new SimpleView(projectName);
+        }
+        protected SimpleView(string projectName)
+        {
+            _projectName = projectName;
+            Directory.CreateDirectory(ViewDirectory);
+        }
 
-            private string ViewDirectory => Path.Combine(PsdPhDirectories.ViewsDirectory(_projectName), "SimpleView");
-            private string ConfigPath => Path.Combine(ViewDirectory, "config.xml");
-            private string WeekListDataPath => Path.Combine(ViewDirectory, "data.xml");
-            public WeekConfig OpenWeekConfig() => DiskOperations.OpenXml<WeekConfig>(ConfigPath);
-            public SimpleListData OpenSimpleListData() => DiskOperations.OpenXml<SimpleListData>(WeekListDataPath);
-            public SimpleListData OpenOrCreateSimpleListData(Blob root)
-            {
-                var weeksListData = OpenSimpleListData();
-                weeksListData.Restore();
-                weeksListData.RootBlob = root;
-                return weeksListData;
-            }
+        private string ViewDirectory => Path.Combine(PsdPhDirectories.ViewsDirectory(_projectName), "SimpleView");
+        private string SimpleListDataPath => Path.Combine(ViewDirectory, "data.xml");
+        public string OutputsDirectory => Path.Combine(ViewDirectory, "output");
+        public string OutputDirectory(string outputName) => Path.Combine(OutputsDirectory, outputName);
+        public void CreateOutputsDirectory() => Directory.CreateDirectory(OutputsDirectory);
+        public void CreateOutputDirectory(string outputName) => Directory.CreateDirectory(OutputDirectory(outputName));
+        public SimpleListData OpenSimpleListData() => DiskOperations.OpenXml<SimpleListData>(SimpleListDataPath);
 
-            public void SaveWeekListData(SimpleListData simpleViewList)
-            {
-                DiskOperations.SaveXml(WeekListDataPath, simpleViewList);
-            }
+        public void SaveListData(SimpleListData simpleViewList)
+        {
+            DiskOperations.SaveXml(SimpleListDataPath, simpleViewList);
+        }
 
-            internal void Delete()
+        internal void Delete()
+        {
+            Directory.Delete(ViewDirectory, true);
+        }
+        public static Window ShowWindow()
+        {
+            var project = PsdPhProject.Instance();
+            var simpleView = MakeInstance(project.ProjectName);
+            Blob blob = project.openOrCreateMainBlob();
+            SimpleListData simpleListData;
+            try
             {
-                Directory.Delete(ViewDirectory, true);
+                simpleListData = simpleView.OpenSimpleListData();
+                if (simpleListData == null)
+                    simpleListData = new SimpleListData(blob);
+                else
+                    simpleListData.Restore(blob);
             }
-    
+            catch
+            {
+                var result = MessageBox.Show("Во время открытия данных вида произошла ошибка. Удалить вид?", "Ошибка", MessageBoxButton.YesNo, MessageBoxImage.Error);
+
+                if (result == MessageBoxResult.Yes)
+                    Instance().Delete();
+                return null;
+            }
+            
+
+            if (simpleListData == null)
+                return null;
+            var window = new SimpleViewWindow(simpleListData);
+            window.Show();
+            return window;
+        }
+
     }
 }

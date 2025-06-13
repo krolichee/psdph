@@ -21,7 +21,7 @@ namespace psdPH.Logic.Parameters
         public Parameter() { }
         public override string ToString()=>Name;
 
-        internal Parameter Clone()
+        public virtual Parameter Clone()
         {
             Parameter result =  Activator.CreateInstance(this.GetType()) as Parameter;
             result.Name = Name;

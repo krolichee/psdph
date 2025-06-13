@@ -12,7 +12,7 @@ using System.Windows.Controls;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
-    public abstract class RuleStackHandler : CEDStackHandler
+    public abstract class RuleStackHandler : CEDPanelHandler
     {
         protected abstract RuleCommand RuleCommand { get; }
         protected RuleSet RuleSet;

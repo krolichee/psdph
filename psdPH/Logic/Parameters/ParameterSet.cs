@@ -24,7 +24,7 @@ namespace psdPH.Logic.Parameters
                 Parameters.Add(rule);
         }
         public ParameterSet():base(){
-            ((ObservableCollection<Parameter>)this).CollectionChanged += (_, __) => Updated?.Invoke();
+            Parameters.CollectionChanged += (_, __) => Updated?.Invoke();
         }
         public T[] GetByType<T>()
         {
@@ -41,7 +41,7 @@ namespace psdPH.Logic.Parameters
         {
             var result = new ParameterSet();
             foreach (var par in Parameters)
-                result.Parameters.Add(par);
+                result.Parameters.Add(par.Clone());
             return result;
         }
         public Collection<Parameter> AsCollection() => Parameters;
@@ -52,7 +52,11 @@ namespace psdPH.Logic.Parameters
                 Set(parameter.Name,parameter.Value);
             
         }
-
-        public static explicit operator ObservableCollection<Parameter>(ParameterSet list) => list.Parameters;
+        public ParameterSet FillWith(ParameterSet other)
+        {
+            var result = Clone();
+            result.Import(other);
+            return result;
+        }
     }
 }

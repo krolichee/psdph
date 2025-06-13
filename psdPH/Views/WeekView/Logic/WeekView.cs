@@ -78,8 +78,9 @@ namespace psdPH.Views.WeekView
                 weeksListData.WeekRulesets = weekRules;
             }
 
-            weeksListData.Restore();
             weeksListData.MainBlob = root;
+            weeksListData.Restore();
+            
             return weeksListData;
         }
         public void SaveWeekListData(WeekListData weekListData)
@@ -99,7 +100,7 @@ namespace psdPH.Views.WeekView
             Directory.Delete(ViewDirectory, true);
         }
 
-        public static Window ShowWindowDialog()
+        public static Window ShowWindow()
         {
             var project = PsdPhProject.Instance();
             var weekView = WeekView.MakeInstance(project.ProjectName);

@@ -7,9 +7,26 @@
              mc:Ignorable="d" 
               Width="180" Height="180">
     <Button x:Name="button" Click="button_Click">
-        <Grid Background="#FFECE9E9" Width="{Binding ActualWidth, ElementName=button, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=button, Mode=OneWay}">
+        <Grid x:Name="grid" Background="#FFECE9E9" Width="{Binding ActualWidth, ElementName=button, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=button, Mode=OneWay}">
+
+
+            <TextBlock x:Name="previewTextBlock" TextWrapping="Wrap" Margin="6,6,6,0" FontFamily="Bahnschrift" Foreground="#FF524E4E">
+                <Run Text="Лорем Ипсум"/><LineBreak/><Run/>
+                <LineBreak/><Run Text="f"/><LineBreak/>
+                <Run Text="f"/><LineBreak/><Run Text="f"/><LineBreak/>
+                <Run Text="d"/><LineBreak/><Run Text="d"/><LineBreak/>
+                <Run Text="d"/><LineBreak/><Run Text="d"/><LineBreak/>
+                <Run Text="d"/><LineBreak/><Run Text="d"/><LineBreak/>
+                <Run Text="dd"/><LineBreak/><Run/>
+            </TextBlock>
+            <Rectangle x:Name="rectangle" Fill="{Binding Background, ElementName=grid}" VerticalAlignment="Bottom" Height="36" Width="240" HorizontalAlignment="Center">
+            </Rectangle>
+            <Rectangle Fill="{Binding Background, ElementName=grid}" VerticalAlignment="Bottom" Height="72" Width="{Binding Width, ElementName=rectangle}" HorizontalAlignment="Center">
+                <Rectangle.Effect>
+                    <BlurEffect Radius="37" KernelType="Gaussian"></BlurEffect>
+                </Rectangle.Effect>
+            </Rectangle>
             <Label x:Name="dowLabel" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="#FFA4A0CC" FontSize="24" FontFamily="Arial Black"/>
-            <TextBlock x:Name="previewTextBlock" TextWrapping="Wrap" Text="Лорем Ипсум" VerticalAlignment="Top" Margin="6,6,6,0" FontFamily="Bahnschrift" Foreground="#FF524E4E"/>
         </Grid>
     </Button>
 </UserControl>

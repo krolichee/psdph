@@ -1,67 +1,38 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Windows;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
+using System.Windows.Media;
+using System.Windows;
+using System.Collections;
 
 namespace psdPH.Utils.CedStack
 {
-    abstract public class CEDStackHandler
+    public struct SwapInexes
     {
-        public StackPanel Stack;
-        protected abstract IList Items { get; }
-        protected virtual void move(int from, int to)
+        int Original;
+        int New;
+    }
+    public class StackPanelManipulation : PanelManipulation
+    {
+        public StackPanelManipulation(Panel panel)
         {
-            var arr = Items;
-            var from_obj = arr[from];
-            arr.RemoveAt(from);
-            arr.Insert(to,from_obj);
+            itemsContainer = panel;
         }
-        //protected virtual void swap(int index1, int index2)
-        //{
-        //    var e = Items;
-        //    var item1 = e[index1];
-        //    e[index1] = e[index2];
-        //    e[index2] = item1;
-        //}
-        protected abstract FrameworkElement createControl(object item);
-        protected abstract object[] getElements();
-        public void Refresh()
-        {
-            Stack.Children.Clear();
-            object[] elements = getElements();
-            foreach (object item in elements)
-                Stack.Children.Add(a(createControl(item)));
-        }
-        protected virtual void InitializeAddDropDownMenu(Button button) { }
-        protected virtual void AddButtonAction() { }
-        protected void AddButton_Click(object _, object __) { AddButtonAction(); }
-        protected virtual MenuItem CreateAddMenuItem(Type type) { throw new NotImplementedException(); }
-        public void Initialize(CEDStackUI cEDStackUI)
-        {
-            InitializeAddDropDownMenu(cEDStackUI.AddButton);
-            cEDStackUI.AddButton.Click += AddButton_Click;
-            Stack = cEDStackUI.StackPanel;
-        }
-        public UIElement a(FrameworkElement element)
+        public override UIElement NewElement(FrameworkElement element)
         {
             var wrapper = new Grid()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch, // Растягиваем Grid на всю доступную ширину
-                ColumnDefinitions =
-    {
-        new ColumnDefinition { Width = new GridLength(20) }, // Фиксированная ширина слева
-        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) } // Оставшееся место для вашего элемента
-    }
+                ColumnDefinitions ={
+                    new ColumnDefinition { Width = new GridLength(20) }, // Фиксированная ширина слева
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) } // Оставшееся место для вашего элемента
+                }
             };
             var border = new Border
             {
@@ -89,7 +60,7 @@ namespace psdPH.Utils.CedStack
             };
             // Ваш пользовательский элемент (который должен растягиваться)
             var yourUserControl = element; // Замените на ваш реальный элемент
-           yourUserControl.HorizontalAlignment = HorizontalAlignment.Stretch;
+            yourUserControl.HorizontalAlignment = HorizontalAlignment.Stretch;
 
             // Добавляем элементы в Grid
             Grid.SetColumn(leftElement, 0);
@@ -97,25 +68,15 @@ namespace psdPH.Utils.CedStack
 
             wrapper.Children.Add(leftElement);
             wrapper.Children.Add(yourUserControl);
-            
+
             leftElement.AddHandler(UIElement.MouseEnterEvent, new MouseEventHandler(dragElementEnter), true);
             //            leftElement.AddHandler(UIElement.MouseLeaveEvent, new MouseEventHandler(dragElementLeave), true);
 
-            mlbd_h = mlbd;
-            mlbu_h = mlbu; 
-            mm_h = mm; 
-
             return border;
         }
-        private MouseButtonEventHandler mlbd_h;
-        private MouseButtonEventHandler mlbu_h;
-        private MouseEventHandler mm_h ;
-        private void removeBorderHandlers(FrameworkElement border)
-        {
-            border.MouseLeftButtonDown -= mlbd_h;
-            border.MouseLeftButtonUp -= mlbu_h;
-            border.MouseMove -= mm_h;
-        }
+        private MouseButtonEventHandler mlbd_h => mlbd;
+        private MouseButtonEventHandler mlbu_h => mlbu;
+        private MouseEventHandler mm_h => mm;
         private void dragElementEnter(object sender, MouseEventArgs e)
         {
             var border = (sender as DragRect).Dragged;
@@ -123,19 +84,20 @@ namespace psdPH.Utils.CedStack
             border.MouseLeftButtonUp += mlbu_h;
             border.MouseMove += mm_h;
         }
-
         private UIElement draggedItem;
         private Point startPoint;
         private int originalIndex;
         private TranslateTransform transform;
         private double offsetY;
         private bool dragged = false;
-        private StackPanel itemsContainer=>Stack;
-        private void mlbu(object sender, MouseButtonEventArgs e)
+        private Panel itemsContainer;
+
+        public override event SwapHandler Swapped;
+        public override void mlbu(object sender, MouseButtonEventArgs e)
         {
-            
+
             var border = (sender as Border).Child as FrameworkElement;
-            if(!dragged)
+            if (!dragged)
                 draggedItem?.ReleaseMouseCapture();
 
             if (draggedItem == null || e.ChangedButton != MouseButton.Left) return;
@@ -156,11 +118,10 @@ namespace psdPH.Utils.CedStack
                 var animation = new DoubleAnimation(0, TimeSpan.FromMilliseconds(200));
                 transform.BeginAnimation(TranslateTransform.YProperty, animation);
                 // Фактическое перемещение элемента в коллекции
-                move(originalIndex, newIndex);
+                Swapped?.Invoke(originalIndex, newIndex);
                 //itemsContainer.Children.Remove(draggedItem);
                 //itemsContainer.Children.Insert(newIndex, draggedItem);
                 //doRefresh = true;
-                Refresh();
             }
             else
             {
@@ -179,27 +140,27 @@ namespace psdPH.Utils.CedStack
             dragged = false;
             removeBorderHandlers(border);
         }
-        private void mm(object sender, MouseEventArgs e)
+        public override void mm(object sender, MouseEventArgs e)
         {
             if (draggedItem == null || !draggedItem.IsMouseCaptured) return;
             Console.WriteLine("перетаскивание");
-            
+
             // Текущая позиция курсора относительно StackPanel
             Point currentPoint = e.GetPosition(itemsContainer);
 
             // Вычисляем смещение
-            double deltaY = currentPoint.Y - startPoint.Y+offsetY;
+            double deltaY = currentPoint.Y - startPoint.Y + offsetY;
 
             // Применяем трансформацию
             transform.Y = deltaY;
-            if (deltaY!=0) 
+            if (deltaY != 0)
                 dragged = true;
             // (sender as FrameworkElement).Margin = new Thickness(0, deltaY, 0, 0);
 
             // Обновляем индикатор позиции вставки
             UpdateInsertionIndicator(currentPoint.Y);
         }
-        private void mlbd(object sender, MouseButtonEventArgs e)
+        public override void mlbd(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton != MouseButton.Left) return;
 
@@ -233,28 +194,7 @@ namespace psdPH.Utils.CedStack
             e.Handled = false;
             dragged = false;
         }
-        private int FindNewIndex(double yPosition)
-        {
-            for (int i = 0; i < itemsContainer.Children.Count; i++)
-            {
-                if (itemsContainer.Children[i] == draggedItem) continue;
-
-                UIElement child = itemsContainer.Children[i];
-                Point childPosition = child.TransformToAncestor(itemsContainer).Transform(new Point(0, 0));
-                double childTop = childPosition.Y;
-                double childBottom = childTop + child.RenderSize.Height;
-
-                // Если курсор находится в верхней половине элемента
-                if (yPosition < childTop + (childBottom - childTop) / 2)
-                {
-                    return i > originalIndex ? i - 1 : i;
-                }
-            }
-
-            // Если курсор ниже всех элементов - добавляем в конец
-            return itemsContainer.Children.Count - 1;
-        }
-        private int CalculateNewIndex(double yPosition)
+        public override int CalculateNewIndex(double yPosition)
         {
             for (int i = 0; i < itemsContainer.Children.Count; i++)
             {
@@ -274,7 +214,8 @@ namespace psdPH.Utils.CedStack
 
             return itemsContainer.Children.Count - 1;
         }
-        private void ClearBorders() {
+        public override void ClearBorders()
+        {
             foreach (UIElement child in itemsContainer.Children)
             {
                 if (child is Border border)
@@ -284,7 +225,7 @@ namespace psdPH.Utils.CedStack
                 }
             }
         }
-        private void UpdateInsertionIndicator(double yPosition)
+        public override void UpdateInsertionIndicator(double yPosition)
         {
             // Сбрасываем подсветку для всех элементов
             foreach (UIElement child in itemsContainer.Children)
@@ -319,6 +260,13 @@ namespace psdPH.Utils.CedStack
                 }
             }
         }
+        private void removeBorderHandlers(FrameworkElement border)
+        {
+            border.MouseLeftButtonDown -= mlbd_h;
+            border.MouseLeftButtonUp -= mlbu_h;
+            border.MouseMove -= mm_h;
+        }
+
 
     }
 }

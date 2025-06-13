@@ -8,16 +8,16 @@ namespace psdPH.Utils.CedStack
     /// </summary>
     public partial class CEDStackUI : UserControl
     {
-        public CEDStackHandler handler;
-        public StackPanel StackPanel => stackPanel;
+        public CEDPanelHandler handler;
+        public Panel Panel => stackPanel;
         public Button AddButton => addButton;
-        public static CEDStackUI CreateCEDStack(CEDStackHandler handler)
+        public static CEDStackUI CreateCEDStack(CEDPanelHandler handler)
         {
             CEDStackUI result = new CEDStackUI(handler);
             handler.Initialize(result);
             return result;
         }
-        protected CEDStackUI(CEDStackHandler handler)
+        protected CEDStackUI(CEDPanelHandler handler)
         {
             this.handler = handler;
             InitializeComponent();
@@ -33,7 +33,6 @@ namespace psdPH.Utils.CedStack
             if (addButton.ContextMenu.Items.Count!=0)
                 addButton.ContextMenu.IsOpen = true;
         }
-
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             handler?.Refresh();

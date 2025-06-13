@@ -1,33 +1,38 @@
 ﻿using psdPH.Logic.Compositions;
+using psdPH.Logic.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace psdPH.Views.SimpleView.Logic
 {
-    public class SimpleListData
+    public class SimpleListData:ISerializable
     {
+        [XmlIgnore]
         public Blob RootBlob;
-        public ObservableCollection<Blob> Variants;
-        public void New()
-        {
-            Variants.Add(RootBlob.Clone());
-        }
-        public void Remove(Blob item)
-        {
-            Variants.Remove(item);
-        }
+        public ObservableCollection<SimpleData> Variants=new ObservableCollection<SimpleData>();
 
-        internal void Restore()
+        public SimpleListData(Blob blob)
         {
-            RootBlob.Restore();
+            RootBlob = blob;
+        }
+        public void New()=>
+            Variants.Add(new SimpleData(this));
+        public void Remove(SimpleData item) =>
+            Variants.Remove(item);
+
+        internal void Restore(Blob root)
+        {
+            RootBlob = root;
             foreach (var item in Variants)
             {
-                item.Restore();
+                item.Restore(this);
             }
         }
+        public SimpleListData() { }
     }
 }

@@ -21,13 +21,11 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             RuleCommand = ruleCommand;
             HorizontalAlignment = HorizontalAlignment.Stretch;
             HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            ICommand editCommand = EditCommand();
-            ICommand deleteCommand = DeleteCommand();
             var rtb = new RuleTextBlock((Rule)rule);
             //Height = 28;
             Content = rtb;
             CommandParameter = rule;
-            Command = editCommand;
+            Command = EditCommand();
             setContextMenu(this, rule);
         }
     }

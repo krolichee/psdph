@@ -42,9 +42,7 @@ namespace psdPH.Views.WeekView
         public void Restore(WeekListData weekListData)
         {
             this.WeekListData = weekListData;
-            var savedParameters = ParameterSet;
-            ParameterSet = MainBlob.ParameterSet.Clone();
-            ParameterSet.Import(savedParameters);
+            ParameterSet = MainBlob.ParameterSet.FillWith(ParameterSet);
 
             Blob dayBlob = WeekConfig.GetDayBlob(MainBlob);
             for (int i = 0; i < DayParsetsList.Count; i++)

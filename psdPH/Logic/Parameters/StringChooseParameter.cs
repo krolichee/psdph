@@ -14,8 +14,13 @@ namespace psdPH.Logic.Parameters
                 var stringChoiceConfig = new SetupConfig(this,nameof(Text), "значение");
                 result.Add(Setup.ComboString(stringChoiceConfig, Strings));
                 return result.ToArray();
-                   
         }
+        }
+        public override Parameter Clone()
+        {
+            var result = base.Clone() as StringChooseParameter;
+            result.Strings = Strings;
+            return result;
         }
         public StringChooseParameter() { }
     }
