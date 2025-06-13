@@ -19,6 +19,8 @@ namespace psdPH.Logic
     {
         public delegate void AcceptedEvent();
         public event AcceptedEvent Accepted;
+        public delegate void ChangedEvent();
+        public event ChangedEvent Changed;
         public Setup() { }
         public FrameworkElement Control;
         FieldFunctions _fieldFunctions;
@@ -224,11 +226,6 @@ namespace psdPH.Logic
             stack.Children.Add(cbStack);
             result.Control = cb;
             return result;
-        }
-
-        private static void abs(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         Setup(SetupConfig config, FieldFunctions fieldFunctions = null)

@@ -15,7 +15,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
         public bool Applied => _applied;
         StackPanel _stack;
         Setup[] _parameters;
-        Setup[] Parameters
+        Setup[] Setups
         {
             set
             {
@@ -26,6 +26,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             }
             get => _parameters;
         }
+        void a() { }
         public SetupsInputWindow(Setup setup, string title = "") : this(new Setup[] { setup }, title) { }
         public SetupsInputWindow(Setup[] setups, string title = "")
         {
@@ -33,17 +34,15 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             InitializeComponent();
             this.CenterByTopmostOrScreen();
 
-
             Title = title;
             _stack = new StackPanel();
-            Parameters = setups;
+            Setups = setups;
             foreach (var parameter in setups)
             {
                 parameter.Stack.Orientation = Orientation.Vertical;
                 parameter.Control.HorizontalAlignment = HorizontalAlignment.Left;
                 parameter.Control.VerticalAlignment = VerticalAlignment.Top; 
                 parameter.Stack.Margin = new Thickness(10, 10, 10, 10);
-
             }
             MainGrid.Children.Insert(0, _stack);
         }

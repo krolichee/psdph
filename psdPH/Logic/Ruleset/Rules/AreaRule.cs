@@ -5,7 +5,7 @@ using static psdPH.Logic.PhotoshopDocumentExtension;
 using static psdPH.Logic.PhotoshopLayerExtension;
 using static psdPH.Photoshop.LayerWr;
 
-namespace psdPH.Logic
+namespace psdPH.Logic.Ruleset.Rules
 {
     public abstract class AreaRule : LayerRule
     {

@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Rules;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.Utils.ReflectionSetups;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using static psdPH.Utils.SplitTextToRatio;
 
-namespace psdPH.Logic.Ruleset.Rules.CompositionRules
+namespace psdPH.Logic.Rules
 {
     public class SplitForAreaRule : TextRule, CompositionRule
     {

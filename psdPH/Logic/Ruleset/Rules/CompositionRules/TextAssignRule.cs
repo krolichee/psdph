@@ -1,7 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
-using psdPH.Logic.Ruleset.Rules.CompositionRules;
+using psdPH.Logic.Ruleset.Rules;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;

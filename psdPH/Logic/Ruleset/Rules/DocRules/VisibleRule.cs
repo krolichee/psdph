@@ -1,9 +1,8 @@
 ﻿using Photoshop;
-using psdPH.Logic.Ruleset.Rules.DocRules;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace psdPH.Logic
+namespace psdPH.Logic.Ruleset.Rules
 {
     public class VisibleRule : LayerRule, DocRule
     {

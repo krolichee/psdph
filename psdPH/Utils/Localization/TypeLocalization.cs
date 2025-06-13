@@ -3,6 +3,7 @@
     using psdPH.Logic;
     using psdPH.Logic.Compositions;
     using psdPH.Logic.Parameters;
+    using psdPH.Logic.Ruleset.Rules;
     using System;
     using System.Collections.Generic;
 

@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.Utils;
 using psdPH.Utils.CedStack;
 using psdPH.Views.WeekView;

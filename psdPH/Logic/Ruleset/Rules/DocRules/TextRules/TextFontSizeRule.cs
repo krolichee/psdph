@@ -1,10 +1,9 @@
 ﻿using Photoshop;
-using psdPH.Logic.Ruleset.Rules.DocRules;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace psdPH.Logic.Rules
+namespace psdPH.Logic.Ruleset.Rules
 {
     public class TextFontSizeRule : TextRule, DocRule
     {

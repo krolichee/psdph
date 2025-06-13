@@ -1,11 +1,10 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
-using psdPH.Logic.Ruleset.Rules.DocRules;
 using psdPH.Photoshop;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace psdPH.Logic
+namespace psdPH.Logic.Ruleset.Rules
 {
     public abstract class LayerRule : ConditionRule
     {

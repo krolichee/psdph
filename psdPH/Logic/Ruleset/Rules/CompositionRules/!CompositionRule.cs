@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace psdPH.Logic.Ruleset.Rules.CompositionRules
+namespace psdPH.Logic.Rules
 {
     public interface CompositionRule
     {

@@ -23,7 +23,6 @@ namespace psdPH
             result.WeekConfig = weekConfig;
             result.MainBlob = root;
             result.WeekRulesets = weekRulesets;
-            result.WeekRulesets.Restore(root,weekConfig);
             return result;
         }
         public static WeekListData Create(WeekConfig weekConfig, Blob root)
@@ -35,7 +34,6 @@ namespace psdPH
             result.WeekConfig = weekConfig;
             result.MainBlob = root;
             result.WeekRulesets = weekRulesets;
-            result.WeekRulesets.Restore(root, weekConfig);
             return result;
         }
         [XmlIgnore]
@@ -47,7 +45,6 @@ namespace psdPH
         public Blob MainBlob;
         public void Restore()
         {
-            WeekRulesets.Restore(MainBlob, WeekConfig);
             MainBlob.Restore();
             foreach (var week in Weeks)
                 week.Restore(this);

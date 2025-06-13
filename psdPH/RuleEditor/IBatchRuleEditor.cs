@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic;
+using psdPH.Logic.Ruleset.Rules;
 
 namespace psdPH.RuleEditor
 {

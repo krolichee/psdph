@@ -1,10 +1,9 @@
 ﻿using Photoshop;
-using psdPH.Logic.Ruleset.Rules.DocRules;
 using System.Collections.Generic;
 using System.Windows;
 using System.Xml.Serialization;
 
-namespace psdPH.Logic
+namespace psdPH.Logic.Ruleset.Rules
 {
     public class TranslateRule : LayerRule, DocRule
     {

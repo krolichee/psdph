@@ -6,6 +6,7 @@ using System;
 using psdPH.RuleEditor;
 using System.Linq;
 using psdPH.Logic.Rules;
+using psdPH.Logic.Ruleset.Rules;
 
 namespace psdPH.Views.WeekView
 {

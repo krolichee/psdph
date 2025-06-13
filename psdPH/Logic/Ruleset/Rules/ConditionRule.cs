@@ -2,7 +2,7 @@
 using psdPH.Logic.Rules;
 using Condition = psdPH.Logic.Rules.Condition;
 
-namespace psdPH.Logic
+namespace psdPH.Logic.Ruleset.Rules
 {
     public abstract class ConditionRule : Rule
     {

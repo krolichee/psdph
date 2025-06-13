@@ -1,5 +1,5 @@
 ﻿using Photoshop;
-using psdPH.Logic.Ruleset.Rules.CompositionRules;
+using psdPH.Logic.Ruleset.Rules;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

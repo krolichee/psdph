@@ -1,7 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic;
 using psdPH.Logic.Rules;
-using psdPH.Logic.Ruleset.Rules.CompositionRules;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.RuleEditor;
 using Condition = psdPH.Logic.Rules.Condition;
 
@@ -27,7 +27,8 @@ namespace psdPH.TemplateEditor
                 new FitRule(root),
                 new FlagRule(root),
                 new TextAssignRule(root),
-                new SplitForAreaRule(root)
+                new SplitForAreaRule(root),
+                new TransitRule(root)
             };
         public delegate IBatchRuleEditor CreateRule(Document doc, Composition composition);
         public delegate IBatchRuleEditor EditRule(Document doc, Rule rule);

@@ -1,9 +1,9 @@
 ﻿using Photoshop;
-using psdPH.Logic.Ruleset.Rules.DocRules;
+using psdPH.Logic.Ruleset.Rules;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace psdPH.Logic
+namespace psdPH.Logic.Ruleset.Rules
 {
     public class OpacityRule : LayerRule, DocRule
     {

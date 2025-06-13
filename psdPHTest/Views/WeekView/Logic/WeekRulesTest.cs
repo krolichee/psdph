@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using psdPH.Views.WeekView;
+using psdPH.Logic.Ruleset.Rules;
 
 namespace psdPHTest.Views.WeekView.Logic
 {

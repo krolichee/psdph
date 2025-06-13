@@ -94,10 +94,12 @@
     <Compile Include="Logic\Ruleset\Rules\CompositionRules\!CompositionRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\CompositionRules\SplitForAreaRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\DocRules\!DocRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\!ParameterSetRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\!IParameterSetRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\DocRules\TextRules\TextFontSizeRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\DocRules\TextRules\TextJustifRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\CompositionRules\TextAssignRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\ParameterSetRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\TransitRule.cs" />
     <Compile Include="Photoshop\LayerWr\LayerDescriptor.cs" />
     <Compile Include="Logic\Compositions\LayerLeaf.cs" />
     <Compile Include="Logic\Compositions\PlaceholderLeaf.cs" />

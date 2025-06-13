@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic.Rules;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.RuleEditor;
 using System.Collections.Generic;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using Condition = psdPH.Logic.Rules.Condition;
+using Rule = psdPH.Logic.Ruleset.Rules.Rule;
 
 namespace psdPH.Logic
 {
@@ -44,8 +46,39 @@ namespace psdPH.Logic
             list.RemoveAt(index);
             list.Insert(index, replacement);
         }
+        void SetupsChanged(object sender)
+        {
+            if (sender == _condition)
+                RefreshConditionSetupsStack();
+            else if (sender == _rule)
+                RefreshRuleSetupsStack();
+        }
+        void RefreshConditionSetupsStack()
+        {
+            conditionParametersStack.Children.Clear();
+            var parameters = _condition.Setups;
+            _parameters.AddRange(parameters);
+            foreach (var param in parameters)
+            {
+                setupParameterApperiance(param);
+                conditionParametersStack.Children.Add(param.Stack);
+            }
+        }
+        void RefreshRuleSetupsStack()
+        {
+            ruleParametersStack.Children.Clear();
+            var parameters = _rule.Setups;
+            _parameters.AddRange(parameters);
+            foreach (var param in parameters)
+            {
+                setupParameterApperiance(param);
+                ruleParametersStack.Children.Add(param.Stack);
+            }
+        }
+
         public RuleControl(ConditionRule rule_original, RulesetDefinition rulesetDef)
         {
+
             var rule = rule_original.Clone() as ConditionRule;
             var condition = rule.Condition;
 
@@ -55,10 +88,13 @@ namespace psdPH.Logic
             replaceIfSameType(conditions, condition);
             replaceIfSameType(rules, rule);
 
+            condition.SetupsChanged += SetupsChanged;
+
             InitializeComponent();
             initComboBoxes(rules.ToArray(),conditions.ToArray());
             conditionsComboBox.SelectedItem = condition;
             ruleComboBox.SelectedItem = rule;
+
         }
 
         void setupParameterApperiance(Setup param)
@@ -72,27 +108,10 @@ namespace psdPH.Logic
         private void conditionsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _condition = conditionsComboBox.SelectedItem as Condition;
-            conditionParametersStack.Children.Clear();
-            var parameters = _condition.Setups;
-            _parameters.AddRange(parameters);
-            foreach (var param in parameters)
-            {
-                setupParameterApperiance(param);
-                conditionParametersStack.Children.Add(param.Stack);
-            }
         }
         private void ruleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _rule = ruleComboBox.SelectedItem as ConditionRule;
-            ruleParametersStack.Children.Clear();
-            var parameters = _rule.Setups;
-            _parameters.AddRange(parameters);
-            foreach (var param in parameters)
-            {
-                setupParameterApperiance(param);
-                ruleParametersStack.Children.Add(param.Stack);
-            }
-
         }
         void acceptParameters()
         {

@@ -1,10 +1,10 @@
 ﻿using Photoshop;
 using psdPH.Logic;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.RuleEditor;
 using psdPH.Utils;
 using System.Windows;
 using System.Windows.Input;
-using Rule = psdPH.Logic.Rule;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {

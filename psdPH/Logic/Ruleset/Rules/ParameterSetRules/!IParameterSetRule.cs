@@ -1,8 +1,8 @@
 ﻿using psdPH.Logic.Parameters;
 
-namespace psdPH.Logic
+namespace psdPH.Logic.Ruleset.Rules
 {
-    public interface ParameterSetRule
+    public interface IParameterSetRule
     {
         void SetParameterSet(ParameterSet parset);
     }

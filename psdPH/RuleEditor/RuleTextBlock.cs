@@ -1,7 +1,7 @@
 ﻿using psdPH.Logic;
+using psdPH.Logic.Ruleset.Rules;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using Rule = psdPH.Logic.Rule;
 
 namespace psdPH.RuleEditor
 {

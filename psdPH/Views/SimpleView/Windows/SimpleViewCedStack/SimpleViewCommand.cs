@@ -1,4 +1,5 @@
-﻿using psdPH.Logic.Compositions;
+﻿using psdPH.Logic;
+using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using psdPH.Views.SimpleView.Logic;

@@ -1,9 +1,8 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
-using psdPH.Logic.Ruleset.Rules.DocRules;
 using System.Collections.Generic;
 
-namespace psdPH.Logic
+namespace psdPH.Logic.Ruleset.Rules
 {
     public class AlignRule : AreaRule, DocRule
     {

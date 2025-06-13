@@ -1,6 +1,6 @@
 ﻿using Photoshop;
-using psdPH.Logic.Ruleset.Rules.CompositionRules;
-using psdPH.Logic.Ruleset.Rules.DocRules;
+using psdPH.Logic.Rules;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using psdPH.Utils;
 using psdPH.Utils.ReflectionSetups;
@@ -75,8 +75,8 @@ namespace psdPH.Logic.Compositions
 
         internal void CoreApply()
         {
+            RuleSet.Apply<IParameterSetRule>(null);
             Apply<CoreComposition>(null);
-            RuleSet.Apply<ParameterSetRule>(null);
         }
         private void NonCoreApply(Document doc)
         {

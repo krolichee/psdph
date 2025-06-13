@@ -2,6 +2,7 @@
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.Utils;
 using psdPH.Views.WeekView.Logic;
 using System;
@@ -97,14 +98,20 @@ namespace psdPH.Views.WeekView
         void applyRules()
         {
             foreach (ParameterSetRule rule in WeekListData.WeekRulesets.WeekRules.Rules)
+            {
                 rule.SetParameterSet(ParameterSet);
+                rule.Composition = null;
+            }
             WeekListData.WeekRulesets.WeekRules.Apply<ParameterSetRule>(null);
 
             foreach (var dayParset in DayParsetsList)
             {
                 foreach (ParameterSetRule rule in WeekListData.WeekRulesets.DayRules.Rules)
+                {
                     rule.SetParameterSet(dayParset);
-                WeekListData.WeekRulesets.DayRules.Apply<ParameterSetRule>(null);
+                    rule.Composition = null;
+                }
+                    WeekListData.WeekRulesets.DayRules.Apply<ParameterSetRule>(null);
             }
 
 

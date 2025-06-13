@@ -10,6 +10,9 @@ namespace psdPH.Logic.Rules
     {
         [XmlIgnore]
         public Composition Composition;
+
+        public event SetupsChangedEvent SetupsChanged;
+
         [XmlIgnore]
         public abstract Setup[] Setups { get; }
         public abstract bool IsValid();

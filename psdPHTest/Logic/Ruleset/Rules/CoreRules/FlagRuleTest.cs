@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using psdPH.Logic;
 using psdPH.Logic.Parameters;
 using psdPH.Logic.Rules;
+using psdPH.Logic.Ruleset.Rules;
 
 namespace psdPHTest.Logic.Ruleset.Rules.CoreRules
 {

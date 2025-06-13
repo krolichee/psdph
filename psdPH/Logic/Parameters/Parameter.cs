@@ -10,6 +10,9 @@ namespace psdPH.Logic.Parameters
     {
         public object Value;
         public string Name;
+
+        public event SetupsChangedEvent SetupsChanged;
+
         public abstract Setup[] Setups { get; }
 
         protected SetupConfig getValueSetupConfig() => new SetupConfig(this, nameof(Value), Name);

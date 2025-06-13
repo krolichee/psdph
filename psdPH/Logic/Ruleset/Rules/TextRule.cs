@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Xml.Serialization;
 
-namespace psdPH.Logic.Rules
+namespace psdPH.Logic.Ruleset.Rules
 {
     public abstract class TextRule : LayerRule
     {
@@ -18,14 +18,7 @@ namespace psdPH.Logic.Rules
             return Setup.Choose(textLeafConfig, textLeaves);
         }
         [XmlIgnore]
-        public override Setup[] Setups
-        {
-            get
-            {
-                var result = new List<Setup>() { getTextLeafSetup() };
-                return result.ToArray();
-            }
-        }
+        public override Setup[] Setups => new Setup[] { getTextLeafSetup() };
 
         protected TextRule(Composition composition) : base(composition) { }
 

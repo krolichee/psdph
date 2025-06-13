@@ -1,0 +1,93 @@
+﻿using Photoshop;
+using psdPH.Logic.Compositions;
+using psdPH.Logic.Parameters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+
+namespace psdPH.Logic.Ruleset.Rules
+{
+    public class TransitRule : ParameterSetRule, IParameterSetRule
+    {
+        public override string ToString() => "передать параметр";
+
+        public override event SetupsChangedEvent SetupsChanged;
+        public override Setup[] Setups
+        {
+            get
+            {
+                var result = new List<Setup>();
+                var fromParConfig = new SetupConfig(this,nameof(FromParameter),"");
+                var fromParSetup = Setup.Choose(fromParConfig, ParameterSet.Parameters.ToArray());
+                fromParSetup.Changed += () => SetupsChanged(this);
+                result.Add(fromParSetup);
+                var toBlobConfig = new SetupConfig(this, nameof(ToBlob), "внутрь");
+                var toBlobSetup = Setup.Choose(toBlobConfig, Composition.GetChildren<Blob>());
+                toBlobSetup.Changed += () => SetupsChanged(this);
+                result.Add(toBlobSetup);
+                if(FromParameter!=null && ToBlob != null)
+                {
+                    bool isSameParameter(Parameter p) => p.GetType() == FromParameter.GetType();
+                    var toParConfig = new SetupConfig(this, nameof(ToParameter), "в");
+                    var sameParameters = ToBlob.ParameterSet.Parameters.Where(isSameParameter).ToArray();
+                    var toParSetup = Setup.Choose(toParConfig, sameParameters);
+                }
+                return result.ToArray();
+            }
+        }
+        public string ToBlobName;
+        [XmlIgnore]
+        public Blob ToBlob
+        {
+            protected get => Composition.GetChildren<Blob>().FirstOrDefault(t => t.LayerName == ToBlobName);
+            set => ToBlobName = value?.LayerName;
+        }
+        public string FromParameterName;
+        bool from_predicate(Parameter p) => p.Name == FromParameterName;
+        [XmlIgnore]
+        public Parameter FromParameter
+        {
+            protected get
+            {
+                var parset = ParameterSet;
+                return parset.AsCollection().FirstOrDefault(from_predicate);
+            }
+            set
+            {
+                FromParameterName = value.Name;
+            }
+        }
+        public string ToParameterName;
+        bool to_predicate(Parameter p) => p.Name == ToParameterName;
+        [XmlIgnore]
+        public Parameter ToParameter
+        {
+            protected get
+            {
+                var parset = ToBlob.ParameterSet;
+                return parset.AsCollection().FirstOrDefault(to_predicate);
+            }
+            set
+            {
+                FromParameterName = value.Name;
+            }
+        }
+        public override bool IsSetUp()
+        {
+            return base.IsSetUp()&& 
+                ToBlobName!=null&&
+                ToParameterName!=null&&
+                FromParameterName!= null;
+        }
+        protected override void _apply(Document doc)
+        {
+            if (Composition!=null)
+                ToBlob.ParameterSet.Set(ToParameterName,FromParameter.Value);
+        }
+        public TransitRule(Composition composition) : base(composition) { }
+        public TransitRule() : base(null) { }
+    }
+}
