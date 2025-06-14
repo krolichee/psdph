@@ -91,7 +91,8 @@ namespace psdPH.Logic.Ruleset.Rules
             if (Composition!=null)
                 ToBlob.ParameterSet.Set(ToParameterName,FromParameter.Value);
         }
-        public TransitRule(Composition composition) : base(composition) { }
-        public TransitRule() : base(null) { }
+        public TransitRule() : base(null as Composition) { }
+        public TransitRule(Composition composition) : base(composition) { ParameterSet = composition.ParameterSet; }
+        public TransitRule(ParameterSet parameterSet) : base(parameterSet) { }
     }
 }

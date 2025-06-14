@@ -43,7 +43,9 @@ namespace psdPH.Views.WeekView
         public void Restore(WeekListData weekListData)
         {
             this.WeekListData = weekListData;
-            ParameterSet = MainBlob.ParameterSet.FillWith(ParameterSet);
+
+            ParameterSet = MainBlob.ParameterSet.Clone();
+            ParameterSet.Import(MainBlob.ParameterSet);
 
             Blob dayBlob = WeekConfig.GetDayBlob(MainBlob);
             for (int i = 0; i < DayParsetsList.Count; i++)
@@ -95,24 +97,28 @@ namespace psdPH.Views.WeekView
             }
             return mainBlob;
         }
-        void applyRules()
+        void applyRules(RuleSet ruleSet, ParameterSet parameterSet)
         {
-            foreach (ParameterSetRule rule in WeekListData.WeekRulesets.WeekRules.Rules)
+            foreach (ParameterSetRule rule in ruleSet.Rules)
             {
-                rule.SetParameterSet(ParameterSet);
+                rule.SetParameterSet(parameterSet);
                 rule.Composition = null;
             }
-            WeekListData.WeekRulesets.WeekRules.Apply<ParameterSetRule>(null);
-
+            ruleSet.Apply<ParameterSetRule>(null);
+        }
+        void applyRules()
+        {
             foreach (var dayParset in DayParsetsList)
             {
-                foreach (ParameterSetRule rule in WeekListData.WeekRulesets.DayRules.Rules)
-                {
-                    rule.SetParameterSet(dayParset);
-                    rule.Composition = null;
-                }
-                    WeekListData.WeekRulesets.DayRules.Apply<ParameterSetRule>(null);
+                var dayRules = WeekListData.WeekRulesets.DayRules;
+                applyRules(dayRules, dayParset);
             }
+
+
+            var weekRules = WeekListData.WeekRulesets.WeekRules;
+            applyRules(weekRules, ParameterSet);
+
+            
 
 
         }

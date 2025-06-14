@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,19 +9,16 @@ namespace psdPH.Logic.Parameters
 {
     public class StringChooseParameter : StringParameter
     {
-        public List<string> Strings = new List<string>();
+        public ObservableCollection<string> Strings = new ObservableCollection<string>();
         public override Setup[] Setups { get {
                 var result = new List<Setup>();
-                var stringChoiceConfig = new SetupConfig(this,nameof(Text), "значение");
-                result.Add(Setup.ComboString(stringChoiceConfig, Strings));
+                result.Add(Setup.ComboString(getValueSetupConfig(), Strings));
                 return result.ToArray();
         }
         }
-        public override Parameter Clone()
-        {
-            var result = base.Clone() as StringChooseParameter;
-            result.Strings = Strings;
-            return result;
+        public override void Import(Parameter p) {
+            base.Import(p);
+            Strings =( p as StringChooseParameter).Strings;
         }
         public StringChooseParameter() { }
     }

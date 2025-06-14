@@ -1,6 +1,7 @@
 ﻿using psdPH.Utils.ReflectionParameter;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -9,6 +10,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Xml.Serialization;
 using YourNamespace;
 using static psdPH.Logic.PhotoshopDocumentExtension;
@@ -191,9 +193,8 @@ namespace psdPH.Logic
             return result;
         }
 
-        internal static Setup ComboString(SetupConfig config, List<string> strings)
+        internal static Setup ComboString(SetupConfig config, ObservableCollection<string> strings)
         {
-            
 
             var result = new Setup(config);
             var stack = result._stack;
@@ -203,38 +204,52 @@ namespace psdPH.Logic
 
             var cb = new ComboBox() { ItemsSource = strings, IsEditable = true, MinWidth = 70 };
 
+            cb.SelectionChanged += (_, __) => result.Changed?.Invoke();
 
 
-            var chb = new CheckBox() { IsChecked = false };
-
-
-
-            chb.ToolTip = "Добавить в список";
-            ToolTipService.SetInitialShowDelay(chb, 100);
-            ToolTipService.SetBetweenShowDelay(chb, 500);
-            ToolTipService.SetShowDuration(chb, 2000);
-
-            void addIfChecked()
-            {
-                if (chb.IsChecked != true)
-                    return;
-                var value = config.GetValue();
-                if (!strings.Contains(value) && value != null)
-                    strings.Add(value as string);
+            void addExecute(object _) {
+                var str = cb.Text;
+                strings.Add(str);
             }
+            void deleteExecute(object _) => strings.Remove(cb.Text);
+            bool isInSelection(object _) => strings.Contains(cb.Text);
+            bool isNotInSelection(object _) => !isInSelection(cb.Text);
+
+
+
+            var addButton = new Button() { Content = "+" };
+            addButton.Command = new RelayCommand(addExecute, isNotInSelection);
+            
+
+            var deleteButton = new Button() { Content = "-" };
+            deleteButton.Command = new RelayCommand(deleteExecute,isInSelection);
+            void refreshButtonsParametera(object sender, TextCompositionEventArgs e)
+            {
+                addButton.CommandParameter = e.Text;
+                addButton.CommandParameter = e.Text;
+            }
+            cb.ItemsSource = strings;
+
+            cb.PreviewTextInput += refreshButtonsParametera;
+
+            //addButton.ToolTip = "Добавить в список";
+            //ToolTipService.SetInitialShowDelay(addButton, 100);
+            //ToolTipService.SetBetweenShowDelay(addButton, 500);
+            //ToolTipService.SetShowDuration(addButton, 2000);
+
             cbStack.Children.Add(cb);
-            cbStack.Children.Add(chb);
+            cbStack.Children.Add(addButton);
+            cbStack.Children.Add(deleteButton);
 
-            var index = -1;// = strings.ToList().IndexOf(config.GetValue().ToString());
-            cb.SelectedIndex = index;
-
-            result.Accepted += addIfChecked;
+            cb.Text = config.GetValue() as string; ;
             result.valueFunc = () => cb.Text;
 
             stack.Children.Add(cbStack);
             result.Control = cb;
             return result;
         }
+
+        
 
         Setup(SetupConfig config, FieldFunctions fieldFunctions = null)
         {

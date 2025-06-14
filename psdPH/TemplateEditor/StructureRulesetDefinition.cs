@@ -2,6 +2,7 @@
 using psdPH.Logic;
 using psdPH.Logic.Rules;
 using psdPH.Logic.Ruleset.Rules;
+using psdPH.Logic.Ruleset.Rules.ParameterSetRules;
 using psdPH.RuleEditor;
 using Condition = psdPH.Logic.Rules.Condition;
 
@@ -25,10 +26,11 @@ namespace psdPH.TemplateEditor
                 new VisibleRule(root),
                 new AlignRule(root),
                 new FitRule(root),
-                new FlagRule(root),
                 new TextAssignRule(root),
                 new SplitForAreaRule(root),
-                new TransitRule(root)
+                new FlagRule(root),
+                new TransitRule(root),
+                new SetStringValueRule(root)
             };
         public delegate IBatchRuleEditor CreateRule(Document doc, Composition composition);
         public delegate IBatchRuleEditor EditRule(Document doc, Rule rule);

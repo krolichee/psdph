@@ -20,6 +20,7 @@ using psdPHTest.Tests;
 using psdPH.Utils;
 using Photoshop;
 using psdPH.Logic.Parameters;
+using psdPH.Logic.Ruleset.Rules;
 
 namespace psdPHTest.Tests.Automatic
 {

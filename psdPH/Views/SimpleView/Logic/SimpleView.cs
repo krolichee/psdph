@@ -40,9 +40,10 @@ namespace psdPH.Views.SimpleView.Logic
         public void CreateOutputDirectory(string outputName) => Directory.CreateDirectory(OutputDirectory(outputName));
         public SimpleListData OpenSimpleListData() => DiskOperations.OpenXml<SimpleListData>(SimpleListDataPath);
 
-        public void SaveListData(SimpleListData simpleViewList)
+        public void SaveListData(SimpleListData simpleListData)
         {
-            DiskOperations.SaveXml(SimpleListDataPath, simpleViewList);
+            DiskOperations.SaveXml(SimpleListDataPath, simpleListData);
+            PsdPhProject.Instance().saveBlob(simpleListData.RootBlob);
         }
 
         internal void Delete()

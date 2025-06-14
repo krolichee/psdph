@@ -99,6 +99,7 @@
     <Compile Include="Logic\Ruleset\Rules\DocRules\TextRules\TextJustifRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\CompositionRules\TextAssignRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\ParameterSetRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\SetStringValueRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\TransitRule.cs" />
     <Compile Include="Photoshop\LayerWr\LayerDescriptor.cs" />
     <Compile Include="Logic\Compositions\LayerLeaf.cs" />
@@ -107,7 +108,7 @@
     <Compile Include="Logic\Compositions\TextLeaf.cs" />
     <Compile Include="Logic\Ruleset\Conditions\DummyCondition.cs" />
     <Compile Include="Logic\Ruleset\Conditions\EmptyTextCondition.cs" />
-    <Compile Include="Logic\Ruleset\Conditions\FlagCondition.cs" />
+    <Compile Include="Logic\Ruleset\Conditions\ParameterSetCondition\FlagCondition.cs" />
     <Compile Include="Logic\Ruleset\Conditions\NonEmptyTextCondition.cs" />
     <Compile Include="Logic\Ruleset\Conditions\TextCondition.cs" />
     <Compile Include="Logic\Ruleset\Rules\DocRules\AlignRule.cs" />

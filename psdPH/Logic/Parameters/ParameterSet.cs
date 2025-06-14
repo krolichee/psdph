@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic.Parameters
@@ -30,11 +31,19 @@ namespace psdPH.Logic.Parameters
         {
             return Parameters.Where(l => l is T).Cast<T>().ToArray();
         }
+        public Parameter[] GetByType(Type type)
+        {
+            return Parameters.Where(l => l.GetType() == type).ToArray();
+        }
         public Dictionary<string,Parameter> ToDictionary()=>
             Parameters.ToDictionary(p => p.Name, p=>p);
         public void Set(string name,object value)
         {
             Parameters.First(p => p.Name == name).Value = value;
+        }
+        public void Import(Parameter parameter)
+        {
+            GetByType(parameter.GetType()).First(p => p.Name == parameter.Name).Import(parameter);
         }
 
         public ParameterSet Clone()
@@ -49,14 +58,8 @@ namespace psdPH.Logic.Parameters
         internal void Import(ParameterSet savedParameters)
         {
             foreach (var parameter in savedParameters.AsCollection())
-                Set(parameter.Name,parameter.Value);
+                Import(parameter);
             
-        }
-        public ParameterSet FillWith(ParameterSet other)
-        {
-            var result = Clone();
-            result.Import(other);
-            return result;
         }
     }
 }

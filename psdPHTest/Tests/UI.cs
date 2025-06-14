@@ -116,7 +116,7 @@ namespace psdPHTest.Tests.UI
             var dayBlob = weekConfig.GetDayBlob(weekBlob);
             dayBlob.AddChild(new AreaLeaf() { LayerName="area"});
 
-            new RuleEditorWindow(new DayRulesetDefinition(dayBlob)).ShowDialog();
+            new RuleEditorWindow(new WeekDayRulesetDefinition(dayBlob)).ShowDialog();
         }
     }
     [TestCategory(TestCatagories.ManualUI)]

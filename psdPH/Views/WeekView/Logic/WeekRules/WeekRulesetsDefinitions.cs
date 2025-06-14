@@ -7,6 +7,8 @@ using psdPH.RuleEditor;
 using System.Linq;
 using psdPH.Logic.Rules;
 using psdPH.Logic.Ruleset.Rules;
+using psdPH.Logic.Ruleset.Rules.ParameterSetRules;
+using psdPH.Logic.Parameters;
 
 namespace psdPH.Views.WeekView
 {
@@ -15,39 +17,38 @@ namespace psdPH.Views.WeekView
     /// </summary>
     static class WeekRulesetsDefinitions
     {
-        public static Rule[] Rules(Composition root) =>
-            new StructureRulesetDefinition(root).Rules.Concat(
+        public static Rule[] Rules(ParameterSet parameterSet) =>
                 new Rule[]
                 {
-                    new FlagRule(root)
-                }
-                ).ToArray();
+                    new FlagRule(parameterSet),
+                    new SetStringValueRule(parameterSet)
+                };
         [Obsolete]
-        public static Condition[] WeekConditions(Composition root) => new Condition[]
+        public static Condition[] WeekConditions() => new Condition[]
         {
-            new WeekCondition(root)
+            new WeekCondition()
         };
 
-        public static Condition[] DayConditions(Composition root) => new Condition[]
+        public static Condition[] DayConditions() => new Condition[]
         {
-            new EveryNDayCondition(null),
-            new DayOfWeekCondition(root)
+            new EveryNDayCondition(),
+            new DayOfWeekCondition()
         };
     };
     [Obsolete]
     public class WeekRulesetDefinition: RulesetDefinition
     {
-        public WeekRulesetDefinition(Composition root) : base(
-            WeekRulesetsDefinitions.Rules(root),
-            WeekRulesetsDefinitions.WeekConditions(root)
+        public WeekRulesetDefinition(WeekListData weekListData) : base(
+            WeekRulesetsDefinitions.Rules(weekListData.MainBlob.ParameterSet),
+            WeekRulesetsDefinitions.WeekConditions()
             )
         { }
     }
-    public class DayRulesetDefinition: RulesetDefinition
+    public class WeekDayRulesetDefinition: RulesetDefinition
     {
-        public DayRulesetDefinition(Composition root):base(
-            WeekRulesetsDefinitions.Rules(root),
-            WeekRulesetsDefinitions.DayConditions(root)
+        public WeekDayRulesetDefinition(WeekListData weekListData):base(
+            WeekRulesetsDefinitions.Rules(weekListData.WeekConfig.GetDayBlob(weekListData.MainBlob).ParameterSet),
+            WeekRulesetsDefinitions.DayConditions()
             )
         { }
     }

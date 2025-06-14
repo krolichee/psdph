@@ -19,7 +19,6 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Creators.ParameterC
         public virtual Setup[] GetSetups() => new Setup[] { getNameSetup(_result) };
         public ParameterCreator()
         {
-            
             _result = new T();
             _result.Name = "";
             p_w = new SetupsInputWindow(GetSetups());

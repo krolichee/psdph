@@ -12,13 +12,12 @@ namespace psdPH.Logic.Ruleset.Rules
     public class FlagRule : ParameterSetRule
     {
         public override string ToString() => "значение флага";
-        
-        
+
         public bool Value=true;
-        public FlagRule() : base(null) { }
+        public FlagRule() : base(null as Composition) { }
         public FlagRule(Composition composition) : base(composition) { ParameterSet = composition.ParameterSet; }
-        
-        
+        public FlagRule(ParameterSet parameterSet) : base(parameterSet) { }
+
         [XmlIgnore]
         public override Setup[] Setups
         {

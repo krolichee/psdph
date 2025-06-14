@@ -26,6 +26,7 @@
 
                 {typeof(FlagParameter),"Флаг" },
                 {typeof(StringParameter),"Строка" },
+                {typeof(StringChooseParameter),"Выбор строки" },
 
         };
         public static string GetLocalizedDescription(this Type type)

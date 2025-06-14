@@ -23,12 +23,15 @@ namespace psdPH.Logic.Parameters
         }
         public Parameter() { }
         public override string ToString()=>Name;
-
-        public virtual Parameter Clone()
+        public virtual void Import(Parameter parameter)
         {
-            Parameter result =  Activator.CreateInstance(this.GetType()) as Parameter;
-            result.Name = Name;
-            result.Value = Value;
+            Name = parameter.Name;
+            Value = parameter.Value;
+        }
+        public Parameter Clone()
+        {
+            Parameter result = Activator.CreateInstance(this.GetType()) as Parameter;
+            result.Import(this);
             return result;
         }
     }

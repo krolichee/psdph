@@ -17,7 +17,11 @@ namespace psdPH.Logic.Ruleset.Rules
                 SetParameterSet(composition.ParameterSet);
         }
         public ParameterSetRule() : base(null) { }
-        
+        public ParameterSetRule(ParameterSet parameterSet) : base(null)
+        {
+            ParameterSet = parameterSet;
+        }
+
 
         protected Setup getParameterSetup<T>(string name,string desc) where T : Parameter
         {

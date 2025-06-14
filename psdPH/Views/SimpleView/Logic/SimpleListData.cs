@@ -28,6 +28,7 @@ namespace psdPH.Views.SimpleView.Logic
         internal void Restore(Blob root)
         {
             RootBlob = root;
+
             foreach (var item in Variants)
             {
                 item.Restore(this);
