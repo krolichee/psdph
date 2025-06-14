@@ -12,7 +12,10 @@ namespace psdPH.Logic.Ruleset.Rules
     public abstract class ParameterSetRule : ConditionRule, IParameterSetRule
     {
         public ParameterSet ParameterSet;
-        public ParameterSetRule(Composition composition) : base(composition) { }
+        public ParameterSetRule(Composition composition) : base(composition) {
+            if (composition != null) 
+                SetParameterSet(composition.ParameterSet);
+        }
         public ParameterSetRule() : base(null) { }
         
 

@@ -73,16 +73,18 @@ namespace psdPH.Logic.Compositions
                 doc.Close(PsSaveOptions.psSaveChanges);
         }
 
-        internal void CoreApply()
+        public void CoreApply()
         {
             RuleSet.Apply<IParameterSetRule>(null);
-            Apply<CoreComposition>(null);
+            foreach (var item in GetChildren<CoreComposition>())
+                item.CoreApply(); 
         }
         private void NonCoreApply(Document doc)
         {
             RuleSet.Apply<CompositionRule>(doc);
             QuestionableSetups.Ask();
-            ApplyNot<CoreComposition>(doc);
+            foreach (var item in GetChildren())
+                item.Apply(doc);
             RuleSet.Apply<DocRule>(doc);
         }
 

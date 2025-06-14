@@ -20,20 +20,24 @@ namespace psdPH.Logic.Ruleset.Rules
             get
             {
                 var result = new List<Setup>();
-                var fromParConfig = new SetupConfig(this,nameof(FromParameter),"");
+                var fromParConfig = new SetupConfig(this,nameof(FromParameter),"",true);
                 var fromParSetup = Setup.Choose(fromParConfig, ParameterSet.Parameters.ToArray());
-                fromParSetup.Changed += () => SetupsChanged(this);
+                fromParSetup.Accepted += () => 
+                SetupsChanged?.Invoke(this);
                 result.Add(fromParSetup);
-                var toBlobConfig = new SetupConfig(this, nameof(ToBlob), "внутрь");
+                var toBlobConfig = new SetupConfig(this, nameof(ToBlob), "внутрь", true);
                 var toBlobSetup = Setup.Choose(toBlobConfig, Composition.GetChildren<Blob>());
-                toBlobSetup.Changed += () => SetupsChanged(this);
+                toBlobSetup.Accepted += () => 
+                SetupsChanged?.Invoke(this);
                 result.Add(toBlobSetup);
                 if(FromParameter!=null && ToBlob != null)
                 {
-                    bool isSameParameter(Parameter p) => p.GetType() == FromParameter.GetType();
+                    bool isSameParameter(Parameter p) => 
+                        p.GetType() == FromParameter.GetType();
                     var toParConfig = new SetupConfig(this, nameof(ToParameter), "в");
                     var sameParameters = ToBlob.ParameterSet.Parameters.Where(isSameParameter).ToArray();
                     var toParSetup = Setup.Choose(toParConfig, sameParameters);
+                    result.Add(toParSetup);
                 }
                 return result.ToArray();
             }
@@ -46,14 +50,15 @@ namespace psdPH.Logic.Ruleset.Rules
             set => ToBlobName = value?.LayerName;
         }
         public string FromParameterName;
-        bool from_predicate(Parameter p) => p.Name == FromParameterName;
         [XmlIgnore]
         public Parameter FromParameter
         {
             protected get
             {
-                var parset = ParameterSet;
-                return parset.AsCollection().FirstOrDefault(from_predicate);
+
+                var parset = Composition.ParameterSet;
+                return parset.AsCollection().FirstOrDefault(
+                    p => p.Name == FromParameterName);
             }
             set
             {
@@ -61,18 +66,17 @@ namespace psdPH.Logic.Ruleset.Rules
             }
         }
         public string ToParameterName;
-        bool to_predicate(Parameter p) => p.Name == ToParameterName;
         [XmlIgnore]
         public Parameter ToParameter
         {
             protected get
             {
                 var parset = ToBlob.ParameterSet;
-                return parset.AsCollection().FirstOrDefault(to_predicate);
+                return parset.AsCollection().FirstOrDefault(p => p.Name == ToParameterName);
             }
             set
             {
-                FromParameterName = value.Name;
+                ToParameterName = value.Name;
             }
         }
         public override bool IsSetUp()

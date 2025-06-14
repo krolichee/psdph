@@ -1,6 +1,8 @@
 ﻿namespace psdPH
 {
-    public interface CoreComposition { }
+    public interface CoreComposition {
+        void CoreApply();
+    }
     
     
 }

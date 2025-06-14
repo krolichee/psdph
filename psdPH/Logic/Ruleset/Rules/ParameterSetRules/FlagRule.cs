@@ -16,7 +16,7 @@ namespace psdPH.Logic.Ruleset.Rules
         
         public bool Value=true;
         public FlagRule() : base(null) { }
-        public FlagRule(Composition composition) : base(composition) { }
+        public FlagRule(Composition composition) : base(composition) { ParameterSet = composition.ParameterSet; }
         
         
         [XmlIgnore]
@@ -59,13 +59,6 @@ namespace psdPH.Logic.Ruleset.Rules
         public override bool IsSetUp()
         {
             return base.IsSetUp()&&FlagName!=null;
-        }
-
-        public void SetParameterSet(ParameterSet parset)
-        {
-            ParameterSet = parset;
-            if (Condition is ParameterSetCondition)
-                (Condition as ParameterSetCondition).SetParameterSet(parset);
         }
     }
 

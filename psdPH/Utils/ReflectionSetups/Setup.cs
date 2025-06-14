@@ -19,8 +19,8 @@ namespace psdPH.Logic
     {
         public delegate void AcceptedEvent();
         public event AcceptedEvent Accepted;
-        public delegate void ChangedEvent();
-        public event ChangedEvent Changed;
+        private delegate void ChangedEvent();
+        private event ChangedEvent Changed;
         public Setup() { }
         public FrameworkElement Control;
         FieldFunctions _fieldFunctions;
@@ -54,8 +54,11 @@ namespace psdPH.Logic
 
             cb.SelectedIndex = index;
 
+            cb.SelectionChanged += (_,__)=> 
+                result.Changed?.Invoke();
 
-            result.valueFunc = () => fieldFunctions.RevertFunction(cb.SelectedValue);
+            result.valueFunc =  () => 
+            fieldFunctions.RevertFunction(cb.SelectedValue);
             result.Control = cb;
             stack.Children.Add(cb);
             return result;
@@ -198,8 +201,13 @@ namespace psdPH.Logic
             
             var cbStack = new StackPanel() { Orientation = Orientation.Horizontal };
 
-            var cb = new ComboBox() { ItemsSource = strings, IsEditable = true ,MinWidth = 70};
+            var cb = new ComboBox() { ItemsSource = strings, IsEditable = true, MinWidth = 70 };
+
+
+
             var chb = new CheckBox() { IsChecked = false };
+
+
 
             chb.ToolTip = "Добавить в список";
             ToolTipService.SetInitialShowDelay(chb, 100);
@@ -238,6 +246,9 @@ namespace psdPH.Logic
             _stack.Children.Add(new Label() { Content = config.Desc });
             _config = config;
             _stack.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+
+            if (config.AutoAccept)
+                Changed += () => Accept();
         }
 
         public StackPanel Stack => _stack;

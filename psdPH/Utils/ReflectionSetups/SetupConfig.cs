@@ -8,6 +8,9 @@ namespace psdPH.Logic
         public object Obj;
         public string FieldName;
         public string Desc;
+
+        public bool AutoAccept { get; internal set; }
+
         public Type GetTypeOfObj()
         {
             return Obj.GetType();
@@ -39,11 +42,12 @@ namespace psdPH.Logic
             else
                 throw new ArgumentException($"Поле или свойство с именем '{FieldName}' не найдено в объекте типа '{objType.Name}'.");
         }
-        public SetupConfig(object obj, string fieldname, string desc)
+        public SetupConfig(object obj, string fieldname, string desc, bool autoAccept=false)
         {
             this.Obj = obj;
             this.FieldName = fieldname;
             this.Desc = desc;
+            AutoAccept = autoAccept;
         }
     }
 }
