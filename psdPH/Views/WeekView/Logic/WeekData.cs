@@ -36,10 +36,6 @@ namespace psdPH.Views.WeekView
         {
             get => DayParsetsList.ToDictionary(p => p.Dow, p => p);
         }
-        public void Apply(Document doc)
-        {
-
-        }
         public void Restore(WeekListData weekListData)
         {
             this.WeekListData = weekListData;
@@ -106,13 +102,11 @@ namespace psdPH.Views.WeekView
             }
             ruleSet.Apply<ParameterSetRule>(null);
         }
-        void applyRules()
+        public void ApplyRules()
         {
+            var dayRules = WeekListData.WeekRulesets.DayRules;
             foreach (var dayParset in DayParsetsList)
-            {
-                var dayRules = WeekListData.WeekRulesets.DayRules;
                 applyRules(dayRules, dayParset);
-            }
 
 
             var weekRules = WeekListData.WeekRulesets.WeekRules;
@@ -122,27 +116,30 @@ namespace psdPH.Views.WeekView
 
 
         }
-
-        void Initialize()
+        public void FillDates()
+        {
+            WeekConfig.FillWeekDate(ParameterSet, Week);
+            foreach (var parset in DayParsetsList)
+                WeekConfig.FillDateAndDow(parset);
+        }
+        void initialize()
         {
             ParameterSet = WeekListData.MainBlob.ParameterSet.Clone();
-
-            WeekConfig.FillWeekDate(ParameterSet,Week);
             Blob dayBlob = WeekConfig.GetDayBlob(MainBlob);
             foreach (DowLayernamePair t in WeekConfig.DowPlaceholderLayernameList)
             {
                 var dayParset = DayParameterSet.FromParset(dayBlob.ParameterSet, t.Dow, Week);
-                WeekConfig.FillDateAndDow(dayParset);
                 DayParsetsList.Add(dayParset);
             }
-            applyRules();
+            FillDates();
+            ApplyRules();
         }
         public WeekData(int week, WeekListData weekListData)
         {
             WeekListData = weekListData;
             Week = week;            
             this.Restore(weekListData);
-            Initialize();
+            initialize();
         }
         public WeekData() { }
     }

@@ -36,6 +36,9 @@
                 <MenuItem Header="Сохранить" Click="saveMenuItem_Click" />
                 <MenuItem Header="Очистить" Click="clearMenuItem_Click"  />
                 <MenuItem Header="Удалить" Click="deleteMenuItem_Click" />
+                <Separator></Separator>
+                <MenuItem Header="Применить правила" Click="applyRulesMenuItem_Click" />
+                <MenuItem Header="Изменить форматы дат" Click="formatsMenuItem_Click" />
             </MenuItem>
         </Menu>
     </Grid>

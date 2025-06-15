@@ -64,6 +64,17 @@ namespace psdPH.Views.WeekView
             _doSave = false;
             Close();
         }
-        
+        private void applyRulesMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in WeekListData.Weeks)
+                item.ApplyRules();
+        }
+
+        private void formatsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            WeekConfigEditor.FormatsShowDialog(WeekConfig);
+            foreach (var item in WeekListData.Weeks)
+                item.FillDates();
+        }
     }
 }

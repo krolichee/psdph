@@ -13,7 +13,7 @@ namespace psdPH.Logic.Ruleset.Rules.ParameterSetRules
 {
     public class SetStringValueRule : ParameterSetRule
     {
-        public override string ToString() => "установить текст";
+        public override string ToString() => "установить строку";
         public string Value;
         public SetStringValueRule() : base(null as Composition) { }
         public SetStringValueRule(Composition composition) : base(composition) { ParameterSet = composition.ParameterSet; }

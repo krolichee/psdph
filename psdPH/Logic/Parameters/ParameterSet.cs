@@ -17,7 +17,6 @@ namespace psdPH.Logic.Parameters
     public class ParameterSet: ISerializable
     {
         public ObservableCollection<Parameter> Parameters = new ObservableCollection<Parameter>();
-
         public event Action Updated;
         public void Add(Parameter[] rules)
         {
@@ -40,6 +39,14 @@ namespace psdPH.Logic.Parameters
         public void Set(string name,object value)
         {
             Parameters.First(p => p.Name == name).Value = value;
+            Updated?.Invoke();
+        }
+        public void Set(Parameter parameter, object value)
+        {
+            if (!Parameters.Contains(parameter))
+                throw new ArgumentException();
+            parameter.Value = value;
+            Updated?.Invoke();
         }
         public void Import(Parameter parameter)
         {

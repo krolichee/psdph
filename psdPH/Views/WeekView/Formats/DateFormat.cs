@@ -16,6 +16,10 @@ namespace psdPH.Views.WeekView.Logic
         {
             return Format(_sampleDateTime);
         }
+        public override bool Equals(object obj)
+        {
+            return obj.ToString()==ToString() ;
+        }
         public abstract string Format(DateTime dt);
 
     }

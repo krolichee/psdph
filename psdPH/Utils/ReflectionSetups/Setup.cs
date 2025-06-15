@@ -53,14 +53,13 @@ namespace psdPH.Logic
 
             var cb = new ComboBox() { ItemsSource = options.Select(fieldFunctions.ConvertFunction) };
             //var value = fieldFunctions.ConvertFunction(config.GetValue());
-
             cb.SelectedIndex = index;
 
             cb.SelectionChanged += (_,__)=> 
                 result.Changed?.Invoke();
 
             result.valueFunc =  () => 
-            fieldFunctions.RevertFunction(cb.SelectedValue);
+            fieldFunctions.RevertFunction(cb.SelectedItem);
             result.Control = cb;
             stack.Children.Add(cb);
             return result;

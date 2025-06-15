@@ -33,7 +33,7 @@ namespace psdPH.Logic.Ruleset.Rules
         }
         public void CoreApply()
         {
-            FlagParameter.Value = Condition.IsValid()==Value;
+            ParameterSet.Set(FlagName, Condition.IsValid() == Value);
         }
         public string FlagName;
         bool predicate(Parameter p) => p.Name == FlagName && p is FlagParameter;

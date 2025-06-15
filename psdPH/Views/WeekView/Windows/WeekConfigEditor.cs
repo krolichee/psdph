@@ -23,10 +23,40 @@ namespace psdPH.Views.WeekView
         {
             this._root = root;
         }
+        public WeekConfigEditor(WeekConfig weekConfig)
+        {
+            _result = weekConfig;
+        }
 
         internal WeekConfig GetResultConfig()
         {
             return _result;
+        }
+        SetupConfig resultConfig(string fieldname, string desc) => new SetupConfig(_result, fieldname, desc);
+        Setup DayDateFormatSetup
+        {
+            get
+            {
+                var dayDateFormatConfig = resultConfig(nameof(WeekConfig.DayDateFormat), "Формат даты дня");
+                return Setup.Choose(dayDateFormatConfig, DayDateFormats);
+            }
+        }
+        Setup DowFormatSetup
+        {
+            get
+            {
+                var dowFormatConfig = resultConfig(nameof(WeekConfig.DowFormat), "Формат дня недели");
+            return Setup.Choose(dowFormatConfig, DowFormats);
+            }
+        }
+
+
+        public static void FormatsShowDialog(WeekConfig weekConfig)
+        {
+            var editor = new WeekConfigEditor(weekConfig);
+            var setups = new Setup[] { editor.DayDateFormatSetup, editor.DowFormatSetup };
+            var conf_w = new SetupsInputWindow(setups);
+            conf_w.ShowDialog();
         }
         void ChooseDayPrototype()
         {
@@ -85,7 +115,7 @@ namespace psdPH.Views.WeekView
                 return false;
             }
         }
-        internal bool ShowDialog()
+        internal bool NewConfigShowDialog()
         {
             if (!isSuitableForWeekView(_root))
             {
@@ -119,21 +149,23 @@ namespace psdPH.Views.WeekView
                 string[] textPars_names = getBlobStringParsNames(Prototype.Blob);
                 string[] rootTextPars_names = getBlobStringParsNames(_root);
 
-                SetupConfig resultConfig(string fieldname, string desc) => new SetupConfig(_result, fieldname, desc);
+                
                 var dayTextParConfig = resultConfig(nameof(WeekConfig.DateParameterName), "Текстовое поле числа дня");
                 var dowParConfig = resultConfig(nameof(WeekConfig.DowParameterName), "Текстовое поле дня недели");
                 var weekDatesParConfig = resultConfig(nameof(WeekConfig.WeekDatesParameterName), "Текстовое поле дат недели");
-                var dayDateFormatConfig = resultConfig(nameof(WeekConfig.DayDateFormat), "Формат даты дня");
-                var dowFormatConfig = resultConfig(nameof(WeekConfig.DowFormat), "Формат дня недели");
+                
+                
 
                 var dayDateFormats = DayDateFormats;
                 var dowFormats = DowFormats;
+
                 List<Setup> parameters = new List<Setup>();
                 parameters.Add(Setup.Choose(weekDatesParConfig, rootTextPars_names));
                 parameters.Add(Setup.Choose(dayTextParConfig, textPars_names));
-                parameters.Add(Setup.Choose(dayDateFormatConfig, dayDateFormats));
                 parameters.Add(Setup.Choose(dowParConfig, textPars_names));
-                parameters.Add(Setup.Choose(dowFormatConfig, dowFormats));
+
+                parameters.Add(DayDateFormatSetup);
+                parameters.Add(DowFormatSetup);
 
                 var conf_w = new SetupsInputWindow(parameters.ToArray(), "Настройка конфигурации недельного вида");
                 if (conf_w.ShowDialog() != true)

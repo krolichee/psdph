@@ -33,13 +33,16 @@ namespace psdPH.Logic.Rules
             {
                 List<Setup> result = new List<Setup>();
                 Parameter[] stringParameters = Composition.ParameterSet.GetByType<StringParameter>().ToArray();
-                var stringConfig = new SetupConfig(this, nameof(this.StringParameter), "из");
-                result.Add(getTextLeafSetup());
+                var stringConfig = new SetupConfig(this, nameof(this.StringParameter), "");
                 result.Add(Setup.Choose(stringConfig, stringParameters));
+                var leafSetup = getTextLeafSetup();
+                leafSetup.Config.Desc = "полю";
+                result.Add(leafSetup);
+                
                 return result.ToArray();
             }
         }
-        public override string ToString() => "установить текст";
+        public override string ToString() => "присвоить строку";
 
         protected override void _apply(Document doc)
         {

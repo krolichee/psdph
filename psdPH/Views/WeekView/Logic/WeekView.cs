@@ -43,7 +43,7 @@ namespace psdPH.Views.WeekView
         public static WeekConfig CreateWeekConfig(Blob root)
         {
             WeekConfigEditor wce_w = new WeekConfigEditor(root);
-            if (!wce_w.ShowDialog())
+            if (!wce_w.NewConfigShowDialog())
                 return null;
             return wce_w.GetResultConfig();
         }
