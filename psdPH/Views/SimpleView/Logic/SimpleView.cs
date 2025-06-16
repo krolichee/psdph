@@ -14,6 +14,7 @@ namespace psdPH.Views.SimpleView.Logic
 {
     public class SimpleView
     {
+        public SimpleListData SimpleListData;
         private static SimpleView _instance;
         private readonly string _projectName;
         public static SimpleView Instance()
@@ -22,14 +23,15 @@ namespace psdPH.Views.SimpleView.Logic
                 throw new System.Exception();
             return _instance;
         }
-        public static SimpleView MakeInstance(string projectName)
+        public static SimpleView MakeInstance()
         {
-            return _instance = new SimpleView(projectName);
+            return _instance = new SimpleView(PsdPhProject.Instance().ProjectName);
         }
         protected SimpleView(string projectName)
         {
             _projectName = projectName;
             Directory.CreateDirectory(ViewDirectory);
+            SimpleListData = tryOpenOrCreateData();
         }
 
         private string ViewDirectory => Path.Combine(PsdPhDirectories.ViewsDirectory(_projectName), "SimpleView");
@@ -38,47 +40,52 @@ namespace psdPH.Views.SimpleView.Logic
         public string OutputDirectory(string outputName) => Path.Combine(OutputsDirectory, outputName);
         public void CreateOutputsDirectory() => Directory.CreateDirectory(OutputsDirectory);
         public void CreateOutputDirectory(string outputName) => Directory.CreateDirectory(OutputDirectory(outputName));
-        public SimpleListData OpenSimpleListData() => DiskOperations.OpenXml<SimpleListData>(SimpleListDataPath);
+        public SimpleListData OpenData() => DiskOperations.OpenXml<SimpleListData>(SimpleListDataPath);
 
-        public void SaveListData(SimpleListData simpleListData)
+        public void Save()
         {
-            DiskOperations.SaveXml(SimpleListDataPath, simpleListData);
-            PsdPhProject.Instance().saveBlob(simpleListData.RootBlob);
+            DiskOperations.SaveXml(SimpleListDataPath, SimpleListData);
+            PsdPhProject.Instance().saveBlob(SimpleListData.RootBlob);
         }
 
         internal void Delete()
         {
             Directory.Delete(ViewDirectory, true);
         }
-        public static Window ShowWindow()
+
+        public Window ShowWindow()
         {
-            var project = PsdPhProject.Instance();
-            var simpleView = MakeInstance(project.ProjectName);
-            Blob blob = project.openOrCreateMainBlob();
-            SimpleListData simpleListData;
+            if (SimpleListData == null)
+                return null;
+            var window = new SimpleViewWindow(SimpleListData);
+            window.Show();
+            return window;
+        }
+        SimpleListData tryOpenOrCreateData()
+        {
             try
             {
-                simpleListData = simpleView.OpenSimpleListData();
-                if (simpleListData == null)
-                    simpleListData = new SimpleListData(blob);
-                else
-                    simpleListData.Restore(blob);
+                return openOrCreateData();
             }
             catch
             {
                 var result = MessageBox.Show("Во время открытия данных вида произошла ошибка. Удалить вид?", "Ошибка", MessageBoxButton.YesNo, MessageBoxImage.Error);
-
                 if (result == MessageBoxResult.Yes)
-                    Instance().Delete();
+                    Delete();
                 return null;
             }
-            
-
+        }
+        private SimpleListData openOrCreateData()
+        {
+            var project = PsdPhProject.Instance();
+            Blob blob = project.openOrCreateMainBlob();
+            SimpleListData simpleListData;
+            simpleListData = OpenData();
             if (simpleListData == null)
-                return null;
-            var window = new SimpleViewWindow(simpleListData);
-            window.Show();
-            return window;
+                simpleListData = new SimpleListData(blob);
+            else
+                simpleListData.Restore(blob);
+            return simpleListData;
         }
 
     }

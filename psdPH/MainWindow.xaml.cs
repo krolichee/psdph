@@ -172,7 +172,7 @@ namespace psdPH
         }
         private void weekViewMenuItem_Execute(object _)
         {
-            ViewWindow = WeekView.ShowWindow();
+            ViewWindow = WeekView.MakeInstance().ShowWindow();
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -187,7 +187,7 @@ namespace psdPH
 
         private void simpleViewMenuItem_Execute(object _)
         {
-            ViewWindow = SimpleView.ShowWindow();   
+            ViewWindow = SimpleView.MakeInstance().ShowWindow();   
         }
     }
 }

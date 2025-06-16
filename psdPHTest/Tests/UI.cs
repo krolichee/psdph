@@ -115,8 +115,9 @@ namespace psdPHTest.Tests.UI
             weekBlob.ParameterSet.AsCollection().Add(new FlagParameter("testFlag"));
             var dayBlob = weekConfig.GetDayBlob(weekBlob);
             dayBlob.AddChild(new AreaLeaf() { LayerName="area"});
+            var weekListData = WeekListData.Create(weekConfig, weekBlob);
 
-            new RuleEditorWindow(new WeekDayRulesetDefinition(dayBlob)).ShowDialog();
+            new RuleEditorWindow(new WeekDayRulesetDefinition(weekListData)).ShowDialog();
         }
     }
     [TestCategory(TestCatagories.ManualUI)]

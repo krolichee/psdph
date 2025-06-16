@@ -22,7 +22,8 @@ namespace psdPH
             get
             {
                 if (blob == null)
-                    blob =Siblings<Blob>().First(b => b.LayerName == LayerName); return blob;
+                    blob =Siblings<Blob>().First(b => b.LayerName == LayerName); 
+                return blob;
             }
             set { LayerName = value.LayerName; }
         }

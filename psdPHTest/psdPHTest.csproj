@@ -58,6 +58,7 @@
     <Compile Include="Logic\Compositions\BlobTest.cs" />
     <Compile Include="Logic\Compositions\IsMatchingTest.cs" />
     <Compile Include="Logic\Parameters\ParameterTest.cs" />
+    <Compile Include="Logic\Parameters\StringChooseParameterTest.cs" />
     <Compile Include="Logic\Ruleset\Rules\CoreRules\FlagRuleTest.cs" />
     <Compile Include="Logic\Ruleset\Rules\SplitTextToRatio.cs" />
     <Compile Include="Photoshop\OutputSaverTest.cs" />

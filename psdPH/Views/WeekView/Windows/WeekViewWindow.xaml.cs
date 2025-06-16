@@ -46,7 +46,7 @@ namespace psdPH.Views.WeekView
         void save()
         {
             if (_doSave)
-                WeekView.Instance().SaveWeekListData(WeekListData);
+                WeekView.Instance().Save();
         }
         private void Window_Closing(object sender, CancelEventArgs e)
         {

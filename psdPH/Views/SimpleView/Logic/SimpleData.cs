@@ -33,9 +33,10 @@ namespace psdPH.Views.SimpleView.Logic
         }
         public void Restore(SimpleListData simpleListData)
         {
-            this.SimpleListData = simpleListData;
-            ParameterSet = RootBlob.ParameterSet.Clone();
-            ParameterSet.Import(RootBlob.ParameterSet);
+            SimpleListData = simpleListData;
+            var blobParameterSet = RootBlob.ParameterSet.Clone();
+            blobParameterSet.Import(ParameterSet);
+            ParameterSet = blobParameterSet;
         }
         public SimpleData() { }
     }

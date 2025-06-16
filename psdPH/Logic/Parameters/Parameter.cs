@@ -28,7 +28,7 @@ namespace psdPH.Logic.Parameters
             Name = parameter.Name;
             Value = parameter.Value;
         }
-        public Parameter Clone()
+        public virtual Parameter Clone()
         {
             Parameter result = Activator.CreateInstance(this.GetType()) as Parameter;
             result.Import(this);

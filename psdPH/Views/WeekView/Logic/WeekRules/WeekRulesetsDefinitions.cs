@@ -39,7 +39,7 @@ namespace psdPH.Views.WeekView
     public class WeekRulesetDefinition: RulesetDefinition
     {
         public WeekRulesetDefinition(WeekListData weekListData) : base(
-            WeekRulesetsDefinitions.Rules(weekListData.MainBlob.ParameterSet),
+            WeekRulesetsDefinitions.Rules(weekListData.RootBlob.ParameterSet),
             WeekRulesetsDefinitions.WeekConditions()
             )
         { }
@@ -47,7 +47,7 @@ namespace psdPH.Views.WeekView
     public class WeekDayRulesetDefinition: RulesetDefinition
     {
         public WeekDayRulesetDefinition(WeekListData weekListData):base(
-            WeekRulesetsDefinitions.Rules(weekListData.WeekConfig.GetDayBlob(weekListData.MainBlob).ParameterSet),
+            WeekRulesetsDefinitions.Rules(weekListData.WeekConfig.GetDayBlob(weekListData.RootBlob).ParameterSet),
             WeekRulesetsDefinitions.DayConditions()
             )
         { }

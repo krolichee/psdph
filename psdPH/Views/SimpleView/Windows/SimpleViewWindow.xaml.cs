@@ -40,7 +40,7 @@ namespace psdPH.Views.SimpleView.Windows
         void save()
         {
             if (_doSave)
-                SimpleView.SaveListData(SimpleListData);
+                SimpleView.Save();
         }
         private void Window_Closing(object sender, CancelEventArgs e)
         {
