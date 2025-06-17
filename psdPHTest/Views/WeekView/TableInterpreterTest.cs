@@ -18,8 +18,8 @@ namespace psdPHTest.Views.WeekView
         {
             var blob = GetWeekBlob();
             var weekConfig = GetWeekConfig();
-            var weekListData = WeekListData.Create(weekConfig, blob);
-            weekListData.NewWeek();
+            var weekListData = WeekListData.CreateWeekListData(weekConfig, blob);
+            weekListData.New();
 
             var wvi_w = new WeekViewTableInputIntepreter(weekListData.Weeks[0]);
             wvi_w.ShowDialog();

@@ -47,7 +47,7 @@ namespace psdPHTest.Views
 		{
             var blob = GetWeekBlob();
             var weekConfig = GetWeekConfig();
-            var weekListData = WeekListData.Create(weekConfig,blob);
+            var weekListData = WeekListData.CreateWeekListData(weekConfig,blob);
 
             var exporter = new WeekViewExcelExporter(weekListData);
             exporter.Export();

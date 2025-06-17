@@ -12,70 +12,23 @@ using System.Windows;
 
 namespace psdPH.Views.SimpleView.Logic
 {
-    public class SimpleView
+    public class SimpleView:View<SimpleListData>
     {
-        public SimpleListData SimpleListData;
-        private static SimpleView _instance;
-        private readonly string _projectName;
-        public static SimpleView Instance()
+        public static SimpleView MakeSimpleView()
         {
-            if (_instance == null)
-                throw new System.Exception();
-            return _instance;
+            return (_instance = new SimpleView()) as SimpleView;
         }
-        public static SimpleView MakeInstance()
-        {
-            return _instance = new SimpleView(PsdPhProject.Instance().ProjectName);
-        }
-        protected SimpleView(string projectName)
-        {
-            _projectName = projectName;
-            Directory.CreateDirectory(ViewDirectory);
-            SimpleListData = tryOpenOrCreateData();
-        }
+        public override string ViewName=>"SimpleView";
 
-        private string ViewDirectory => Path.Combine(PsdPhDirectories.ViewsDirectory(_projectName), "SimpleView");
-        private string SimpleListDataPath => Path.Combine(ViewDirectory, "data.xml");
-        public string OutputsDirectory => Path.Combine(ViewDirectory, "output");
-        public string OutputDirectory(string outputName) => Path.Combine(OutputsDirectory, outputName);
-        public void CreateOutputsDirectory() => Directory.CreateDirectory(OutputsDirectory);
-        public void CreateOutputDirectory(string outputName) => Directory.CreateDirectory(OutputDirectory(outputName));
-        public SimpleListData OpenData() => DiskOperations.OpenXml<SimpleListData>(SimpleListDataPath);
-
-        public void Save()
+        public override Window ShowWindow()
         {
-            DiskOperations.SaveXml(SimpleListDataPath, SimpleListData);
-            PsdPhProject.Instance().saveBlob(SimpleListData.RootBlob);
-        }
-
-        internal void Delete()
-        {
-            Directory.Delete(ViewDirectory, true);
-        }
-
-        public Window ShowWindow()
-        {
-            if (SimpleListData == null)
+            if (ListData == null)
                 return null;
-            var window = new SimpleViewWindow(SimpleListData);
+            var window = new SimpleViewWindow(ListData);
             window.Show();
             return window;
         }
-        SimpleListData tryOpenOrCreateData()
-        {
-            try
-            {
-                return openOrCreateData();
-            }
-            catch
-            {
-                var result = MessageBox.Show("Во время открытия данных вида произошла ошибка. Удалить вид?", "Ошибка", MessageBoxButton.YesNo, MessageBoxImage.Error);
-                if (result == MessageBoxResult.Yes)
-                    Delete();
-                return null;
-            }
-        }
-        private SimpleListData openOrCreateData()
+        protected override SimpleListData openOrCreateData()
         {
             var project = PsdPhProject.Instance();
             Blob blob = project.openOrCreateMainBlob();
@@ -88,5 +41,9 @@ namespace psdPH.Views.SimpleView.Logic
             return simpleListData;
         }
 
+        protected override void SaveListData(SimpleListData listData)
+        {
+            DiskOperations.SaveXml(ListDataPath, listData);
+        }
     }
 }

@@ -10,30 +10,26 @@ using System.Xml.Serialization;
 
 namespace psdPH.Views.SimpleView.Logic
 {
-    public class SimpleListData:ISerializable
+    public class SimpleListData:ViewListData
     {
-        [XmlIgnore]
-        public Blob RootBlob;
-        public ObservableCollection<SimpleData> Variants=new ObservableCollection<SimpleData>();
 
+        public ObservableCollection<SimpleData> Variants = new ObservableCollection<SimpleData>();
         public SimpleListData(Blob blob)
         {
             RootBlob = blob;
         }
-        public void New()=>
+        public override void New()=>
             Variants.Add(new SimpleData(this));
-        public void Remove(SimpleData item) =>
-            Variants.Remove(item);
 
         internal void Restore(Blob root)
         {
             RootBlob = root;
-
             foreach (var item in Variants)
             {
                 item.Restore(this);
             }
         }
+        public void Remove(SimpleData item) => Variants.Remove(item);
         public SimpleListData() { }
     }
 }

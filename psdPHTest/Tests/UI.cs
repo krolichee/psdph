@@ -101,7 +101,7 @@ namespace psdPHTest.Tests.UI
             var dayBlob = weekConfig.GetDayBlob(weekBlob);
             dayBlob.ParameterSet.Add(new FlagParameter("testFlag"));
 
-            var weekListData = WeekListData.Create(weekConfig, weekBlob);
+            var weekListData = WeekListData.CreateWeekListData(weekConfig, weekBlob);
 
             var wv_w = new WeekViewWindow(weekListData);
             wv_w.ShowDialog();
@@ -115,7 +115,7 @@ namespace psdPHTest.Tests.UI
             weekBlob.ParameterSet.AsCollection().Add(new FlagParameter("testFlag"));
             var dayBlob = weekConfig.GetDayBlob(weekBlob);
             dayBlob.AddChild(new AreaLeaf() { LayerName="area"});
-            var weekListData = WeekListData.Create(weekConfig, weekBlob);
+            var weekListData = WeekListData.CreateWeekListData(weekConfig, weekBlob);
 
             new RuleEditorWindow(new WeekDayRulesetDefinition(weekListData)).ShowDialog();
         }

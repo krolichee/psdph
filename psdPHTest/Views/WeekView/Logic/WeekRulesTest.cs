@@ -59,12 +59,12 @@ namespace psdPHTest.Views.WeekView.Logic
 
             var currentWeek = WeekTime.CurrentWeek;
             var startDateTime = WeekTime.GetDateByWeekAndDay(currentWeek, DayOfWeek.Monday);
-            var weekListData = WeekListData.Create(weekConfig, blob);
+            var weekListData = WeekListData.CreateWeekListData(weekConfig, blob);
             var everyNDayCondition = new EveryNDayCondition() { Interval = interval, StartDateTime = startDateTime };
             var flagRule = new FlagRule() { FlagParameter = flagParameter, Condition = everyNDayCondition,Value = true};
 
             weekListData.WeekRulesets.DayRules.AddRule(flagRule);
-            weekListData.NewWeek();
+            weekListData.New();
             dayBlob.ParameterSet = null;
             var weekData = weekListData.Weeks[0];
 
@@ -85,7 +85,7 @@ namespace psdPHTest.Views.WeekView.Logic
 
             blob.ParameterSet.Add(new FlagParameter("test"));
 
-            var weekListData = WeekListData.Create(weekConfig, new WeekRulesets(), blob);
+            var weekListData = WeekListData.CreateWeekListData(weekConfig, new WeekRulesets(), blob);
 #pragma warning disable CS0612 // Тип или член устарел
             var weekCondition = new WeekCondition(blob) { Week = WeekTime.CurrentWeek };
 #pragma warning restore CS0612 // Тип или член устарел

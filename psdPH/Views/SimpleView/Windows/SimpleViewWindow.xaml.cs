@@ -14,7 +14,7 @@ namespace psdPH.Views.SimpleView.Windows
     /// </summary>
     public partial class SimpleViewWindow : Window
     {
-        Logic.SimpleView SimpleView = Logic.SimpleView.Instance();
+        Logic.SimpleView SimpleView = Logic.SimpleView.Instance() as Logic.SimpleView;
         private bool _doSave = true;
         private bool _deleted;
         public SimpleListData SimpleListData;

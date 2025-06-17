@@ -19,14 +19,11 @@ using System.Xml.Serialization;
 namespace psdPH.Views.WeekView
 {
     [Serializable]
-    public class WeekData
+    public class WeekData:ViewData
     {
         public int Week;
-        [XmlIgnore]
-        public Blob RootBlob => WeekListData.RootBlob;
-        public ParameterSet ParameterSet = new ParameterSet();
         public List<DayParameterSet> DayParsetsList = new List<DayParameterSet>();
-
+        public ParameterSet ParameterSet = new ParameterSet();
         [XmlIgnore]
         public WeekListData WeekListData;
         [XmlIgnore]
@@ -36,6 +33,9 @@ namespace psdPH.Views.WeekView
         {
             get => DayParsetsList.ToDictionary(p => p.Dow, p => p);
         }
+
+        public override Blob RootBlob => WeekListData.RootBlob;
+
         public void Restore(WeekListData weekListData)
         {
             this.WeekListData = weekListData;

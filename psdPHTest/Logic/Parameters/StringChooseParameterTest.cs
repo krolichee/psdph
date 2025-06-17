@@ -35,9 +35,6 @@ namespace psdPHTest.Logic.Parameters
 		[TestMethod]
 		public void testSimpleViewStringsEquality()
 		{
-
-
-
 			{
 				var blob = Blob.PathBlob("");
 				var scParameter = new StringChooseParameter() { Name = "scPar" };
@@ -47,8 +44,8 @@ namespace psdPHTest.Logic.Parameters
 				project.saveBlob(blob);
             }
 			{
-                var view = SimpleView.MakeInstance();
-                var simpleListData = view.SimpleListData;
+                var view = SimpleView.MakeSimpleView();
+                var simpleListData = view.ListData;
 				var blob = simpleListData.RootBlob;
                 var scParameter = blob.ParameterSet.AsCollection()[0] as StringChooseParameter;
 

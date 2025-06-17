@@ -202,6 +202,8 @@
     <Compile Include="Views\DataInputWindow.cs" />
     <Compile Include="Utils\TopmostWindow.cs" />
     <Compile Include="Utils\UpcomingAttribute.cs" />
+    <Compile Include="Views\ViewData.cs" />
+    <Compile Include="Views\ViewListData.cs" />
     <Compile Include="Views\ParsetInputWindow.cs" />
     <Compile Include="Views\SimpleView\CompositionTreeControl.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleData.cs" />
@@ -215,6 +217,7 @@
     <Compile Include="Views\SimpleView\Windows\SimpleViewWindow.xaml.cs">
       <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\View.cs" />
     <Compile Include="Views\WeekView\Formats\DateFormat.cs" />
     <Compile Include="Photoshop\OutputSaver.cs" />
     <Compile Include="Views\WeekView\Logic\DayParameterSet.cs" />

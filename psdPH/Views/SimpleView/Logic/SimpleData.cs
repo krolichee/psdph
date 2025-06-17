@@ -10,14 +10,11 @@ using System.Xml.Serialization;
 
 namespace psdPH.Views.SimpleView.Logic
 {
-    public class SimpleData:ISerializable
+    public class SimpleData:ViewData
     {
-        [XmlIgnore]
-        public Blob RootBlob => SimpleListData.RootBlob;
-        [XmlIgnore]
-        public SimpleListData SimpleListData;
+        SimpleListData SimpleListData;
+        public override Blob RootBlob => SimpleListData.RootBlob;
         public ParameterSet ParameterSet = new ParameterSet();
-
         public SimpleData(SimpleListData simpleListData)
         {
             SimpleListData = simpleListData;
