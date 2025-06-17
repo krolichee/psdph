@@ -12,6 +12,12 @@ namespace psdPHTest
 	[TestClass]
 	public class UnitTest1
 	{
+		[TestMethod]
+		public void MyTestMethod()
+		{
+			Assert.IsTrue(string.Empty=="");
+
+        }
 		public UnitTest1()
 		{
 			//

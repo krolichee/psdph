@@ -36,7 +36,7 @@ namespace psdPH
                 sb.Append($"{par.Name}: {Localization.LocalizeObj(par.Value)}\n");
             return sb.ToString();
         }
-        void refreshPreview()
+        public void RefreshPreview()
         {
             previewTextBlock.Text = getParametersText();
         }
@@ -45,13 +45,13 @@ namespace psdPH
             ParameterSet = parset;
             InitializeComponent();
             this.Dow = parset.Dow;
-            refreshPreview();
-            ParameterSet.Updated += refreshPreview;
+            RefreshPreview();
+            ParameterSet.Updated += RefreshPreview;
         }
         private void button_Click(object sender, RoutedEventArgs e)
         {
             new ParsetInputWindow(ParameterSet).ShowDialog();
-            refreshPreview();
+            RefreshPreview();
             
         }
     }

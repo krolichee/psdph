@@ -8,11 +8,12 @@
              >
     <Grid>
         <Viewbox Stretch="Uniform">
-            <UniformGrid x:Name="DaysPanel" Rows="1">
-                <StackPanel x:Name="rowStack" Orientation="Horizontal" >
-
-                </StackPanel>
-            </UniformGrid>
+            <StackPanel>
+                <ToolBarPanel x:Name="toolBar" Margin="3,3,3,3" Orientation="Horizontal"/>
+                <UniformGrid x:Name="DaysPanel" Columns="1" >
+                    <StackPanel x:Name="dowStack" Orientation="Horizontal" ></StackPanel>
+                </UniformGrid>
+            </StackPanel>
         </Viewbox>
     </Grid>
 </UserControl>

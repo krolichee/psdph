@@ -12,7 +12,7 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Menu VerticalAlignment="Top" Height="18">
-            <MenuItem Header="Проект" Click="MenuItem_Click" >
+            <MenuItem Header="Проект" SubmenuOpened="MenuItem_SubmenuOpened" >
                 <MenuItem x:Name="newProjectMenuItem" Header="Новый"/>
                 <MenuItem Header="Открыть" x:Name="openMenuItem" />
                 <MenuItem  Header="Закрыть" x:Name="closeProjectMenuItem"/>

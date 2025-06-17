@@ -26,6 +26,7 @@ namespace psdPH.Utils.CedStack
             var from_obj = arr[from];
             arr.RemoveAt(from);
             arr.Insert(to, from_obj);
+            Refresh();
         }
         protected abstract FrameworkElement createControl(object item);
         protected abstract object[] getElements();
@@ -46,6 +47,7 @@ namespace psdPH.Utils.CedStack
             cEDStackUI.AddButton.Click += AddButton_Click;
             Panel = cEDStackUI.Panel;
             PanelManipulation = new StackPanelManipulation(Panel);
+            PanelManipulation.Swapped += move;
         }
         public UIElement a(FrameworkElement element)
         {

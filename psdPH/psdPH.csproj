@@ -81,6 +81,7 @@
       <DependentUpon>DragRect.xaml</DependentUpon>
     </Compile>
     <Compile Include="KnownTypes.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Logic\Compositions\AreaLeaf.cs" />
     <Compile Include="Logic\Compositions\CoreComposition.cs" />
     <Compile Include="Logic\Compositions\GroupLeaf.cs" />
@@ -101,6 +102,8 @@
     <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\ParameterSetRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\SetStringValueRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\TransitRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\RulesetAffectingRule\IRulesetAffectingRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\RulesetAffectingRule\SkipOtherRule.cs" />
     <Compile Include="Photoshop\LayerWr\LayerDescriptor.cs" />
     <Compile Include="Logic\Compositions\LayerLeaf.cs" />
     <Compile Include="Logic\Compositions\PlaceholderLeaf.cs" />
@@ -281,6 +284,9 @@
     <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekRuleCommand.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRules\WeekRulesetsDefinitions.cs" />
     <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekRulesetsStackHandler.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekViewTableInputIntepreter.xaml.cs">
+      <DependentUpon>WeekViewTableInputIntepreter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WeekView\Windows\WeekViewWindow.xaml.cs">
       <DependentUpon>WeekViewWindow.xaml</DependentUpon>
     </Compile>
@@ -383,6 +389,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WeekView\Windows\WeekViewTableInputIntepreter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

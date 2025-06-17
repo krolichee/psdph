@@ -12,7 +12,7 @@ namespace psdPH.Logic.Ruleset.Rules
     [PsdPhSerializable]
     public abstract class Rule : ISetupable, ISerializable
     {
-
+        
         [XmlIgnore]
         public Composition Composition;
 

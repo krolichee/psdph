@@ -46,7 +46,7 @@ namespace psdPH.Logic.Rules
 
         protected override void _apply(Document doc)
         {
-            TextLeaf.Text = StringParameter.Text;
+            TextLeaf.Text = StringParameter.Text??string.Empty;
         }
         public override bool IsSetUp()
         {

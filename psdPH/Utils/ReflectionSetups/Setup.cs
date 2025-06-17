@@ -101,7 +101,7 @@ namespace psdPH.Logic
         {
             var result = new Setup(config);
             var stack = result._stack;
-            var tb = new TextBox() { MinWidth = 40 };
+            var tb = new TextBox() { MinWidth = 40 ,TextWrapping = TextWrapping.Wrap,MaxWidth = 150};
             tb.Text = config.GetValue() as string;
             result.Control = tb;
             stack.Children.Add(tb);
@@ -244,7 +244,7 @@ namespace psdPH.Logic
             result.valueFunc = () => cb.Text;
 
             stack.Children.Add(cbStack);
-            result.Control = cb;
+            result.Control = cbStack;
             return result;
         }
 

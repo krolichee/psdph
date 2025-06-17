@@ -64,7 +64,7 @@ namespace psdPH.Logic.Compositions
             if (IsPrototyped())
                 return;
             doc = DocOfThis(doc);
-
+            
             CoreApply();
 
             NonCoreApply(doc);

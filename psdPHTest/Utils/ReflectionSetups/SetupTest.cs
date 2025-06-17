@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using psdPH.Logic;
 using psdPH.Logic.Parameters;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using System;
@@ -14,6 +15,19 @@ namespace psdPHTest.Utils.ReflectionSetups
     [TestClass]
     public class SetupTest
     {
+        [TestMethod]
+        public void testMargin()
+        {
+            var s = new StringParameter();
+            var f = new FlagParameter();
+            s.Name = "str";
+            f.Name = "flag";
+            var setups = new List<Setup>();
+            setups.AddRange(s.Setups);
+            setups.AddRange(f.Setups);
+            var si_w = new SetupsInputWindow(setups.ToArray());
+            si_w.ShowDialog();
+        }
         [TestMethod]
         public void testStringChoice()
         {

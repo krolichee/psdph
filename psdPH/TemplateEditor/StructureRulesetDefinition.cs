@@ -3,6 +3,7 @@ using psdPH.Logic;
 using psdPH.Logic.Rules;
 using psdPH.Logic.Ruleset.Rules;
 using psdPH.Logic.Ruleset.Rules.ParameterSetRules;
+using psdPH.Logic.Ruleset.Rules.RulesetAffectingRule;
 using psdPH.RuleEditor;
 using Condition = psdPH.Logic.Rules.Condition;
 
@@ -19,6 +20,7 @@ namespace psdPH.TemplateEditor
             };
         static Rule[] getRules(Composition root) => new Rule[]
             {
+                new SkipOtherRule(),
                 new TextFontSizeRule(root),
                 new TextJustifRule(root),
                 new TranslateRule(root),

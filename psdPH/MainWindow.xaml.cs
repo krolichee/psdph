@@ -53,8 +53,6 @@ namespace psdPH
             CurrentProjectName = "";
             projectNameTextBlock.Text = CurrentProjectName;
         }
-
-        
         bool AnyViews()
         {
             return Directory.EnumerateFileSystemEntries(PsdPhDirectories.ViewsDirectory(CurrentProjectName)).Any();
@@ -91,7 +89,7 @@ namespace psdPH
             InitializeComponent();
 
             InitializeBaseDirectory();
-            ExportExamples();
+            //ExportExamples();
 
             LoadFoldersIntoMenu();
             InitializeButtonCommands();
@@ -180,14 +178,14 @@ namespace psdPH
             PhotoshopWrapper.Dispose();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            LoadFoldersIntoMenu();
-        }
-
         private void simpleViewMenuItem_Execute(object _)
         {
             ViewWindow = SimpleView.MakeInstance().ShowWindow();   
+        }
+
+        private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
+        {
+            LoadFoldersIntoMenu();
         }
     }
 }

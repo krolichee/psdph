@@ -1,10 +1,13 @@
 ﻿using Photoshop;
 using psdPH.Logic.Ruleset.Rules;
+using psdPH.Logic.Ruleset.Rules.RulesetAffectingRule;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic
@@ -27,9 +30,18 @@ namespace psdPH.Logic
         [XmlIgnore]
         public Composition Composition;
 
+        Rule[] skipRules()
+        {
+            for (int i = 0; i < Rules.Count; i++)
+              if(Rules[i] is SkipOtherRule)
+                    if ((Rules[i] as ConditionRule).Condition.IsValid())
+                        return Rules.Take(i+1).ToArray();
+            return Rules.ToArray();
+        }
         public void Apply<T>(Document doc)
         {
-            foreach (var item in Rules)
+            var rules = skipRules();
+            foreach (var item in rules)
                 if (item is T)
                     item.Apply(doc);
         }

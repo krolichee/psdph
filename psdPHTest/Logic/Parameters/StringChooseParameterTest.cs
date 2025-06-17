@@ -10,11 +10,9 @@ using psdPH.Views.SimpleView.Logic;
 namespace psdPHTest.Logic.Parameters
 {
 	[TestClass]
-	public class StringChooseParameterTest
-	{
-		PsdPhProject project;
-		string basePath;
-		string ProjectName => project.ProjectName;
+	public class StringChooseParameterTest: ProjectTestSuite
+    {
+		
 
 		[TestMethod]
 		public void testSaveStrings()
@@ -68,18 +66,6 @@ namespace psdPHTest.Logic.Parameters
             
 
         }
-		[TestInitialize]
-		public void Init()
-		{
-            var projectName = "test";
-            basePath = Path.GetTempFileName().Replace(".tmp", "");
-            PsdPhDirectories.SetBaseDirectory(basePath);
-            project = PsdPhProject.MakeInstance(projectName);
-        }
-		[TestCleanup]
-		public void Korin()
-		{
-            Directory.Delete(basePath, true);
-        }
+		
 	}
 }

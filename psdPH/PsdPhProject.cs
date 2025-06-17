@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace psdPH
 {
-    internal class PsdPhProject
+    public class PsdPhProject
     {
         private static PsdPhProject _instance;
         public readonly string ProjectName;
