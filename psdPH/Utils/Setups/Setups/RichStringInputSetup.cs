@@ -1,0 +1,35 @@
+﻿using psdPH.Logic;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows;
+using psdPH.Utils.ReflectionParameter;
+
+namespace psdPH.Utils.Setups
+{
+    public class RichStringInputSetup: Setup
+    {
+        public RichStringInputSetup(SetupConfig config):base(config)
+        {
+
+            var rtb = new RichTextBox() { MinWidth = 70, MaxWidth = 200, MinHeight = 40, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top };
+
+            rtb.TextChanged += RichTextBox_TextChanged;
+            valueFunc = () => rtb.GetText();
+            Control = rtb;
+            rtb.SetText(config.GetValue() as string);
+            _stack.Children.Add(rtb);
+
+            void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+            {
+                foreach (Paragraph item in (sender as RichTextBox).Document.Blocks)
+                    item.Margin = new Thickness(0, 0, 0, 0);
+            }
+
+        }
+    }
+}

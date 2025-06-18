@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -19,8 +20,8 @@ namespace psdPH.Logic.Ruleset.Rules
                 List<Setup> result = base.Setups.ToList();
                 var modeConfig = new SetupConfig(this, nameof(this.ChangeMode), "");
                 var fontSizeConfig = new SetupConfig(this, nameof(this.FontSize), "");
-                result.Add(Setup.EnumChoose(modeConfig, typeof(ChangeMode)));
-                result.Add(Setup.IntInput(fontSizeConfig));
+                result.Add(EnumChooseSetup.EnumChoose(modeConfig, typeof(ChangeMode)));
+                result.Add(new IntSetup(fontSizeConfig));
                 return result.ToArray();
             }
         }

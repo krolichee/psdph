@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -16,8 +17,8 @@ namespace psdPH.Logic.Ruleset.Rules
                 var result = new List<Setup>();
                 var opacityConfig = new SetupConfig(this, nameof(this.Toggle), "установить");
                 result.Add(getLayerParameter());
-                result.Add(Setup.Check(opacityConfig));
-                result.Add(Setup.JustDescrition("и наоборот"));
+                result.Add(new CheckSetup(opacityConfig));
+                result.Add(JustDescription.JustDescrition("и наоборот"));
                 return result.ToArray();
             }
         }

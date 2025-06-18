@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Windows;
 using System.Xml.Serialization;
@@ -21,9 +22,9 @@ namespace psdPH.Logic.Ruleset.Rules
                 var xConfig = new SetupConfig(this, nameof(this.X), "x");
                 var yConfig = new SetupConfig(this, nameof(this.Y), "y");
                 result.Add(getLayerParameter());
-                result.Add(Setup.EnumChoose(modeConfig, typeof(ChangeMode)));
-                result.Add(Setup.IntInput(xConfig));
-                result.Add(Setup.IntInput(yConfig));
+                result.Add(EnumChooseSetup.EnumChoose(modeConfig, typeof(ChangeMode)));
+                result.Add(new IntSetup(xConfig));
+                result.Add(new IntSetup(yConfig));
                 return result.ToArray();
             }
         }

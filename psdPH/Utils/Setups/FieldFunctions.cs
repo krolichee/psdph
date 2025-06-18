@@ -1,7 +1,7 @@
 ﻿using psdPH.Utils;
 using System;
 
-namespace psdPH.Logic
+namespace psdPH.Utils.Setups
 {
     public class FieldFunctions
     {

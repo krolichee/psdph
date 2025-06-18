@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace psdPH.Utils.ReflectionSetups
+namespace psdPH.Utils.Setups
 {
     public class QuestionableSetups
     {

@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
 using psdPH.Photoshop;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 
 namespace psdPH.Logic.Ruleset.Rules
@@ -18,7 +19,7 @@ namespace psdPH.Logic.Ruleset.Rules
                 var result = new List<Setup>();
                 result.AddRange(getLayerAndAreaParameters());
                 var balance_config = new SetupConfig(this, nameof(BalanceFont), "балансировать шрифт");
-                result.Add(Setup.Check(balance_config));
+                result.Add(new CheckSetup(balance_config));
                 result.AddRange(getAlignOptionsParameters());
                 return result.ToArray();
             }

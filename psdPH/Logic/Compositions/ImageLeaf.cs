@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Utils.Setups;
 using System;
 using System.Xml.Serialization;
 

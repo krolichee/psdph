@@ -2,6 +2,7 @@
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+using psdPH.Utils.Setups;
 using psdPH.Views.WeekView.Logic;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace psdPH.Views.WeekView
             get
             {
                 var dayDateFormatConfig = resultConfig(nameof(WeekConfig.DayDateFormat), "Формат даты дня");
-                return Setup.Choose(dayDateFormatConfig, DayDateFormats);
+                return new ChooseSetup(dayDateFormatConfig, DayDateFormats);
             }
         }
         Setup DowFormatSetup
@@ -46,7 +47,7 @@ namespace psdPH.Views.WeekView
             get
             {
                 var dowFormatConfig = resultConfig(nameof(WeekConfig.DowFormat), "Формат дня недели");
-            return Setup.Choose(dowFormatConfig, DowFormats);
+            return new ChooseSetup(dowFormatConfig, DowFormats);
             }
         }
 
@@ -62,7 +63,7 @@ namespace psdPH.Views.WeekView
         {
             PrototypeLeaf[] prototypes = _root.GetChildren<PrototypeLeaf>().ToArray();
             var prototypeConfig = new SetupConfig(this, nameof(Prototype), "Выбор прототип для дня");
-            new SetupsInputWindow(Setup.Choose(prototypeConfig, prototypes)).ShowDialog();
+            new SetupsInputWindow(new ChooseSetup(prototypeConfig, prototypes)).ShowDialog();
         }
         static DateFormat[] DayDateFormats=> new DateFormat[]
             {
@@ -160,9 +161,9 @@ namespace psdPH.Views.WeekView
                 var dowFormats = DowFormats;
 
                 List<Setup> parameters = new List<Setup>();
-                parameters.Add(Setup.Choose(weekDatesParConfig, rootTextPars_names));
-                parameters.Add(Setup.Choose(dayTextParConfig, textPars_names));
-                parameters.Add(Setup.Choose(dowParConfig, textPars_names));
+                parameters.Add(new ChooseSetup(weekDatesParConfig, rootTextPars_names));
+                parameters.Add(new ChooseSetup(dayTextParConfig, textPars_names));
+                parameters.Add(new ChooseSetup(dowParConfig, textPars_names));
 
                 parameters.Add(DayDateFormatSetup);
                 parameters.Add(DowFormatSetup);

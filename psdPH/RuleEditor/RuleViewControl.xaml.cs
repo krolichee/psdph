@@ -1,5 +1,6 @@
 ﻿using psdPH.Logic;
 using psdPH.Logic.Ruleset.Rules;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;

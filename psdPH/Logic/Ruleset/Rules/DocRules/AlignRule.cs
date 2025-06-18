@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 
 namespace psdPH.Logic.Ruleset.Rules

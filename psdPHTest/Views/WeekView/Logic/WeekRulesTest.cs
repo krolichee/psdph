@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows;
 using psdPH.Views.WeekView;
 using psdPH.Logic.Ruleset.Rules;
+using psdPH.Utils.Setups;
 
 namespace psdPHTest.Views.WeekView.Logic
 {
@@ -118,7 +119,7 @@ namespace psdPHTest.Views.WeekView.Logic
             public void testEnumAuto()
             {
                 var config = new SetupConfig(this, nameof(HA), "aaa");
-                var parameter = Setup.EnumChoose(config, typeof(HorizontalAlignment));
+                var parameter = EnumChooseSetup.EnumChoose(config, typeof(HorizontalAlignment));
                 Console.WriteLine(parameter.Control as ComboBox);
             }
         }

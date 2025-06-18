@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -17,7 +18,7 @@ namespace psdPH.Logic.Ruleset.Rules
             {
                 List<Setup> result = base.Setups.ToList();
                 var justificationConfig = new SetupConfig(this, nameof(this.Justification), "установить");
-                result.Add(Setup.Choose(justificationConfig, new PsJustification[] {
+                result.Add(new ChooseSetup(justificationConfig, new PsJustification[] {
                     PsJustification.psRight,
                     PsJustification.psLeft,
                     PsJustification.psCenter

@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic;
 using psdPH.Logic.Parameters;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace psdPH
         public delegate void ChildrenUpdated();
         public event ChildrenUpdated ChildrenUpdatedEvent;
         public event RulesetUpdated RulesetUpdatedEvent;
-        public event SetupsChangedEvent SetupsChanged;
+        public virtual event SetupsChangedEvent SetupsChanged;
 
         public string UIName
         {

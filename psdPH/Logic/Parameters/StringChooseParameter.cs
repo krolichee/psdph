@@ -1,4 +1,5 @@
-﻿using System;
+﻿using psdPH.Utils.Setups;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace psdPH.Logic.Parameters
             get
             {
                 var result = new List<Setup>();
-                result.Add(Setup.ComboString(getValueSetupConfig(), Strings));
+                result.Add(new ComboStringSetup(getValueSetupConfig(), Strings));
                 return result.ToArray();
             }
         }

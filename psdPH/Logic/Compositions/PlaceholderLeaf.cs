@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Photoshop;
+using psdPH.Utils.Setups;
 using System;
 using System.Linq;
 using System.Xml.Serialization;

@@ -21,6 +21,7 @@ using psdPH.Utils;
 using Photoshop;
 using psdPH.Logic.Parameters;
 using psdPH.Logic.Ruleset.Rules;
+using psdPH.Utils.Setups;
 
 namespace psdPHTest.Tests.Automatic
 {
@@ -102,7 +103,7 @@ namespace psdPHTest.Tests.Automatic
         {
             var initVal = HA;
             var config = new SetupConfig(this, nameof(HA), "aaa");
-            var parameter = Setup.EnumChoose(config, typeof(HorizontalAlignment));
+            var parameter = EnumChooseSetup.EnumChoose(config, typeof(HorizontalAlignment));
             HorizontalAlignment comboboxValue = (HorizontalAlignment)((parameter.Control as ComboBox).SelectedValue as EnumWrapper).Value ;
             Assert.IsNotNull(comboboxValue);
             Assert.IsTrue(comboboxValue  == initVal);

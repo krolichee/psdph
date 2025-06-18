@@ -2,12 +2,14 @@
 using psdPH.Logic;
 using psdPH.Logic.Parameters;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace psdPHTest.Utils.ReflectionSetups
 {
@@ -39,6 +41,21 @@ namespace psdPHTest.Utils.ReflectionSetups
             p_w = new SetupsInputWindow(par.Setups);
             p_w.ShowDialog();
             Assert.IsTrue(par.Strings.Count!=count);
+        }
+        [TestMethod]
+        public void testRichString()
+        {
+            var s = new StringParameter();
+            s.Name = "string";
+            var config = new SetupConfig(s,nameof(s.Value),s.Name);
+            var setups = new RichStringInputSetup(config);
+            Window p_w;
+            do
+            {
+                p_w = new SetupsInputWindow(setups);
+
+            }
+            while (p_w.ShowDialog() == true);
         }
     }
 }

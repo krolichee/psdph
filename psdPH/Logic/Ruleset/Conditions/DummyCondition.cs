@@ -1,4 +1,5 @@
-﻿using System;
+﻿using psdPH.Utils.Setups;
+using System;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic.Rules

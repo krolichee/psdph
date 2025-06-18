@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
+using psdPH.Utils.Setups;
 
 namespace psdPH.Logic.Rules
 {
@@ -21,8 +22,8 @@ namespace psdPH.Logic.Rules
                 Parameter[] flagLeaves = Composition.ParameterSet.AsCollection().ToArray();
                 var flagConfig = new SetupConfig(this, nameof(this.FlagParameter), "");
                 var valueConfig = new SetupConfig(this, nameof(this.Value),"установлено в");
-                result.Add(Setup.Choose(flagConfig, flagLeaves));
-                result.Add(Setup.Check(valueConfig));
+                result.Add(new ChooseSetup(flagConfig, flagLeaves));
+                result.Add(new CheckSetup(valueConfig));
                 return result.ToArray();
             }
         }

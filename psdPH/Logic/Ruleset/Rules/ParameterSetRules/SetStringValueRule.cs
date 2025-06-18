@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace psdPH.Logic.Ruleset.Rules.ParameterSetRules
                 List<Setup> result = new List<Setup>();
                 var valueConfig = new SetupConfig(this, nameof(this.Value), "в");
                 result.Add(getParameterSetup<StringParameter>(nameof(StringParameter), ""));
-                result.Add(Setup.StringInput(valueConfig));
+                result.Add(new StringInputSetup(valueConfig));
                 return result.ToArray();
             }
         }

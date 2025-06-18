@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic.Parameters;
+using psdPH.Utils.Setups;
 using psdPH.Views.WeekView.Logic;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace psdPH.Logic.Ruleset.Rules
         {
             var flagConfig = new SetupConfig(this, name, desc);
             Parameter[] parameters = ParameterSet.GetByType<T>().ToArray();
-            return Setup.Choose(flagConfig, parameters);
+            return new ChooseSetup(flagConfig, parameters);
         }
         public abstract override Setup[] Setups { get; }
 

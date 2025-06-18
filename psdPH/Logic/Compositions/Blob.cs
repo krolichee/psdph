@@ -3,7 +3,7 @@ using psdPH.Logic.Rules;
 using psdPH.Logic.Ruleset.Rules;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using psdPH.Utils;
-using psdPH.Utils.ReflectionSetups;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +25,7 @@ namespace psdPH.Logic.Compositions
                 var result = new List<Setup>();
                 if (!IsPrototyped())
                 {
-                    result.Add(Setup.JustDescrition($"--------{LayerName}--------"));
+                    result.Add(JustDescription.JustDescrition($"--------{LayerName}--------"));
                     foreach (var item in Children)
                         result.AddRange(item.Setups);
                 }

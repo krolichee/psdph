@@ -2,6 +2,7 @@
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace psdPH.Views
             foreach (var parameterSetups in parset.AsCollection().Select(p => p.Setups))
             {
                 setups.AddRange(parameterSetups);
-                setups.Add(Setup.JustSeparator());
+                setups.Add(new JustSeparator());
             }
             parametersWindow = new SetupsInputWindow(setups.ToArray(), title);
         }

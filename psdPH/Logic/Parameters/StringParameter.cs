@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using psdPH.Utils.Setups;
+using System.Xml.Serialization;
 
 namespace psdPH.Logic.Parameters
 {
@@ -8,9 +9,10 @@ namespace psdPH.Logic.Parameters
         public string Text { get => Value as string; set => Value=value; }
         public override Setup[] Setups
         {
-            get => new Setup[] { Setup.StringInput(getValueSetupConfig()) };
+            get => new Setup[] { new StringInputSetup(getValueSetupConfig()) };
         }
         public StringParameter():base(null) { }
         public StringParameter(string name):base(name) { }
+        public static implicit operator string(StringParameter node) => node.Text;
     }
 }

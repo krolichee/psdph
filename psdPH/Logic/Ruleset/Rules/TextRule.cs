@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic.Compositions;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace psdPH.Logic.Ruleset.Rules
         {
             TextLeaf[] textLeaves = Composition.GetChildren<TextLeaf>();
             var textLeafConfig = new SetupConfig(this, nameof(this.TextLeaf), "поля");
-            return Setup.Choose(textLeafConfig, textLeaves);
+            return new ChooseSetup(textLeafConfig, textLeaves);
         }
         [XmlIgnore]
         public override Setup[] Setups => new Setup[] { getTextLeafSetup() };

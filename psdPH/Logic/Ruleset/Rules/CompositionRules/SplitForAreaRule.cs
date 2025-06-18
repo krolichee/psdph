@@ -2,7 +2,7 @@
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Rules;
 using psdPH.Logic.Ruleset.Rules;
-using psdPH.Utils.ReflectionSetups;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +31,7 @@ namespace psdPH.Logic.Rules
                 var result = new List<Setup>();
                 result.Add(getTextLeafSetup());
                 var areaConfig = new SetupConfig(this,nameof(AreaLeaf), "для зоны");
-                result.Add(Setup.Choose(areaConfig,Composition.GetChildren<AreaLeaf>()));
+                result.Add(new ChooseSetup(areaConfig,Composition.GetChildren<AreaLeaf>()));
                 return result.ToArray();
             } }
         protected override void _apply(Document doc)

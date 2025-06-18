@@ -141,7 +141,7 @@
     <Compile Include="Utils\CedStack\PanelManipulation.cs" />
     <Compile Include="Utils\CedStack\StackPanelManipulation.cs" />
     <Compile Include="Utils\Localization\EnumLocalization.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\AlignmentControl.xaml.cs">
+    <Compile Include="Utils\Setups\Controls\AlignmentControl.xaml.cs">
       <DependentUpon>AlignmentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
@@ -158,13 +158,13 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\MultiCompositionCreator.cs" />
     <Compile Include="Utils\CloneConverter.cs" />
     <Compile Include="Logic\Ruleset\RuleSet.cs" />
-    <Compile Include="Utils\ReflectionSetups\FieldFunctions.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\MultiPicker.xaml.cs">
+    <Compile Include="Utils\Setups\FieldFunctions.cs" />
+    <Compile Include="Utils\Setups\Controls\MultiPicker.xaml.cs">
       <DependentUpon>MultiPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\ReflectionSetups\QuestionableSetups.cs" />
-    <Compile Include="Utils\ReflectionSetups\SetupConfig.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\RtbExtension.cs" />
+    <Compile Include="Utils\Setups\QuestionableSetups.cs" />
+    <Compile Include="Utils\Setups\SetupConfig.cs" />
+    <Compile Include="Utils\Setups\Controls\RtbExtension.cs" />
     <Compile Include="Utils\Localization\TypeLocalization.cs" />
     <Compile Include="PsdPhProject.cs" />
     <Compile Include="StringInputWindow.xaml.cs">
@@ -195,6 +195,18 @@
     </Compile>
     <Compile Include="Utils\CedStack\CEDStackControl.cs" />
     <Compile Include="Utils\PsdPhContext.cs" />
+    <Compile Include="Utils\Setups\Setups\AlignmentSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\CheckSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\ChooseSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\ComboStringSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\DateSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\EnumChooseSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\IntSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\JustDescription.cs" />
+    <Compile Include="Utils\Setups\Setups\JustSeparator.cs" />
+    <Compile Include="Utils\Setups\Setups\MultiChooseSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\RichStringInputSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\StringInputSetup.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="TemplateEditor\StructureRulesetDefinition.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
@@ -237,16 +249,16 @@
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
-    <Compile Include="Utils\ReflectionSetups\ISetupable.cs" />
+    <Compile Include="Utils\Setups\ISetupable.cs" />
     <Compile Include="Photoshop\PhotoshopDocumentExtension.cs" />
     <Compile Include="Logic\Ruleset\Conditions\Condition.cs" />
     <Compile Include="RuleEditor\IBatchRuleEditor.cs" />
     <Compile Include="RuleEditor\RuleControl.xaml.cs">
       <DependentUpon>RuleControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\ReflectionSetups\Setup.cs" />
+    <Compile Include="Utils\Setups\Setups\Setup.cs" />
     <Compile Include="Logic\Ruleset\Rules\Rule.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\NumericTextBox.cs" />
+    <Compile Include="Utils\Setups\Controls\NumericTextBox.cs" />
     <Compile Include="RuleEditor\RuleEditorWindow.xaml.cs">
       <DependentUpon>RuleEditorWindow.xaml</DependentUpon>
     </Compile>
@@ -262,7 +274,7 @@
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\SetupInputWindow.xaml.cs">
+    <Compile Include="Utils\Setups\Controls\SetupInputWindow.xaml.cs">
       <DependentUpon>SetupInputWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml.cs">
@@ -307,7 +319,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utils\ReflectionSetups\Controls\AlignmentControl.xaml">
+    <Page Include="Utils\Setups\Controls\AlignmentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -327,7 +339,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utils\ReflectionSetups\Controls\MultiPicker.xaml">
+    <Page Include="Utils\Setups\Controls\MultiPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -379,7 +391,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utils\ReflectionSetups\Controls\SetupInputWindow.xaml">
+    <Page Include="Utils\Setups\Controls\SetupInputWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

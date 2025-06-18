@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic.Ruleset.Rules;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -19,7 +20,7 @@ namespace psdPH.Logic.Ruleset.Rules
                 var result = new List<Setup>();
                 var opacityConfig = new SetupConfig(this, nameof(this.Opacity), "установить");
                 result.Add(getLayerParameter());
-                result.Add(Setup.IntInput(opacityConfig, 0, 100));
+                result.Add(new IntSetup(opacityConfig, 0, 100));
                 return result.ToArray();
             }
         }

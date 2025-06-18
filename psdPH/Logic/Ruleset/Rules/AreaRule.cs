@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic.Compositions;
+using psdPH.Utils.Setups;
 using System.Linq;
 using System.Xml.Serialization;
 using static psdPH.Logic.PhotoshopDocumentExtension;
@@ -15,8 +16,8 @@ namespace psdPH.Logic.Ruleset.Rules
             var considerfx_config = new SetupConfig(this, nameof(ConsiderFx), "по границам");
 
             return new Setup[]{
-            Setup.AlignmentInput(alingment_config),
-            Setup.EnumChoose(considerfx_config,typeof(ConsiderFx))
+            new AlignmentSetup(alingment_config),
+            EnumChooseSetup.EnumChoose(considerfx_config,typeof(ConsiderFx))
             };
         }
         public string AreaLayerName;
@@ -36,7 +37,7 @@ namespace psdPH.Logic.Ruleset.Rules
         {
             var layerNameConfig = new SetupConfig(this, nameof(this.AreaLayerName), "по зоне");
             var layerNames = Composition.GetChildren<AreaLeaf>().Select(a => a.LayerName).ToArray();
-            return Setup.Choose(layerNameConfig, layerNames);
+            return new ChooseSetup(layerNameConfig, layerNames);
         }
         protected Setup[] getLayerAndAreaParameters()
         {

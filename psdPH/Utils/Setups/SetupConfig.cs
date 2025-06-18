@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace psdPH.Logic
+namespace psdPH.Utils.Setups
 {
     public class SetupConfig
     {
@@ -14,6 +14,22 @@ namespace psdPH.Logic
         public Type GetTypeOfObj()
         {
             return Obj.GetType();
+        }
+        public Type GetFieldOrPropertyType()
+        {
+            if (Obj == null)
+                throw new InvalidOperationException("Объект Obj не может быть null для определения типа.");
+
+            Type objType = Obj.GetType();
+            FieldInfo fieldInfo = objType.GetField(FieldName);
+            PropertyInfo propertyInfo = objType.GetProperty(FieldName);
+
+            if (fieldInfo != null)
+                return fieldInfo.FieldType;
+            else if (propertyInfo != null)
+                return propertyInfo.PropertyType;
+            else
+                throw new ArgumentException($"Поле или свойство с именем '{FieldName}' не найдено в объекте типа '{objType.Name}'.");
         }
         public void SetValue(object value)
         {
@@ -28,6 +44,7 @@ namespace psdPH.Logic
             else
                 throw new ArgumentException($"Поле или свойство с именем '{FieldName}' не найдено в объекте типа '{objType.Name}'.");
         }
+
 
         public object GetValue()
         {

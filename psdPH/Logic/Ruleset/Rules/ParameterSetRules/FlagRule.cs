@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic.Parameters;
+using psdPH.Utils.Setups;
 using psdPH.Views.WeekView.Logic;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,8 @@ namespace psdPH.Logic.Ruleset.Rules
                 List<Setup> result = new List<Setup>();
                 var valueConfig = new SetupConfig(this, nameof(this.Value), "установить в");
                 result.Add(getParameterSetup<FlagParameter>(nameof(FlagParameter),""));
-                result.Add(Setup.Check(valueConfig));
-                result.Add(Setup.JustDescrition("и наоборот"));
+                result.Add(new CheckSetup(valueConfig));
+                result.Add(JustDescription.JustDescrition("и наоборот"));
                 return result.ToArray();
             }
         }

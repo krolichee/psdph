@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,12 @@ namespace psdPH.Logic.Ruleset.Rules
             {
                 var result = new List<Setup>();
                 var fromParConfig = new SetupConfig(this,nameof(FromParameter),"",true);
-                var fromParSetup = Setup.Choose(fromParConfig, ParameterSet.Parameters.ToArray());
+                var fromParSetup = new ChooseSetup(fromParConfig, ParameterSet.Parameters.ToArray());
                 fromParSetup.Accepted += () => 
                 SetupsChanged?.Invoke(this);
                 result.Add(fromParSetup);
                 var toBlobConfig = new SetupConfig(this, nameof(ToBlob), "внутрь", true);
-                var toBlobSetup = Setup.Choose(toBlobConfig, Composition.GetChildren<Blob>());
+                var toBlobSetup = new ChooseSetup(toBlobConfig, Composition.GetChildren<Blob>());
                 toBlobSetup.Accepted += () => 
                 SetupsChanged?.Invoke(this);
                 result.Add(toBlobSetup);
@@ -36,7 +37,7 @@ namespace psdPH.Logic.Ruleset.Rules
                         p.GetType() == FromParameter.GetType();
                     var toParConfig = new SetupConfig(this, nameof(ToParameter), "в");
                     var sameParameters = ToBlob.ParameterSet.Parameters.Where(isSameParameter).ToArray();
-                    var toParSetup = Setup.Choose(toParConfig, sameParameters);
+                    var toParSetup = new ChooseSetup(toParConfig, sameParameters);
                     result.Add(toParSetup);
                 }
                 return result.ToArray();

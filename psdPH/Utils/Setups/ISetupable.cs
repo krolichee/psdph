@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using psdPH.Utils.Setups;
+using System.Xml.Serialization;
 
 namespace psdPH.Logic
 {

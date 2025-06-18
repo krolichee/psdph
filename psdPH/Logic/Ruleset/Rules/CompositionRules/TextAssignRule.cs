@@ -2,6 +2,7 @@
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
 using psdPH.Logic.Ruleset.Rules;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -34,7 +35,7 @@ namespace psdPH.Logic.Rules
                 List<Setup> result = new List<Setup>();
                 Parameter[] stringParameters = Composition.ParameterSet.GetByType<StringParameter>().ToArray();
                 var stringConfig = new SetupConfig(this, nameof(this.StringParameter), "");
-                result.Add(Setup.Choose(stringConfig, stringParameters));
+                result.Add(new ChooseSetup(stringConfig, stringParameters));
                 var leafSetup = getTextLeafSetup();
                 leafSetup.Config.Desc = "полю";
                 result.Add(leafSetup);

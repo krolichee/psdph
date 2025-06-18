@@ -1,6 +1,7 @@
 ﻿using psdPH.Logic;
 using psdPH.Logic.Parameters;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+using psdPH.Utils.Setups;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Creators.ParameterCreators
 {
@@ -26,7 +27,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Creators.ParameterC
         protected Setup getNameSetup(T par)
         {
             var nameConfig = new SetupConfig(par, nameof(par.Name), "Имя параметра");
-            return Setup.StringInput(nameConfig);
+            return new StringInputSetup(nameConfig);
         }
     }
 }

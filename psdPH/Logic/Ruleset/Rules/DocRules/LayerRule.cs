@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
 using psdPH.Photoshop;
+using psdPH.Utils.Setups;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -20,7 +21,7 @@ namespace psdPH.Logic.Ruleset.Rules
         {
             var layerNames = Composition.GetChildren<LayerComposition>().Select(c => c.LayerName).ToArray();
             var layerNameConfig = new SetupConfig(this, nameof(this.LayerName), "для слоя");
-            return Setup.Choose(layerNameConfig, layerNames);
+            return new ChooseSetup(layerNameConfig, layerNames);
         }
         protected LayerWr getRuledLayerWr(Document doc) =>
             doc.GetLayerWrByName(LayerName);
