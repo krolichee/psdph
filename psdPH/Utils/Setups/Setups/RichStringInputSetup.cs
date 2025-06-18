@@ -16,12 +16,12 @@ namespace psdPH.Utils.Setups
         public RichStringInputSetup(SetupConfig config):base(config)
         {
 
-            var rtb = new RichTextBox() { MinWidth = 70, MaxWidth = 200, MinHeight = 40, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top };
+            var rtb = new TextBox() {AcceptsReturn = true,  MinWidth = 70, MaxWidth = 200, MinHeight = 40, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top };
 
-            rtb.TextChanged += RichTextBox_TextChanged;
-            valueFunc = () => rtb.GetText();
+           // rtb.TextChanged += RichTextBox_TextChanged;
+            valueFunc = () => rtb.Text;
             Control = rtb;
-            rtb.SetText(config.GetValue() as string);
+            rtb.Text = config.GetValue() as string;
             _stack.Children.Add(rtb);
 
             void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
