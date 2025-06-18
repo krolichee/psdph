@@ -21,7 +21,6 @@ namespace psdPHTest.Logic.Compositions
         [TestInitialize]
         public void Init()
         {
-            ArtLayer a;
             Type psType = Type.GetTypeFromProgID("Photoshop.Application");
             psApp = Activator.CreateInstance(psType) as Application;
             Assert.IsNotNull(psApp);

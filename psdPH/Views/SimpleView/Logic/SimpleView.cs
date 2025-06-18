@@ -1,56 +1,49 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.Utils;
+using psdPH.Views.SimpleView.Windows;
+using psdPH.Views.WeekView;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace psdPH.Views.SimpleView.Logic
 {
-    class SimpleView
+    public class SimpleView:View<SimpleListData>
     {
-            private static SimpleView _instance;
-            private readonly string _projectName;
-            public static SimpleView Instance()
-            {
-                if (_instance == null)
-                    throw new System.Exception();
-                return _instance;
-            }
-            public static SimpleView MakeInstance(string projectName)
-            {
-                return _instance = new SimpleView(projectName);
-            }
-            protected SimpleView(string projectName)
-            {
-                _projectName = projectName;
-                Directory.CreateDirectory(ViewDirectory);
-            }
+        public static SimpleView MakeSimpleView()
+        {
+            return (_instance = new SimpleView()) as SimpleView;
+        }
+        public override string ViewName=>"SimpleView";
 
-            private string ViewDirectory => Path.Combine(PsdPhDirectories.ViewsDirectory(_projectName), "SimpleView");
-            private string ConfigPath => Path.Combine(ViewDirectory, "config.xml");
-            private string WeekListDataPath => Path.Combine(ViewDirectory, "data.xml");
-            public WeekConfig OpenWeekConfig() => DiskOperations.OpenXml<WeekConfig>(ConfigPath);
-            public SimpleListData OpenSimpleListData() => DiskOperations.OpenXml<SimpleListData>(WeekListDataPath);
-            public SimpleListData OpenOrCreateSimpleListData(Blob root)
-            {
-                var weeksListData = OpenSimpleListData();
-                weeksListData.Restore();
-                weeksListData.RootBlob = root;
-                return weeksListData;
-            }
+        public override Window ShowWindow()
+        {
+            if (ListData == null)
+                return null;
+            var window = new SimpleViewWindow(ListData);
+            window.Show();
+            return window;
+        }
+        protected override SimpleListData openOrCreateData()
+        {
+            var project = PsdPhProject.Instance();
+            Blob blob = project.openOrCreateMainBlob();
+            SimpleListData simpleListData;
+            simpleListData = OpenData();
+            if (simpleListData == null)
+                simpleListData = new SimpleListData(blob);
+            else
+                simpleListData.Restore(blob);
+            return simpleListData;
+        }
 
-            public void SaveWeekListData(SimpleListData simpleViewList)
-            {
-                DiskOperations.SaveXml(WeekListDataPath, simpleViewList);
-            }
-
-            internal void Delete()
-            {
-                Directory.Delete(ViewDirectory, true);
-            }
-    
+        protected override void SaveListData(SimpleListData listData)
+        {
+            DiskOperations.SaveXml(ListDataPath, listData);
+        }
     }
 }

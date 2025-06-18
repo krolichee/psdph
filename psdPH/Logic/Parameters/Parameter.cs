@@ -1,6 +1,7 @@
 ﻿
 
 using psdPH.Utils;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +11,9 @@ namespace psdPH.Logic.Parameters
     {
         public object Value;
         public string Name;
+
+        public event SetupsChangedEvent SetupsChanged;
+
         public abstract Setup[] Setups { get; }
 
         protected SetupConfig getValueSetupConfig() => new SetupConfig(this, nameof(Value), Name);
@@ -20,12 +24,15 @@ namespace psdPH.Logic.Parameters
         }
         public Parameter() { }
         public override string ToString()=>Name;
-
-        internal Parameter Clone()
+        public virtual void Import(Parameter parameter)
         {
-            Parameter result =  Activator.CreateInstance(this.GetType()) as Parameter;
-            result.Name = Name;
-            result.Value = Value;
+            Name = parameter.Name;
+            Value = parameter.Value;
+        }
+        public virtual Parameter Clone()
+        {
+            Parameter result = Activator.CreateInstance(this.GetType()) as Parameter;
+            result.Import(this);
             return result;
         }
     }

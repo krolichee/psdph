@@ -81,7 +81,9 @@
       <DependentUpon>DragRect.xaml</DependentUpon>
     </Compile>
     <Compile Include="KnownTypes.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Logic\Compositions\AreaLeaf.cs" />
+    <Compile Include="Logic\Compositions\CoreComposition.cs" />
     <Compile Include="Logic\Compositions\GroupLeaf.cs" />
     <Compile Include="Logic\Compositions\ImageLeaf.cs" />
     <Compile Include="Logic\MatchingResult.cs" />
@@ -90,9 +92,18 @@
     <Compile Include="Logic\Parameters\ParameterSet.cs" />
     <Compile Include="Logic\Parameters\StringChooseParameter.cs" />
     <Compile Include="Logic\Parameters\StringParameter.cs" />
-    <Compile Include="Logic\Ruleset\Rules\CoreRules\CoreRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\CoreRules\ParameterSetRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\CoreRules\TextAssignRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CompositionRules\!CompositionRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CompositionRules\SplitForAreaRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\!DocRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\!IParameterSetRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\TextRules\TextFontSizeRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\TextRules\TextJustifRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\CompositionRules\TextAssignRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\ParameterSetRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\SetStringValueRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\TransitRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\RulesetAffectingRule\IRulesetAffectingRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\RulesetAffectingRule\SkipOtherRule.cs" />
     <Compile Include="Photoshop\LayerWr\LayerDescriptor.cs" />
     <Compile Include="Logic\Compositions\LayerLeaf.cs" />
     <Compile Include="Logic\Compositions\PlaceholderLeaf.cs" />
@@ -100,21 +111,22 @@
     <Compile Include="Logic\Compositions\TextLeaf.cs" />
     <Compile Include="Logic\Ruleset\Conditions\DummyCondition.cs" />
     <Compile Include="Logic\Ruleset\Conditions\EmptyTextCondition.cs" />
-    <Compile Include="Logic\Ruleset\Conditions\FlagCondition.cs" />
+    <Compile Include="Logic\Ruleset\Conditions\ParameterSetCondition\FlagCondition.cs" />
     <Compile Include="Logic\Ruleset\Conditions\NonEmptyTextCondition.cs" />
     <Compile Include="Logic\Ruleset\Conditions\TextCondition.cs" />
-    <Compile Include="Logic\Ruleset\Rules\AlignRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\AlignRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\AreaRule.cs" />
     <Compile Include="Logic\Ruleset\Rules\ConditionRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\FitRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\CoreRules\FlagRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\LayerRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\OpacityRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\TranslateRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\VisibleRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\FitRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\ParameterSetRules\FlagRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\LayerRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\OpacityRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\TranslateRule.cs" />
+    <Compile Include="Logic\Ruleset\Rules\DocRules\VisibleRule.cs" />
     <Compile Include="Logic\UINameAttribute.cs" />
     <Compile Include="Photoshop\AlignOptions.cs" />
     <Compile Include="Photoshop\KostylExecutor.cs" />
+    <Compile Include="ProjectCreator.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\StructureRuleCommand.cs" />
@@ -125,8 +137,11 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\IBatchCompositionCreator.cs" />
     <Compile Include="TemplateEditor\ParameterDicts.cs" />
     <Compile Include="TemplateEditor\StructureRulesDicts.cs" />
+    <Compile Include="Utils\CedStack\IStackPanelManipulation.cs" />
+    <Compile Include="Utils\CedStack\PanelManipulation.cs" />
+    <Compile Include="Utils\CedStack\StackPanelManipulation.cs" />
     <Compile Include="Utils\Localization\EnumLocalization.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\AlignmentControl.xaml.cs">
+    <Compile Include="Utils\Setups\Controls\AlignmentControl.xaml.cs">
       <DependentUpon>AlignmentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
@@ -143,12 +158,13 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\MultiCompositionCreator.cs" />
     <Compile Include="Utils\CloneConverter.cs" />
     <Compile Include="Logic\Ruleset\RuleSet.cs" />
-    <Compile Include="Utils\ReflectionSetups\FieldFunctions.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\MultiPicker.xaml.cs">
+    <Compile Include="Utils\Setups\FieldFunctions.cs" />
+    <Compile Include="Utils\Setups\Controls\MultiPicker.xaml.cs">
       <DependentUpon>MultiPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\ReflectionSetups\SetupConfig.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\RtbExtension.cs" />
+    <Compile Include="Utils\Setups\QuestionableSetups.cs" />
+    <Compile Include="Utils\Setups\SetupConfig.cs" />
+    <Compile Include="Utils\Setups\Controls\RtbExtension.cs" />
     <Compile Include="Utils\Localization\TypeLocalization.cs" />
     <Compile Include="PsdPhProject.cs" />
     <Compile Include="StringInputWindow.xaml.cs">
@@ -157,7 +173,7 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateCEDCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackHandler.cs" />
-    <Compile Include="Utils\CedStack\CEDStackHandler.cs" />
+    <Compile Include="Utils\CedStack\CEDPanelHandler.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\RuleStackControl.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\RuleCedStack\RuleStackHandler.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureStackControl.cs" />
@@ -172,28 +188,48 @@
     <Compile Include="Logic\Compositions\Composition.cs" />
     <Compile Include="Logic\Compositions\LayerComposition.cs" />
     <Compile Include="Photoshop\PhotoshopLayerExtension.cs" />
-    <Compile Include="Logic\Ruleset\Rules\TextRules.cs" />
+    <Compile Include="Logic\Ruleset\Rules\TextRule.cs" />
     <Compile Include="MainWindow.BlobSave.cs" />
     <Compile Include="Utils\CedStack\CEDStackUI.xaml.cs">
       <DependentUpon>CEDStackUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\CedStack\CEDStackControl.cs" />
     <Compile Include="Utils\PsdPhContext.cs" />
+    <Compile Include="Utils\Setups\Setups\AlignmentSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\CheckSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\ChooseSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\ComboStringSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\DateSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\EnumChooseSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\IntSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\JustDescription.cs" />
+    <Compile Include="Utils\Setups\Setups\JustSeparator.cs" />
+    <Compile Include="Utils\Setups\Setups\MultiChooseSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\RichStringInputSetup.cs" />
+    <Compile Include="Utils\Setups\Setups\StringInputSetup.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="TemplateEditor\StructureRulesetDefinition.cs" />
     <Compile Include="Utils\DiskOperations.cs" />
+    <Compile Include="Utils\Splitter.cs" />
     <Compile Include="Views\DataInputWindow.cs" />
     <Compile Include="Utils\TopmostWindow.cs" />
     <Compile Include="Utils\UpcomingAttribute.cs" />
+    <Compile Include="Views\ViewData.cs" />
+    <Compile Include="Views\ViewListData.cs" />
     <Compile Include="Views\ParsetInputWindow.cs" />
     <Compile Include="Views\SimpleView\CompositionTreeControl.cs" />
+    <Compile Include="Views\SimpleView\Logic\SimpleData.cs" />
+    <Compile Include="Views\SimpleView\Logic\SimpleRenderCommand.cs" />
+    <Compile Include="Views\SimpleView\Logic\SimpleRenderer.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleView.cs" />
     <Compile Include="Views\SimpleView\Logic\SimpleListData.cs" />
+    <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleControl.cs" />
     <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleViewCommand.cs" />
     <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleViewHandler.cs" />
     <Compile Include="Views\SimpleView\Windows\SimpleViewWindow.xaml.cs">
       <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\View.cs" />
     <Compile Include="Views\WeekView\Formats\DateFormat.cs" />
     <Compile Include="Photoshop\OutputSaver.cs" />
     <Compile Include="Views\WeekView\Logic\DayParameterSet.cs" />
@@ -213,16 +249,16 @@
       <DependentUpon>Cropper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\CompositionXmlDictionary.cs" />
-    <Compile Include="Utils\ReflectionSetups\ISetupable.cs" />
+    <Compile Include="Utils\Setups\ISetupable.cs" />
     <Compile Include="Photoshop\PhotoshopDocumentExtension.cs" />
     <Compile Include="Logic\Ruleset\Conditions\Condition.cs" />
     <Compile Include="RuleEditor\IBatchRuleEditor.cs" />
     <Compile Include="RuleEditor\RuleControl.xaml.cs">
       <DependentUpon>RuleControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\ReflectionSetups\Setup.cs" />
+    <Compile Include="Utils\Setups\Setups\Setup.cs" />
     <Compile Include="Logic\Ruleset\Rules\Rule.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\NumericTextBox.cs" />
+    <Compile Include="Utils\Setups\Controls\NumericTextBox.cs" />
     <Compile Include="RuleEditor\RuleEditorWindow.xaml.cs">
       <DependentUpon>RuleEditorWindow.xaml</DependentUpon>
     </Compile>
@@ -238,7 +274,7 @@
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
-    <Compile Include="Utils\ReflectionSetups\Controls\SetupInputWindow.xaml.cs">
+    <Compile Include="Utils\Setups\Controls\SetupInputWindow.xaml.cs">
       <DependentUpon>SetupInputWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml.cs">
@@ -263,6 +299,9 @@
     <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekRuleCommand.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRules\WeekRulesetsDefinitions.cs" />
     <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekRulesetsStackHandler.cs" />
+    <Compile Include="Views\WeekView\Windows\WeekViewTableInputIntepreter.xaml.cs">
+      <DependentUpon>WeekViewTableInputIntepreter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WeekView\Windows\WeekViewWindow.xaml.cs">
       <DependentUpon>WeekViewWindow.xaml</DependentUpon>
     </Compile>
@@ -280,7 +319,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utils\ReflectionSetups\Controls\AlignmentControl.xaml">
+    <Page Include="Utils\Setups\Controls\AlignmentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -300,7 +339,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utils\ReflectionSetups\Controls\MultiPicker.xaml">
+    <Page Include="Utils\Setups\Controls\MultiPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -352,7 +391,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utils\ReflectionSetups\Controls\SetupInputWindow.xaml">
+    <Page Include="Utils\Setups\Controls\SetupInputWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -365,6 +404,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WeekView\Windows\WeekViewTableInputIntepreter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

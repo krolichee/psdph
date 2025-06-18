@@ -29,7 +29,7 @@ namespace psdPH.Views.WeekView
             //doc = PhotoshopWrapper.OpenDocument(psApp, PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
 
             cedStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekStackHandler(weekListData)));
-            dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekDayRulesetStackHandler(weekListData.WeekRulesets.DayRules)));
+            dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekDayRulesetStackHandler(weekListData)));
             //dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekRulesetStackHandler(weekListData.WeekRules, doc)));
             
             WeekListData = weekListData;
@@ -46,9 +46,13 @@ namespace psdPH.Views.WeekView
         void save()
         {
             if (_doSave)
-                WeekView.Instance().SaveWeekListData(WeekListData);
+                WeekView.Instance().Save();
         }
         private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            save();
+        }
+        private void saveMenuItem_Click(object sender, RoutedEventArgs e)
         {
             save();
         }
@@ -60,9 +64,17 @@ namespace psdPH.Views.WeekView
             _doSave = false;
             Close();
         }
-        private void saveMenuItem_Click(object sender, RoutedEventArgs e)
+        private void applyRulesMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            save();
+            foreach (var item in WeekListData.Weeks)
+                item.ApplyRules();
+        }
+
+        private void formatsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            WeekConfigEditor.FormatsShowDialog(WeekConfig);
+            foreach (var item in WeekListData.Weeks)
+                item.FillDates();
         }
     }
 }

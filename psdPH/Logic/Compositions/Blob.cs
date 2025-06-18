@@ -1,5 +1,9 @@
 ﻿using Photoshop;
+using psdPH.Logic.Rules;
+using psdPH.Logic.Ruleset.Rules;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using psdPH.Utils;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,8 +24,11 @@ namespace psdPH.Logic.Compositions
             {
                 var result = new List<Setup>();
                 if (!IsPrototyped())
+                {
+                    result.Add(JustDescription.JustDescrition($"--------{LayerName}--------"));
                     foreach (var item in Children)
                         result.AddRange(item.Setups);
+                }
                 return result.ToArray();
             }
         }
@@ -56,47 +63,58 @@ namespace psdPH.Logic.Compositions
         {
             if (IsPrototyped())
                 return;
-            Document cur_doc = DocOfThis(doc);
-
+            doc = DocOfThis(doc);
+            
             CoreApply();
-            NonCoreApply(cur_doc);
+
+            NonCoreApply(doc);
 
             if (Mode == BlobMode.Layer)
-                cur_doc.Close(PsSaveOptions.psSaveChanges);
+                doc.Close(PsSaveOptions.psSaveChanges);
         }
 
         public void CoreApply()
         {
-            if (IsPrototyped())
-                return;
-            foreach (CoreComposition item in CoreChildren)
-                item.CoreApply();
-            RuleSet.CoreApply();
+            RuleSet.Apply<IParameterSetRule>(null);
+            foreach (var item in GetChildren<CoreComposition>())
+                item.CoreApply(); 
         }
-        public void NonCoreApply(Document doc)
+        private void NonCoreApply(Document doc)
+        {
+            RuleSet.Apply<CompositionRule>(doc);
+            QuestionableSetups.Ask();
+            foreach (var item in GetChildren())
+                item.Apply(doc);
+            RuleSet.Apply<DocRule>(doc);
+        }
+
+        public void Apply<T>(Document doc)
         {
             foreach (var item in Children)
-                item.Apply(doc);
-            RuleSet.NonCoreApply(doc);
+                if (item is T)
+                    item.Apply(doc);
         }
+        public void ApplyNot<T>(Document doc)
+        {
+            foreach (var item in Children)
+                if (!(item is T))
+                    item.Apply(doc);
+        }
+
         override public void AddChild(Composition child)
         {
             child.Parent = this;
-            var children = Children.ToHashSet();
-            children.Add(child);
-            Children = children.ToArray();
+            Children.Add(child);
             invokeChildrenEvent();
         }
         override public void RemoveChild(Composition child)
         {
-            var children = Children.ToHashSet();
-            children.Remove(child);
-            Children = children.ToArray();
+            Children.Remove(child);
             invokeChildrenEvent();
         }
         override public Composition[] GetChildren()
         {
-            return Children;
+            return Children.ToArray();
         }
         override public T[] GetChildren<T>()
         {
@@ -160,6 +178,8 @@ namespace psdPH.Logic.Compositions
                 cur_doc.Close(PsSaveOptions.psSaveChanges);
             return result;
         }
+
+        
 
         public Blob() : base()
         {

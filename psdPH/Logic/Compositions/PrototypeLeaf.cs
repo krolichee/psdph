@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
+using psdPH.Utils.Setups;
 using System;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
@@ -22,7 +23,8 @@ namespace psdPH
             get
             {
                 if (blob == null)
-                    blob =Siblings<Blob>().First(b => b.LayerName == LayerName); return blob;
+                    blob =Siblings<Blob>().First(b => b.LayerName == LayerName); 
+                return blob;
             }
             set { LayerName = value.LayerName; }
         }

@@ -16,8 +16,10 @@ namespace psdPH.TemplateEditor
         public static Dictionary<Type, CreateParameter>
             CreatorDict = new Dictionary<Type, CreateParameter>
             (){
+        { typeof(FlagParameter), () =>new ParameterCreator<FlagParameter>()},
         { typeof(StringParameter),() => new ParameterCreator<StringParameter>()},
-        { typeof(FlagParameter), () =>new ParameterCreator<FlagParameter>()}
+        
+        { typeof(StringChooseParameter), () =>new ParameterCreator<StringChooseParameter>()},
             };
     }
 }

@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic.Compositions;
+using psdPH.Logic.Parameters;
 using psdPH.Utils.CedStack;
 using psdPH.Views.SimpleView.Logic;
 using psdPH.Views.SimpleView.SimpleViewCedStack;
@@ -13,17 +14,17 @@ using System.Windows;
 
 namespace psdPH.Views.SimpleView.Windows.SimpleViewCedStack
 {
-    class SimpleViewHandler : CEDStackHandler
+    class SimpleViewHandler : CEDPanelHandler
     {
-        SimpleListData SimpleViewList;
+        SimpleListData SimpleListData;
         public SimpleViewHandler(SimpleListData simpleViewList)
         {
-            SimpleViewList = simpleViewList;
+            SimpleListData = simpleViewList;
             simpleViewList.Variants.CollectionChanged += (_, __) => Refresh();
         }
-        protected override FrameworkElement createControl(object item)=>new CompositionTreeControl((Blob)item);
-        protected override object[] getElements()=>SimpleViewList.Variants.ToArray();
-        protected override void AddButtonAction()=>new SimpleViewCommand(SimpleViewList).CreateCommand.Execute(SimpleViewList);
-        protected override IList Items => this.SimpleViewList.Variants as IList;
+        protected override FrameworkElement createControl(object item)=>new SimpleControl(item as SimpleData, SimpleListData);
+        protected override object[] getElements()=>SimpleListData.Variants.ToArray();
+        protected override void AddButtonAction()=>new SimpleViewCommand(SimpleListData).CreateCommand.Execute(SimpleListData);
+        protected override IList Items => this.SimpleListData.Variants as IList;
     }
 }

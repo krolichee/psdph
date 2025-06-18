@@ -1,20 +1,24 @@
 ﻿using Photoshop;
 using psdPH.Utils;
+using psdPH.Utils.Setups;
 using System;
 using System.IO;
 using System.Text;
 using System.Windows.Media;
 using System.Xml.Serialization;
 
-namespace psdPH.Logic
+namespace psdPH.Logic.Ruleset.Rules
 {
     [Serializable]
     [PsdPhSerializable]
-    public abstract class Rule : ISetupable, psdPH.ISerializable
+    public abstract class Rule : ISetupable, ISerializable
     {
-
+        
         [XmlIgnore]
         public Composition Composition;
+
+        public virtual event SetupsChangedEvent SetupsChanged;
+
         public Rule(Composition composition)
         {
             Composition = composition;

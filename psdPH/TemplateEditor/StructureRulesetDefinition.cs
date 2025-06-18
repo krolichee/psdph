@@ -1,6 +1,9 @@
 ﻿using Photoshop;
 using psdPH.Logic;
 using psdPH.Logic.Rules;
+using psdPH.Logic.Ruleset.Rules;
+using psdPH.Logic.Ruleset.Rules.ParameterSetRules;
+using psdPH.Logic.Ruleset.Rules.RulesetAffectingRule;
 using psdPH.RuleEditor;
 using Condition = psdPH.Logic.Rules.Condition;
 
@@ -17,6 +20,7 @@ namespace psdPH.TemplateEditor
             };
         static Rule[] getRules(Composition root) => new Rule[]
             {
+                new SkipOtherRule(),
                 new TextFontSizeRule(root),
                 new TextJustifRule(root),
                 new TranslateRule(root),
@@ -24,8 +28,11 @@ namespace psdPH.TemplateEditor
                 new VisibleRule(root),
                 new AlignRule(root),
                 new FitRule(root),
+                new TextAssignRule(root),
+                new SplitForAreaRule(root),
                 new FlagRule(root),
-                new TextLeafTextRule(root),
+                new TransitRule(root),
+                new SetStringValueRule(root)
             };
         public delegate IBatchRuleEditor CreateRule(Document doc, Composition composition);
         public delegate IBatchRuleEditor EditRule(Document doc, Rule rule);

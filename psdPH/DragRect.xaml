@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:psdPH"
              mc:Ignorable="d" Width="20" Height="30">
 
-    <Rectangle Width="20"  Height="30" >
+    <Rectangle Width="20"  Height="20" >
         <Rectangle.Fill>
             <VisualBrush Viewport="3,3,6,6" ViewportUnits="Absolute" TileMode="Tile" Viewbox="0,0,3,3">
                 <VisualBrush.Visual>

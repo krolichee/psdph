@@ -1,4 +1,7 @@
-﻿using psdPH.Logic.Compositions;
+﻿using psdPH.Logic;
+using psdPH.Logic.Compositions;
+using psdPH.Logic.Parameters;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using psdPH.Views.SimpleView.Logic;
 using psdPH.Views.WeekView;
 using System;
@@ -11,12 +14,17 @@ namespace psdPH.Views.SimpleView.SimpleViewCedStack
 {
     class SimpleViewCommand:CEDCommand
     {
-        public SimpleListData SimpleViewList;
-        public SimpleViewCommand(SimpleListData simpleViewList)
+        public SimpleListData SimpleListData;
+        public SimpleViewCommand(SimpleListData simpleListData)
         {
-            SimpleViewList = simpleViewList;
+            SimpleListData = simpleListData;
         }
-        protected override bool IsEditableCommand(object parameter) => false;
+        protected override bool IsEditableCommand(object parameter) => true;
+        protected override void EditExecuteCommand(object parameter)
+        {
+            var parset = (parameter as SimpleData).ParameterSet;
+            new ParsetInputWindow(parset).ShowDialog();
+        }
         protected override void CreateExecuteCommand(object parameter)
         {
             var listData = (SimpleListData)parameter;
@@ -24,8 +32,8 @@ namespace psdPH.Views.SimpleView.SimpleViewCedStack
         }
         protected override void DeleteExecuteCommand(object parameter)
         {
-            var blob = (Blob)parameter;
-            SimpleViewList.Remove(blob);
+            var item = (SimpleData)parameter;
+            SimpleListData.Remove(item);
         }
     }
 }

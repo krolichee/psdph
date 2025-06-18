@@ -1,5 +1,7 @@
 ﻿using psdPH.Logic.Rules;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.RuleEditor;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -7,6 +9,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using Condition = psdPH.Logic.Rules.Condition;
+using Rule = psdPH.Logic.Ruleset.Rules.Rule;
 
 namespace psdPH.Logic
 {
@@ -17,11 +20,19 @@ namespace psdPH.Logic
     {
         ConditionRule _rule;
         Condition _condition;
-        List<Setup> _parameters = new List<Setup>();
+        List<Setup> _conditionSetups = new List<Setup>();
+        List<Setup> _ruleSetups = new List<Setup>();
+        bool accepting=false;
         void initComboBoxes(Rule[] rules, Condition[] conditions)
         {
             conditionsComboBox.ItemsSource = conditions;
             ruleComboBox.ItemsSource = rules;
+            subsribe(rules,conditions);
+        }
+        void subsribe(IEnumerable<ISetupable> rules, IEnumerable<ISetupable> conditions)
+        {
+            foreach (var item in conditions.Concat(rules))
+                item.SetupsChanged += SetupsChanged;
         }
         void initComboBoxes(RulesetDefinition rulesetDef)
         {
@@ -44,8 +55,41 @@ namespace psdPH.Logic
             list.RemoveAt(index);
             list.Insert(index, replacement);
         }
+        void SetupsChanged(object sender)
+        {
+            if (accepting)
+                return;
+
+            if (sender == _condition)
+                RefreshConditionSetupsStack();
+            else if (sender == _rule)
+                RefreshRuleSetupsStack();
+        }
+        
+        void RefreshConditionSetupsStack()
+        {
+            conditionParametersStack.Children.Clear();
+            _conditionSetups = _condition.Setups.ToList();
+            foreach (var param in _conditionSetups)
+            {
+                setupParameterApperiance(param);
+                conditionParametersStack.Children.Add(param.Stack);
+            }
+        }
+        void RefreshRuleSetupsStack()
+        {
+            ruleParametersStack.Children.Clear();
+            _ruleSetups = _rule.Setups.ToList();
+            foreach (var param in _ruleSetups)
+            {
+                setupParameterApperiance(param);
+                ruleParametersStack.Children.Add(param.Stack);
+            }
+        }
+
         public RuleControl(ConditionRule rule_original, RulesetDefinition rulesetDef)
         {
+
             var rule = rule_original.Clone() as ConditionRule;
             var condition = rule.Condition;
 
@@ -55,10 +99,14 @@ namespace psdPH.Logic
             replaceIfSameType(conditions, condition);
             replaceIfSameType(rules, rule);
 
+            subsribe(rules, conditions);
+
             InitializeComponent();
             initComboBoxes(rules.ToArray(),conditions.ToArray());
             conditionsComboBox.SelectedItem = condition;
             ruleComboBox.SelectedItem = rule;
+
+
         }
 
         void setupParameterApperiance(Setup param)
@@ -72,31 +120,17 @@ namespace psdPH.Logic
         private void conditionsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _condition = conditionsComboBox.SelectedItem as Condition;
-            conditionParametersStack.Children.Clear();
-            var parameters = _condition.Setups;
-            _parameters.AddRange(parameters);
-            foreach (var param in parameters)
-            {
-                setupParameterApperiance(param);
-                conditionParametersStack.Children.Add(param.Stack);
-            }
+            RefreshConditionSetupsStack();
         }
         private void ruleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _rule = ruleComboBox.SelectedItem as ConditionRule;
-            ruleParametersStack.Children.Clear();
-            var parameters = _rule.Setups;
-            _parameters.AddRange(parameters);
-            foreach (var param in parameters)
-            {
-                setupParameterApperiance(param);
-                ruleParametersStack.Children.Add(param.Stack);
-            }
-
+            RefreshRuleSetupsStack();
         }
         void acceptParameters()
         {
-            foreach (var item in _parameters)
+            accepting = true;
+            foreach (var item in _ruleSetups.Concat(_conditionSetups))
                 item.Accept();
         }
         bool IsRuleSetUp()

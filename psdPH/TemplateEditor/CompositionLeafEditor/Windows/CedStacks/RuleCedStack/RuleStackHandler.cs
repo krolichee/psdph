@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.Utils;
 using psdPH.Utils.CedStack;
 using psdPH.Views.WeekView;
@@ -12,7 +13,7 @@ using System.Windows.Controls;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
-    public abstract class RuleStackHandler : CEDStackHandler
+    public abstract class RuleStackHandler : CEDPanelHandler
     {
         protected abstract RuleCommand RuleCommand { get; }
         protected RuleSet RuleSet;
@@ -49,7 +50,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             RuleSet = ruleSet;
             RuleSet.Updated += Refresh;
         }
-        protected override IList Items => (IList)this.RuleSet.Rules;
+        protected override IList Items => this.RuleSet.Rules;
     }
     public class StructureRuleStackHandler : RuleStackHandler
     {

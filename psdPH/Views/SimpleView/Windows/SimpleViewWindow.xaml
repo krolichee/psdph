@@ -5,18 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:psdPH.Views.SimpleView.Windows" xmlns:CedStack="clr-namespace:psdPH.Utils.CedStack"
         mc:Ignorable="d"
-        Title="SimpleViewWindow" Height="450" Width="800">
+        Title="SimpleViewWindow" Height="450" Width="800" Closing="Window_Closing">
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="18"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid x:Name="cedStackGrid" Grid.Row="1">
-            <CedStack:CEDStackUI Margin="0,0,0,0"/>
+            <CedStack:CEDStackUI/>
         </Grid>
         <Menu VerticalAlignment="Center" Height="18">
             <MenuItem Header="Вид" >
-                <MenuItem Header="Удалить" Click="MenuItem_Click" />
+                <MenuItem Header="Сохранить" Click="saveMenuItem_Click" />
+                <MenuItem Header="Удалить" Click="deleteMenuItem_Click" />
             </MenuItem>
         </Menu>
     </Grid>

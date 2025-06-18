@@ -24,7 +24,7 @@ namespace psdPHTest.Logic
             var blob = Blob.PathBlob("...");
             var parameter = new StringParameter() { Name = "надпись" };
             var textLeaf = new TextLeaf() { LayerName = "text" };
-                var rule = new TextAssignRule(blob) { TextLeaf = textLeaf, Parameter = parameter, Condition = new DummyCondition() };
+                var rule = new TextAssignRule(blob) { TextLeaf = textLeaf, StringParameter = parameter, Condition = new DummyCondition() };
             blob.AddChild(textLeaf);
             blob.RuleSet.AddRule(rule);
             blob.ParameterSet.Add(parameter);
@@ -35,7 +35,7 @@ namespace psdPHTest.Logic
             doc.Rollback();
             blob.Apply(doc);
             var result = doc.GetLayerByName(textLeaf.LayerName).TextItem.Contents;
-            Assert.IsTrue(result == parameter.Value);
+            Assert.IsTrue(result == parameter.Text);
         }
     }
 }

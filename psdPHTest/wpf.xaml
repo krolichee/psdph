@@ -25,6 +25,7 @@
                 </VisualBrush>
             </Rectangle.Fill>
         </Rectangle>
+        <ProgressBar HorizontalAlignment="Left" Height="10" Margin="440,185,0,0" VerticalAlignment="Top" Width="100" IsIndeterminate="True"/>
 
     </Grid>
 </UserControl>

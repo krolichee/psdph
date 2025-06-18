@@ -18,6 +18,7 @@ using psdPH.RuleEditor;
 using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.Logic.Parameters;
+using psdPH.Utils.Setups;
 
 namespace psdPHTest.Tests.UI
 {
@@ -69,7 +70,7 @@ namespace psdPHTest.Tests.UI
         {
             var options = new string[] { "1", "2", "3" };
             var cfg = new SetupConfig(this,nameof(Objects),"каво");
-            var parameters = new Setup[] { Setup.MultiChoose(cfg, options)};
+            var parameters = new Setup[] { new MultiChooseSetup(cfg, options)};
             var pi_w = new SetupsInputWindow(parameters);
             pi_w.ShowDialog();
             Assert.IsTrue(Objects[0] as string=="1");
@@ -79,7 +80,7 @@ namespace psdPHTest.Tests.UI
         public void testRtb()
         {
             var cfg = new SetupConfig(this, nameof(str), "каво");
-            var parameters = new Setup[] { Setup.RichStringInput(cfg) };
+            var parameters = new Setup[] { new RichStringInputSetup(cfg) };
             while (new SetupsInputWindow(parameters).ShowDialog() == true) ;
         }
 
@@ -101,7 +102,7 @@ namespace psdPHTest.Tests.UI
             var dayBlob = weekConfig.GetDayBlob(weekBlob);
             dayBlob.ParameterSet.Add(new FlagParameter("testFlag"));
 
-            var weekListData = WeekListData.Create(weekConfig, weekBlob);
+            var weekListData = WeekListData.CreateWeekListData(weekConfig, weekBlob);
 
             var wv_w = new WeekViewWindow(weekListData);
             wv_w.ShowDialog();
@@ -115,8 +116,9 @@ namespace psdPHTest.Tests.UI
             weekBlob.ParameterSet.AsCollection().Add(new FlagParameter("testFlag"));
             var dayBlob = weekConfig.GetDayBlob(weekBlob);
             dayBlob.AddChild(new AreaLeaf() { LayerName="area"});
+            var weekListData = WeekListData.CreateWeekListData(weekConfig, weekBlob);
 
-            new RuleEditorWindow(new DayRulesetDefinition(dayBlob)).ShowDialog();
+            new RuleEditorWindow(new WeekDayRulesetDefinition(weekListData)).ShowDialog();
         }
     }
     [TestCategory(TestCatagories.ManualUI)]
@@ -129,7 +131,7 @@ namespace psdPHTest.Tests.UI
         public void ParameterWindowTest()
         {
             SetupConfig config = new SetupConfig(this, nameof(this.m), "Строка");
-            Setup[] parameters = new Setup[] { Setup.RichStringInput(config) };
+            Setup[] parameters = new Setup[] { new RichStringInputSetup(config) };
             while (new SetupsInputWindow(parameters).ShowDialog() == true) ;
         }
         [TestMethod]

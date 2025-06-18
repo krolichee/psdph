@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic.Compositions;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -24,7 +25,7 @@ namespace psdPH.Logic.Rules
                 var result = new List<Setup>();
                 var textLeafConfig = new SetupConfig(this, nameof(this.TextLeafLayerName), "поля");
                 var textLeavesNames = Composition.GetChildren<TextLeaf>().Select(t => t.LayerName).ToArray();
-                result.Add(Setup.Choose(textLeafConfig, textLeavesNames));
+                result.Add(new ChooseSetup(textLeafConfig, textLeavesNames));
                 return result.ToArray();
             }
         }

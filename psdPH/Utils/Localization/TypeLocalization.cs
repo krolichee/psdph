@@ -3,6 +3,7 @@
     using psdPH.Logic;
     using psdPH.Logic.Compositions;
     using psdPH.Logic.Parameters;
+    using psdPH.Logic.Ruleset.Rules;
     using System;
     using System.Collections.Generic;
 
@@ -25,6 +26,7 @@
 
                 {typeof(FlagParameter),"Флаг" },
                 {typeof(StringParameter),"Строка" },
+                {typeof(StringChooseParameter),"Выбор строки" },
 
         };
         public static string GetLocalizedDescription(this Type type)

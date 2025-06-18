@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace psdPH.Views.WeekView
 {
-    class WeekStackHandler : CEDStackHandler
+    class WeekStackHandler : CEDPanelHandler
     {
         WeekListData WeekListData;
         public WeekStackHandler(WeekListData weekListData)

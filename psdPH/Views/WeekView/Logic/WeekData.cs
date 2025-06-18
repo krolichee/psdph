@@ -2,6 +2,7 @@
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.Utils;
 using psdPH.Views.WeekView.Logic;
 using System;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Controls;
 using System.Xml;
@@ -17,14 +19,11 @@ using System.Xml.Serialization;
 namespace psdPH.Views.WeekView
 {
     [Serializable]
-    public class WeekData
+    public class WeekData:ViewData
     {
         public int Week;
-        [XmlIgnore]
-        public Blob MainBlob => WeekListData.MainBlob;
-        public ParameterSet ParameterSet = new ParameterSet();
         public List<DayParameterSet> DayParsetsList = new List<DayParameterSet>();
-
+        public ParameterSet ParameterSet = new ParameterSet();
         [XmlIgnore]
         public WeekListData WeekListData;
         [XmlIgnore]
@@ -34,18 +33,18 @@ namespace psdPH.Views.WeekView
         {
             get => DayParsetsList.ToDictionary(p => p.Dow, p => p);
         }
-        public void Apply(Document doc)
-        {
 
-        }
+        public override Blob RootBlob => WeekListData.RootBlob;
+
         public void Restore(WeekListData weekListData)
         {
             this.WeekListData = weekListData;
-            var savedParameters = ParameterSet;
-            ParameterSet = MainBlob.ParameterSet.Clone();
-            ParameterSet.Import(savedParameters);
 
-            Blob dayBlob = WeekConfig.GetDayBlob(MainBlob);
+            var blobParameterSet = RootBlob.ParameterSet.Clone();
+            blobParameterSet.Import(ParameterSet);
+            ParameterSet = blobParameterSet;
+
+            Blob dayBlob = WeekConfig.GetDayBlob(RootBlob);
             for (int i = 0; i < DayParsetsList.Count; i++)
             {
                 var savedParset = DayParsetsList[i];
@@ -80,7 +79,7 @@ namespace psdPH.Views.WeekView
 
             //Присваивание заглушкам заменителей
             WeekData clone = Clone();
-            var mainBlob = MainBlob.Clone();
+            var mainBlob = RootBlob.Clone();
             mainBlob.ParameterSet = ParameterSet.Clone();
             Blob dayBlob = WeekConfig.GetDayBlob(mainBlob);
 
@@ -95,42 +94,53 @@ namespace psdPH.Views.WeekView
             }
             return mainBlob;
         }
-        void applyRules()
+        void applyRules(RuleSet ruleSet, ParameterSet parameterSet)
         {
-            foreach (ParameterSetRule rule in WeekListData.WeekRulesets.WeekRules.Rules)
-                rule.SetParameterSet(ParameterSet);
-            WeekListData.WeekRulesets.WeekRules.CoreApply();
-
-            foreach (var dayParset in DayParsetsList)
+            foreach (ParameterSetRule rule in ruleSet.Rules)
             {
-                foreach (ParameterSetRule rule in WeekListData.WeekRulesets.DayRules.Rules)
-                    rule.SetParameterSet(dayParset);
-                WeekListData.WeekRulesets.DayRules.CoreApply();
+                rule.SetParameterSet(parameterSet);
+                rule.Composition = null;
             }
+            ruleSet.Apply<ParameterSetRule>(null);
+        }
+        public void ApplyRules()
+        {
+            var dayRules = WeekListData.WeekRulesets.DayRules;
+            foreach (var dayParset in DayParsetsList)
+                applyRules(dayRules, dayParset);
+
+
+            var weekRules = WeekListData.WeekRulesets.WeekRules;
+            applyRules(weekRules, ParameterSet);
+
+            
 
 
         }
-
-        void Initialize()
+        public void FillDates()
         {
-            ParameterSet = WeekListData.MainBlob.ParameterSet.Clone();
-
-            WeekConfig.FillWeekDate(ParameterSet,Week);
-            Blob dayBlob = WeekConfig.GetDayBlob(MainBlob);
+            WeekConfig.FillWeekDate(ParameterSet, Week);
+            foreach (var parset in DayParsetsList)
+                WeekConfig.FillDateAndDow(parset);
+        }
+        void initialize()
+        {
+            ParameterSet = WeekListData.RootBlob.ParameterSet.Clone();
+            Blob dayBlob = WeekConfig.GetDayBlob(RootBlob);
             foreach (DowLayernamePair t in WeekConfig.DowPlaceholderLayernameList)
             {
                 var dayParset = DayParameterSet.FromParset(dayBlob.ParameterSet, t.Dow, Week);
-                WeekConfig.FillDateAndDow(dayParset);
                 DayParsetsList.Add(dayParset);
             }
-            applyRules();
+            FillDates();
+            ApplyRules();
         }
         public WeekData(int week, WeekListData weekListData)
         {
             WeekListData = weekListData;
             Week = week;            
             this.Restore(weekListData);
-            Initialize();
+            initialize();
         }
         public WeekData() { }
     }

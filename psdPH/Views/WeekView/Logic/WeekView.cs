@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic.Compositions;
 using psdPH.Utils;
+using psdPH.Views.SimpleView.Logic;
 using psdPH.Views.WeekView.Logic;
 using System;
 using System.IO;
@@ -9,57 +10,63 @@ using System.Windows.Media.Animation;
 
 namespace psdPH.Views.WeekView
 {
-    public class WeekView
+    public class WeekView : View<WeekListData>
     {
-        private static WeekView _instance;
-        private readonly string _projectName;
-        public static WeekView Instance()
-        {
-            if (_instance == null)
-                throw new System.Exception();
-            return _instance;
-        }
-        public static WeekView MakeInstance(string projectName)
-        {
-            return _instance = new WeekView(projectName);
-        }
-        
 
-        protected WeekView(string projectName)
+        public static WeekView MakeWeekView()
         {
-            _projectName = projectName;
-            Directory.CreateDirectory(ViewDirectory);
+            return (_instance = new WeekView()) as WeekView;
         }
 
-        public string ViewDirectory => Path.Combine(PsdPhDirectories.ViewsDirectory(_projectName), "WeekView");
         public string ConfigPath => Path.Combine(ViewDirectory, "config.xml");
-        public string WeekListDataPath => Path.Combine(ViewDirectory, "data.xml");
         public string WeekRulesetsPath => Path.Combine(ViewDirectory, "rules.xml");
-        public string OutputsDirectory => Path.Combine(ViewDirectory, "output");
-        public string OutputDirectory(string outputName) => Path.Combine(OutputsDirectory, outputName);
-        public void CreateOutputsDirectory() => Directory.CreateDirectory(OutputsDirectory);
-        public void CreateOutputDirectory(string outputName) => Directory.CreateDirectory(OutputDirectory(outputName));
+
+        public override string ViewName => "WeekView";
+
+
 
         public static WeekConfig CreateWeekConfig(Blob root)
         {
             WeekConfigEditor wce_w = new WeekConfigEditor(root);
-            if (!wce_w.ShowDialog())
+            if (!wce_w.NewConfigShowDialog())
                 return null;
             return wce_w.GetResultConfig();
         }
-        public WeekConfig OpenWeekConfig() => DiskOperations.OpenXml<WeekConfig>(ConfigPath);
-        public WeekConfig OpenOrCreateWeekConfig(Blob root)
+        protected WeekConfig OpenWeekConfig() => DiskOperations.OpenXml<WeekConfig>(ConfigPath);
+        protected WeekConfig OpenOrCreateWeekConfig(Blob root)
         {
             var weekConfig = OpenWeekConfig();
             if (weekConfig == null)
                 weekConfig = CreateWeekConfig(root);
             return weekConfig;
         }
-        public WeekListData OpenWeekListData() => DiskOperations.OpenXml<WeekListData>(WeekListDataPath);
-        public WeekRulesets OpenWeekRulesets() => DiskOperations.OpenXml<WeekRulesets>(WeekRulesetsPath);
-        public WeekListData OpenOrCreateWeekListData(Blob root)
+        protected WeekListData OpenWeekListData() => DiskOperations.OpenXml<WeekListData>(ListDataPath);
+        protected WeekRulesets OpenWeekRulesets() => DiskOperations.OpenXml<WeekRulesets>(WeekRulesetsPath);
+
+        protected override void SaveListData(WeekListData listData)
+        {
+            var weekListData = listData;
+            var weekConfig = weekListData.WeekConfig;
+            var weekRulesets = weekListData.WeekRulesets;
+            DiskOperations.SaveXml(ConfigPath, weekConfig);
+            DiskOperations.SaveXml(ListDataPath, weekListData);
+            DiskOperations.SaveXml(WeekRulesetsPath, weekRulesets);
+        }
+
+
+        public override Window ShowWindow()
+        {
+            if (ListData == null)
+                return null;
+            var window = new WeekViewWindow(ListData);
+            window.Show();
+            return window;
+        }
+
+        protected override WeekListData openOrCreateData()
         {
             var weeksListData = OpenWeekListData();
+            var root = PsdPhProject.Instance().openMainBlob();
             var weekConfig = OpenOrCreateWeekConfig(root);
             var weekRules = OpenWeekRulesets();
 
@@ -70,46 +77,15 @@ namespace psdPH.Views.WeekView
                 return null;
 
             if (weeksListData == null)
-                weeksListData = WeekListData.Create(weekConfig, weekRules, root);
-            else
-            {
-                weeksListData.WeekConfig = weekConfig;
-                weeksListData.MainBlob = root;
-                weeksListData.WeekRulesets = weekRules;
-            }
+                weeksListData = new WeekListData();
 
+            weeksListData.WeekConfig = weekConfig;
+            weeksListData.RootBlob = root;
+            weeksListData.WeekRulesets = weekRules;
+            weeksListData.RootBlob = root;
             weeksListData.Restore();
-            weeksListData.MainBlob = root;
-            return weeksListData;
-        }
-        public void SaveWeekListData(WeekListData weekListData)
-        {
-            var weekConfig = weekListData.WeekConfig;
-            var weekRulesets = weekListData.WeekRulesets;
-            DiskOperations.SaveXml(ConfigPath, weekConfig);
-            DiskOperations.SaveXml(WeekListDataPath, weekListData);
-            DiskOperations.SaveXml(WeekRulesetsPath, weekRulesets);
-        }
-        public void Clear()
-        {
-            File.Delete(WeekListDataPath);
-        }
-        internal void Delete()
-        {
-            Directory.Delete(ViewDirectory, true);
-        }
 
-        public static Window ShowWindowDialog()
-        {
-            var project = PsdPhProject.Instance();
-            var weekView = WeekView.MakeInstance(project.ProjectName);
-            Blob blob = project.openOrCreateMainBlob();
-            var weekListData = weekView.OpenOrCreateWeekListData(blob);
-            if (weekListData == null)
-                return null;
-            var window = new WeekViewWindow(weekListData);
-            window.Show();
-            return window;
+            return weeksListData;
         }
     }
 }

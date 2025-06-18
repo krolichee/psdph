@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -16,15 +17,15 @@ namespace psdPH.Logic.Compositions
             get
             {
                 var result = new List<Setup>();
-                var textConfig = new SetupConfig(this, nameof(this.Text), LayerName);
-                result.Add(Setup.RichStringInput(textConfig));
+                var textConfig = new SetupConfig(this, nameof(this.Text),"текст " + LayerName);
+                result.Add(new RichStringInputSetup(textConfig));
                 return result.ToArray();
             }
         }
         override public void Apply(Document doc)
         {
             ArtLayer layer = ArtLayerWr(doc).ArtLayer;
-            layer.TextItem.Contents = Text.Replace("\n", "\r");
+            layer.TextItem.Contents = Text?.Replace("\n", "\r");
         }
         public override bool IsMatching(Document doc)
         {

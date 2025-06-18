@@ -1,5 +1,7 @@
 ﻿using psdPH.Logic;
 using psdPH.Logic.Compositions;
+using psdPH.Views;
+using psdPH.Views.SimpleView.Logic;
 using psdPH.Views.WeekView;
 using psdPH.Views.WeekView.Logic;
 using System;
@@ -11,48 +13,33 @@ using System.Xml.Serialization;
 namespace psdPH
 {
     [Serializable]
-    [XmlInclude(typeof(Blob))]
-    public class WeekListData
+    public class WeekListData:ViewListData
     {
-        
-        public static WeekListData Create(WeekConfig weekConfig,WeekRulesets weekRulesets, Blob root)
-        {
-#pragma warning disable CS0612 // Тип или член устарел
-            var result = new WeekListData();
-#pragma warning restore CS0612 // Тип или член устарел
-            result.WeekConfig = weekConfig;
-            result.MainBlob = root;
-            result.WeekRulesets = weekRulesets;
-            result.WeekRulesets.Restore(root,weekConfig);
-            return result;
-        }
-        public static WeekListData Create(WeekConfig weekConfig, Blob root)
-        {
-            var weekRulesets = new WeekRulesets();
-#pragma warning disable CS0612 // Тип или член устарел
-            var result = new WeekListData();
-#pragma warning restore CS0612 // Тип или член устарел
-            result.WeekConfig = weekConfig;
-            result.MainBlob = root;
-            result.WeekRulesets = weekRulesets;
-            result.WeekRulesets.Restore(root, weekConfig);
-            return result;
-        }
-        [XmlIgnore]
-        public WeekRulesets WeekRulesets = new WeekRulesets();
         [XmlIgnore]
         public WeekConfig WeekConfig;
         public ObservableCollection<WeekData> Weeks = new ObservableCollection<WeekData>();
+        public static WeekListData CreateWeekListData(WeekConfig weekConfig,WeekRulesets weekRulesets, Blob root)
+        {
+            var result = new WeekListData();
+            result.WeekConfig = weekConfig;
+            result.RootBlob = root;
+            result.WeekRulesets = weekRulesets;
+            return result;
+        }
+        public static WeekListData CreateWeekListData(WeekConfig weekConfig, Blob root)
+        {
+            var weekRulesets = new WeekRulesets();
+            return CreateWeekListData(weekConfig, weekRulesets, root);
+        }
         [XmlIgnore]
-        public Blob MainBlob;
+        public WeekRulesets WeekRulesets = new WeekRulesets();
         public void Restore()
         {
-            WeekRulesets.Restore(MainBlob, WeekConfig);
-            MainBlob.Restore();
+            RootBlob.Restore();
             foreach (var week in Weeks)
                 week.Restore(this);
         }
-        public void NewWeek()
+        public override void New()
         {
             int new_week;
             if (Weeks.Any())
@@ -66,7 +53,6 @@ namespace psdPH
             var new_weekData = new WeekData(new_week, this);
             Weeks.Add(new_weekData);
         }
-        [Obsolete]
         public WeekListData() { }
     }
 }

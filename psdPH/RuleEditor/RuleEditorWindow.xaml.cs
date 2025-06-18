@@ -1,5 +1,6 @@
 ﻿using psdPH.Logic;
 using psdPH.Logic.Rules;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.Utils;
 using psdPH.Views.WeekView;
 using System.Linq;

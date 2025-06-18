@@ -1,8 +1,13 @@
 ﻿using Photoshop;
+using psdPH.Logic.Ruleset.Rules;
+using psdPH.Logic.Ruleset.Rules.RulesetAffectingRule;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic
@@ -25,18 +30,20 @@ namespace psdPH.Logic
         [XmlIgnore]
         public Composition Composition;
 
-        protected Rule[] CoreRules => Rules.Where(item => (item is CoreRule)).ToArray();
-        protected Rule[] NonCoreRules => Rules.Where(item => !(item is CoreRule)).ToArray();
-
-        public void NonCoreApply(Document doc)
+        Rule[] skipRules()
         {
-            foreach (var item in NonCoreRules)
-                item.Apply(doc);
+            for (int i = 0; i < Rules.Count; i++)
+              if(Rules[i] is SkipOtherRule)
+                    if ((Rules[i] as ConditionRule).Condition.IsValid())
+                        return Rules.Take(i+1).ToArray();
+            return Rules.ToArray();
         }
-        public void CoreApply()
+        public void Apply<T>(Document doc)
         {
-            foreach (CoreRule item in CoreRules)
-                item.CoreApply();
+            var rules = skipRules();
+            foreach (var item in rules)
+                if (item is T)
+                    item.Apply(doc);
         }
 
         public void RestoreComposition(Composition composition)
@@ -46,8 +53,8 @@ namespace psdPH.Logic
             {
                 rule.RestoreComposition(composition);
             }
-
         }
+
         public RuleSet()
         {
             Rules.CollectionChanged += (_, __) => Updated?.Invoke();

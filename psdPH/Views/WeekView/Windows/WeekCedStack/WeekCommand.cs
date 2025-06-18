@@ -6,7 +6,7 @@
         protected override void CreateExecuteCommand(object parameter)
         {
             var weekListData = (WeekListData)parameter;
-            weekListData.NewWeek();
+            weekListData.New();
         }
         protected override void DeleteExecuteCommand(object parameter)
         {

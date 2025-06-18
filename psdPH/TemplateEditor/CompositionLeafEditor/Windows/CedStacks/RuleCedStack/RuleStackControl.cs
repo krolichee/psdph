@@ -1,10 +1,10 @@
 ﻿using Photoshop;
 using psdPH.Logic;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.RuleEditor;
 using psdPH.Utils;
 using System.Windows;
 using System.Windows.Input;
-using Rule = psdPH.Logic.Rule;
 
 namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
 {
@@ -21,13 +21,11 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             RuleCommand = ruleCommand;
             HorizontalAlignment = HorizontalAlignment.Stretch;
             HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            ICommand editCommand = EditCommand();
-            ICommand deleteCommand = DeleteCommand();
             var rtb = new RuleTextBlock((Rule)rule);
             //Height = 28;
             Content = rtb;
             CommandParameter = rule;
-            Command = editCommand;
+            Command = EditCommand();
             setContextMenu(this, rule);
         }
     }

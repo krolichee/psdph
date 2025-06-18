@@ -1,5 +1,6 @@
 ﻿using psdPH.Logic;
 using psdPH.Logic.Rules;
+using psdPH.Logic.Ruleset.Rules;
 using psdPH.RuleEditor;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.Utils;

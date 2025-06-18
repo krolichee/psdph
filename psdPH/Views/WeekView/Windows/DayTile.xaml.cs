@@ -18,7 +18,7 @@ namespace psdPH
     /// </summary>
     public partial class DayTile : UserControl
     {
-        ParameterSet Parset;
+        ParameterSet ParameterSet;
         public DayOfWeek Dow
         {
             get => _dow; set
@@ -32,27 +32,27 @@ namespace psdPH
         string getParametersText()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var par in Parset.AsCollection())
-            {
+            foreach (var par in ParameterSet.AsCollection())
                 sb.Append($"{par.Name}: {Localization.LocalizeObj(par.Value)}\n");
-            }
             return sb.ToString();
         }
-        void refreshPreview()
+        public void RefreshPreview()
         {
             previewTextBlock.Text = getParametersText();
         }
         public DayTile(DayParameterSet parset)
         {
-            Parset = parset;
+            ParameterSet = parset;
             InitializeComponent();
             this.Dow = parset.Dow;
-            refreshPreview();
+            RefreshPreview();
+            ParameterSet.Updated += RefreshPreview;
         }
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            new ParsetInputWindow(Parset).ShowDialog();
-            refreshPreview();
+            new ParsetInputWindow(ParameterSet).ShowDialog();
+            RefreshPreview();
+            
         }
     }
 }

@@ -8,14 +8,15 @@ namespace psdPH.Views.WeekView
     [Obsolete]
     public class WeekRuleCommand : RuleCommand
     {
-        public WeekRuleCommand(RuleSet ruleSet) : base(ruleSet) {
-            RulesetDefinition = new WeekRulesetDefinition(ruleSet.Composition);
+        public WeekRuleCommand(WeekListData weekListData) : base(weekListData.WeekRulesets.DayRules)
+        {
+            RulesetDefinition = new WeekRulesetDefinition(weekListData);
         }
     }
     public class WeekDayRuleCommand : RuleCommand
     {
-        public WeekDayRuleCommand(RuleSet ruleSet) : base(ruleSet) {
-            RulesetDefinition = new DayRulesetDefinition(ruleSet.Composition);
+        public WeekDayRuleCommand(WeekListData weekListData) : base(weekListData.WeekRulesets.DayRules) {
+            RulesetDefinition = new WeekDayRulesetDefinition(weekListData);
         }
         
     }

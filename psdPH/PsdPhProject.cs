@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace psdPH
 {
-    internal class PsdPhProject
+    public class PsdPhProject
     {
         private static PsdPhProject _instance;
         public readonly string ProjectName;
@@ -24,6 +24,7 @@ namespace psdPH
         protected PsdPhProject(string projectName)
         {
             ProjectName = projectName;
+            Directory.CreateDirectory(PsdPhDirectories.ProjectDirectory(projectName));
         }
         public void saveBlob(Blob blob) => saveBlob(blob, ProjectName);
         public Blob openOrCreateMainBlob() => openOrCreateMainBlob(ProjectName);

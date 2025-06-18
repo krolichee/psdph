@@ -2,6 +2,7 @@
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,19 +45,19 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             result = new List<T>();
         }
         protected abstract PsLayerKind[] Kinds { get; }
-        protected virtual Setup multiLayerParameter(Document doc)
+        protected virtual Setup multiLayerSetup(Document doc)
         {
             string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(Kinds));
             var ln_pconfig = new SetupConfig(this, nameof(Inputs), "Слой");
-            return Setup.MultiChoose(ln_pconfig, layers_names); 
+            return new MultiChooseSetup(ln_pconfig, layers_names); 
         }
-        protected virtual Setup[] GetParameters(Document doc, Composition root)
+        protected virtual Setup[] GetSetups(Document doc, Composition root)
         {
-            return new Setup[] { multiLayerParameter(doc) };
+            return new Setup[] { multiLayerSetup(doc) };
         }
         public MultiCompositionCreator(Document doc, Composition root)
         {
-            p_w = new SetupsInputWindow(GetParameters(doc, root));
+            p_w = new SetupsInputWindow(GetSetups(doc, root));
             _doc = doc;
         }
     }
@@ -86,11 +87,11 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     }
     public class MultiGroupLeafCreator : MultiCompositionCreator<GroupLeaf>
     {
-        protected override Setup multiLayerParameter(Document doc)
+        protected override Setup multiLayerSetup(Document doc)
         {
             string[] layers_names = doc.GetLayerSetsNames(doc.GetLayerSets());
             var ln_pconfig = new SetupConfig(this, nameof(Inputs), "Группа");
-            return Setup.MultiChoose(ln_pconfig, layers_names);
+            return new MultiChooseSetup(ln_pconfig, layers_names);
         }
         public MultiGroupLeafCreator(Document doc, Composition root) : base(doc, root) { }
 
@@ -112,12 +113,12 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     {
         public string PrototypeLayerName;
         protected override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer };
-        protected override Setup[] GetParameters(Document doc, Composition root)
+        protected override Setup[] GetSetups(Document doc, Composition root)
         {
             var prototype_pconfig = new SetupConfig(this, nameof(PrototypeLayerName), "Прототип");
             var prototypeNames = root.GetChildren<PrototypeLeaf>().Select(p => p.LayerName).ToArray();
-            var prototype_parameter = Setup.Choose(prototype_pconfig, prototypeNames); 
-            return new[] { prototype_parameter, multiLayerParameter(doc) };
+            var prototype_parameter = new ChooseSetup(prototype_pconfig, prototypeNames); 
+            return new[] { prototype_parameter, multiLayerSetup(doc) };
         }
 
         protected override PlaceholderLeaf processInput(object input) => 

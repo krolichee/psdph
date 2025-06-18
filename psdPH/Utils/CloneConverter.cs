@@ -34,6 +34,14 @@ namespace psdPH.Utils
             object result = serializer.Deserialize(sr);
             return result;
         }
+        
+        public static object Clone(object obj)
+        {
+            var type = obj.GetType();
+            var resultXml = GetXml(obj);
+            return GetObj(resultXml, type);
+        }
+
         private static string _changeType<T>(string xmlString) where T : class
         {
             var xDoc = XDocument.Parse(xmlString);
@@ -41,18 +49,12 @@ namespace psdPH.Utils
             xmlString = xDoc.ToString();
             return xmlString;
         }
-        public static T Convert<T>(object obj)where T:class,new()
+        public static T Convert<T>(object obj) where T : class, new()
         {
             var dayBlob = new T();
             var resultXml = GetXml(obj);
             resultXml = _changeType<T>(resultXml);
             return GetObj<T>(resultXml);
-        }
-        public static object Clone(object obj)
-        {
-            var type = obj.GetType();
-            var resultXml = GetXml(obj);
-            return GetObj(resultXml, type);
         }
     }
 }

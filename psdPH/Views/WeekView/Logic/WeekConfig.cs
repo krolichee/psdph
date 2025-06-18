@@ -9,6 +9,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using psdPH.Logic.Rules;
 using psdPH.Logic.Parameters;
+using System.Globalization;
 
 namespace psdPH
 {
@@ -37,6 +38,7 @@ namespace psdPH
                 foreach (var item in value)
                     result.Add(new DowLayernamePair(item.Key, item.Value));
                 DowPlaceholderLayernameList = result;
+                
             }
         }
         public List<DowLayernamePair> DowPlaceholderLayernameList = new List<DowLayernamePair>();
