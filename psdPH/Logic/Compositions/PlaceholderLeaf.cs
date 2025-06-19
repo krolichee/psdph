@@ -13,28 +13,17 @@ namespace psdPH.Logic.Compositions
     [UIName("Заглушка")]
     public class PlaceholderLeaf : LayerComposition
     {
-        [XmlIgnore]
-        public PrototypeLeaf Prototype
-        {
-            get
-            {
-                return Siblings<PrototypeLeaf>().First(p => p.LayerName == PrototypeLayerName);
-            }
-            set
-            {
-                PrototypeLayerName = value.LayerName;
-            }
-        }
-        public string PrototypeLayerName;
-        public override string ObjName => LayerName;
 
-        public override Setup[] Setups => Replacement.Setups;
-        Blob _replacement;
+
         [XmlIgnore]
-        public Blob Replacement
+        public PrototypeBlob PrototypeBlob;
+        public override string ObjName => LayerName;
+        LayerBlob _replacement;
+        [XmlIgnore]
+        public LayerBlob Replacement
         {
             get => _replacement;
-            set { _replacement = value; _replacement.LayerName = $"{PrototypeLayerName}_{LayerName}"; }
+            set { _replacement = value; _replacement.LayerName = $"{PrototypeBlob.LayerName}_{LayerName}"; }
         }
         public override void Apply(Document doc)
         {
@@ -44,47 +33,52 @@ namespace psdPH.Logic.Compositions
                 Replacement.Apply(doc);
             }
         }
-
-        public PlaceholderLeaf(string layername, string prototypeLayername)
-        {
-            LayerName = layername;
-            PrototypeLayerName = prototypeLayername;
-        }
         public PlaceholderLeaf() { }
         public override void RestoreParents(Composition parent = null)
         {
             base.RestoreParents(parent);
         }
 
-        internal void ReplaceWithFiller(Document doc, Blob blob)
+        internal void ReplaceWithFiller(Document doc, LayerBlob blob)
         {
-            ArtLayer phLayer = doc.GetLayerByName(LayerName);
-            ArtLayer originalLayer = doc.GetLayerByName(PrototypeLayerName);
-            originalLayer.Visible = true;
-            ArtLayerWr newLayerWr = new ArtLayerWr(doc.CloneSmartLayer(PrototypeLayerName));
-            originalLayer.Visible = false;
-            var prototypeAVector = Prototype.GetRelativeLayerAlightmentVector(doc);
+            LayerWr phLayerWr = LayerDescriptor.GetFromDoc(doc);
+            LayerWr originalLayerWr = PrototypeBlob.LayerDescriptor.GetFromDoc(doc);
+            originalLayerWr.Visible = true;
+            ArtLayerWr newLayerWr = new ArtLayerWr(doc.CloneSmartLayer(originalLayerWr.Name as string));
+            originalLayerWr.Visible = false;
+            var prototypeAVector = PrototypeBlob.GetRelativeLayerAlightmentVector(doc);
             var options = new AlignOptions(Alignment.Create("up", "left"), LayerWr.ConsiderFx.NoFx);
-            var phAVector = newLayerWr.GetAlightmentVector(new ArtLayerWr(phLayer), options);
+            var phAVector = newLayerWr.GetAlightmentVector(phLayerWr, options);
 
             newLayerWr.TranslateV(phAVector+prototypeAVector);
             //ph_layer.Delete();
-            phLayer.Opacity = 0;
+            phLayerWr.Opacity = 0;
             newLayerWr.Name = blob.LayerName;
 
             //Parent.addChild(blob);
             //Parent.removeChild(this);
         }
 
-        public void CoreApply()
-        {
-            Replacement.CoreApply();
-        }
-
         public override bool IsMatching(Document doc)
         {
-            return LayerDescriptor.Layer(LayerName).DoesDocHas(doc)
-                && Prototype.IsMatching(doc);
+            return LayerDescriptor.DoesDocHas(doc)
+                && PrototypeBlob.IsMatching(doc);
+        }
+    }
+    public class PlaceholderDto : LayerCompostionDto
+    {
+        public Guid PrototypeGuid;
+    }
+    class PlaceholderDtoConverter : LayerCompositionDtoConverter
+    {
+        public override void ApplyDto(object _obj, object _dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object GetDto(object _obj)
+        {
+            throw new NotImplementedException();
         }
     }
 

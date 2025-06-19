@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace psdPHTest.Views.WeekView
 {
+    [TestCategory(TestCatagories.ManualUI)]
     [TestClass]
     public class TableInterpreterTest: WeekViewTest
     {

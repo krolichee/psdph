@@ -31,7 +31,7 @@ namespace psdPH.Views.SimpleView.Logic
         protected override SimpleListData openOrCreateData()
         {
             var project = PsdPhProject.Instance();
-            Blob blob = project.openOrCreateMainBlob();
+            RootBlob blob = project.openOrCreateMainBlob();
             SimpleListData simpleListData;
             simpleListData = OpenData();
             if (simpleListData == null)

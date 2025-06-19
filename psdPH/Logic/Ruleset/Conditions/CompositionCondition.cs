@@ -1,0 +1,28 @@
+﻿using Photoshop;
+using psdPH.Logic.Ruleset.Conditions;
+using psdPH.Utils.Setups;
+using System;
+using System.Xml.Serialization;
+
+namespace psdPH.Logic.Rules
+{
+    [Serializable]
+    [PsdPhSerializable]
+    public abstract class CompositionCondition :Condition
+    {
+        [XmlIgnore]
+        public Composition Composition;
+       
+
+        public void RestoreComposition(Composition composition)
+        {
+            Composition = composition;
+        }
+        public CompositionCondition(Composition composition)
+        {
+            Composition = composition;
+            KnownTypes.Types.Add(this.GetType());
+        }
+    }
+    
+}

@@ -13,7 +13,7 @@ namespace psdPH.Views.SimpleView.Logic
     public class SimpleData:ViewData
     {
         SimpleListData SimpleListData;
-        public override Blob RootBlob => SimpleListData.RootBlob;
+        public override RootBlob RootBlob => SimpleListData.RootBlob;
         public ParameterSet ParameterSet = new ParameterSet();
         public SimpleData(SimpleListData simpleListData)
         {
@@ -21,7 +21,7 @@ namespace psdPH.Views.SimpleView.Logic
             ParameterSet = RootBlob.ParameterSet.Clone();
         }
 
-        public Blob Prepare()
+        public Composition Prepare()
         {
             //Присваивание заглушкам заменителей
             var mainBlob = RootBlob.Clone();

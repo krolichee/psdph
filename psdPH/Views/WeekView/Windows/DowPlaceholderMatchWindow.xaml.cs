@@ -1,6 +1,8 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using psdPH.Utils;
+using psdPH.Utils.Setups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,35 +15,35 @@ namespace psdPH
     /// </summary>
     public partial class DowPlaceholderMatchWindow : Window
     {
-        Dictionary<DayOfWeek, string> dowLayerDictionary = new Dictionary<DayOfWeek, string>();
-        public DowPlaceholderMatchWindow(PrototypeLeaf prot)
+        Dictionary<DayOfWeek, Guid> dowLayerDictionary = new Dictionary<DayOfWeek, Guid>();
+        SetupsInputWindow si_w;
+        public DowPlaceholderMatchWindow(PrototypeBlob prot)
         {
-            InitializeComponent();
-            this.CenterByTopmostOrScreen();
-            Closed += Window_Closed;
-            Blob root = prot.Parent as Blob;
-            var placeholders = root.GetChildren<PlaceholderLeaf>()
-            .Where(cmp => cmp.PrototypeLayerName == prot.LayerName);
-            var phNames = placeholders.Select(p => p.LayerName).ToArray();
+            RootBlob root = prot.Parent as RootBlob;
+            var placeholders = prot.Placeholders;
             var days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Skip(1).Append(DayOfWeek.Sunday);
             int i = 0;
+            var setups = new List<Setup>();
             foreach (var day in days)
-                stackPanel.Children.Add(new StringChoiceControl(phNames, $"{day} заполнитель", i++) { Tag = day });
-        }
-        private void Window_Closed(object sender, EventArgs e)
-        {
+            {
+                var kvPair = dowLayerDictionary.First(kv => kv.Key == day);
+                var config = new SetupConfig(kvPair, nameof(kvPair.Value), Localization.Localize(day));
+                setups.Add(new ChooseSetup(config, placeholders));
+            }
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
-            foreach (StringChoiceControl scc in stackPanel.Children)
-                dowLayerDictionary.Add((DayOfWeek)scc.Tag, scc.getResultString());
-            Close();
+            throw new NotImplementedException();
+            //DialogResult = true;
+            //foreach (StringChoiceControl scc in stackPanel.Children)
+            //    dowLayerDictionary.Add((DayOfWeek)scc.Tag, scc.getResultString());
+            //Close();
         }
-        public Dictionary<DayOfWeek, string> GetResultDict()
+        public Dictionary<DayOfWeek, Guid> GetResultDict()
         {
             return dowLayerDictionary;
         }
+        private DowPlaceholderMatchWindow() { }
 
     }
 }

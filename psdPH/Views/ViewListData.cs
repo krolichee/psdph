@@ -14,7 +14,7 @@ namespace psdPH.Views
      public abstract class ViewListData
     {
         [XmlIgnore]
-        public Blob RootBlob;
+        public RootBlob RootBlob;
         public abstract void New();
     }
 }

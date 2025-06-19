@@ -31,18 +31,6 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             result = new T();
         }
     }
-    public class PlaceholderLeafCreator : SingleLeafCreator<PlaceholderLeaf>
-    {
-        public PlaceholderLeafCreator(Document doc, Composition root) : base()
-        {
-            var prototype_pconfig = new SetupConfig(result, nameof(result.PrototypeLayerName), "Прототип");
-            var rel_pconfig = new SetupConfig(result, nameof(result.LayerName), "Слой вставки");
-            var prototypeNames = root.GetChildren<PrototypeLeaf>().Select(p => p.LayerName).ToArray();
-            var prototype_parameter = new ChooseSetup(prototype_pconfig, prototypeNames);
-            var rel_parameter = new ChooseSetup(rel_pconfig, doc.GetLayersNames());
-            p_w = new SetupsInputWindow(new[] { prototype_parameter, rel_parameter });
-        }
-    }
     public class TextLeafCreator : SingleLeafCreator<TextLeaf>
     {
         void Single(Document doc)
@@ -60,21 +48,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             Single(doc);
         }
     }
-    public class PrototypeCreator : SingleLeafCreator<PrototypeLeaf>
-    {
-        public PrototypeCreator(Document doc, Composition root) : base()
-        {
-            string[] blobs_names = root.GetChildren<Blob>().Select(b => b.LayerName).ToArray();
-            var bn_pconfig = new SetupConfig(result, nameof(result.LayerName), "Поддокумент");
-            var bn_parameter = new ChooseSetup(bn_pconfig, blobs_names);
-
-            string[] rel_layers_names = PhotoshopDocumentExtension.GetLayersNames(
-                doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer }));
-            var rel_pconfig = new SetupConfig(result, nameof(result.RelativeLayerName), "Опорный слой");
-            var rel_parameter = new ChooseSetup(rel_pconfig, rel_layers_names);
-            p_w = new SetupsInputWindow(new[] { bn_parameter, rel_parameter });
-        }
-    }
+    
     [Obsolete]
     public class ImageLeafCreator : SingleLeafCreator<ImageLeaf>
     {
@@ -118,15 +92,41 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             p_w = new SetupsInputWindow(new[] { ln_parameter});
         }
     }
-    public class BlobCreator : SingleLeafCreator<Blob>
+    public class LayerBlobCreator : SingleLeafCreator<LayerBlob>
     {
-        public BlobCreator(Document doc, Blob root) : base()
+        protected Setup getLayerSetup(Document doc)
         {
-            result.LayerName = "";
             string[] layers_names = doc.GetLayersNames(doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psSmartObjectLayer }));
             var ln_pconfig = new SetupConfig(result, nameof(result.LayerName), "Слой");
-            var ln_parameter = new ChooseSetup(ln_pconfig, layers_names);
-            p_w = new SetupsInputWindow(new[] { ln_parameter });
+            var ln_setup = new ChooseSetup(ln_pconfig, layers_names);
+            return ln_setup;
+        }
+        public LayerBlobCreator(Document doc, Composition root) : base()
+        {
+            result.LayerName = "";
+            
+            p_w = new SetupsInputWindow(new[] { getLayerSetup( doc) });
+        }
+        protected LayerBlobCreator() { }
+    }
+    public class PrototypeCreator : LayerBlobCreator
+    {
+        protected Setup getRelativeLayerSetup(Document doc)
+        {
+            string[] rel_layers_names = PhotoshopDocumentExtension.GetLayersNames(
+                doc.GetLayersByKinds(new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer }));
+            var rel_pconfig = new SetupConfig(result, nameof(PrototypeBlob.RelativeLayerName), "Опорный слой");
+            var rel_setup = new ChooseSetup(rel_pconfig, rel_layers_names);
+            return rel_setup;
+        }
+        public PrototypeCreator(Document doc, Composition root) : this()
+        {
+            p_w = new SetupsInputWindow(new[] { getLayerSetup(doc), getRelativeLayerSetup(doc) });
+        }
+
+        public PrototypeCreator():base()
+        {
+            result = new PrototypeBlob();
         }
     }
 

@@ -26,12 +26,12 @@ namespace psdPH
             ProjectName = projectName;
             Directory.CreateDirectory(PsdPhDirectories.ProjectDirectory(projectName));
         }
-        public void saveBlob(Blob blob) => saveBlob(blob, ProjectName);
-        public Blob openOrCreateMainBlob() => openOrCreateMainBlob(ProjectName);
-        public Blob createMainBlob() => createMainBlob(ProjectName);
-        public Blob openMainBlob() => openMainBlob(ProjectName);
+        public void saveBlob(RootBlob blob) => saveBlob(blob, ProjectName);
+        public RootBlob openOrCreateMainBlob() => openOrCreateMainBlob(ProjectName);
+        public RootBlob createMainBlob() => createMainBlob(ProjectName);
+        public RootBlob openMainBlob() => openMainBlob(ProjectName);
 
-        public static void saveBlob(Blob blob, string projectName)
+        public static void saveBlob(RootBlob blob, string projectName)
         {
             string xmlFilePath = PsdPhDirectories.ProjectXml(projectName);
             var result = DiskOperations.SaveXml(xmlFilePath, blob);
@@ -39,9 +39,9 @@ namespace psdPH
                 MessageBox.Show("Во время сохранения произошла ошибка",
                     "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-        public Blob openOrCreateMainBlob(string projectName)
+        public RootBlob openOrCreateMainBlob(string projectName)
         {
-            Blob blob;
+            RootBlob blob;
             string xmlFilePath = PsdPhDirectories.ProjectXml(projectName);
             if (File.Exists(xmlFilePath))
             {
@@ -52,30 +52,24 @@ namespace psdPH
 
             return blob;
         }
-        static Blob createMainBlob(string projectName)
+        static RootBlob createMainBlob(string projectName)
         {
-            string psdFilePath = PsdPhDirectories.ProjectPsd(projectName);
-            return Blob.PathBlob(Path.GetFileName(psdFilePath));
+            return new RootBlob();
         }
-        Blob suggestCreateDefaultBlob(Blob blob)
+        RootBlob suggestCreateDefaultBlob(RootBlob blob)
         {
             var dialogResult = MessageBox.Show("Заменить на пустой шаблон?", "Ошибка открытия", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (dialogResult == MessageBoxResult.Yes)
                 blob = createMainBlob();
             return blob;
         }
-        Blob openMainBlob(string projectName)
+        RootBlob openMainBlob(string projectName)
         {
-            Blob blob = null;
+            RootBlob blob = null;
             string xmlFilePath = PsdPhDirectories.ProjectXml(projectName);
             try
             {
-                blob = DiskOperations.OpenXml<Blob>(xmlFilePath);
-                if (blob.Mode != BlobMode.Path)
-                {
-                    MessageBox.Show("Это ошибка невероятной природы. Добиться её мог только тот, кто знает, что делает");
-                    blob = suggestCreateDefaultBlob(blob);
-                }
+                blob = DiskOperations.OpenXml<RootBlob>(xmlFilePath);
                 blob.Restore();
             }
             catch { 

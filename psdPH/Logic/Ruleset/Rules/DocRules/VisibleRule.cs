@@ -1,37 +1,62 @@
 ﻿using Photoshop;
+using psdPH.Logic.Compositions;
 using psdPH.Utils.Setups;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 
 namespace psdPH.Logic.Ruleset.Rules
 {
-    public class VisibleRule : LayerRule, DocRule
+    public class VisibleRule : LayerRule
     {
         public override string ToString() => "видимость";
         public bool Toggle = true;
-        [XmlIgnore]
-        public override Setup[] Setups
-        {
-            get
-            {
-                var result = new List<Setup>();
-                var opacityConfig = new SetupConfig(this, nameof(this.Toggle), "установить");
-                result.Add(getLayerParameter());
-                result.Add(new CheckSetup(opacityConfig));
-                result.Add(JustDescription.JustDescrition("и наоборот"));
-                return result.ToArray();
-            }
-        }
-        protected override void _apply(Document doc)
+        public override void Apply(Document doc)
         {
             getRuledLayerWr(doc).Visible = Toggle;
         }
-        protected override void _else(Document doc)
-        {
-            getRuledLayerWr(doc).Visible = !Toggle;
-        }
         public VisibleRule(Composition composition) : base(composition) { }
-        public VisibleRule() : base(null) { }
+        public VisibleRule() : base(null) {
+            SetupsRegistry.Register<VisibleRule>(new VisibleRuleSetups());
+            DtoConvertersRegistry.Register<VisibleRule>(new VisibleRuleDtoConverter());
+        }
+    }
+    public class VisibleRuleDto : LayerRuleDto
+    {
+        public bool Toggle;
+    }
+    public class VisibleRuleDtoConverter : LayerRuleDtoConverter
+    {
+        public override void ApplyDto(object _obj, object _dto)
+        {
+            base.ApplyDto(_obj, _dto);
+            var obj = _obj as VisibleRule;
+            var dto = _dto as VisibleRuleDto;
+            dto.Toggle = obj.Toggle;
+        }
+        public override object GetDto(object _obj)
+        {
+            return base.GetDto(_obj);
+        }
+        protected override void ExportDto(object _obj, object _dto)
+        {
+            base.ExportDto(_obj, _dto);
+            var obj = _obj as VisibleRule;
+            var dto = _dto as VisibleRuleDto;
+            obj.Toggle = dto.Toggle;
+        }
+    }
+    public class VisibleRuleSetups : LayerRuleSetupSource
+    {
+        protected Setup VisibilitySetup(VisibleRule rule)
+        {
+            var opacityConfig = new SetupConfig(rule, nameof(rule.Toggle), "установить");
+            return new CheckSetup(opacityConfig);
+        }
+        public override Setup[] GetSetups(object obj)
+        {
+            return new Setup[] { getLayerCompositionSetup<LayerComposition>(obj as LayerRule, "для слоя"), VisibilitySetup(obj as VisibleRule) };
+        }
     }
 
 }

@@ -8,13 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace psdPH.RuleEditor
+namespace psdPH.Logic.Ruleset
 {
     public class RulesetDefinition
     {
-        public Rule[] Rules;
-        public Condition[] Conditions;
-        public RulesetDefinition(Rule[] rules, Condition[] conditions)
+        public CompositionRule[] Rules;
+        public CompositionCondition[] Conditions;
+        public RulesetDefinition(CompositionRule[] rules, CompositionCondition[] conditions)
         {
             Rules = rules;
             Conditions = conditions;

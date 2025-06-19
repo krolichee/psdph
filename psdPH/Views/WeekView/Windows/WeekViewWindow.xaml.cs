@@ -9,8 +9,6 @@ using System.Runtime.Remoting.Contexts;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
-using psdPH.RuleEditor;
-using static psdPH.TemplateEditor.StructureRulesetDefinition;
 using System.Media;
 using static psdPH.WeekConfig;
 using psdPH.Views.WeekView.Logic;
@@ -29,7 +27,7 @@ namespace psdPH.Views.WeekView
             //doc = PhotoshopWrapper.OpenDocument(psApp, PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
 
             cedStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekStackHandler(weekListData)));
-            dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekDayRulesetStackHandler(weekListData)));
+            //dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekDayRulesetStackHandler(weekListData)));
             //dayRuleStackGrid.Children.Add(CEDStackUI.CreateCEDStack(new WeekRulesetStackHandler(weekListData.WeekRules, doc)));
             
             WeekListData = weekListData;

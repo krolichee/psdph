@@ -7,6 +7,7 @@ using static psdPH.Utils.SplitTextToRatio;
 
 namespace psdPHTest.Logic.Ruleset.Rules
 {
+    [TestCategory(TestCatagories.ManualUI)]
     [TestClass]
     public partial class SplitTextToRatio
     {

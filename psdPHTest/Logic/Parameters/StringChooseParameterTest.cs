@@ -9,6 +9,7 @@ using psdPH.Views.SimpleView.Logic;
 
 namespace psdPHTest.Logic.Parameters
 {
+	[TestCategory(TestCatagories.AutomaticDisk)]
 	[TestClass]
 	public class StringChooseParameterTest: ProjectTestSuite
     {
@@ -21,7 +22,7 @@ namespace psdPHTest.Logic.Parameters
             
 			//Directory.CreateDirectory(PsdPhDirectories.ProjectsDirectory);
 
-			var blob = Blob.PathBlob("");
+			var blob = new RootBlob();
 			var scParameter = new StringChooseParameter() { Name = "scPar" };
             scParameter.Strings.Add("1");
             blob.ParameterSet.Add(scParameter);
@@ -36,7 +37,7 @@ namespace psdPHTest.Logic.Parameters
 		public void testSimpleViewStringsEquality()
 		{
 			{
-				var blob = Blob.PathBlob("");
+				var blob = new RootBlob();
 				var scParameter = new StringChooseParameter() { Name = "scPar" };
 				scParameter.Strings.Add("1");
 				blob.ParameterSet.Add(scParameter);

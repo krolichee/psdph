@@ -43,18 +43,18 @@ namespace psdPHTest.Logic.Compositions
             //proto
             var textLD = LayerDescriptor.Layer("text",PsLayerKind.psTextLayer);
 
-            var mainBlob = Blob.PathBlob(tempFilePath);
+            var mainBlob = new RootBlob();
 
             mainBlob.AddChild(new AreaLeaf() { LayerName = areaLD.LayerName });
-            var subBlob = Blob.LayerBlob(blobLD.LayerName);
+            var subBlob = new LayerBlob(blobLD.LayerName);
             var subBlobLayer = new LayerLeaf() { LayerName = "shape1" };
             subBlob.AddChild(subBlobLayer);
             mainBlob.AddChild(subBlob);
             mainBlob.AddChild(new GroupLeaf() { LayerName = groupLD.LayerName });
             mainBlob.AddChild(new LayerLeaf() { LayerName = layerLd.LayerName });
-            var prototype = new PrototypeLeaf(subBlob, phLD.LayerName);
+            var prototype = new PrototypeBlob() { LayerName = phLD.LayerName };
             mainBlob.AddChild(prototype);
-            mainBlob.AddChild(new PlaceholderLeaf() { LayerName = phLD.LayerName,Prototype = prototype});
+            mainBlob.AddChild(new PlaceholderLeaf() { LayerName = phLD.LayerName,PrototypeBlob = prototype});
             mainBlob.AddChild(new TextLeaf() { LayerName = textLD.LayerName});
 
             var matchResult = mainBlob.IsMatchingRouted(doc);

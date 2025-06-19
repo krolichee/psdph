@@ -8,52 +8,108 @@ using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
 using psdPH.Logic.Rules;
 using psdPH.Utils.Setups;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Windows.Navigation;
+using psdPH.Views.WeekView.Logic;
 
 namespace psdPHTest.Nodes
 {
-	[TestClass]
-	public class NodeTest
-	{
-		[TestMethod]
-		public void SParNode()
-		{
-			var spar = new StringParameter("obj");
-			spar.Value = "111";
-			var parameterNode = new Node(spar);
-			Assert.IsTrue(parameterNode.As<string>() == spar.Text);
-		}
-        [TestMethod]
-        public void TextLeafNode()
+    [TestCategory(TestCatagories.Automatic)]
+    [TestClass]
+    public class NodeTest
+    {
+        public void MuxNode()
         {
-            var textLeaf = new TextLeaf() { LayerName = "buba" };
-            var parameterNode = new Node(textLeaf);
-            //Не должно вызывать ошибки
-            parameterNode.As<TextLeaf>();
-        }
-        [TestMethod]
-        public void RuleNode()
-        {
+            var muxNode = new MuxNode();
+            var fpar = new FlagParameter();
             var spar = new StringParameter("obj");
-            var blob = Blob.PathBlob("");
-            var node = new Node(new TextAssignRule(blob));
-            var textLeaf = new TextLeaf() { LayerName = "buba" };
-            blob.AddChild(textLeaf);
-            blob.ParameterSet.Add(spar);
-            Setup[] setups = node.GetSetups();
-            setups.First(s => s.Config.GetFieldOrPropertyType() == typeof(TextLeaf));
-            setups.First(s => s.Config.GetFieldOrPropertyType() == typeof(StringParameter));
+            var node = new ParameterNode(fpar);
+            var fpar_setup = fpar.Setups.First(s => s.Config.FieldName == nameof(Parameter.Value));
+            var spar_setup = spar.Setups.First(s => s.Config.FieldName == nameof(Parameter.Value));
+            muxNode.LinkOutputTo(node, fpar_setup);
+            Assert.IsTrue(muxNode.IsAppliableToOutputSetup(true));
+            Assert.IsFalse(muxNode.IsAppliableToOutputSetup("111"));
         }
-        [TestMethod]
-        public void ConditionNode()
+    }
+    public interface Guided
+    {
+        Guid Guid { get; }
+    }
+    public static class GuidFinder
+    {
+        public static object GetObject(this Guid guid, IEnumerable<Guided> scope)
+        {
+            return scope.First(g => g.Guid == guid);
+        }
+    }
+    public abstract class Node:Guided
+    {
+        protected event Action Applied;
+        protected abstract List<Setup> Inputs { get; }
+        protected abstract List<Setup> Outputs { get; }
+        public abstract void Apply();
+        public Guid Guid { get; protected set; }
+    }
+    public class ParameterNode
+    {
+        public ParameterNode(Parameter parameter)
         {
 
         }
     }
+    public class NodeLink
+    {
+        Guid FromGuid;
+        int FromSetupConfigHash;
+        Guid ToGuid;
+        int ToSetupConfigHash;
+    }
+    public class MuxNode : Node
+    {
+        public event Action OutputLinked;
+        bool Toggle;
 
-    public class Node
+        protected Guid onGuid;
+        protected Guid offGuid;
+        public object OnObj;
+        public object OffObj;
+
+        public Setup OnSetup;
+        public Setup OffSetup;
+        public Setup ToggleInputSetup;
+
+        public Setup OutputSetup;
+
+        protected override List<Setup> Inputs => throw new NotImplementedException();
+
+        protected override List<Setup> Outputs => throw new NotImplementedException();
+
+        public MuxNode()
+        {
+            var toggleConfig = new SetupConfig(this, nameof(Toggle), "если");
+            ToggleInputSetup = new CheckSetup(toggleConfig);
+        }
+        public override void Apply()
+        {
+            OutputSetup.Config.SetValue(Toggle ? OnObj : OffObj);
+        }
+
+        public bool IsAppliableToOutputSetup(object obj)
+        {
+            return OutputSetup.IsValidValue(obj);
+        }
+
+        internal void LinkOutputTo(ParameterNode node, Setup setup)
+        {
+            
+        }
+    }
+
+    public class ChmoNode
     {
         private readonly ISetupable _value;
-        public Node(ISetupable obj)
+        public ChmoNode(ISetupable obj)
         {
             this._value = obj;
         }
@@ -121,7 +177,6 @@ namespace psdPHTest.Nodes
                     m.ReturnType == toType &&
                     m.GetParameters()[0].ParameterType == fromType);
         }
-
         private static bool ConvertToBool(object value)
         {
             if (value is bool b) return b;

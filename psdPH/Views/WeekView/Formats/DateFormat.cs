@@ -22,6 +22,10 @@ namespace psdPH.Views.WeekView.Logic
         }
         public abstract string Format(DateTime dt);
 
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
     }
     public abstract class AffectFormat : DateFormat
     {

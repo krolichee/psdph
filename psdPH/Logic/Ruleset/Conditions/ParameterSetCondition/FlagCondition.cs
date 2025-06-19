@@ -7,7 +7,8 @@ using psdPH.Utils.Setups;
 
 namespace psdPH.Logic.Rules
 {
-    public class FlagCondition : Condition
+    [Obsolete]
+    public class FlagCondition : CompositionCondition
     {
         public override string ToString() => "значение флага";
         public string FlagName;
@@ -48,7 +49,7 @@ namespace psdPH.Logic.Rules
         public FlagCondition() : base(null) { }
         public override bool IsSetUp()
         {
-            return base.IsSetUp()&&FlagName!=null;
+            return FlagName!=null;
         }
     }
     

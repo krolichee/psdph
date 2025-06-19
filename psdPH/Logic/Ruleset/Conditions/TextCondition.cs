@@ -1,4 +1,5 @@
 ﻿using psdPH.Logic.Compositions;
+using psdPH.Logic.Ruleset.Conditions;
 using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,32 +9,13 @@ namespace psdPH.Logic.Rules
 {
     public abstract class TextCondition : Condition
     {
-        public string TextLeafLayerName;
-        protected TextCondition(Composition composition) : base(composition) { }
-
         [XmlIgnore]
-        public TextLeaf TextLeaf
-        {
-            protected get => Composition.GetChildren<TextLeaf>().First(t => t.LayerName == TextLeafLayerName);
-            set => TextLeafLayerName = value?.LayerName;
-        }
-        [XmlIgnore]
-        public override Setup[] Setups
-        {
-            get
-            {
-                var result = new List<Setup>();
-                var textLeafConfig = new SetupConfig(this, nameof(this.TextLeafLayerName), "поля");
-                var textLeavesNames = Composition.GetChildren<TextLeaf>().Select(t => t.LayerName).ToArray();
-                result.Add(new ChooseSetup(textLeafConfig, textLeavesNames));
-                return result.ToArray();
-            }
-        }
+        public string Text;
+        protected TextCondition() { }
         public override bool IsSetUp()
         {
-            return base.IsSetUp()&&TextLeafLayerName!=null;
+            return Text != null;
         }
-
     }
     
 }

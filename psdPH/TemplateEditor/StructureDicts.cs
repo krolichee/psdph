@@ -15,8 +15,8 @@ namespace psdPH.TemplateEditor
         public static Dictionary<Type, CreateComposition>
             CreatorDict = new Dictionary<Type, CreateComposition>
             (){
-        { typeof(Blob),(doc, root) =>new BlobCreator(doc,root as Blob)},
-        { typeof(PrototypeLeaf),(doc, root) =>new PrototypeCreator(doc, root) },
+        { typeof(RootBlob),(doc, root) =>new LayerBlobCreator(doc,root)},
+        { typeof(PrototypeBlob),(doc, root) =>new PrototypeCreator(doc, root) },
         { typeof(PlaceholderLeaf), (doc, root) =>new MultiPlaceholderLeafCreator(doc, root) },
         //{ typeof(ImageLeaf),(doc, root) => new ImageLeafCreator(doc) },
         { typeof(TextLeaf),(doc, root) => new MultiTextLeafCreator(doc,root)},
@@ -27,7 +27,7 @@ namespace psdPH.TemplateEditor
             EditorDict = new Dictionary<Type, EditComposition>
             ()
             {
-                { typeof(Blob),(doc,composition)=>BlobEditorWindow.OpenInDocument(doc,composition as Blob) }
+                { typeof(RootBlob),(doc,composition)=>BlobEditorWindow.OpenInDocument(doc,composition as LayerBlob) }
             };
     }
 

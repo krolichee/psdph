@@ -13,6 +13,6 @@ namespace psdPH.Views
     public abstract class ViewData
     {
         [XmlIgnore]
-        public abstract Blob RootBlob { get; }
+        public abstract RootBlob RootBlob { get; }
     }
 }

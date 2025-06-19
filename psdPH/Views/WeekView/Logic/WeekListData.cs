@@ -18,7 +18,7 @@ namespace psdPH
         [XmlIgnore]
         public WeekConfig WeekConfig;
         public ObservableCollection<WeekData> Weeks = new ObservableCollection<WeekData>();
-        public static WeekListData CreateWeekListData(WeekConfig weekConfig,WeekRulesets weekRulesets, Blob root)
+        public static WeekListData CreateWeekListData(WeekConfig weekConfig,WeekRulesets weekRulesets, RootBlob root)
         {
             var result = new WeekListData();
             result.WeekConfig = weekConfig;
@@ -26,7 +26,7 @@ namespace psdPH
             result.WeekRulesets = weekRulesets;
             return result;
         }
-        public static WeekListData CreateWeekListData(WeekConfig weekConfig, Blob root)
+        public static WeekListData CreateWeekListData(WeekConfig weekConfig, RootBlob root)
         {
             var weekRulesets = new WeekRulesets();
             return CreateWeekListData(weekConfig, weekRulesets, root);

@@ -24,7 +24,7 @@ namespace psdPH
             get => _dow; set
             {
                 _dow = value;
-                dowLabel.Content = Localization.LocalizeObj(Dow);
+                dowLabel.Content = Localization.Localize(Dow);
             }
         }
         private DayOfWeek _dow;
@@ -33,7 +33,7 @@ namespace psdPH
         {
             StringBuilder sb = new StringBuilder();
             foreach (var par in ParameterSet.AsCollection())
-                sb.Append($"{par.Name}: {Localization.LocalizeObj(par.Value)}\n");
+                sb.Append($"{par.Name}: {Localization.Localize(par.Value)}\n");
             return sb.ToString();
         }
         public void RefreshPreview()

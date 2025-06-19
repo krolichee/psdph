@@ -14,15 +14,15 @@ using System.Globalization;
 namespace psdPH
 {
     [Serializable]
-    public class DowLayernamePair
+    public class DowGuidPair
     {
         public DayOfWeek Dow;
-        public string Layername;
-        public DowLayernamePair() { }
-        public DowLayernamePair(DayOfWeek dow, string layername)
+        public Guid Guid;
+        public DowGuidPair() { }
+        public DowGuidPair(DayOfWeek dow, Guid guid)
         {
             Dow = dow;
-            Layername = layername;
+            Guid = guid;
         }
     }
     [Serializable]
@@ -30,18 +30,18 @@ namespace psdPH
     {
         
         [XmlIgnore]
-        public Dictionary<DayOfWeek, string> DowPrototypeLayernameDict
+        public Dictionary<DayOfWeek, Guid> DowPrototypeLayernameDict
         {
-            get => DowPlaceholderLayernameList.ToDictionary(p => p.Dow, p => p.Layername); set
+            get => DowPlaceholderLayernameList.ToDictionary(p => p.Dow, p => p.Guid); set
             {
-                var result = new List<DowLayernamePair>();
+                var result = new List<DowGuidPair>();
                 foreach (var item in value)
-                    result.Add(new DowLayernamePair(item.Key, item.Value));
+                    result.Add(new DowGuidPair(item.Key, item.Value));
                 DowPlaceholderLayernameList = result;
                 
             }
         }
-        public List<DowLayernamePair> DowPlaceholderLayernameList = new List<DowLayernamePair>();
+        public List<DowGuidPair> DowPlaceholderLayernameList = new List<DowGuidPair>();
         public DateFormat DayDateFormat;
         public DateFormat DowFormat;
 
@@ -49,19 +49,17 @@ namespace psdPH
         public string WeekDatesParameterName;
         public string DowParameterName;
         public string DateParameterName;
-        StringParameter GetStringParameter(Blob blob, string name) => 
+        StringParameter GetStringParameter(RootBlob blob, string name) => 
             blob.ParameterSet.GetByType<StringParameter>().First(_ => _.Name == name);
-        internal StringParameter GetWeekDatesPar(Blob blob) => GetStringParameter(blob,WeekDatesParameterName);
+        internal StringParameter GetWeekDatesPar(RootBlob blob) => GetStringParameter(blob,WeekDatesParameterName);
         
-        internal StringParameter GetDatePar(Blob blob) => GetStringParameter(blob, DateParameterName);
+        internal StringParameter GetDatePar(RootBlob blob) => GetStringParameter(blob, DateParameterName);
         
-        internal StringParameter GetDowPar(Blob blob) => GetStringParameter(blob, DowParameterName);
+        internal StringParameter GetDowPar(RootBlob blob) => GetStringParameter(blob, DowParameterName);
         
-        internal Blob GetDayBlob(Blob blob)=> GetDayPrototype(blob).Blob;
-        
-        internal PrototypeLeaf GetDayPrototype(Blob blob)
+        internal PrototypeBlob GetDayPrototype(Composition blob)
         {
-            return blob.GetChildren<PrototypeLeaf>().First(p => p.LayerName == PrototypeLayerName);
+            return blob.GetChildren<PrototypeBlob>().First(p => p.LayerName == PrototypeLayerName);
         }
 
         //public void FillDateAndDow(DowBlob dayBlob)

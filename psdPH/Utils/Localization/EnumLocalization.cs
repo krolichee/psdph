@@ -16,7 +16,7 @@ namespace psdPH
         }
         public override string ToString()
         {
-            return Localization.LocalizeObj(Value);
+            return Localization.Localize(Value);
         }
     }
     public static class EnumLocalization

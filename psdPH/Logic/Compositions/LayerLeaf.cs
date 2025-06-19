@@ -9,8 +9,6 @@ namespace psdPH.Logic.Compositions
     [UIName("Слой")]
     public class LayerLeaf : LayerComposition
     {
-        [XmlIgnore]
-        public override Setup[] Setups => new Setup[0];
 
         public override void Apply(Document doc) { }
 

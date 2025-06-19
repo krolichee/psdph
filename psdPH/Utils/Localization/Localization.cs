@@ -5,7 +5,7 @@
     using System.Windows.Media.Animation;
     public static class Localization
     {
-        public static string LocalizeObj(this object obj)
+        public static string Localize(this object obj)
         {
             if (obj is Enum)
                 return EnumLocalization.GetLocalizedDescription(obj as Enum);

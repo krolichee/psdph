@@ -1,7 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
-using psdPH.RuleEditor;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.CedStacks.ParameterCedStack;
 using psdPH.Utils;
@@ -23,14 +22,10 @@ namespace psdPH
 
     public partial class BlobEditorWindow : Window, IBatchCompositionCreator
     {
-
         Composition _composition;
         Document _doc;
-        public static BlobEditorWindow OpenInDocument(Document doc, Blob blob)
+        public static BlobEditorWindow OpenInDocument(Document doc, LayerBlob blob)
         {
-            if (blob.Mode != BlobMode.Layer)
-                throw new ArgumentException();
-           
             Document new_doc;
             new_doc = doc.OpenSmartLayer(blob.LayerName);
             var result = new BlobEditorWindow(new_doc, blob);
@@ -40,13 +35,13 @@ namespace psdPH
         
         public static BlobEditorWindow OpenFromDisk()
         {
-            Blob blob = PsdPhProject.Instance().openOrCreateMainBlob();
+            RootBlob blob = PsdPhProject.Instance().openOrCreateMainBlob();
             Document doc = PhotoshopWrapper.OpenDocument(PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
             var editor = new BlobEditorWindow(doc, blob);
             editor.Show();
             return editor;
         }
-        BlobEditorWindow(Document doc, Blob root)
+        BlobEditorWindow(Document doc, Composition root)
         {
             _composition = root;
             _doc = doc;
@@ -54,8 +49,8 @@ namespace psdPH
             
             structureTab.Content = CEDStackUI.CreateCEDStack(
                 new StructureStackHandler(new PsdPhContext(doc, root)));
-            ruleTab.Content = CEDStackUI.CreateCEDStack(
-                new StructureRuleStackHandler(_composition.RuleSet));
+            //ruleTab.Content = CEDStackUI.CreateCEDStack(
+            //    new StructureRuleStackHandler(_composition.RuleSet));
             paramTab.Content = CEDStackUI.CreateCEDStack(
                 new ParameterHandler(_composition.ParameterSet));
         }
@@ -71,13 +66,13 @@ namespace psdPH
         }
         private void Window_Closed(object sender, EventArgs e)
         {                
-            if ((_composition as Blob).Mode == BlobMode.Path)
+            if ((_composition is RootBlob))
                 save();
             _doc.Close(PsSaveOptions.psSaveChanges);
         }
         void save()
         {
-            PsdPhProject.Instance().saveBlob(GetResultComposition() as Blob);
+            PsdPhProject.Instance().saveBlob(GetResultComposition() as RootBlob);
             
         }
         private void Window_Activated(object sender, EventArgs e)
@@ -86,7 +81,7 @@ namespace psdPH
         }
         private void clearMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            _composition = Blob.PathBlob("template.psd");
+            _composition = new RootBlob();
             Close();
         }
 

@@ -59,8 +59,8 @@
     <Compile Include="Logic\Compositions\IsMatchingTest.cs" />
     <Compile Include="Logic\Parameters\ParameterTest.cs" />
     <Compile Include="Logic\Parameters\StringChooseParameterTest.cs" />
-    <Compile Include="Logic\Ruleset\Rules\CoreRules\FlagRuleTest.cs" />
     <Compile Include="Logic\Ruleset\Rules\SplitTextToRatio.cs" />
+    <Compile Include="Logic\DtoConverter.cs" />
     <Compile Include="Nodes\NodeTest.cs" />
     <Compile Include="Photoshop\OutputSaverTest.cs" />
     <Compile Include="Properties\TestResources.Designer.cs">
@@ -79,7 +79,6 @@
     <Compile Include="Utils\CloneConverterTest.cs" />
     <Compile Include="Utils\Setups\Controls\RtbExtension.cs" />
     <Compile Include="Utils\Setups\SetupTest.cs" />
-    <Compile Include="Views\ExcelExportTest.cs" />
     <Compile Include="Views\WeekView\Logic\WeekRulesTest.cs" />
     <Compile Include="Views\WeekView\TableInterpreterTest.cs" />
     <Compile Include="wpf.xaml.cs">
@@ -109,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CollectionEditor\" />
+    <Folder Include="Logic\Ruleset\Rules\CoreRules\" />
     <Folder Include="RuleEditor\" />
     <Folder Include="TemplateEditor\" />
   </ItemGroup>

@@ -90,7 +90,7 @@ namespace psdPH.Views.SimpleView.Windows.SimpleViewCedStack
             StringBuilder sb = new StringBuilder();
             foreach (var par in Parset.AsCollection())
             {
-                sb.Append($"{par.Name}: {Localization.LocalizeObj(par.Value)}\n");
+                sb.Append($"{par.Name}: {Localization.Localize(par.Value)}\n");
             }
             return sb.ToString();
         }

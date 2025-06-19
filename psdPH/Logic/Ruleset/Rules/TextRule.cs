@@ -10,29 +10,18 @@ namespace psdPH.Logic.Ruleset.Rules
 {
     public abstract class TextRule : LayerRule
     {
-
-        public string TextLeafLayerName;
-        protected Setup getTextLeafSetup()
-        {
-            TextLeaf[] textLeaves = Composition.GetChildren<TextLeaf>();
-            var textLeafConfig = new SetupConfig(this, nameof(this.TextLeaf), "поля");
-            return new ChooseSetup(textLeafConfig, textLeaves);
-        }
-        [XmlIgnore]
-        public override Setup[] Setups => new Setup[] { getTextLeafSetup() };
-
-        protected TextRule(Composition composition) : base(composition) { }
-
-        [XmlIgnore]
-        public TextLeaf TextLeaf
-        {
-           protected get =>Composition.GetChildren<TextLeaf>().FirstOrDefault(t => t.LayerName == TextLeafLayerName);
-            set => TextLeafLayerName = LayerName = value?.LayerName;
-        }
-        public override bool IsSetUp()
-        {
-            return base.IsSetUp()&&TextLeafLayerName!=null;
+        protected TextRule(Composition composition) : base(composition) {
+            SetupsRegistry.Register<TextRule>(new TextRuleSetupSource());
+            DtoConvertersRegistry.Register<TextRule>(new LayerRuleDtoConverter());
         }
     };
+    class TextRuleSetupSource : LayerRuleSetupSource
+    {
+        public override Setup[] GetSetups(object obj)
+        {
+            return new Setup[] {getLayerCompositionSetup<TextLeaf>(obj as TextRule, "для поля") };
+        }
+    }
+
 
 }

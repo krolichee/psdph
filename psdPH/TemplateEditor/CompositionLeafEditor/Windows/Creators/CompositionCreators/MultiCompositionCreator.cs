@@ -111,18 +111,18 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     }
     public class MultiPlaceholderLeafCreator : MultiCompositionCreator<PlaceholderLeaf>
     {
-        public string PrototypeLayerName;
+        public PrototypeBlob PrototypeBlob;
         protected override PsLayerKind[] Kinds => new PsLayerKind[] { PsLayerKind.psSolidFillLayer, PsLayerKind.psNormalLayer };
         protected override Setup[] GetSetups(Document doc, Composition root)
         {
-            var prototype_pconfig = new SetupConfig(this, nameof(PrototypeLayerName), "Прототип");
-            var prototypeNames = root.GetChildren<PrototypeLeaf>().Select(p => p.LayerName).ToArray();
-            var prototype_parameter = new ChooseSetup(prototype_pconfig, prototypeNames); 
-            return new[] { prototype_parameter, multiLayerSetup(doc) };
+            var prototypeConfig = new SetupConfig(this, nameof(PrototypeBlob), "Прототип");
+            var prototypes = root.GetChildren<PrototypeBlob>();
+            var prototypeSetup = new ChooseSetup(prototypeConfig, prototypes); 
+            return new[] { prototypeSetup, multiLayerSetup(doc) };
         }
 
         protected override PlaceholderLeaf processInput(object input) => 
-            new PlaceholderLeaf() { LayerName = input as string, PrototypeLayerName = PrototypeLayerName };
+            new PlaceholderLeaf() { LayerName = input as string, PrototypeBlob = PrototypeBlob };
 
         public MultiPlaceholderLeafCreator(Document doc, Composition root) : base(doc, root) { }
     }

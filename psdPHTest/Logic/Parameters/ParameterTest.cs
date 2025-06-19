@@ -21,12 +21,10 @@ namespace psdPHTest.Logic
         [TestMethod]
         public void compileTest()
         {
-            var blob = Blob.PathBlob("...");
+            var blob = new RootBlob();
             var parameter = new StringParameter() { Name = "надпись" };
             var textLeaf = new TextLeaf() { LayerName = "text" };
-                var rule = new TextAssignRule(blob) { TextLeaf = textLeaf, StringParameter = parameter, Condition = new DummyCondition() };
             blob.AddChild(textLeaf);
-            blob.RuleSet.AddRule(rule);
             blob.ParameterSet.Add(parameter);
             string tempFilePath = Path.GetTempFileName() + ".psd"; // или с нужным расширением
                 File.WriteAllBytes(tempFilePath, Properties.TestResources.Basic);

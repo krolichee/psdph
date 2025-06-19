@@ -1,6 +1,5 @@
 ﻿using Photoshop;
 using psdPH.Logic.Ruleset.Rules;
-using psdPH.Logic.Ruleset.Rules.RulesetAffectingRule;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,13 +14,13 @@ namespace psdPH.Logic
     [Serializable]
     public class RuleSet: ISerializable
     {
-        public ObservableCollection<Rule> Rules = new ObservableCollection<Rule>();
-        public void AddRule(Rule rule)
+        public ObservableCollection<CompositionRule> Rules = new ObservableCollection<CompositionRule>();
+        public void AddRule(CompositionRule rule)
         {
             rule.RestoreComposition(Composition);
             Rules.Add(rule);
         }
-        public void AddRules(Rule[] rules)
+        public void AddRules(CompositionRule[] rules)
         {
             foreach (var rule in rules)
                 AddRule(rule);
@@ -29,19 +28,9 @@ namespace psdPH.Logic
         public event Action Updated;
         [XmlIgnore]
         public Composition Composition;
-
-        Rule[] skipRules()
-        {
-            for (int i = 0; i < Rules.Count; i++)
-              if(Rules[i] is SkipOtherRule)
-                    if ((Rules[i] as ConditionRule).Condition.IsValid())
-                        return Rules.Take(i+1).ToArray();
-            return Rules.ToArray();
-        }
         public void Apply<T>(Document doc)
         {
-            var rules = skipRules();
-            foreach (var item in rules)
+            foreach (var item in Rules)
                 if (item is T)
                     item.Apply(doc);
         }

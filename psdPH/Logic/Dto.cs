@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace psdPH.Logic.Rules
+namespace psdPH.Logic
 {
-    public interface CompositionRule
+    public interface Dto:ISerializable
     {
-        void CompApply();
     }
 }

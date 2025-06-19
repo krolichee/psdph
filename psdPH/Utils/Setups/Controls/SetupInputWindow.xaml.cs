@@ -2,6 +2,7 @@
 using psdPH.Logic.Parameters;
 using psdPH.Utils;
 using psdPH.Utils.Setups;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,8 +17,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
         bool _applied = false;
         public bool Applied => _applied;
         StackPanel _stack;
-        Setup[] _setups;
-        Setup[] Setups
+        IEnumerable<Setup> _setups;
+        IEnumerable<Setup> Setups
         {
             set
             {
@@ -36,7 +37,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils
             setup.Stack.Margin = new Thickness(3, 0, 4, 0);
         }
         public SetupsInputWindow(Setup setup, string title = "") : this(new Setup[] { setup }, title) { }
-        public SetupsInputWindow(Setup[] setups, string title = "")
+        public SetupsInputWindow(IEnumerable<Setup> setups, string title = "")
         {
             InitializeComponent();
             this.CenterByTopmostOrScreen();

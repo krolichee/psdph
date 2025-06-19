@@ -70,7 +70,7 @@ namespace psdPH.Views.WeekView.Windows
             for (int parset_i = 0; parset_i < 7; parset_i++)
             {
                 var dayParameterSet = weekData.DayParsetsList[parset_i];
-                var dow = Localization.LocalizeObj(dayParameterSet.Dow);
+                var dow = Localization.Localize(dayParameterSet.Dow);
 
                 var dowLabel = new TextBlock() { Text = dow };
                 setRowColumn(dowLabel, weekPars, parset_i * 2 + 2);

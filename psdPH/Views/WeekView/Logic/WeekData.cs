@@ -34,7 +34,7 @@ namespace psdPH.Views.WeekView
             get => DayParsetsList.ToDictionary(p => p.Dow, p => p);
         }
 
-        public override Blob RootBlob => WeekListData.RootBlob;
+        public override RootBlob RootBlob => WeekListData.RootBlob;
 
         public void Restore(WeekListData weekListData)
         {
@@ -44,7 +44,7 @@ namespace psdPH.Views.WeekView
             blobParameterSet.Import(ParameterSet);
             ParameterSet = blobParameterSet;
 
-            Blob dayBlob = WeekConfig.GetDayBlob(RootBlob);
+            Composition dayBlob = WeekConfig.GetDayPrototype(RootBlob);
             for (int i = 0; i < DayParsetsList.Count; i++)
             {
                 var savedParset = DayParsetsList[i];
@@ -60,48 +60,50 @@ namespace psdPH.Views.WeekView
             result.Restore(WeekListData);
             return result;
         }
-        internal Blob Prepare()
+        internal RootBlob Prepare()
         {
-            //Объявления функций
-            DowLayernamePair whereLayernameIs(string layername, List<DowLayernamePair> pairs)
-            {
-                return pairs.First(dl_p => dl_p.Layername == layername);
-            }
-            DayOfWeek getMatchingDow(PlaceholderLeaf p)
-            {
-                var pairs = WeekConfig.DowPlaceholderLayernameList;
-                return whereLayernameIs(p.LayerName, pairs).Dow;
-            }
-            Dictionary<DayOfWeek, PlaceholderLeaf> getBlobDowPlaceholderDict(Blob blob)
-                => getDowPlaceholderDict(blob.GetChildren<PlaceholderLeaf>());
-            Dictionary<DayOfWeek, PlaceholderLeaf> getDowPlaceholderDict(PlaceholderLeaf[] placeholders)
-                => placeholders.ToDictionary(getMatchingDow, p => p);
+            throw new NotImplementedException();
+            ////Объявления функций
+            //DowGuidPair whereLayernameIs(string layername, List<DowGuidPair> pairs)
+            //{
+            //    return pairs.First(dl_p => dl_p.Guid == layername);
+            //}
+            //DayOfWeek getMatchingDow(PlaceholderLeaf p)
+            //{
+            //    var pairs = WeekConfig.DowPlaceholderLayernameList;
+            //    return whereLayernameIs(p.LayerName, pairs).Dow;
+            //}
+            //Dictionary<DayOfWeek, PlaceholderLeaf> getBlobDowPlaceholderDict(RootBlob blob)
+            //    => getDowPlaceholderDict(blob.GetChildren<PlaceholderLeaf>());
+            //Dictionary<DayOfWeek, PlaceholderLeaf> getDowPlaceholderDict(PlaceholderLeaf[] placeholders)
+            //    => placeholders.ToDictionary(getMatchingDow, p => p);
 
-            //Присваивание заглушкам заменителей
-            WeekData clone = Clone();
-            var mainBlob = RootBlob.Clone();
-            mainBlob.ParameterSet = ParameterSet.Clone();
-            Blob dayBlob = WeekConfig.GetDayBlob(mainBlob);
+            ////Присваивание заглушкам заменителей
+            //WeekData clone = Clone();
+            //var mainBlob = RootBlob.Clone();
+            //mainBlob.ParameterSet = ParameterSet.Clone();
+            //RootBlob dayBlob = WeekConfig.GetDayBlob(mainBlob);
 
-            Dictionary<DayOfWeek, PlaceholderLeaf> dowPlaceholderDict = getBlobDowPlaceholderDict(mainBlob); 
+            //Dictionary<DayOfWeek, PlaceholderLeaf> dowPlaceholderDict = getBlobDowPlaceholderDict(mainBlob); 
 
-            foreach (DayParameterSet dowParset in clone.DayParsetsList)
-            {
-                var ph = dowPlaceholderDict[dowParset.Dow];
-                var dayBlob_clone = dayBlob.Clone();
-                dayBlob_clone.ParameterSet = dowParset;
-                ph.Replacement = dayBlob_clone;
-            }
-            return mainBlob;
+            //foreach (DayParameterSet dowParset in clone.DayParsetsList)
+            //{
+            //    var ph = dowPlaceholderDict[dowParset.Dow];
+            //    var dayBlob_clone = dayBlob.Clone();
+            //    dayBlob_clone.ParameterSet = dowParset;
+            //    ph.Replacement = dayBlob_clone;
+            //}
+            //return mainBlob;
         }
         void applyRules(RuleSet ruleSet, ParameterSet parameterSet)
         {
-            foreach (ParameterSetRule rule in ruleSet.Rules)
-            {
-                rule.SetParameterSet(parameterSet);
-                rule.Composition = null;
-            }
-            ruleSet.Apply<ParameterSetRule>(null);
+            throw new NotImplementedException();
+            //foreach (ParameterSetRule rule in ruleSet.Rules)
+            //{
+            //    rule.SetParameterSet(parameterSet);
+            //    rule.Composition = null;
+            //}
+            //ruleSet.Apply<ParameterSetRule>(null);
         }
         public void ApplyRules()
         {
@@ -112,10 +114,6 @@ namespace psdPH.Views.WeekView
 
             var weekRules = WeekListData.WeekRulesets.WeekRules;
             applyRules(weekRules, ParameterSet);
-
-            
-
-
         }
         public void FillDates()
         {
@@ -126,8 +124,8 @@ namespace psdPH.Views.WeekView
         void initialize()
         {
             ParameterSet = WeekListData.RootBlob.ParameterSet.Clone();
-            Blob dayBlob = WeekConfig.GetDayBlob(RootBlob);
-            foreach (DowLayernamePair t in WeekConfig.DowPlaceholderLayernameList)
+            Composition dayBlob = WeekConfig.GetDayPrototype(RootBlob);
+            foreach (DowGuidPair t in WeekConfig.DowPlaceholderLayernameList)
             {
                 var dayParset = DayParameterSet.FromParset(dayBlob.ParameterSet, t.Dow, Week);
                 DayParsetsList.Add(dayParset);

@@ -11,14 +11,6 @@ namespace psdPH.Logic.Compositions
     public class ImageLeaf : LayerComposition
     {
         public string Path;
-        [XmlIgnore]
-        public override Setup[] Setups
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
 
         public override void Apply(Document doc)
         {

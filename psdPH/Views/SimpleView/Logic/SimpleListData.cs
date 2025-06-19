@@ -14,14 +14,14 @@ namespace psdPH.Views.SimpleView.Logic
     {
 
         public ObservableCollection<SimpleData> Variants = new ObservableCollection<SimpleData>();
-        public SimpleListData(Blob blob)
+        public SimpleListData(RootBlob blob)
         {
             RootBlob = blob;
         }
         public override void New()=>
             Variants.Add(new SimpleData(this));
 
-        internal void Restore(Blob root)
+        internal void Restore(RootBlob root)
         {
             RootBlob = root;
             foreach (var item in Variants)

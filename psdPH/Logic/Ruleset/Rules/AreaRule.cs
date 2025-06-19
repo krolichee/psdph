@@ -10,53 +10,21 @@ namespace psdPH.Logic.Ruleset.Rules
 {
     public abstract class AreaRule : LayerRule
     {
-        protected Setup[] getAlignOptionsParameters()
-        {
-            var alingment_config = new SetupConfig(this, nameof(Alignment), "с выравниванием");
-            var considerfx_config = new SetupConfig(this, nameof(ConsiderFx), "по границам");
-
-            return new Setup[]{
-            new AlignmentSetup(alingment_config),
-            EnumChooseSetup.EnumChoose(considerfx_config,typeof(ConsiderFx))
-            };
-        }
-        public string AreaLayerName;
-        public Alignment Alignment;
-
-        public ConsiderFx ConsiderFx;
         [XmlIgnore]
-        public AlignOptions AlignOptions
-        {
-            get => new AlignOptions(Alignment, ConsiderFx); set
-            {
-                Alignment = value.Alignment;
-                ConsiderFx = value.ConsiderFx;
-            }
-        }
-        protected Setup getAreaParameter()
-        {
-            var layerNameConfig = new SetupConfig(this, nameof(this.AreaLayerName), "по зоне");
-            var layerNames = Composition.GetChildren<AreaLeaf>().Select(a => a.LayerName).ToArray();
-            return new ChooseSetup(layerNameConfig, layerNames);
-        }
-        protected Setup[] getLayerAndAreaParameters()
-        {
-            return new Setup[] { getLayerParameter(), getAreaParameter() };
+        public AreaLeaf AreaLeaf {
+            get => LayerComposition as AreaLeaf;
+            set => LayerComposition = value;
         }
 
-        [XmlIgnore]
-        public AreaLeaf AreaLeaf
-        {
-            protected get => Composition.GetChildren<AreaLeaf>().First((c) => c.LayerName == AreaLayerName); set
-            {
-                AreaLayerName = value.LayerName;
-            }
-        }
         public AreaRule(Composition composition) : base(composition) { }
-        public override bool IsSetUp()
+    }
+    public class AreaRuleSetupSource : LayerRuleSetupSource
+    {
+        protected Setup getAreaLeafSetup(object obj)
         {
-            return base.IsSetUp()&&Alignment!=null&&AreaLayerName!=null;
+            return getLayerCompositionSetup<AreaLeaf>(obj as LayerRule, "для зоны");
         }
     }
+
 
 }

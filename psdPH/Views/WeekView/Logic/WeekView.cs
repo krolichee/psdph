@@ -25,7 +25,7 @@ namespace psdPH.Views.WeekView
 
 
 
-        public static WeekConfig CreateWeekConfig(Blob root)
+        public static WeekConfig CreateWeekConfig(RootBlob root)
         {
             WeekConfigEditor wce_w = new WeekConfigEditor(root);
             if (!wce_w.NewConfigShowDialog())
@@ -33,7 +33,7 @@ namespace psdPH.Views.WeekView
             return wce_w.GetResultConfig();
         }
         protected WeekConfig OpenWeekConfig() => DiskOperations.OpenXml<WeekConfig>(ConfigPath);
-        protected WeekConfig OpenOrCreateWeekConfig(Blob root)
+        protected WeekConfig OpenOrCreateWeekConfig(RootBlob root)
         {
             var weekConfig = OpenWeekConfig();
             if (weekConfig == null)

@@ -1,34 +1,30 @@
-﻿using Photoshop;
+﻿using psdPH.Logic.Compositions;
 using psdPH.Utils.Setups;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace psdPH.Logic.Rules
+namespace psdPH.Logic.Ruleset.Conditions
 {
-    [Serializable]
-    [PsdPhSerializable]
-    public abstract class Condition : ISetupable,psdPH.ISerializable
+    public abstract class Condition : ISetupable, psdPH.ISerializable
     {
-        [XmlIgnore]
-        public Composition Composition;
+        //Dto
+        public object Dto
+        {
+            get => DtoConvertersRegistry.GetFor(this).GetDto(this);
+            set => DtoConvertersRegistry.GetFor(this).ApplyDto(this, value);
+        }
 
+        //Setups
         public event SetupsChangedEvent SetupsChanged;
-
         [XmlIgnore]
-        public abstract Setup[] Setups { get; }
+        public virtual Setup[] Setups => SetupsRegistry.GetFor(this).GetSetups(this);
+        public abstract bool IsSetUp();
+
+        //Using
         public abstract bool IsValid();
-
-        public void RestoreComposition(Composition composition)
-        {
-            Composition = composition;
-        }
-        public virtual bool IsSetUp()=>true;
-
-        public Condition(Composition composition)
-        {
-            Composition = composition;
-            KnownTypes.Types.Add(this.GetType());
-        }
     }
-    
 }

@@ -16,7 +16,7 @@ namespace psdPHTest.Logic.Compositions
         [TestMethod]
         public void Clone()
         {
-            var blob = Blob.PathBlob("---").Clone();
+            var blob = new RootBlob().Clone();
         }
     }
 }

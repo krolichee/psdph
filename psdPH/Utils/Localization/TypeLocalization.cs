@@ -11,18 +11,18 @@
     {
         private static readonly Dictionary<Type, string> Localizations = new Dictionary<Type, string>
         {
-                {typeof(Blob), "Поддокумент" },
+                {typeof(RootBlob), "Поддокумент" },
 
-                {typeof(PrototypeLeaf), "Прототип" },
+                {typeof(PrototypeBlob), "Прототип" },
                 {typeof(PlaceholderLeaf), "Заглушка" },
 
-                {typeof(ImageLeaf), "Изображение" },
+                //{typeof(ImageLeaf), "Изображение" },
                 {typeof(TextLeaf), "Текст" },
                 {typeof(LayerLeaf), "Слой" },
                 {typeof(GroupLeaf), "Группа" },
                 {typeof(AreaLeaf),"Зона" },
 
-                {typeof(Rule), "Правило" },
+                {typeof(CompositionRule), "Правило" },
 
                 {typeof(FlagParameter),"Флаг" },
                 {typeof(StringParameter),"Строка" },

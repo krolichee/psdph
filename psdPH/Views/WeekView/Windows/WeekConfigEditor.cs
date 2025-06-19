@@ -18,9 +18,9 @@ namespace psdPH.Views.WeekView
     public class WeekConfigEditor
     {
         WeekConfig _result;
-        Blob _root;
-        public PrototypeLeaf Prototype;
-        public WeekConfigEditor(Blob root)
+        Composition _root;
+        public PrototypeBlob Prototype;
+        public WeekConfigEditor(Composition root)
         {
             this._root = root;
         }
@@ -61,7 +61,7 @@ namespace psdPH.Views.WeekView
         }
         void ChooseDayPrototype()
         {
-            PrototypeLeaf[] prototypes = _root.GetChildren<PrototypeLeaf>().ToArray();
+            PrototypeBlob[] prototypes = _root.GetChildren<PrototypeBlob>().ToArray();
             var prototypeConfig = new SetupConfig(this, nameof(Prototype), "Выбор прототип для дня");
             new SetupsInputWindow(new ChooseSetup(prototypeConfig, prototypes)).ShowDialog();
         }
@@ -88,23 +88,23 @@ namespace psdPH.Views.WeekView
                     throw new DoesNotMatchException();
             }
         }
-        bool isSuitableAsDayBlob(Blob root)
+        bool isSuitableAsDayBlob(Composition root)
         {
            return root.ParameterSet.GetByType<StringParameter>().Count()>=2;
         }
-        bool isSuitableForWeekView(Blob root)
+        bool isSuitableForWeekView(Composition root)
         {
             try
             {
                 bool match = false;
-                var prototypes = root.GetChildren<PrototypeLeaf>();
+                var prototypes = root.GetChildren<PrototypeBlob>();
                 for (global::System.Int32 i = 0; i < prototypes.Length && !match; i++)
                 {
                     var prototype = prototypes[i];
                     bool belongsToPrototype(PlaceholderLeaf ph)
-                        => ph.PrototypeLayerName == prototype.LayerName;
+                        => ph.PrototypeBlob == prototype;
                     var phs = root.GetChildren<PlaceholderLeaf>().Where(belongsToPrototype);
-                    match |= phs.Count() >= 7 && isSuitableAsDayBlob(prototype.Blob);
+                    match |= phs.Count() >= 7 && isSuitableAsDayBlob(prototype);
                 }
                 Matcher.IsTrue(match);
                 Matcher.IsTrue(root.ParameterSet.GetByType<StringParameter>().Any());
@@ -144,13 +144,11 @@ namespace psdPH.Views.WeekView
 
             //Выбор особых параметров
             {
-                string[] getStringParsNames(ParameterSet ps) => ps.GetByType<StringParameter>().Select(l => l.Name).ToArray();
-                string[] getBlobStringParsNames(Blob blob) => getStringParsNames(blob.ParameterSet);
 
-                string[] textPars_names = getBlobStringParsNames(Prototype.Blob);
-                string[] rootTextPars_names = getBlobStringParsNames(_root);
+                var dayStringPars = Prototype.ParameterSet.GetByType<StringParameter>();
+                var rootStringPars = _root.ParameterSet.GetByType<StringParameter>();
 
-                
+
                 var dayTextParConfig = resultConfig(nameof(WeekConfig.DateParameterName), "Текстовое поле числа дня");
                 var dowParConfig = resultConfig(nameof(WeekConfig.DowParameterName), "Текстовое поле дня недели");
                 var weekDatesParConfig = resultConfig(nameof(WeekConfig.WeekDatesParameterName), "Текстовое поле дат недели");
@@ -161,9 +159,9 @@ namespace psdPH.Views.WeekView
                 var dowFormats = DowFormats;
 
                 List<Setup> parameters = new List<Setup>();
-                parameters.Add(new ChooseSetup(weekDatesParConfig, rootTextPars_names));
-                parameters.Add(new ChooseSetup(dayTextParConfig, textPars_names));
-                parameters.Add(new ChooseSetup(dowParConfig, textPars_names));
+                parameters.Add(new ChooseSetup(weekDatesParConfig, rootStringPars));
+                parameters.Add(new ChooseSetup(dayTextParConfig, dayStringPars));
+                parameters.Add(new ChooseSetup(dowParConfig, dayStringPars));
 
                 parameters.Add(DayDateFormatSetup);
                 parameters.Add(DowFormatSetup);

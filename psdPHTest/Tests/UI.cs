@@ -14,7 +14,6 @@ using System.Runtime.InteropServices;
 using psdPHTest.Tests;
 using psdPH.Views.WeekView;
 using System.IO;
-using psdPH.RuleEditor;
 using psdPH.Logic.Compositions;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.Logic.Parameters;
@@ -29,7 +28,7 @@ namespace psdPHTest.Tests.UI
         [TestMethod]
         public void testMultiTextLeaf()
         {
-            var blob = Blob.PathBlob("test.psd");
+            var blob = new RootBlob() ;
             blob.AddChild(new TextLeaf() { LayerName="text1"});
             blob.AddChild(new TextLeaf() { LayerName="text2"});
             var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
@@ -43,13 +42,13 @@ namespace psdPHTest.Tests.UI
         [TestMethod]
         public void testMultiPlaceholderLeaf()
         {
-            var blob = Blob.PathBlob("test.psd");
+            var blob = new RootBlob();
             var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
             try {
                 new MultiPlaceholderLeafCreator(doc, blob); 
                 Assert.Fail(); 
             } catch {  }
-            blob.AddChild(new PrototypeLeaf() { LayerName = "prototype" });
+            blob.AddChild(new PrototypeBlob() { LayerName = "prototype" });
             
             var c_w = new MultiPlaceholderLeafCreator(doc,blob);
             c_w.ShowDialog();
@@ -99,26 +98,13 @@ namespace psdPHTest.Tests.UI
 
             var weekBlob = GetWeekBlob();
             weekBlob.ParameterSet.Add(new FlagParameter("testFlag"));
-            var dayBlob = weekConfig.GetDayBlob(weekBlob);
+            var dayBlob = weekConfig.GetDayPrototype(weekBlob);
             dayBlob.ParameterSet.Add(new FlagParameter("testFlag"));
 
             var weekListData = WeekListData.CreateWeekListData(weekConfig, weekBlob);
 
             var wv_w = new WeekViewWindow(weekListData);
             wv_w.ShowDialog();
-        }
-        [TestMethod]
-        public void testRuleControl()
-        {
-            var weekConfig = GetWeekConfig();
-            var weekBlob = GetWeekBlob();
-
-            weekBlob.ParameterSet.AsCollection().Add(new FlagParameter("testFlag"));
-            var dayBlob = weekConfig.GetDayBlob(weekBlob);
-            dayBlob.AddChild(new AreaLeaf() { LayerName="area"});
-            var weekListData = WeekListData.CreateWeekListData(weekConfig, weekBlob);
-
-            new RuleEditorWindow(new WeekDayRulesetDefinition(weekListData)).ShowDialog();
         }
     }
     [TestCategory(TestCatagories.ManualUI)]

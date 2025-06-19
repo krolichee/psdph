@@ -6,26 +6,16 @@ using System.Collections.Generic;
 
 namespace psdPH.Logic.Ruleset.Rules
 {
-    public class FitRule : AreaRule, DocRule
+    public class FitRule : AlignRule
     {
         public override string ToString() => "вместить";
         public bool BalanceFont = false;
         public FitRule(Composition composition) : base(composition) { }
-        public FitRule() : base(null) { }
-        public override Setup[] Setups
-        {
-            get
-            {
-                var result = new List<Setup>();
-                result.AddRange(getLayerAndAreaParameters());
-                var balance_config = new SetupConfig(this, nameof(BalanceFont), "балансировать шрифт");
-                result.Add(new CheckSetup(balance_config));
-                result.AddRange(getAlignOptionsParameters());
-                return result.ToArray();
-            }
-
+        public FitRule() : base(null) {
+            SetupsRegistry.Register<FitRule>(new AlignRuleSetupSource());
+            DtoConvertersRegistry.Register<FitRule>(new AlignRuleDtoConverter());
         }
-        protected override void _apply(Document doc)
+        public override void Apply(Document doc)
         {
             LayerWr layer = getRuledLayerWr(doc);
             ArtLayerWr area = AreaLeaf.ArtLayerWr(doc);

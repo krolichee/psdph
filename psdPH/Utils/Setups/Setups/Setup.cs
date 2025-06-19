@@ -28,7 +28,7 @@ namespace psdPH.Utils.Setups
         protected FieldFunctions _fieldFunctions;
         protected StackPanel _stack;
 
-        protected Func<object, bool> isValid;
+        protected Func<object, bool> isValidValue;
         protected Func<object> valueFunc;
 
         protected SetupConfig _config;
@@ -42,6 +42,12 @@ namespace psdPH.Utils.Setups
         {
             return _fieldFunctions.ConvertFunction(_config.GetValue()).ToString();
         }
+
+        internal bool IsValidValue(object obj)
+        {
+            return isValidValue(obj);
+        }
+
         protected Setup(SetupConfig config, FieldFunctions fieldFunctions = null)
         {
             if (fieldFunctions == null)
