@@ -2,6 +2,8 @@
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
+using psdPH.Logic.Serialization;
+using psdPH.Nodes;
 using psdPH.Utils;
 using psdPH.Utils.Setups;
 using System;
@@ -15,7 +17,7 @@ namespace psdPH
 {
     [Serializable]
     [PsdPhSerializable]
-    public abstract class Composition : ISerializable
+    public abstract class Composition : ISerializable, Guided
     {
         //DTO
         public object Dto
@@ -23,7 +25,7 @@ namespace psdPH
             get => DtoConvertersRegistry.GetFor(this).GetDto(this);
             set => DtoConvertersRegistry.GetFor(this).ApplyDto(this, value);
         }
-        public Guid Guid;
+        public Guid Guid { get; set; }
 
         //ParameterSet
         public ParameterSet ParameterSet = new ParameterSet();
@@ -97,6 +99,7 @@ namespace psdPH
             }
         }
         abstract public string ObjName { get; }
+
         public override string ToString()
         {
             return $"[{UIName}] {ObjName}";
@@ -133,7 +136,9 @@ namespace psdPH
         //Constructors
         public Composition() { 
             ChildrenUpdatedEvent += () => Restore(); 
-            RuleSet.Updated += () => RulesetUpdatedEvent?.Invoke(); 
+            RuleSet.Updated += () => RulesetUpdatedEvent?.Invoke();
+            Guid = Guid.NewGuid();
+            GuidScope.Add(this);
         }
         
     }

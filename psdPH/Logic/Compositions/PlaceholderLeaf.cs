@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Logic.Serialization;
 using psdPH.Photoshop;
 using psdPH.Utils.Setups;
 using System;
@@ -33,7 +34,11 @@ namespace psdPH.Logic.Compositions
                 Replacement.Apply(doc);
             }
         }
-        public PlaceholderLeaf() { }
+        public PlaceholderLeaf() : base()
+        {
+            DtoConvertersRegistry.Register<PlaceholderLeaf>(new PlaceholderDtoConverter());
+            
+        }
         public override void RestoreParents(Composition parent = null)
         {
             base.RestoreParents(parent);
@@ -73,12 +78,25 @@ namespace psdPH.Logic.Compositions
     {
         public override void ApplyDto(object _obj, object _dto)
         {
-            throw new NotImplementedException();
+            var obj = _obj as PlaceholderLeaf;
+            var dto = _dto as PlaceholderDto;
+            base.ApplyDto(_obj, _dto);
+            GuidScope.GuidsLoaded += () => 
+            obj.PrototypeBlob = GuidScope.GetByGuid(dto.PrototypeGuid) as PrototypeBlob;
+        }
+        public override void ExportDto(object _obj, object _dto)
+        {
+            var obj = _obj as PlaceholderLeaf;
+            var dto = _dto as PlaceholderDto;
+            base.ExportDto(_obj, _dto);
+            dto.PrototypeGuid = obj.PrototypeBlob.Guid;
         }
 
         public override object GetDto(object _obj)
         {
-            throw new NotImplementedException();
+            var dto = new PlaceholderDto();
+            ExportDto(_obj, dto);
+            return dto;
         }
     }
 

@@ -18,7 +18,7 @@ namespace psdPH.Utils.Setups
             Control = tb;
             _stack.Children.Add(tb);
             valueFunc = () => tb.Text;
-            isValidValue = (obj) => obj is string;
+            isValidFunc = (obj) => obj is string;
         }
     }
 }

@@ -10,12 +10,18 @@ namespace psdPH.Logic.Compositions
 {
     public class LayerBlob:LayerComposition
     {
+        protected void register()
+        {
+            DtoConvertersRegistry.Register<LayerBlob>(new LayerCompositionDtoConverter());
+        }
         public LayerBlob()
         {
+            register();
         }
 
         public LayerBlob(string layername) : base(layername)
         {
+            register();
         }
 
         public override void Apply(Document doc)

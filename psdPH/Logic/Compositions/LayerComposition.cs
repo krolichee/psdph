@@ -15,8 +15,11 @@ namespace psdPH.Logic.Compositions
         {
             return doc.GetLayerByName(LayerName).Wrapper();
         }
-        public LayerComposition(string layername) { LayerDescriptor = LayerDescriptor.Layer(layername); }
-        public LayerComposition() {
+        public LayerComposition(string layername) : base() 
+        { 
+            LayerDescriptor = LayerDescriptor.Layer(layername); 
+        }
+        public LayerComposition():base() {
         }
         protected LayerWr getLayerWr(Document doc, string layerName) => doc.GetLayerWrByName(layerName);
     }
@@ -24,7 +27,7 @@ namespace psdPH.Logic.Compositions
     {
         public LayerDescriptor LayerDescriptor;
     }
-    public abstract class LayerCompositionDtoConverter : DtoConverter
+    public class LayerCompositionDtoConverter : DtoConverter
     {
         public override void ApplyDto(object _obj, object _dto)
         {

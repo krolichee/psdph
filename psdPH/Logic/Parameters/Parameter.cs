@@ -1,5 +1,6 @@
 ﻿
 
+using psdPH.Nodes;
 using psdPH.Utils;
 using psdPH.Utils.Setups;
 using System;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 
 namespace psdPH.Logic.Parameters
 {
-    public abstract class Parameter:ISerializable,ISetupable
+    public abstract class Parameter:ISerializable,ISetupable,Guided
     {
         public object Value;
         public string Name;
@@ -16,13 +17,15 @@ namespace psdPH.Logic.Parameters
 
         public abstract Setup[] Setups { get; }
 
+        public Guid Guid { get; set; }
+
         protected SetupConfig getValueSetupConfig() => new SetupConfig(this, nameof(Value), Name);
         public bool IsSetUp()=>Name != null;
         public Parameter(string name)
         {
             Name = name;
         }
-        public Parameter() { }
+        public Parameter() { Guid = Guid.NewGuid(); }
         public override string ToString()=>Name;
         public virtual void Import(Parameter parameter)
         {

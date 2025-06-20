@@ -69,7 +69,7 @@ namespace psdPH
             string xmlFilePath = PsdPhDirectories.ProjectXml(projectName);
             try
             {
-                blob = DiskOperations.OpenXml<RootBlob>(xmlFilePath);
+                blob = DiskOperations.LoadXml<RootBlob>(xmlFilePath);
                 blob.Restore();
             }
             catch { 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using psdPH.Logic.Serialization;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,13 +10,15 @@ namespace psdPH.Utils
 
     static class DiskOperations
     {
-        public static T OpenXml<T>(string path)where T:class
+        public static T LoadXml<T>(string path)where T:class
         {
             T result = default(T);
             if (File.Exists(path))
             {
                 var stringXml = File.ReadAllText(path, Encoding.Unicode);
+                
                 result = CloneConverter.GetObj<T>(stringXml);
+                
             }
             return result;
         }

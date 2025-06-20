@@ -23,7 +23,7 @@ namespace psdPH.Views
         public string ListDataPath => Path.Combine(ViewDirectory, "data.xml");
         public void CreateOutputsDirectory() => Directory.CreateDirectory(OutputsDirectory);
         public void CreateOutputDirectory(string outputName) => Directory.CreateDirectory(OutputDirectory(outputName));
-        public SimpleListData OpenData() => DiskOperations.OpenXml<SimpleListData>(ListDataPath);
+        public SimpleListData OpenData() => DiskOperations.LoadXml<SimpleListData>(ListDataPath);
         public static View<T> Instance()
         {
             if (_instance == null)

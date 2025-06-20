@@ -1,4 +1,10 @@
-﻿namespace psdPH.Logic.Compositions
+﻿using psdPH.Logic.Serialization;
+using psdPH.Nodes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace psdPH.Logic.Compositions
 {
     public abstract class DtoConverter
     {

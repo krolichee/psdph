@@ -60,8 +60,13 @@
     <Compile Include="Logic\Parameters\ParameterTest.cs" />
     <Compile Include="Logic\Parameters\StringChooseParameterTest.cs" />
     <Compile Include="Logic\Ruleset\Rules\SplitTextToRatio.cs" />
-    <Compile Include="Logic\DtoConverter.cs" />
+    <Compile Include="Logic\Serialization\DtoConverter.cs" />
+    <Compile Include="Nodes\ChmoNode.cs" />
+    <Compile Include="Nodes\MuxNode.cs" />
+    <Compile Include="Nodes\Node.cs" />
     <Compile Include="Nodes\NodeTest.cs" />
+    <Compile Include="Nodes\NotCompatibleSetupException.cs" />
+    <Compile Include="Nodes\ParameterNode.cs" />
     <Compile Include="Photoshop\OutputSaverTest.cs" />
     <Compile Include="Properties\TestResources.Designer.cs">
       <AutoGen>True</AutoGen>

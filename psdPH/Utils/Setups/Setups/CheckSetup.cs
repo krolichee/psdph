@@ -17,7 +17,7 @@ namespace psdPH.Utils.Setups
             chb.IsChecked = (bool?)config.GetValue();
             _stack.Children.Add(chb);
             valueFunc = () => chb.IsChecked;
-            isValidValue = (obj) => obj is bool;
+            isValidFunc = (obj) => obj is bool;
         }
     }
 }

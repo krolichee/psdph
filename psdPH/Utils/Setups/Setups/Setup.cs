@@ -28,7 +28,7 @@ namespace psdPH.Utils.Setups
         protected FieldFunctions _fieldFunctions;
         protected StackPanel _stack;
 
-        protected Func<object, bool> isValidValue;
+        protected Func<object, bool> isValidFunc;
         protected Func<object> valueFunc;
 
         protected SetupConfig _config;
@@ -45,7 +45,7 @@ namespace psdPH.Utils.Setups
 
         internal bool IsValidValue(object obj)
         {
-            return isValidValue(obj);
+            return isValidFunc(obj);
         }
 
         protected Setup(SetupConfig config, FieldFunctions fieldFunctions = null)
@@ -62,7 +62,24 @@ namespace psdPH.Utils.Setups
             if (config.AutoAccept)
                 changed += () => Accept();
         }
+        public static Setup Sealed(SetupConfig config)
+        {
+            return new Setup(config);
+        }
 
+        internal static Setup TypeConstrained<T>(SetupConfig setupConfig)
+        {
+            var result = new Setup(setupConfig);
+            result.isValidFunc = (obj) => obj is T;
+            return result;
+        }
+        public override bool Equals(object obj)
+        {
+            var other = obj as Setup;
+            if (other == null)
+                return false;
+            return Config.Equals(other.Config);
+        }
         public StackPanel Stack => _stack;
 
     }

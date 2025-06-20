@@ -59,12 +59,19 @@ namespace psdPH.Utils.Setups
             else
                 throw new ArgumentException($"Поле или свойство с именем '{FieldName}' не найдено в объекте типа '{objType.Name}'.");
         }
-        public SetupConfig(object obj, string fieldname, string desc, bool autoAccept=false)
+        public SetupConfig(object obj, string fieldname, string desc = "", bool autoAccept=false)
         {
             this.Obj = obj;
             this.FieldName = fieldname;
             this.Desc = desc;
             AutoAccept = autoAccept;
+        }
+        public override bool Equals(object obj)
+        {
+            var config = obj as SetupConfig;
+            if (config == null)
+                return false;
+            return Obj == config.Obj && FieldName == config.FieldName;
         }
     }
 }

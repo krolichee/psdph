@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml;
+using psdPH.Nodes;
+using psdPH.Logic.Serialization;
 
 namespace psdPH.Utils
 {
@@ -29,9 +31,11 @@ namespace psdPH.Utils
         }
         public static object GetObj(string xmlString,Type type)
         {
+            GuidScope.StartLoad(); 
             StringReader sr = new StringReader(xmlString);
             XmlSerializer serializer = new XmlSerializer(type, KnownTypes.Types.ToArray());
             object result = serializer.Deserialize(sr);
+            GuidScope.EndOfLoad();
             return result;
         }
         

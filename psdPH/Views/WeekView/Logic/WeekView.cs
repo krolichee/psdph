@@ -32,7 +32,7 @@ namespace psdPH.Views.WeekView
                 return null;
             return wce_w.GetResultConfig();
         }
-        protected WeekConfig OpenWeekConfig() => DiskOperations.OpenXml<WeekConfig>(ConfigPath);
+        protected WeekConfig OpenWeekConfig() => DiskOperations.LoadXml<WeekConfig>(ConfigPath);
         protected WeekConfig OpenOrCreateWeekConfig(RootBlob root)
         {
             var weekConfig = OpenWeekConfig();
@@ -40,8 +40,8 @@ namespace psdPH.Views.WeekView
                 weekConfig = CreateWeekConfig(root);
             return weekConfig;
         }
-        protected WeekListData OpenWeekListData() => DiskOperations.OpenXml<WeekListData>(ListDataPath);
-        protected WeekRulesets OpenWeekRulesets() => DiskOperations.OpenXml<WeekRulesets>(WeekRulesetsPath);
+        protected WeekListData OpenWeekListData() => DiskOperations.LoadXml<WeekListData>(ListDataPath);
+        protected WeekRulesets OpenWeekRulesets() => DiskOperations.LoadXml<WeekRulesets>(WeekRulesetsPath);
 
         protected override void SaveListData(WeekListData listData)
         {
