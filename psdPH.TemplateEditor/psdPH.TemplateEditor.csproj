@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ED1721B9-B443-4B31-AAD8-27AE1C2B1BE3}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <RootNamespace>psdPH.TemplateEditor</RootNamespace>
+    <AssemblyName>psdPH.TemplateEditor</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml.cs">
+      <DependentUpon>BlobEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterHandler.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureStackControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureStackHandler.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateCEDCommand.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackControl.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackHandler.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TypeAndNameGrid.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\IBatchCompositionCreator.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\LayerSetup.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\MultiCompositionCreator.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\SingleCompositionCreators.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\IBatchParameterCreator.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\ParameterCreator.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
+      <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml.cs">
+      <DependentUpon>StringChoiceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceWindow.xaml.cs">
+      <DependentUpon>StringChoiceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateEditor\ParameterDicts.cs" />
+    <Compile Include="TemplateEditor\StructureDicts.cs" />
+    <Compile Include="UserControl1.xaml.cs">
+      <DependentUpon>UserControl1.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\psdPH.CED\psdPH.CED.csproj">
+      <Project>{026c33a7-d6eb-4124-b53a-bf25d789e1c4}</Project>
+      <Name>psdPH.CED</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Context\psdPH.Context.csproj">
+      <Project>{5af433db-0930-4fb7-8318-1d2bc519d3c6}</Project>
+      <Name>psdPH.Context</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Core.Compositons\psdPH.Compositons.csproj">
+      <Project>{C20E66C4-E8A7-4F52-A74E-B5806125D9FC}</Project>
+      <Name>psdPH.Compositons</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Core\psdPH.Parameters.csproj">
+      <Project>{2ec6f86a-2e44-4c97-9d8b-66f6bfd48244}</Project>
+      <Name>psdPH.Parameters</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
+      <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
+      <Name>psdPH.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
+      <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
+      <Name>psdPH.Nodes.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes.UI\psdPH.Nodes.UI.csproj">
+      <Project>{a371c100-4f9c-4744-9837-4c73bbb09ce0}</Project>
+      <Name>psdPH.Nodes.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes\psdPH.Nodes.csproj">
+      <Project>{5226ce47-9474-4681-8847-69e4f38eb9f5}</Project>
+      <Name>psdPH.Nodes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
+      <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
+      <Name>psdPH.Photoshop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Project\psdPH.Project.csproj">
+      <Project>{baad7f1f-5b1c-4e50-b1de-ce9d8c5945cb}</Project>
+      <Name>psdPH.Project</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Rules\psdPH.Rules.csproj">
+      <Project>{39511c94-2900-4295-af24-44bb6b164d57}</Project>
+      <Name>psdPH.Rules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
+      <Project>{CC0FFFDC-697C-4469-B1FB-61B396311625}</Project>
+      <Name>psdPH.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Controls\psdPH.Setups.Controls.csproj">
+      <Project>{59BFABE0-49CD-4199-8E36-F64B3AD20025}</Project>
+      <Name>psdPH.Setups.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
+      <Project>{3369D6FE-2C5F-4F88-AF24-24A441C4D4B7}</Project>
+      <Name>psdPH.Setups.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups\psdPH.Setups.csproj">
+      <Project>{55BD3BA6-11A4-42BA-A938-FF386EC090F5}</Project>
+      <Name>psdPH.Setups</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj">
+      <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>
+      <Name>psdPH.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Photoshop">
+      <Guid>{E891EE9A-D0AE-4CB4-8871-F92C0109F18E}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

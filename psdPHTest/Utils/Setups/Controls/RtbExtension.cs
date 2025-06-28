@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace psdPHTest.Utils.ReflectionSetups.Controls
 {
-    [TestCategory(TestCatagories.Automatic)]
+    [TestCategory(TestCategories.Automatic)]
     [TestClass]
     public class RtbExtensionTest
     {

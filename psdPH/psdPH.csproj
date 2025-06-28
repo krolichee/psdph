@@ -1,11 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>$(MSBuildProjectName).Tests</_Parameter1>
-    </AssemblyAttribute>
-  </ItemGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -76,263 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BlockingStack.cs" />
-    <Compile Include="DragRect.xaml.cs">
-      <DependentUpon>DragRect.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="KnownTypes.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="Logic\Compositions\AreaLeaf.cs" />
-    <Compile Include="Logic\Compositions\CoreComposition.cs" />
-    <Compile Include="Logic\Compositions\LayerBlob.cs" />
-    <Compile Include="Logic\Compositions\PrototypeBlob.cs" />
-    <Compile Include="Logic\Compositions\RootBlob.cs" />
-    <Compile Include="Logic\Serialization\Dto.cs" />
-    <Compile Include="Logic\Serialization\DtoConverter.cs" />
-    <Compile Include="Logic\Serialization\DtoConvertersRegistry.cs" />
-    <Compile Include="Logic\Compositions\GroupLeaf.cs" />
-    <Compile Include="Logic\Compositions\ImageLeaf.cs" />
-    <Compile Include="Logic\EmptySetupsSource.cs" />
-    <Compile Include="Logic\NullDtoConverter.cs" />
-    <Compile Include="Logic\Ruleset\Conditions\Condition.cs" />
-    <Compile Include="Logic\Ruleset\Rules\Rule.cs" />
-    <Compile Include="Logic\Serialization\GuidScope.cs" />
-    <Compile Include="Logic\SetupsRegistry.cs" />
-    <Compile Include="Logic\SetupsSource.cs" />
-    <Compile Include="Logic\MatchingResult.cs" />
-    <Compile Include="Logic\Parameters\FlagParameter.cs" />
-    <Compile Include="Logic\Parameters\Parameter.cs" />
-    <Compile Include="Logic\Parameters\ParameterSet.cs" />
-    <Compile Include="Logic\Parameters\StringChooseParameter.cs" />
-    <Compile Include="Logic\Parameters\StringParameter.cs" />
-    <Compile Include="Logic\Ruleset\Rules\CompositionRules\SplitForAreaRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\DocRules\!DocRule.cs" />
-    <Compile Include="Nodes\Guided.cs" />
-    <Compile Include="Nodes\NodesOutputFieldnamesRegistry.cs" />
-    <Compile Include="Photoshop\LayerWr\LayerDescriptor.cs" />
-    <Compile Include="Logic\Compositions\LayerLeaf.cs" />
-    <Compile Include="Logic\Compositions\PlaceholderLeaf.cs" />
-    <Compile Include="Logic\Compositions\TextLeaf.cs" />
-    <Compile Include="Logic\Ruleset\Conditions\EmptynessCondition.cs" />
-    <Compile Include="Logic\Ruleset\Conditions\ParameterSetCondition\FlagCondition.cs" />
-    <Compile Include="Logic\Ruleset\Conditions\TextCondition.cs" />
-    <Compile Include="Logic\Ruleset\Rules\DocRules\AlignRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\AreaRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\DocRules\FitRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\LayerRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\DocRules\OpacityRule.cs" />
-    <Compile Include="Logic\Ruleset\Rules\DocRules\VisibleRule.cs" />
-    <Compile Include="Logic\UINameAttribute.cs" />
-    <Compile Include="Photoshop\AlignOptions.cs" />
-    <Compile Include="Photoshop\KostylExecutor.cs" />
     <Compile Include="ProjectCreator.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterControl.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TypeAndNameGrid.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\IBatchParameterCreator.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\ParameterCreator.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterHandler.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\IBatchCompositionCreator.cs" />
-    <Compile Include="TemplateEditor\ParameterDicts.cs" />
-    <Compile Include="Utils\CedStack\IStackPanelManipulation.cs" />
-    <Compile Include="Utils\CedStack\PanelManipulation.cs" />
-    <Compile Include="Utils\CedStack\StackPanelManipulation.cs" />
-    <Compile Include="Utils\Localization\EnumLocalization.cs" />
-    <Compile Include="Utils\Setups\Controls\AlignmentControl.xaml.cs">
-      <DependentUpon>AlignmentControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CollectionEditor\CollectionEditor.xaml.cs">
-      <DependentUpon>CollectionEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Photoshop\Alignment.cs" />
-    <Compile Include="Photoshop\LayerWr\ArtLayerWr.cs" />
-    <Compile Include="Photoshop\LayerWr\LayerSetWr.cs" />
-    <Compile Include="Photoshop\PhotoshopLayerExtension.Adjust.cs" />
-    <Compile Include="Photoshop\LayerWr\LayerWr.cs" />
-    <Compile Include="Logic\Ruleset\ChangeMode.cs" />
-    <Compile Include="Logic\Ruleset\ELayerMode.cs" />
-    <Compile Include="Logic\Ruleset\RulesetDefinition.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\MultiCompositionCreator.cs" />
-    <Compile Include="Utils\CloneConverter.cs" />
-    <Compile Include="Logic\Ruleset\RuleSet.cs" />
-    <Compile Include="Utils\Setups\FieldFunctions.cs" />
-    <Compile Include="Utils\Setups\Controls\MultiPicker.xaml.cs">
-      <DependentUpon>MultiPicker.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Utils\Setups\QuestionableSetups.cs" />
-    <Compile Include="Utils\Setups\SetupConfig.cs" />
-    <Compile Include="Utils\Setups\Controls\RtbExtension.cs" />
-    <Compile Include="Utils\Localization\TypeLocalization.cs" />
-    <Compile Include="PsdPhProject.cs" />
-    <Compile Include="StringInputWindow.xaml.cs">
-      <DependentUpon>StringInputWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateCEDCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackControl.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackHandler.cs" />
-    <Compile Include="Utils\CedStack\CEDPanelHandler.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureStackControl.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureStackHandler.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureCommand.cs" />
-    <Compile Include="Utils\PsdPhDirectories.cs" />
-    <Compile Include="CollectionEditor\ImageSelectorWindow.xaml.cs">
-      <DependentUpon>ImageSelectorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Logic\Compositions\Composition.cs" />
-    <Compile Include="Logic\Compositions\LayerComposition.cs" />
-    <Compile Include="Photoshop\PhotoshopLayerExtension.cs" />
-    <Compile Include="Logic\Ruleset\Rules\TextRule.cs" />
-    <Compile Include="MainWindow.BlobSave.cs" />
-    <Compile Include="Utils\CedStack\CEDStackUI.xaml.cs">
-      <DependentUpon>CEDStackUI.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Utils\CedStack\CEDStackControl.cs" />
-    <Compile Include="Utils\PsdPhContext.cs" />
-    <Compile Include="Utils\Setups\Setups\AlignmentSetup.cs" />
-    <Compile Include="Utils\Setups\Setups\CheckSetup.cs" />
-    <Compile Include="Utils\Setups\Setups\ChooseSetup.cs" />
-    <Compile Include="Utils\Setups\Setups\ComboStringSetup.cs" />
-    <Compile Include="Utils\Setups\Setups\DateSetup.cs" />
-    <Compile Include="Utils\Setups\Setups\EnumChooseSetup.cs" />
-    <Compile Include="Utils\Setups\Setups\IntSetup.cs" />
-    <Compile Include="Utils\Setups\Setups\JustDescription.cs" />
-    <Compile Include="Utils\Setups\Setups\JustSeparator.cs" />
-    <Compile Include="Utils\Setups\Setups\MultiChooseSetup.cs" />
-    <Compile Include="Utils\Setups\Setups\RichStringInputSetup.cs" />
-    <Compile Include="Utils\Setups\Setups\StringInputSetup.cs" />
-    <Compile Include="Utils\RelayCommand.cs" />
-    <Compile Include="Utils\DiskOperations.cs" />
-    <Compile Include="Utils\Splitter.cs" />
-    <Compile Include="Utils\TopmostWindow.cs" />
-    <Compile Include="Utils\UpcomingAttribute.cs" />
-    <Compile Include="Views\ViewData.cs" />
-    <Compile Include="Views\ViewListData.cs" />
-    <Compile Include="Views\ParsetInputWindow.cs" />
-    <Compile Include="Views\SimpleView\Logic\SimpleData.cs" />
-    <Compile Include="Views\SimpleView\Logic\SimpleRenderCommand.cs" />
-    <Compile Include="Views\SimpleView\Logic\SimpleRenderer.cs" />
-    <Compile Include="Views\SimpleView\Logic\SimpleView.cs" />
-    <Compile Include="Views\SimpleView\Logic\SimpleListData.cs" />
-    <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleControl.cs" />
-    <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleViewCommand.cs" />
-    <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleViewHandler.cs" />
-    <Compile Include="Views\SimpleView\Windows\SimpleViewWindow.xaml.cs">
-      <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\View.cs" />
-    <Compile Include="Views\WeekView\Formats\DateFormat.cs" />
-    <Compile Include="Photoshop\OutputSaver.cs" />
-    <Compile Include="Views\WeekView\Logic\DayParameterSet.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekRules.cs" />
-    <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
-      <DependentUpon>DateFormatWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Windows\DayTile.xaml.cs">
-      <DependentUpon>DayTile.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Windows\DowPlaceholderMatchWindow.xaml.cs">
-      <DependentUpon>DowPlaceholderMatchWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Utils\Localization\Localization.cs" />
-    <Compile Include="CollectionEditor\Cropper.xaml.cs">
-      <DependentUpon>Cropper.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Utils\Setups\ISetupable.cs" />
-    <Compile Include="Photoshop\PhotoshopDocumentExtension.cs" />
-    <Compile Include="Logic\Ruleset\Conditions\CompositionCondition.cs" />
-    <Compile Include="Utils\Setups\Setups\Setup.cs" />
-    <Compile Include="Logic\Ruleset\Rules\CompositionRule.cs" />
-    <Compile Include="Utils\Setups\Controls\NumericTextBox.cs" />
-    <Compile Include="TemplateEditor\StructureDicts.cs" />
-    <Compile Include="Photoshop\PhotoshopWrapper.cs" />
-    <Compile Include="Utils\CedStack\CEDCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\SingleCompositionCreators.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
-      <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\IStringEditor.cs" />
-    <Compile Include="Utils\Setups\Controls\SetupInputWindow.xaml.cs">
-      <DependentUpon>SetupInputWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml.cs">
-      <DependentUpon>StringChoiceControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceWindow.xaml.cs">
-      <DependentUpon>StringChoiceWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml.cs">
-      <DependentUpon>BlobEditorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Logic\WeekConfig.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekData.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekRenderer.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekTime.cs" />
-    <Compile Include="Views\WeekView\Windows\RenderCommand.cs" />
-    <Compile Include="Views\WeekView\Formats\WeekFormat.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekView.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekCommand.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekStackHandler.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekConfigEditor.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekViewTableInputIntepreter.xaml.cs">
-      <DependentUpon>WeekViewTableInputIntepreter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Windows\WeekViewWindow.xaml.cs">
-      <DependentUpon>WeekViewWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Logic\WeekListData.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekRow.xaml.cs">
-      <DependentUpon>WeekRow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Windows\WeekTile.xaml.cs">
-      <DependentUpon>WeekTile.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
-    </Compile>
-    <Page Include="DragRect.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Utils\Setups\Controls\AlignmentControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CollectionEditor\CollectionEditor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CollectionEditor\ImageSelectorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="StringInputWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Utils\CedStack\CEDStackUI.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Utils\Setups\Controls\MultiPicker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SimpleView\Windows\SimpleViewWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WeekView\Windows\DateFormatWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WeekView\Windows\DayTile.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WeekView\Windows\DowPlaceholderMatchWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -345,50 +84,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="CollectionEditor\Cropper.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Utils\Setups\Controls\SetupInputWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WeekView\Windows\WeekViewTableInputIntepreter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WeekView\Windows\WeekViewWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WeekView\Windows\WeekRow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WeekView\Windows\WeekTile.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Window1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -408,9 +103,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Photoshop\PhotoshopDocumentExtension.Layers.cs" />
-    <Compile Include="Photoshop\PhotoshopDocumentExtenson.Layersets.cs" />
-    <Compile Include="Photoshop\PhotoshopLayerExtension.Align.cs" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -453,22 +145,30 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="TODO.txt" />
+    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
+      <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
+      <Name>psdPH.Photoshop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Project\psdPH.Project.csproj">
+      <Project>{baad7f1f-5b1c-4e50-b1de-ce9d8c5945cb}</Project>
+      <Name>psdPH.Project</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.TemplateEditor\psdPH.TemplateEditor.csproj">
+      <Project>{ed1721b9-b443-4b31-aad8-27ae1c2b1be3}</Project>
+      <Name>psdPH.TemplateEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj">
+      <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>
+      <Name>psdPH.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Views\psdPH.Views.csproj">
+      <Project>{257ceb02-0a13-48db-9b9a-382f663dc0da}</Project>
+      <Name>psdPH.Views</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Photoshop\LayerWr\LayerWrCommon.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>LayerWrCommon.txt</LastGenOutput>
-    </Content>
-    <Resource Include="Photoshop\LayerWr\LayerWrCommon.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LayerWrCommon.tt</DependentUpon>
-    </Resource>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

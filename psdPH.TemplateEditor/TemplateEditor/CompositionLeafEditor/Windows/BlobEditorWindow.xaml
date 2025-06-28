@@ -1,0 +1,41 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:psdPH.TemplateEditor" 
+         xmlns:CedStack="clr-namespace:psdPH.CED;assembly=psdPH.CED"  
+        x:Class="psdPH.TemplateEditor.BlobEditorWindow" 
+         mc:Ignorable="d"
+        Title="TemplateEditor" Height="450" Width="365" Closed="Window_Closed" Activated="Window_Activated"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Menu x:Name="templateMenu" VerticalAlignment="Center" Height="18" >
+            <MenuItem Header="Шаблон" >
+                <MenuItem Header="Очистить" Click="clearMenuItem_Click" />
+                <MenuItem Header="Сохранить" Click="saveMenuItem_Click" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+
+            <TabControl Margin="0,0,0,0">
+                <TabItem x:Name="structureTab" Header="Структура">
+                    <CedStack:CEDStackUI/>
+                </TabItem>
+                <TabItem x:Name="paramTab" Header="Параметры" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="76">
+                    <CedStack:CEDStackUI/>
+                </TabItem>
+                <TabItem x:Name="ruleTab" Header="Правила" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58">
+                    <CedStack:CEDStackUI/>
+                </TabItem>
+                
+            </TabControl>
+
+        </Grid>
+    </Grid>
+</Window>

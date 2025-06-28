@@ -1,0 +1,84 @@
+﻿using psdPH.Logic.Compositions;
+using psdPH.Utils.Setups;
+using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Logic.PhotoshopLayerExtension;
+using System.Xml.Serialization;
+using static psdPH.Photoshop.LayerWr;
+using psdPH.Setups;
+using psdPH.Compositions;
+using psdPH.Photoshop;
+
+namespace psdPH.Logic.Ruleset.Rules
+{
+    public class AlignRule : AreaRule
+    {
+        public override string ToString() => "выровнять";
+        [XmlIgnore]
+        public Alignment Alignment;
+        [XmlIgnore]
+        public ConsiderFx ConsiderFx;
+        [XmlIgnore]
+        public LayerComposition SubjectLayerComposition;
+        public AlignOptions AlignOptions
+        {
+            get => new AlignOptions(Alignment, ConsiderFx); set
+            {
+                Alignment = value.Alignment;
+                ConsiderFx = value.ConsiderFx;
+            }
+        }
+        public AlignRule(Composition composition) : base(composition) { }
+        public AlignRule() : base(null) {
+            SetupsRegistry.Register<AlignRule>(new AlignRuleSetupSource());
+            DtoConvertersRegistry.Register<AlignRule>(new AlignRuleDtoConverter());
+        }
+        public override void Apply(DocumentWr doc)
+        {
+            getLayerWr(doc).AlignLayer(AreaLeaf.GetLayerWr(doc), AlignOptions);
+        }
+
+    }
+    public class AlignRuleDto : LayerRuleDto
+    {
+        public Alignment Alignment;
+        public ConsiderFx ConsiderFx;
+    }
+    public class AlignRuleDtoConverter : LayerRuleDtoConverter
+    {
+        public override object GetDto(object _obj)
+        {
+            var dto = new AlignRuleDto();
+            ExportDto(_obj, dto);
+            return dto;
+        }
+        protected override void ExportDto(object _obj, object _dto)
+        {
+            var obj = _obj as AlignRule;
+            var dto = _dto as AlignRuleDto;
+            base.ExportDto(_obj, _dto);
+            dto.ConsiderFx = obj.ConsiderFx;
+            dto.Alignment = obj.Alignment;
+        }
+    }
+    public class AlignRuleSetupSource : AreaRuleSetupSource
+    {
+        protected Setup getAlignmentSetup(AlignRule areaRule)
+        {
+            var alignment_config = new ReflectionConfig(areaRule, nameof(areaRule.Alignment), "с выравниванием");
+            return new AlignmentSetup(alignment_config);
+        }
+        protected Setup getConsiderFxSetup(AlignRule areaRule)
+        {
+            var considerfx_config = new ReflectionConfig(areaRule, nameof(areaRule.ConsiderFx), "по границам");
+            return EnumChooseSetup.EnumChoose(considerfx_config, typeof(ConsiderFx));
+
+        }
+        public override Setup[] GetSetups(object obj)
+        {
+            return new Setup[] { getLayerCompositionSetup<AreaLeaf>(obj as LayerRule, "для зоны") ,
+                getAlignmentSetup(obj as AlignRule),
+                getConsiderFxSetup(obj as AlignRule) };
+        }
+    }
+
+}

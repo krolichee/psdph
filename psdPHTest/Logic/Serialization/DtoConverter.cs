@@ -6,7 +6,7 @@ using psdPH.Utils;
 
 namespace psdPHTest.Logic
 {
-	[TestCategory(TestCatagories.Automatic)]
+	[TestCategory(TestCategories.Automatic)]
 	[TestClass]
 	public class DtoConverter
 	{

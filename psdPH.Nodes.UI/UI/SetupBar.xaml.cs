@@ -1,0 +1,37 @@
+﻿using psdPH.Setups;
+using psdPH.Utils.Setups;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace psdPH.Nodes.UI
+{
+    /// <summary>
+    /// Логика взаимодействия для SetupBar.xaml
+    /// </summary>
+    public partial class SetupBar : UserControl
+    {
+        public SetupBar(Setup setup)
+        {
+            var control = setup.Control;
+            setup.Stack.Children.Remove(control );
+            InitializeComponent();
+            Grid.SetColumn(control,1);
+            control.HorizontalAlignment = HorizontalAlignment.Center;
+            control.VerticalAlignment = VerticalAlignment.Center;
+            setupControlBorder.Child =control;
+            nameLabel.Content = setup.Config.Desc;
+        }
+    }
+}

@@ -21,7 +21,7 @@ using psdPH.Utils.Setups;
 
 namespace psdPHTest.Tests.UI
 {
-    [TestCategory(TestCatagories.PhotoshopManual)]
+    [TestCategory(TestCategories.PhotoshopManual)]
     [TestClass]
     public class TemplateEditorTest
     {
@@ -58,7 +58,7 @@ namespace psdPHTest.Tests.UI
             
         }
     }
-    [TestCategory(TestCatagories.ManualUI)]
+    [TestCategory(TestCategories.ManualUI)]
     [TestClass]
     public class ParameterTest
     {
@@ -84,7 +84,7 @@ namespace psdPHTest.Tests.UI
         }
 
     }
-    [TestCategory(TestCatagories.ManualUI)]
+    [TestCategory(TestCategories.ManualUI)]
     [TestClass]
     public class WeekViewWindowTest:WeekViewTest
     {
@@ -107,7 +107,7 @@ namespace psdPHTest.Tests.UI
             wv_w.ShowDialog();
         }
     }
-    [TestCategory(TestCatagories.ManualUI)]
+    [TestCategory(TestCategories.ManualUI)]
     [TestClass]
     public class MiscTest
     {

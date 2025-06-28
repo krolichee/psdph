@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace psdPHTest.Logic.Compositions
 {
-    [TestCategory(TestCatagories.PhotoshopTestDocs)]
+    [TestCategory(TestCategories.PhotoshopTestDocs)]
     [TestClass]  
     public class IsMatchingTest
     {

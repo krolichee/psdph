@@ -1,17 +1,13 @@
-﻿using psdPH.Logic.Compositions;
-using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
+﻿using psdPH.Photoshop;
+using psdPH.Project;
+using psdPH.TemplateEditor;
 using psdPH.Utils;
-using psdPH.Views.SimpleView;
-using psdPH.Views.SimpleView.Logic;
-using psdPH.Views.SimpleView.Windows;
-using psdPH.Views.WeekView;
+//using psdPH.Views.SimpleView;
+//using psdPH.Views.WeekView;
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Path = System.IO.Path;
@@ -170,7 +166,7 @@ namespace psdPH
         }
         private void weekViewMenuItem_Execute(object _)
         {
-            ViewWindow = WeekView.MakeWeekView().ShowWindow();
+            //ViewWindow = WeekView.MakeWeekView().ShowWindow();
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -180,7 +176,7 @@ namespace psdPH
 
         private void simpleViewMenuItem_Execute(object _)
         {
-            ViewWindow = SimpleView.MakeSimpleView().ShowWindow();   
+            //ViewWindow = SimpleView.MakeSimpleView().ShowWindow();   
         }
 
         private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)

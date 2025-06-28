@@ -1,0 +1,30 @@
+﻿using psdPH.Utils.Setups;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using psdPH.Logic.Ruleset.Conditions;
+using System.Xml.Serialization;
+using psdPH.Setups;
+
+namespace psdPH.Nodes
+{
+    public class ConditionNode : Node
+    {
+        [XmlIgnore]
+        Condition Condition;
+        [XmlIgnore]
+        public bool Output;
+        [XmlIgnore]
+        public Setup OutputSetup => Setup.Sealed(new ReflectionConfig(this,nameof(Output),"результат"));
+        [XmlIgnore]
+        public override List<Setup> Inputs => Condition.Setups.ToList();
+        [XmlIgnore]
+        public override List<Setup> Outputs => new List<Setup>() { OutputSetup };
+        protected override void _apply()
+        {
+            Output = Condition.IsValid();
+        }
+    }
+}

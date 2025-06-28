@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E879B3A1-E6FB-4B50-B0DF-9E34546BEA19}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>psdPH.Photoshop</RootNamespace>
+    <AssemblyName>psdPH.Photoshop</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PhotoshopLocalizator.cs" />
+    <Compile Include="Photoshop\Alignment.cs" />
+    <Compile Include="Photoshop\AlignOptions.cs" />
+    <Compile Include="Photoshop\DocumentWr\DocumentWr.cs" />
+    <Compile Include="Photoshop\KostylExecutor.cs" />
+    <Compile Include="Photoshop\LayerWr\ArtLayerWr.cs" />
+    <Compile Include="Photoshop\LayerWr\LayerDescriptor.cs" />
+    <Compile Include="Photoshop\LayerWr\LayerSetWr.cs" />
+    <Compile Include="Photoshop\LayerWr\LayerWr.cs" />
+    <Compile Include="Photoshop\WrapperExtension.cs" />
+    <Compile Include="Photoshop\OutputSaver.cs" />
+    <Compile Include="Photoshop\PhotoshopDocumentExtension.Layers.cs" />
+    <Compile Include="Photoshop\PhotoshopDocumentExtenson.Layersets.cs" />
+    <Compile Include="Photoshop\PhotoshopLayerExtension.Adjust.cs" />
+    <Compile Include="Photoshop\PhotoshopLayerExtension.Align.cs" />
+    <Compile Include="Photoshop\PhotoshopLayerExtension.cs" />
+    <Compile Include="Photoshop\PhotoshopWrapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Photoshop\LayerWr\LayerWrCommon.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LayerWrCommon.txt</LastGenOutput>
+    </Content>
+    <Resource Include="Photoshop\LayerWr\LayerWrCommon.txt">
+      <DependentUpon>LayerWrCommon.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Photoshop">
+      <Guid>{E891EE9A-D0AE-4CB4-8871-F92C0109F18E}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
+      <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
+      <Name>psdPH.Localization</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

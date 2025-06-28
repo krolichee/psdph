@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace psdPHTest.Utils
 {
-    [TestCategory(TestCatagories.Automatic)]
+    [TestCategory(TestCategories.Automatic)]
     [TestClass]
     public class CloneConverterTest
     {

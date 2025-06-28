@@ -1,5 +1,6 @@
 ﻿using Photoshop;
 using psdPH.Logic;
+using psdPH.Photoshop;
 using System;
 using System.IO;
 using System.Windows;

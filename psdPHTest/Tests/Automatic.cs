@@ -30,7 +30,7 @@ namespace psdPHTest.Tests.Automatic
     public class ParameterTest
     {
         public HorizontalAlignment HA = HorizontalAlignment.Stretch;
-        [TestCategory(TestCatagories.Automatic)]
+        [TestCategory(TestCategories.Automatic)]
         [TestMethod]
         public void testEnumAuto()
         {

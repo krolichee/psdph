@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="psdPH.CED.CEDStackUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" MinWidth="320" MinHeight="200" Loaded="UserControl_Loaded">
+    <Grid>
+        <Grid Background="#FFE5E5E5" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="1" Margin="0,1,0,0">
+                <StackPanel x:Name="stackPanel"/>
+            </ScrollViewer>
+            <Button x:Name="addButton" Content="+" HorizontalAlignment="Left" Height="24" Margin="10,0,0,0" VerticalAlignment="Center" Width="27" Click="Button_Click">
+                <Button.ContextMenu>
+                    <ContextMenu x:Name="CreateDropdownMenu" >
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
+            <Separator Margin="0,0,0,0" VerticalAlignment="Bottom" Background="#FFBDB0B0" Height="1" Grid.Row="0"/>
+        </Grid>
+    </Grid>
+</UserControl>

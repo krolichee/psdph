@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props" Condition="Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6800A165-9BEB-4AD3-9174-4F1336866BB6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>psdPHTest</RootNamespace>
+    <AssemblyName>psdPHTest</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSTest.TestFramework.2.2.10\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSTest.TestFramework.2.2.10\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Logic\Compositions\BlobTest.cs" />
+    <Compile Include="Logic\Compositions\IsMatchingTest.cs" />
+    <Compile Include="Logic\Parameters\ParameterTest.cs" />
+    <Compile Include="Logic\Parameters\StringChooseParameterTest.cs" />
+    <Compile Include="Logic\Ruleset\Rules\SplitTextToRatio.cs" />
+    <Compile Include="Logic\Serialization\DtoConverter.cs" />
+    <Compile Include="Nodes\NodeTest.cs" />
+    <Compile Include="Nodes\MuxNodeTest.cs" />
+    <Compile Include="Nodes\UI\NodeUITest.cs" />
+    <Compile Include="Photoshop\OutputSaverTest.cs" />
+    <Compile Include="Properties\TestResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TestCategories.cs" />
+    <Compile Include="Tests\Automatic.cs" />
+    <Compile Include="Tests\Classes.cs" />
+    <Compile Include="Tests\Ps.cs" />
+    <Compile Include="Tests\UI.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ProjectTestSuite.cs" />
+    <Compile Include="Utils\CloneConverterTest.cs" />
+    <Compile Include="Utils\Setups\Controls\RtbExtension.cs" />
+    <Compile Include="Utils\Setups\SetupTest.cs" />
+    <Compile Include="Views\WeekView\Logic\WeekRulesTest.cs" />
+    <Compile Include="Views\WeekView\TableInterpreterTest.cs" />
+    <Compile Include="wpf.xaml.cs">
+      <DependentUpon>wpf.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="testAssets\IsMatchingTest.psd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\psdPH.CED\psdPH.CED.csproj">
+      <Project>{026c33a7-d6eb-4124-b53a-bf25d789e1c4}</Project>
+      <Name>psdPH.CED</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.CollectionEditor\psdPH.CollectionEditor.csproj">
+      <Project>{37840e39-f549-416b-afe2-461f7a94085d}</Project>
+      <Name>psdPH.CollectionEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Context\psdPH.Context.csproj">
+      <Project>{5af433db-0930-4fb7-8318-1d2bc519d3c6}</Project>
+      <Name>psdPH.Context</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Core.Compositons\psdPH.Compositons.csproj">
+      <Project>{c20e66c4-e8a7-4f52-a74e-b5806125d9fc}</Project>
+      <Name>psdPH.Compositons</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Core\psdPH.Parameters.csproj">
+      <Project>{2ec6f86a-2e44-4c97-9d8b-66f6bfd48244}</Project>
+      <Name>psdPH.Parameters</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
+      <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
+      <Name>psdPH.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
+      <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
+      <Name>psdPH.Nodes.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes.UI\psdPH.Nodes.UI.csproj">
+      <Project>{a371c100-4f9c-4744-9837-4c73bbb09ce0}</Project>
+      <Name>psdPH.Nodes.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes\psdPH.Nodes.csproj">
+      <Project>{5226ce47-9474-4681-8847-69e4f38eb9f5}</Project>
+      <Name>psdPH.Nodes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
+      <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
+      <Name>psdPH.Photoshop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Project\psdPH.Project.csproj">
+      <Project>{baad7f1f-5b1c-4e50-b1de-ce9d8c5945cb}</Project>
+      <Name>psdPH.Project</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Rules\psdPH.Rules.csproj">
+      <Project>{39511c94-2900-4295-af24-44bb6b164d57}</Project>
+      <Name>psdPH.Rules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
+      <Project>{cc0fffdc-697c-4469-b1fb-61b396311625}</Project>
+      <Name>psdPH.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Controls\psdPH.Setups.Controls.csproj">
+      <Project>{59bfabe0-49cd-4199-8e36-f64b3ad20025}</Project>
+      <Name>psdPH.Setups.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
+      <Project>{3369d6fe-2c5f-4f88-af24-24a441c4d4b7}</Project>
+      <Name>psdPH.Setups.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups\psdPH.Setups.csproj">
+      <Project>{55bd3ba6-11a4-42ba-a938-ff386ec090f5}</Project>
+      <Name>psdPH.Setups</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.TemplateEditor\psdPH.TemplateEditor.csproj">
+      <Project>{ed1721b9-b443-4b31-aad8-27ae1c2b1be3}</Project>
+      <Name>psdPH.TemplateEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj">
+      <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>
+      <Name>psdPH.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Views\psdPH.Views.csproj">
+      <Project>{257ceb02-0a13-48db-9b9a-382f663dc0da}</Project>
+      <Name>psdPH.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH\psdPH.csproj">
+      <Project>{9ffab28d-5d38-47cf-9d39-f587cfc90455}</Project>
+      <Name>psdPH</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Photoshop">
+      <Guid>{E891EE9A-D0AE-4CB4-8871-F92C0109F18E}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CollectionEditor\" />
+    <Folder Include="Logic\Ruleset\Rules\CoreRules\" />
+    <Folder Include="RuleEditor\" />
+    <Folder Include="TemplateEditor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\TestResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="wpf.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props'))" />
+    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets'))" />
+  </Target>
+  <Import Project="..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets')" />
+</Project>

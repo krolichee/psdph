@@ -13,7 +13,7 @@ using System.Windows;
 
 namespace psdPHTest.Utils.ReflectionSetups
 {
-    [TestCategory(TestCatagories.ManualUI)]
+    [TestCategory(TestCategories.ManualUI)]
     [TestClass]
     public class SetupTest
     {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace psdPHTest.Logic.Compositions
 {
-    [TestCategory(TestCatagories.Automatic)]
+    [TestCategory(TestCategories.Automatic)]
     [TestClass]
     public class BlobTest
     {

@@ -18,7 +18,7 @@ using psdPH.Utils.Setups;
 
 namespace psdPHTest.Views.WeekView.Logic
 {
-    [TestCategory(TestCatagories.Automatic)]
+    [TestCategory(TestCategories.Automatic)]
     [TestClass]
     public class ParameterTest
     {

@@ -9,7 +9,7 @@ using psdPH.Views.SimpleView.Logic;
 
 namespace psdPHTest.Logic.Parameters
 {
-	[TestCategory(TestCatagories.AutomaticDisk)]
+	[TestCategory(TestCategories.AutomaticDisk)]
 	[TestClass]
 	public class StringChooseParameterTest: ProjectTestSuite
     {

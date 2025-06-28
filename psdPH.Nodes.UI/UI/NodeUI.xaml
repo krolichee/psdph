@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="psdPH.Nodes.UI.NodeUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:psdPH.Nodes.UI"
+             mc:Ignorable="d" 
+             x:Name="root"
+             HorizontalContentAlignment="Stretch"
+             MinWidth ="120">
+    <Border BorderBrush="{Binding MyBrush, ElementName=root}" BorderThickness="2,0,2,2" CornerRadius="3,3,3,3">
+        <Border.Background>
+            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}"/>
+        </Border.Background>
+        <Grid ClipToBounds="False" >
+            <StackPanel>
+
+                <Grid Background="{Binding MyBrush, ElementName=root}" HorizontalAlignment="Stretch" Height="35"  VerticalAlignment="Stretch" >
+
+
+                    <Label x:Name="headLabel" Content="Label" HorizontalAlignment="Center"  VerticalAlignment="Center" FontWeight="Bold" Foreground="#FF1F1717"/>
+
+                </Grid>
+                <UniformGrid x:Name="inputsStack" Columns="1" HorizontalAlignment="Stretch"/>
+                <Border Background="{Binding MyBrush, ElementName=root}" Height="2" VerticalAlignment="Top"/>
+
+                <UniformGrid x:Name="outputsStack" Columns="1" HorizontalAlignment="Stretch"/>
+            </StackPanel>
+           <!--<Border Width="8" HorizontalAlignment="Right" VerticalAlignment="Top" Height="8" Margin="0,6,0,0" BorderThickness="1,1,1,1" BorderBrush="Black"/>-->
+        </Grid>
+    </Border>
+</UserControl>
