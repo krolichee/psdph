@@ -1,8 +1,13 @@
 ﻿using Photoshop;
 using psdPH.Logic;
 using psdPH.Photoshop;
+using psdPH.Setups;
+using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
+using psdPH.Utils.Setups;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Windows;
 
 
@@ -12,6 +17,10 @@ namespace psdPH
     {
         public static class ProjectCreator
         {
+            class StringContainer
+            {
+                public string Value { get; set; }
+            }
             public static string New()
             {
 
@@ -23,16 +32,22 @@ namespace psdPH
                         return null;
                 } while (!PhotoshopWrapper.HasOpenDocuments());
 
-                var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument;
+                var doc = PhotoshopWrapper.GetPhotoshopApplication().ActiveDocument.Wrapper();
+                
+                var tempObj = new StringContainer();
 
 
+                var projectNameConfig = new ReflectionConfig(tempObj,nameof(tempObj.Value), "Название нового проекта");
+                var projectNameSetup = new StringInputSetup(projectNameConfig);
 
                 if (result == MessageBoxResult.Cancel)
                     return null;
-                var si_w = new StringInputWindow("Введите название нового проекта");
+                
+                var si_w = new SetupsInputWindow(new[]{ projectNameSetup });
                 if (si_w.ShowDialog() != true)
                     return null;
-                var projectName = si_w.GetResultString();
+               
+                var projectName = tempObj.Value;
 
                 if (!tryCreateProject(projectName))
                     return null;
@@ -56,7 +71,7 @@ namespace psdPH
                     copyPsdByCopying(doc, projectName);
                 return projectName;
             }
-            static void copyPsdByCopying(Document doc, string projectName)
+            static void copyPsdByCopying(DocumentWr doc, string projectName)
             {
                 var filePath = doc.GetDocPath();
                 string destinationPath = PsdPhDirectories.ProjectPsd(projectName);
@@ -69,7 +84,7 @@ namespace psdPH
                     MessageBox.Show($"Ошибка при копировании файла: {ex.Message}");
                 }
             }
-            static void copyPsdBySaving(Document doc, string projectName)
+            static void copyPsdBySaving(DocumentWr doc, string projectName)
             {
                 doc.SaveDocument(PsdPhDirectories.ProjectPsd(projectName));
             }

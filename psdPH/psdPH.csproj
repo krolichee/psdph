@@ -50,6 +50,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoViews|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\NoViews\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -153,6 +163,18 @@
       <Project>{baad7f1f-5b1c-4e50-b1de-ce9d8c5945cb}</Project>
       <Name>psdPH.Project</Name>
     </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Controls\psdPH.Setups.Controls.csproj">
+      <Project>{59bfabe0-49cd-4199-8e36-f64b3ad20025}</Project>
+      <Name>psdPH.Setups.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
+      <Project>{3369d6fe-2c5f-4f88-af24-24a441c4d4b7}</Project>
+      <Name>psdPH.Setups.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups\psdPH.Setups.csproj">
+      <Project>{55bd3ba6-11a4-42ba-a938-ff386ec090f5}</Project>
+      <Name>psdPH.Setups</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.TemplateEditor\psdPH.TemplateEditor.csproj">
       <Project>{ed1721b9-b443-4b31-aad8-27ae1c2b1be3}</Project>
       <Name>psdPH.TemplateEditor</Name>
@@ -160,10 +182,6 @@
     <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj">
       <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>
       <Name>psdPH.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Views\psdPH.Views.csproj">
-      <Project>{257ceb02-0a13-48db-9b9a-382f663dc0da}</Project>
-      <Name>psdPH.Views</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

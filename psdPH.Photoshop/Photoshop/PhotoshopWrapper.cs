@@ -40,8 +40,8 @@ namespace psdPH.Photoshop
         public static DocumentWr Opened(string path)
         {
             bool hasDocs = HasOpenDocuments();
-            
-            return hasDocs ? DocumentWr.GetDocs(GetPhotoshopApplication()).FirstOrDefault(d => d.IsPathIs(path)):null;
+            var docs = DocumentWr.GetDocs(GetPhotoshopApplication());
+            return hasDocs ? docs.FirstOrDefault(d => d.IsPathIs(path)):null;
         }
 
 
@@ -49,18 +49,18 @@ namespace psdPH.Photoshop
         // Открывает PSD-файл
         public static Document OpenDocument(string filePath, bool reopenIfOpened = false)
         {
-            Document doc = Opened(filePath).Doc;
-            if (reopenIfOpened ? doc != null : false)
+            DocumentWr docWr = Opened(filePath);
+            if (reopenIfOpened ? docWr != null : false)
             {
-                if (!doc.Saved)
+                if (!docWr.Saved)
                 {
                     var dialogResult = MessageBox.Show("Документ имеет несохранённые изменения. Сохранить?", "", MessageBoxButton.YesNoCancel);
                     if (dialogResult == MessageBoxResult.Yes)
-                        doc.Save();
+                        docWr.Save();
                     else if (dialogResult == MessageBoxResult.Cancel)
                         return null;
                 }
-                doc.Close(PsSaveOptions.psDoNotSaveChanges);
+                docWr.Close(PsSaveOptions.psDoNotSaveChanges);
             }
             GetPhotoshopApplication().Open(filePath);
             return psApp.ActiveDocument;

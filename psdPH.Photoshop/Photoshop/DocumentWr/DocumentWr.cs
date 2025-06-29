@@ -22,6 +22,9 @@ namespace psdPH.Photoshop
         Document doc;
         public Document Doc => doc;
         Application Application => doc.Application;
+
+        public bool Saved => doc.Saved;
+
         public void Rollback()
         {
             var initialState = doc.HistoryStates[1];
@@ -91,6 +94,11 @@ namespace psdPH.Photoshop
             {
                 return true;
             }
+        }
+
+        public void Save()
+        {
+            doc.Save();
         }
     }
 }
