@@ -10,7 +10,7 @@ namespace psdPH.Parameters
         public static void Add(this ParameterSet ps, Parameter parameter) => ps.AsCollection().Add(parameter);
     }
     [Serializable]
-    public class ParameterSet: ISerializable
+    public class ParameterSet : ISerializable
     {
         public ObservableCollection<Parameter> Parameters = new ObservableCollection<Parameter>();
         public event Action Updated;
@@ -19,7 +19,12 @@ namespace psdPH.Parameters
             foreach (var rule in rules)
                 Parameters.Add(rule);
         }
-        public ParameterSet():base(){
+        public void Add(Parameter rule)
+        {
+            Parameters.Add(rule);
+        }
+        public ParameterSet() : base()
+        {
             Parameters.CollectionChanged += (_, __) => Updated?.Invoke();
         }
         public T[] GetByType<T>()
@@ -30,9 +35,9 @@ namespace psdPH.Parameters
         {
             return Parameters.Where(l => l.GetType() == type).ToArray();
         }
-        public Dictionary<string,Parameter> ToDictionary()=>
-            Parameters.ToDictionary(p => p.Name, p=>p);
-        public void Set(string name,object value)
+        public Dictionary<string, Parameter> ToDictionary() =>
+            Parameters.ToDictionary(p => p.Name, p => p);
+        public void Set(string name, object value)
         {
             Parameters.First(p => p.Name == name).Value = value;
             Updated?.Invoke();
@@ -62,7 +67,7 @@ namespace psdPH.Parameters
         {
             foreach (var parameter in savedParameters.AsCollection())
                 Import(parameter);
-            
+
         }
         public Parameter this[int index]
         {

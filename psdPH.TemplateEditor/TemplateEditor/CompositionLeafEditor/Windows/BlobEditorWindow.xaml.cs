@@ -9,7 +9,6 @@ using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.CedStacks.ParameterCedStack;
 using psdPH.Utils;
 using psdPH.Utils.CedStack;
-using psdPH.Views.WeekView;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -39,7 +38,7 @@ namespace psdPH.TemplateEditor
         public static BlobEditorWindow OpenFromDisk()
         {
             RootBlob blob = PsdPhProject.Instance().openOrCreateMainBlob();
-            DocumentWr doc = PhotoshopWrapper.OpenDocument(PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName)).Wrapper();
+            DocumentWr doc = PhotoshopWrapper.OpenDocument(PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
             var editor = new BlobEditorWindow(doc, blob);
             editor.Show();
             return editor;

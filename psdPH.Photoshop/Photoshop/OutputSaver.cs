@@ -2,7 +2,7 @@
 using psdPH.Logic;
 using System.IO;
 
-namespace psdPH.Views.WeekView.Logic
+namespace psdPH.Photoshop
 {
     public class OutputSaver
     {

@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiskOperations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PsdPhDirectories.cs" />
     <Compile Include="PsdPhProject.cs" />

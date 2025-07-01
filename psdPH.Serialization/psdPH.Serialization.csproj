@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloneConverter.cs" />
+    <Compile Include="DiskOperations.cs" />
     <Compile Include="DtoGuided.cs" />
     <Compile Include="Guided.cs" />
     <Compile Include="KnownTypes.cs" />

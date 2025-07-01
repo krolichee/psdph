@@ -23,7 +23,7 @@ namespace psdPH.TemplateEditor
                     throw new ArgumentException();
                 creator = creator_func(_doc, _root);
             }
-            catch(ArgumentException e) {
+            catch(ArgumentException) {
                 MessageBox.Show("В данный момент этот элемент нельзя создать");
                 return;
             }

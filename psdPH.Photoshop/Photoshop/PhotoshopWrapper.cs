@@ -47,7 +47,7 @@ namespace psdPH.Photoshop
 
         
         // Открывает PSD-файл
-        public static Document OpenDocument(string filePath, bool reopenIfOpened = false)
+        public static DocumentWr OpenDocument(string filePath, bool reopenIfOpened = false)
         {
             DocumentWr docWr = Opened(filePath);
             if (reopenIfOpened ? docWr != null : false)
@@ -63,7 +63,7 @@ namespace psdPH.Photoshop
                 docWr.Close(PsSaveOptions.psDoNotSaveChanges);
             }
             GetPhotoshopApplication().Open(filePath);
-            return psApp.ActiveDocument;
+            return psApp.ActiveDocument.Wrapper();
         }
         public static Document OpenDocument(Application psApp, string filePath)
         {
@@ -104,6 +104,11 @@ namespace psdPH.Photoshop
             {
                 return false;
             }
+        }
+
+        public static DocumentWr GetActiveDocument()
+        {
+            return GetPhotoshopApplication().ActiveDocument.Wrapper();
         }
     }
 }

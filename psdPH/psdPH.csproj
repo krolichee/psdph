@@ -163,6 +163,10 @@
       <Project>{baad7f1f-5b1c-4e50-b1de-ce9d8c5945cb}</Project>
       <Name>psdPH.Project</Name>
     </ProjectReference>
+    <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
+      <Project>{cc0fffdc-697c-4469-b1fb-61b396311625}</Project>
+      <Name>psdPH.Serialization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Setups.Controls\psdPH.Setups.Controls.csproj">
       <Project>{59bfabe0-49cd-4199-8e36-f64b3ad20025}</Project>
       <Name>psdPH.Setups.Controls</Name>
