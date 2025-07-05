@@ -1,98 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5226CE47-9474-4681-8847-69E4F38EB9F5}</ProjectGuid>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>psdPH.Nodes</RootNamespace>
     <AssemblyName>psdPH.Nodes</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
     <Deterministic>true</Deterministic>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <Optimize>true</Optimize>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoViews|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\NoViews\</OutputPath>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='NoViews|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\psdPH.Core\psdPH.Parameters.csproj" />
+    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj" />
+    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj" />
+    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj" />
+    <ProjectReference Include="..\psdPH.Rules\psdPH.Rules.csproj" />
+    <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj" />
+    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj" />
+    <ProjectReference Include="..\psdPH.Setups\psdPH.Setups.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="NodesLocalizator.cs" />
-    <Compile Include="Nodes\ChmoNode.cs" />
-    <Compile Include="Nodes\ConditionNode.cs" />
-    <Compile Include="Nodes\MuxNode.cs" />
-    <Compile Include="Nodes\ObjectNode.cs" />
-    <Compile Include="Nodes\ParameterNode.cs" />
-    <Compile Include="Nodes\RuleNode.cs" />
-    <Compile Include="Nodes\SplitForRatioNode.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Folder Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\psdPH.Core\psdPH.Parameters.csproj">
-      <Project>{2EC6F86A-2E44-4C97-9D8B-66F6BFD48244}</Project>
-      <Name>psdPH.Parameters</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
-      <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
-      <Name>psdPH.Localization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
-      <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
-      <Name>psdPH.Nodes.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
-      <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
-      <Name>psdPH.Photoshop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Rules\psdPH.Rules.csproj">
-      <Project>{39511C94-2900-4295-AF24-44BB6B164D57}</Project>
-      <Name>psdPH.Rules</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
-      <Project>{cc0fffdc-697c-4469-b1fb-61b396311625}</Project>
-      <Name>psdPH.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
-      <Project>{3369D6FE-2C5F-4F88-AF24-24A441C4D4B7}</Project>
-      <Name>psdPH.Setups.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Setups\psdPH.Setups.csproj">
-      <Project>{55bd3ba6-11a4-42ba-a938-ff386ec090f5}</Project>
-      <Name>psdPH.Setups</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>
