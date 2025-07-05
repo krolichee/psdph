@@ -1,225 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{257CEB02-0A13-48DB-9B9A-382F663DC0DA}</ProjectGuid>
-    <OutputType>library</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>Library</OutputType>
     <RootNamespace>psdPH.Views</RootNamespace>
     <AssemblyName>psdPH.Views</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU</Platforms>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <ProjectReference Include="..\psdPH.CED\psdPH.CED.csproj" />
+    <ProjectReference Include="..\psdPH.Context\psdPH.Context.csproj" />
+    <ProjectReference Include="..\psdPH.Core.Compositons\psdPH.Compositons.csproj" />
+    <ProjectReference Include="..\psdPH.Core\psdPH.Parameters.csproj" />
+    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj" />
+    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj" />
+    <ProjectReference Include="..\psdPH.Nodes.UI\psdPH.Nodes.UI.csproj" />
+    <ProjectReference Include="..\psdPH.Nodes\psdPH.Nodes.csproj" />
+    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj" />
+    <ProjectReference Include="..\psdPH.Project\psdPH.Project.csproj" />
+    <ProjectReference Include="..\psdPH.Rules\psdPH.Rules.csproj" />
+    <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj" />
+    <ProjectReference Include="..\psdPH.Setups.Controls\psdPH.Setups.Controls.csproj" />
+    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj" />
+    <ProjectReference Include="..\psdPH.Setups\psdPH.Setups.csproj" />
+    <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Views\ParsetInputWindow.cs" />
-    <Compile Include="Views\SimpleView\Logic\SimpleData.cs" />
-    <Compile Include="Views\SimpleView\Logic\SimpleListData.cs" />
-    <Compile Include="Views\SimpleView\Logic\SimpleRenderCommand.cs" />
-    <Compile Include="Views\SimpleView\Logic\SimpleRenderer.cs" />
-    <Compile Include="Views\SimpleView\Logic\SimpleView.cs" />
-    <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleControl.cs" />
-    <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleViewCommand.cs" />
-    <Compile Include="Views\SimpleView\Windows\SimpleViewCedStack\SimpleViewHandler.cs" />
-    <Compile Include="Views\SimpleView\Windows\SimpleViewWindow.xaml.cs">
-      <DependentUpon>SimpleViewWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\View.cs" />
-    <Compile Include="Views\ViewData.cs" />
-    <Compile Include="Views\ViewListData.cs" />
-    <Compile Include="Views\WeekView\Formats\DateFormat.cs" />
-    <Compile Include="Views\WeekView\Formats\WeekFormat.cs" />
-    <Compile Include="Views\WeekView\Logic\DayParameterSet.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekConfig.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekData.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekListData.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekRenderer.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekTime.cs" />
-    <Compile Include="Views\WeekView\Logic\WeekView.cs" />
-    <Compile Include="Views\WeekView\WeekViewLocalization.cs" />
-    <Compile Include="Views\WeekView\Windows\DateFormatWindow.xaml.cs">
-      <DependentUpon>DateFormatWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Windows\DayTile.xaml.cs">
-      <DependentUpon>DayTile.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Windows\DowPlaceholderMatchWindow.xaml.cs">
-      <DependentUpon>DowPlaceholderMatchWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Windows\RenderCommand.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekCommand.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekCedStack\WeekStackHandler.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekConfigEditor.cs" />
-    <Compile Include="Views\WeekView\Windows\WeekRow.xaml.cs">
-      <DependentUpon>WeekRow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Windows\WeekTile.xaml.cs">
-      <DependentUpon>WeekTile.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Windows\WeekViewTableInputIntepreter.xaml.cs">
-      <DependentUpon>WeekViewTableInputIntepreter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeekView\Windows\WeekViewWindow.xaml.cs">
-      <DependentUpon>WeekViewWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Views\SimpleView\Windows\SimpleViewWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\WeekView\Windows\DateFormatWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\WeekView\Windows\DayTile.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\WeekView\Windows\DowPlaceholderMatchWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\WeekView\Windows\WeekRow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\WeekView\Windows\WeekTile.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\WeekView\Windows\WeekViewTableInputIntepreter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\WeekView\Windows\WeekViewWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\psdPH.CED\psdPH.CED.csproj">
-      <Project>{026c33a7-d6eb-4124-b53a-bf25d789e1c4}</Project>
-      <Name>psdPH.CED</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Context\psdPH.Context.csproj">
-      <Project>{5af433db-0930-4fb7-8318-1d2bc519d3c6}</Project>
-      <Name>psdPH.Context</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Core.Compositons\psdPH.Compositons.csproj">
-      <Project>{c20e66c4-e8a7-4f52-a74e-b5806125d9fc}</Project>
-      <Name>psdPH.Compositons</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Core\psdPH.Parameters.csproj">
-      <Project>{2ec6f86a-2e44-4c97-9d8b-66f6bfd48244}</Project>
-      <Name>psdPH.Parameters</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
-      <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
-      <Name>psdPH.Localization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
-      <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
-      <Name>psdPH.Nodes.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Nodes.UI\psdPH.Nodes.UI.csproj">
-      <Project>{a371c100-4f9c-4744-9837-4c73bbb09ce0}</Project>
-      <Name>psdPH.Nodes.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Nodes\psdPH.Nodes.csproj">
-      <Project>{5226ce47-9474-4681-8847-69e4f38eb9f5}</Project>
-      <Name>psdPH.Nodes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
-      <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
-      <Name>psdPH.Photoshop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Project\psdPH.Project.csproj">
-      <Project>{baad7f1f-5b1c-4e50-b1de-ce9d8c5945cb}</Project>
-      <Name>psdPH.Project</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Rules\psdPH.Rules.csproj">
-      <Project>{39511c94-2900-4295-af24-44bb6b164d57}</Project>
-      <Name>psdPH.Rules</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
-      <Project>{cc0fffdc-697c-4469-b1fb-61b396311625}</Project>
-      <Name>psdPH.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Setups.Controls\psdPH.Setups.Controls.csproj">
-      <Project>{59bfabe0-49cd-4199-8e36-f64b3ad20025}</Project>
-      <Name>psdPH.Setups.Controls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
-      <Project>{3369d6fe-2c5f-4f88-af24-24a441c4d4b7}</Project>
-      <Name>psdPH.Setups.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Setups\psdPH.Setups.csproj">
-      <Project>{55bd3ba6-11a4-42ba-a938-ff386ec090f5}</Project>
-      <Name>psdPH.Setups</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj">
-      <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>
-      <Name>psdPH.Utils</Name>
-    </ProjectReference>
-  </ItemGroup>
+
   <ItemGroup>
     <COMReference Include="Photoshop">
       <Guid>{E891EE9A-D0AE-4CB4-8871-F92C0109F18E}</Guid>
@@ -231,5 +57,32 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+
 </Project>
