@@ -10,8 +10,7 @@ namespace psdPH.Nodes.Core
 {
     public class NodeSet :  ISerializable
     {
-        [XmlElement(Order = 1)]
-        public ObservableCollection<Node> Nodes = new ObservableCollection<Node>();
+        
         
         void CalculateLinks()
         {
@@ -20,10 +19,10 @@ namespace psdPH.Nodes.Core
             {
                 NodeSetupDescriptor from;
                 NodeSetupDescriptor to;
-                foreach (var outputLink in node.OutputLinks)
+                foreach (var outputLink in node.Links)
                 {
-                    from = new NodeSetupDescriptor(node, outputLink.Key);
-                    to = new NodeSetupDescriptor(outputLink.Value);
+                    from = new NodeSetupDescriptor(outputLink.FromNodeSetup);
+                    to = new NodeSetupDescriptor(outputLink.ToNodeSetup);
                     result.Add(new NodeLinkDto(from, to));
                 }
 
@@ -44,10 +43,8 @@ namespace psdPH.Nodes.Core
             }
         }
         
-        class IdiNahuyException : Exception
-        {
-
-        }
+        [XmlElement(Order = 1)]
+        public ObservableCollection<Node> Nodes = new ObservableCollection<Node>();
         [XmlElement(Order = 2)]
         public bool onSerializing
         {

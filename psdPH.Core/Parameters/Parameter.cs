@@ -18,7 +18,7 @@ namespace psdPH.Parameters
         public abstract Setup[] Setups { get; }
 
 
-        protected ReflectionConfig getValueSetupConfig() => new ReflectionConfig(this, nameof(Value), Name);
+        protected ReflectionConfig getValueSetupConfig() => new ReflectionConfig(this, nameof(Value), "Значение");
         public bool IsSetUp()=>Name != null;
         public Parameter(string name):this()
         {

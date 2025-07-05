@@ -13,7 +13,7 @@ namespace psdPH.Nodes
             NodeGuid = node.Guid;
             SetupConfigHash = setup.GetHashCode();
         }
-        public NodeSetupDescriptor(NodeSetupLink nodeSetup) : this(nodeSetup.Node, nodeSetup.Setup) { }
+        public NodeSetupDescriptor(NodeSetup nodeSetup) : this(nodeSetup.Node, nodeSetup.Setup) { }
 
         public NodeSetupDescriptor()
         {

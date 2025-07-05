@@ -12,13 +12,11 @@ namespace psdPH.Logic.Ruleset.Rules
 {
     public class AlignRule : AreaRule
     {
-        public override string ToString() => "выровнять";
         [XmlIgnore]
         public Alignment Alignment;
         [XmlIgnore]
         public ConsiderFx ConsiderFx;
-        [XmlIgnore]
-        public LayerComposition SubjectLayerComposition;
+       
         public AlignOptions AlignOptions
         {
             get => new AlignOptions(Alignment, ConsiderFx); set
@@ -27,10 +25,16 @@ namespace psdPH.Logic.Ruleset.Rules
                 ConsiderFx = value.ConsiderFx;
             }
         }
-        public AlignRule(Composition composition) : base(composition) { }
-        public AlignRule() : base(null) {
+        void InitRegistrations()
+        {
             SetupsRegistry.Register<AlignRule>(new AlignRuleSetupSource());
             DtoConvertersRegistry.Register<AlignRule>(new AlignRuleDtoConverter());
+        }
+        public AlignRule(Composition composition) : base(composition) {
+            InitRegistrations();
+        }
+        public AlignRule() : base(null) {
+            InitRegistrations();
         }
         public override void Apply(DocumentWr doc)
         {
@@ -75,7 +79,9 @@ namespace psdPH.Logic.Ruleset.Rules
         }
         public override Setup[] GetSetups(object obj)
         {
-            return new Setup[] { getLayerCompositionSetup<AreaLeaf>(obj as LayerRule, "для зоны") ,
+            return new Setup[] {
+                getSubjectLayerSetup(obj as LayerRule),
+                getAreaLeafSetup(obj as LayerRule) ,
                 getAlignmentSetup(obj as AlignRule),
                 getConsiderFxSetup(obj as AlignRule) };
         }

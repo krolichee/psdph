@@ -1,4 +1,5 @@
 ﻿using psdPH.CED;
+using psdPH.Localization;
 using psdPH.Logic.Parameters;
 using psdPH.Parameters;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;

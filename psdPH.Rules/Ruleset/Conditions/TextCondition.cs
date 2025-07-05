@@ -1,4 +1,7 @@
-﻿using psdPH.Logic.Ruleset.Conditions;
+﻿using psdPH.Logic.Compositions;
+using psdPH.Logic.Ruleset.Conditions;
+using psdPH.Setups;
+using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -15,5 +18,13 @@ namespace psdPH.Logic.Rules
             return Text != null;
         }
     }
-    
+    public class TextConditionSetupSource : SetupsSource
+    {
+        public override Setup[] GetSetups(object obj)
+        {
+            var condition = obj as TextCondition;
+            return new[] { new StringInputSetup(new ReflectionConfig(condition, nameof(condition.Text), "текст")) };
+        }
+    }
+
 }

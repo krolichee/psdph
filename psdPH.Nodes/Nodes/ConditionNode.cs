@@ -16,12 +16,19 @@ namespace psdPH.Nodes
         Condition Condition;
         [XmlIgnore]
         public bool Output;
+
+        public ConditionNode(Condition condition)
+        {
+            Condition = condition;
+        }
+
         [XmlIgnore]
         public Setup OutputSetup => Setup.Sealed(new ReflectionConfig(this,nameof(Output),"результат"));
         [XmlIgnore]
         public override List<Setup> Inputs => Condition.Setups.ToList();
         [XmlIgnore]
         public override List<Setup> Outputs => new List<Setup>() { OutputSetup };
+        public override string ToString()=> Localization.LocalizationService.Localize(Condition);
         protected override void _apply()
         {
             Output = Condition.IsValid();

@@ -1,4 +1,5 @@
 ﻿using psdPH.Compositions;
+using psdPH.Logic.Compositions;
 using psdPH.Setups;
 using System.Linq;
 using System.Xml.Serialization;
@@ -11,18 +12,23 @@ namespace psdPH.Logic.Ruleset.Rules
     public abstract class AreaRule : LayerRule
     {
         [XmlIgnore]
+        public LayerComposition SubjectLayerComposition;
+        [XmlIgnore]
         public AreaLeaf AreaLeaf {
             get => LayerComposition as AreaLeaf;
             set => LayerComposition = value;
         }
-
         public AreaRule(Composition composition) : base(composition) { }
     }
     public class AreaRuleSetupSource : LayerRuleSetupSource
     {
         protected Setup getAreaLeafSetup(object obj)
         {
-            return getLayerCompositionSetup<AreaLeaf>(obj as LayerRule, "для зоны");
+            return getLayerSetup<AreaLeaf>(new ReflectionConfig(obj, nameof(AreaRule.AreaLeaf), "по зоне"));
+        }
+        protected Setup getSubjectLayerSetup(object obj)
+        {
+            return getLayerSetup<LayerComposition>(new ReflectionConfig(obj,  nameof(AreaRule.SubjectLayerComposition),"слой"));
         }
     }
 

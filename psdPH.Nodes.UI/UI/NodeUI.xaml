@@ -7,24 +7,21 @@
              mc:Ignorable="d" 
              x:Name="root"
              HorizontalContentAlignment="Stretch"
-             MinWidth ="120">
-    <Border BorderBrush="{Binding MyBrush, ElementName=root}" BorderThickness="2,0,2,2" CornerRadius="3,3,3,3">
+             MinWidth ="120" ClipToBounds="False">
+    <Border BorderBrush="{Binding MyBrush, ElementName=root}" BorderThickness="2,0,2,2" CornerRadius="3,3,3,3" ClipToBounds="False">
         <Border.Background>
             <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}"/>
         </Border.Background>
         <Grid ClipToBounds="False" >
-            <StackPanel>
+            <StackPanel ClipToBounds="False">
 
-                <Grid Background="{Binding MyBrush, ElementName=root}" HorizontalAlignment="Stretch" Height="35"  VerticalAlignment="Stretch" >
-
-
+                <Grid x:Name="headGrid" Background="{Binding MyBrush, ElementName=root}" HorizontalAlignment="Stretch" Height="35"  VerticalAlignment="Stretch" MouseLeftButtonDown="headGrid_MouseLeftButtonDown" MouseLeftButtonUp="headGrid_MouseLeftButtonUp" MouseMove="headGrid_MouseMove" MouseLeave="headGrid_MouseLeave" >
                     <Label x:Name="headLabel" Content="Label" HorizontalAlignment="Center"  VerticalAlignment="Center" FontWeight="Bold" Foreground="#FF1F1717"/>
-
                 </Grid>
-                <UniformGrid x:Name="inputsStack" Columns="1" HorizontalAlignment="Stretch"/>
+                <UniformGrid x:Name="inputsStack" Columns="1" HorizontalAlignment="Stretch" ClipToBounds="False"/>
                 <Border Background="{Binding MyBrush, ElementName=root}" Height="2" VerticalAlignment="Top"/>
 
-                <UniformGrid x:Name="outputsStack" Columns="1" HorizontalAlignment="Stretch"/>
+                <UniformGrid x:Name="outputsStack" Columns="1" HorizontalAlignment="Stretch" ClipToBounds="False"/>
             </StackPanel>
            <!--<Border Width="8" HorizontalAlignment="Right" VerticalAlignment="Top" Height="8" Margin="0,6,0,0" BorderThickness="1,1,1,1" BorderBrush="Black"/>-->
         </Grid>

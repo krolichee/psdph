@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 namespace psdPH
 {
@@ -13,7 +12,7 @@ namespace psdPH
         }
         public override string ToString()
         {
-            return Localization.Localize(Value);
+            return Localization.LocalizationService.Localize(Value);
         }
     }
     public static class EnumLocalization

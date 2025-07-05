@@ -1,4 +1,5 @@
-﻿using psdPH.Logic.Parameters;
+﻿using psdPH.Localization;
+using psdPH.Logic.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace psdPH.Core
 {
     [Localizator]
-    public class ParametersLocalizator
+    public static class ParametersLocalizator
     {
         public static void RegisterLocalizations()
         {

@@ -8,7 +8,6 @@ namespace psdPH.Nodes
 {
     public class MuxNode : Node
     {
-        public override string ToString() => "Выбор";
         public event Action OutputLinked;
         [XmlIgnore]
         public bool Toggle;
@@ -38,10 +37,6 @@ namespace psdPH.Nodes
         protected override void _apply()
         {
             Output = Toggle ? OnObj : OffObj;
-        }
-        protected override bool checkLink(Setup thisSetup, Setup outSetup)
-        {
-           return base.checkLink(thisSetup, outSetup);
         }
     }
 }

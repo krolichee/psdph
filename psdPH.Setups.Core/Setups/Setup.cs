@@ -55,7 +55,17 @@ namespace psdPH.Setups
             var result = new Setup(config);
             result.isValidFunc = (obj) => false;
             result.Control = new Grid();
+            result._sealed = true;
             return result;
+        }
+        protected bool _sealed = false;
+        public bool MayImport(Setup other)
+        {
+            if (_sealed)
+                return false;
+            var thisConfigType = _config.GetFieldOrPropertyType();
+            var otherConfigType = other._config.GetFieldOrPropertyType();
+            return thisConfigType.IsAssignableFrom(otherConfigType);
         }
 
         public static Setup TypeConstrained<T>(ReflectionConfig setupConfig)

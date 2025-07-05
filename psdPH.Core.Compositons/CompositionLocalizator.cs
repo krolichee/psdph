@@ -1,4 +1,5 @@
 ﻿using psdPH.Compositions;
+using psdPH.Localization;
 using psdPH.Logic.Compositions;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace psdPH.Core.Compositons
 {
     [Localizator]
-    public class CompositionLocalizator
+    public static class CompositionLocalizator
     {
         public static void RegisterLocalizations()
         {

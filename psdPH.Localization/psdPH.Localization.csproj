@@ -51,8 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Localization\BoolLocalization.cs" />
     <Compile Include="Localization\EnumLocalization.cs" />
-    <Compile Include="Localization\Localization.cs" />
+    <Compile Include="Localization\LocalizationService.cs" />
+    <Compile Include="Localization\ObjectLocalization.cs" />
     <Compile Include="Localization\TypeLocalization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

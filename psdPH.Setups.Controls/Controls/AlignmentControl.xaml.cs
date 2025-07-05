@@ -1,4 +1,5 @@
-﻿using System;
+﻿using psdPH.Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -60,7 +61,7 @@ namespace psdPH
             {
                 button.Command = new RelayCommand(setAligment);
                 button.CommandParameter = btnAli[button];
-                button.ToolTip = Localization.Localize(btnAli[button]);
+                button.ToolTip = LocalizationService.Localize(btnAli[button]);
                 ToolTipService.SetInitialShowDelay(button, 100);  
                 ToolTipService.SetBetweenShowDelay(button, 500);  
                 ToolTipService.SetShowDuration(button, 1000);

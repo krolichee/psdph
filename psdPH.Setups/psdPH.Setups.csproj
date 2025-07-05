@@ -62,7 +62,7 @@
     <Compile Include="Setups\DateSetup.cs" />
     <Compile Include="Setups\EnumChooseSetup.cs" />
     <Compile Include="Setups\IntSetup.cs" />
-    <Compile Include="Setups\JustDescription.cs" />
+    <Compile Include="Setups\JustDescriptionSetup.cs" />
     <Compile Include="Setups\JustSeparator.cs" />
     <Compile Include="Setups\MultiChooseSetup.cs" />
     <Compile Include="Setups\RichStringInputSetup.cs" />

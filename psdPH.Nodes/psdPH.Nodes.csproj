@@ -50,10 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NodesLocalizator.cs" />
     <Compile Include="Nodes\ChmoNode.cs" />
     <Compile Include="Nodes\ConditionNode.cs" />
     <Compile Include="Nodes\MuxNode.cs" />
+    <Compile Include="Nodes\ObjectNode.cs" />
     <Compile Include="Nodes\ParameterNode.cs" />
+    <Compile Include="Nodes\RuleNode.cs" />
     <Compile Include="Nodes\SplitForRatioNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,9 +65,17 @@
       <Project>{2EC6F86A-2E44-4C97-9D8B-66F6BFD48244}</Project>
       <Name>psdPH.Parameters</Name>
     </ProjectReference>
+    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
+      <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
+      <Name>psdPH.Localization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
       <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
       <Name>psdPH.Nodes.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
+      <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
+      <Name>psdPH.Photoshop</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.Rules\psdPH.Rules.csproj">
       <Project>{39511C94-2900-4295-AF24-44BB6B164D57}</Project>

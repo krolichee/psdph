@@ -86,7 +86,7 @@ namespace psdPH
 
         public override string ToString()
         {
-            return $"[{UIName}] {ObjName}";
+            return ObjName;
         }
 
         //Using

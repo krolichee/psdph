@@ -53,7 +53,7 @@
     <Compile Include="Nodes\Node.cs" />
     <Compile Include="Nodes\NodeLinkDto.cs" />
     <Compile Include="Nodes\NodeSet.cs" />
-    <Compile Include="Nodes\NodeSetupLink.cs" />
+    <Compile Include="Nodes\NodeSetup.cs" />
     <Compile Include="Nodes\NodesOutputFieldnamesRegistry.cs" />
     <Compile Include="Nodes\NotCompatibleSetupException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
