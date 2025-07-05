@@ -16,7 +16,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         {
             return new MenuItem()
             {
-                Header =  Localization.Localize(type),
+                Header =  Localization.LocalizationService.Localize(type),
                 Command = new StructureCommand(Context).CreateCommand,
                 CommandParameter = type
             };
