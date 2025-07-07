@@ -55,5 +55,9 @@
   <ItemGroup>
     <Resource Include="TODO.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="psdPH Nodes.drawio" />
+    <None Include="psdPH Template UI.drawio" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
