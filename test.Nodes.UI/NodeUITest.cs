@@ -13,7 +13,6 @@ using psdPH.Nodes;
 using psdPH.Nodes.Nodes;
 using psdPH.Nodes.UI;
 using psdPHTest;
-using System.Windows.Interactivity;
 
 namespace test.Nodes.UI
 {
