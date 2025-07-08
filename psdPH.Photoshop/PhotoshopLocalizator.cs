@@ -11,7 +11,7 @@ using static psdPH.Photoshop.LayerWr;
 namespace psdPH.Photoshop
 {
     [Localizator]
-    public class PhotoshopLocalizator
+    public static class PhotoshopLocalizator
     {
         public static void RegisterLocalizations()
         {

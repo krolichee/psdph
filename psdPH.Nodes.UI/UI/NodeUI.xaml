@@ -15,7 +15,10 @@
         <Grid ClipToBounds="False" >
             <StackPanel ClipToBounds="False">
 
-                <Grid x:Name="headGrid" Background="{Binding MyBrush, ElementName=root}" HorizontalAlignment="Stretch" Height="35"  VerticalAlignment="Stretch" MouseLeftButtonDown="headGrid_MouseLeftButtonDown" MouseLeftButtonUp="headGrid_MouseLeftButtonUp" MouseMove="headGrid_MouseMove" MouseLeave="headGrid_MouseLeave" >
+                <Grid x:Name="headGrid" Background="{Binding MyBrush, ElementName=root}" 
+                      HorizontalAlignment="Stretch" 
+                      Height="35"  
+                      VerticalAlignment="Stretch" >
                     <Label x:Name="headLabel" Content="Label" HorizontalAlignment="Center"  VerticalAlignment="Center" FontWeight="Bold" Foreground="#FF1F1717"/>
                 </Grid>
                 <UniformGrid x:Name="inputsStack" Columns="1" HorizontalAlignment="Stretch" ClipToBounds="False"/>

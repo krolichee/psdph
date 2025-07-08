@@ -29,7 +29,6 @@ namespace psdPH.Nodes.UI
             return instance;
         }
 
-        //public NodeSetup PreviewNodeSetup = 
         public void PreviewLink(NodeSetup nodeSetup)
         {
             LinkLineEffect effect = DraggedLink?.CanLink(nodeSetup) == true ? LinkLine.LinkLineEffect.None : LinkLine.LinkLineEffect.Bad;
@@ -71,12 +70,14 @@ namespace psdPH.Nodes.UI
             Canvas = canvas;
             Canvas.MouseMove += Canvas_MouseMove;
             Canvas.MouseLeftButtonUp += Canvas_MouseLeftButtonUp;
+            Canvas.MouseLeftButtonDown += Canvas_MouseLeftButtonDown;
             foreach (FrameworkElement item in Canvas.Children)
             {
                 if (item is NodeUI nodeUI)
                 { 
                     nodeUI.Node.Links.CollectionChanged += (_, __) => UpdateLines();
                     nodeUI.CanvasDragged+= UpdateLines;
+
                     nodeUI.MouseLeave += NodeUI_MouseLeave;
                 }
                 if (double.IsNaN(Canvas.GetLeft(item)))
@@ -91,14 +92,14 @@ namespace psdPH.Nodes.UI
             //canvas.MouseUp += Canvas_MouseLeftButtonUp;
         }
 
+        private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void NodeUI_MouseLeave(object sender, MouseEventArgs e)
         {
             LinkLine.Paint(Line, LinkLineEffect.None);
-        }
-
-        private void Canvas_LostMouseCapture(object sender, MouseEventArgs e)
-        {
-            ;
         }
 
         void releaseDrag()
@@ -110,27 +111,44 @@ namespace psdPH.Nodes.UI
         {
             releaseDrag();
         }
-
+        bool selection;
+        Rectangle selectionRectangle;
         private void Canvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if(e.LeftButton == MouseButtonState.Released)
-                releaseDrag();
-            Canvas.Children.Remove(Line);
-            if (draggedLink == null)
+
+            if (DraggedLink != null)
             {
-                return;
+                if (e.LeftButton == MouseButtonState.Released)
+                {
+                    releaseDrag();
+                    return;
+                }
+                Canvas.Children.Remove(Line);
+                var endPoint = e.GetPosition(Canvas);
+                var shift = startPoint.X > endPoint.X ? 1 : -1;
+                Line.X1 = startPoint.X;
+                Line.Y1 = startPoint.Y;
+                Line.X2 = endPoint.X + shift;
+                Line.Y2 = endPoint.Y;
+                Canvas.Children.Add(Line);
             }
-            var endPoint = e.GetPosition(Canvas);
-            var shift = startPoint.X > endPoint.X ? 1 : -1;
-            Line.X1 = startPoint.X;
-            Line.Y1 = startPoint.Y;
-            Line.X2 = endPoint.X + shift;
-            Line.Y2 = endPoint.Y;
+            else if (selection)
+            {
+                if (e.LeftButton == MouseButtonState.Released)
+                {
+                    releaseSelect();
+                    return;
+                }
+                
+            }
             
-            //Canvas.SetLeft(Line, startPoint.X);
-           // Canvas.SetTop(Line, startPoint.Y);
-            Canvas.Children.Add(Line);
         }
+
+        private void releaseSelect()
+        {
+            throw new NotImplementedException();
+        }
+
         class SetupBarsLinks
         {
             public SetupBar From;
@@ -176,7 +194,6 @@ namespace psdPH.Nodes.UI
             for (int i = 0; i < setupBars.Length; i++)
             {
                 SetupBar fromBar = setupBars[i];
-                //TODO NOTICE
                 var fromSetupOutputLinks = fromBar.NodeSetup.Node.Links.Where(ol=>ol.FromNodeSetup.Equals(fromBar.NodeSetup));
 
                 var toNodeSetups = fromSetupOutputLinks.Select(ol => ol.ToNodeSetup).ToArray();
