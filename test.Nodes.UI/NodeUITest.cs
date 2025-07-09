@@ -37,10 +37,14 @@ namespace test.Nodes.UI
                 Width = 800
             };
 
-            
+
 
             var c = new Canvas()
             {
+                Height = 400,
+                Width = 800,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
                 Background = new SolidColorBrush(Colors.White)
             };
             var ncm = NodeCanvasManager.MakeInstance(c);
@@ -67,7 +71,7 @@ namespace test.Nodes.UI
             ncm.AddNode(alignRuleNode);
             ncm.AddNode(layerLeafNode);
             ncm.AddNode(empNode);
-            var scr = new ScrollViewer();
+            var scr = new ScrollViewer() {VerticalScrollBarVisibility= ScrollBarVisibility.Disabled};
             scr.Content = c;
             w.Content = scr;
             w.ShowDialog();
