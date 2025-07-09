@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace psdPH.Nodes.UI
+namespace psdPH.Nodes.CanvasManager
 {
-    public static class CanvasExtension
+    public class PullManager
     {
-
     }
 }

@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test.Project", "test.Projec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test.Nodes.UI", "test.Nodes.UI\test.Nodes.UI.csproj", "{419199AB-1067-48CB-9DFC-DA923A9C8E89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psdPH.Nodes.CanvasManager", "psdPH.Nodes.CanvasManager\psdPH.Nodes.CanvasManager.csproj", "{83486CCA-9F06-411C-9260-499276E46E9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -275,6 +277,12 @@ Global
 		{419199AB-1067-48CB-9DFC-DA923A9C8E89}.NoViews|Any CPU.Build.0 = Release|Any CPU
 		{419199AB-1067-48CB-9DFC-DA923A9C8E89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{419199AB-1067-48CB-9DFC-DA923A9C8E89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83486CCA-9F06-411C-9260-499276E46E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83486CCA-9F06-411C-9260-499276E46E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83486CCA-9F06-411C-9260-499276E46E9B}.NoViews|Any CPU.ActiveCfg = Release|Any CPU
+		{83486CCA-9F06-411C-9260-499276E46E9B}.NoViews|Any CPU.Build.0 = Release|Any CPU
+		{83486CCA-9F06-411C-9260-499276E46E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83486CCA-9F06-411C-9260-499276E46E9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

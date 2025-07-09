@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace psdPH.Nodes
 {
+    public delegate void NodeSetupEvent(NodeSetup nodeSetup);
     public class NodeSetup
     {
         public Node Node;

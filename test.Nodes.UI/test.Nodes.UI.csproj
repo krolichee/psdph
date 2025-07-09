@@ -67,6 +67,10 @@
       <Project>{2EC6F86A-2E44-4C97-9D8B-66F6BFD48244}</Project>
       <Name>psdPH.Parameters</Name>
     </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes.CanvasManager\psdPH.Nodes.CanvasManager.csproj">
+      <Project>{83486cca-9f06-411c-9260-499276e46e9b}</Project>
+      <Name>psdPH.Nodes.CanvasManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
       <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
       <Name>psdPH.Nodes.Core</Name>

@@ -24,36 +24,39 @@ namespace psdPH.Nodes.UI
     {
         public readonly NodeUI NodeUI;
         public readonly NodeSetup NodeSetup;
+
+        public event NodeSetupEvent NodeSetupPick;
+        public event NodeSetupEvent NodeSetupHover;
+        public event NodeSetupEvent NodeSetupPut;
         public SetupBar(NodeSetup nodeSetupLink, NodeUI nodeUI)
         {
-            NodeUI= nodeUI;
+            NodeUI = nodeUI;
             NodeSetup = nodeSetupLink;
             var setup = NodeSetup.Setup;
             var control = setup.Control;
-            setup.Stack.Children.Remove(control );
+            setup.Stack.Children.Remove(control);
             InitializeComponent();
-            Grid.SetColumn(control,1);
+            Grid.SetColumn(control, 1);
             control.HorizontalAlignment = HorizontalAlignment.Center;
             control.VerticalAlignment = VerticalAlignment.Center;
-            setupControlBorder.Child =control;
+            setupControlBorder.Child = control;
             nameLabel.Content = setup.Config.Desc;
         }
 
+
         private void mainGrid_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            NodeConvasManager.Instance().LinkPulledTo(NodeSetup);
-            Console.WriteLine("Перетащено значение ноды");
+            NodeSetupPut?.Invoke(NodeSetup);
         }
 
         private void pickBorder_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            NodeConvasManager.Instance().PullLink = NodeSetup;
-            Console.WriteLine("Захват значение ноды");
+            NodeSetupPut?.Invoke(NodeSetup);
         }
 
         private void mainGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            NodeConvasManager.Instance().PreviewLink(NodeSetup);
+            NodeSetupHover?.Invoke(NodeSetup);
         }
     }
 }

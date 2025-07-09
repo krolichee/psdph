@@ -12,8 +12,6 @@
               x:Key="AppearEllipseConverter"/>
         <converters:RightMarginConverter  
       x:Key="RightMarginConverter"/>
-        <converters:IsNodeLinkDragging  
-x:Key="IsNodeLinkDragging"/>
     </UserControl.Resources>
     <Grid x:Name="mainGrid" 
           HorizontalAlignment="Stretch" 
@@ -23,20 +21,6 @@ x:Key="IsNodeLinkDragging"/>
           MouseLeftButtonUp="mainGrid_MouseUp"
           MouseMove="mainGrid_MouseMove"
           >
-        <Grid.Style>
-            <Style TargetType="Grid">
-                <Style.Triggers>
-                    <DataTrigger Value="True">
-                        <DataTrigger.Binding>
-                            <Binding Converter="{StaticResource IsNodeLinkDragging}"/>
-                        </DataTrigger.Binding>
-                        <DataTrigger.Setters>
-                            <Setter Property="Background"  Value="#FFF9FB16"/>
-                        </DataTrigger.Setters>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="3*"/>

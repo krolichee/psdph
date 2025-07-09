@@ -1,19 +1,21 @@
-﻿using System.Windows;
+﻿using psdPH.Nodes.UI;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace psdPH.Nodes.UI
+namespace psdPH.Nodes.CanvasManager
 {
-        public static class LinkLine
+    public enum LinkLineEffect
+    {
+        None,
+        Selected,
+        Bad
+    }
+    public static class LinkLine
         {
-        public enum LinkLineEffect
-        {
-            None,
-            Selected,
-            Bad
-        }
+        
             public static void Paint(Line line, LinkLineEffect effect) {
             switch (effect)
             {

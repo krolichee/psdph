@@ -59,8 +59,6 @@ namespace psdPH.Nodes.UI
         {
             _node = node;
             InitializeComponent();
-
-
             headLabel.Text = Localization.LocalizationService.Localize(node);
             var cdBehavior = new CanvasDragBehavior();
             cdBehavior.Attach(headGrid);

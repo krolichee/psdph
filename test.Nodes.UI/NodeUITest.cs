@@ -10,6 +10,7 @@ using psdPH.Logic.Parameters;
 using psdPH.Logic.Rules;
 using psdPH.Logic.Ruleset.Rules;
 using psdPH.Nodes;
+using psdPH.Nodes.CanvasManager;
 using psdPH.Nodes.Nodes;
 using psdPH.Nodes.UI;
 using psdPHTest;
@@ -42,7 +43,7 @@ namespace test.Nodes.UI
             {
                 Background = new SolidColorBrush(Colors.White)
             };
-            var ncm = NodeConvasManager.MakeInstance(c);
+            var ncm = NodeCanvasManager.MakeInstance(c);
             
             var parameterNode = new ParameterNode(new StringParameter("Хавальник"));
 
