@@ -17,7 +17,7 @@ namespace psdPH.Nodes.UI.UI
             {typeof(RuleNode),Brushes.DarkOrange},
             {typeof(ConditionNode),Brushes.YellowGreen},
             {typeof(MuxNode),Brushes.YellowGreen},
-
+            {typeof(ForkNode),Brushes.DarkMagenta},
         };
         public static Brush GetBrush(Type type)
         {

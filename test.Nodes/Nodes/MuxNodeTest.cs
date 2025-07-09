@@ -28,9 +28,9 @@ namespace psdPHTest.Nodes
             var fparNode = new ParameterNode(fpar);
             var fpar_setup = fparNode.Inputs[0];
             Assert.ThrowsException<NotCompatibleSetupException>(() =>
-                muxNode.Link(muxNode.Outputs[0], sparNode, sparNode.Inputs[0])
+                muxNode.LinkOut(muxNode.Outputs[0], sparNode, sparNode.Inputs[0])
             );
-            muxNode.Link(muxNode.Outputs[0], fparNode, fparNode.Inputs[0]);
+            muxNode.LinkOut(muxNode.Outputs[0], fparNode, fparNode.Inputs[0]);
         }
         [TestMethod]
         public void MuxNodeApply()
@@ -40,8 +40,8 @@ namespace psdPHTest.Nodes
             var node = new ParameterNode(spar);
             muxNode.OnObj = "on";
             muxNode.OffObj = "off";
-            var spar_setup = spar.Setups.First(s => s.Config.FieldName == nameof(Parameter.Value));
-            muxNode.Link(muxNode.Outputs[0], node, spar_setup);
+            var spar_setup = spar.Setups[0];
+            muxNode.LinkOut(muxNode.Outputs[0], node, spar_setup);
             muxNode.Toggle = true;
             muxNode.Apply();
             Assert.IsTrue(spar.Text == "on");

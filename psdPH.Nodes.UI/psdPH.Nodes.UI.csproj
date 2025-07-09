@@ -66,6 +66,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\ChainBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\NodeUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,6 +80,9 @@
     </Page>
     <Compile Include="CanvasDragBehavior.cs" />
     <Compile Include="UI\AppearEllipseConverter.cs" />
+    <Compile Include="UI\ChainBar.xaml.cs">
+      <DependentUpon>ChainBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\NodeBrushes.cs" />
     <Compile Include="UI\NodeUI.xaml.cs">
       <DependentUpon>NodeUI.xaml</DependentUpon>

@@ -28,6 +28,12 @@ namespace psdPH.Nodes.UI
         public event NodeSetupEvent NodeSetupPick;
         public event NodeSetupEvent NodeSetupHover;
         public event NodeSetupEvent NodeSetupPut;
+
+        public bool SetupControlVisibility
+        {
+            set => setupControlBorder.Visibility = value ? Visibility.Visible : Visibility.Hidden;
+        }
+
         public SetupBar(NodeSetup nodeSetupLink, NodeUI nodeUI)
         {
             NodeUI = nodeUI;

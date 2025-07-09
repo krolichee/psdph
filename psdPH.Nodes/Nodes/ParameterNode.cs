@@ -20,13 +20,17 @@ namespace psdPH.Nodes
         [XmlIgnore]
         public Parameter Parameter;
         [XmlIgnore]
-        public override List<Setup> Inputs => new List<Setup>();
-        [XmlIgnore]
-        public override List<Setup> Outputs { get {
+        public override List<Setup> Inputs
+        {
+            get
+            {
                 var result = new List<Setup>();
-                result.AddRange(Parameter.Setups.Select(s=>s.Sealed()));
+                result.AddRange(Parameter.Setups);
                 return result;
-            } }
+            }
+        }
+        [XmlIgnore]
+        public override List<Setup> Outputs => new List<Setup>();
             
         public ParameterNode() : base()
         {

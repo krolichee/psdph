@@ -7,11 +7,14 @@ using System.Collections.ObjectModel;
 
 namespace psdPH.Nodes
 {
+    public delegate void NodeEvent(Node node);
     public abstract partial class Node:DtoGuided,ISerializable
     {
         [XmlIgnore]
         Dictionary<Node, bool> ParentAppliedDict = new Dictionary<Node, bool>();
         protected event Action<Node> Applied;
+        [XmlIgnore]
+        public virtual Setup[] Chains => new Setup[0];
         [XmlIgnore]
         public abstract List<Setup> Inputs { get; }
         [XmlIgnore]
@@ -20,10 +23,22 @@ namespace psdPH.Nodes
         public Setup[] IOSetups => Inputs.Concat(Outputs).ToArray();
         [XmlIgnore]
         public ObservableCollection<NodeSetupLink> Links = new ObservableCollection<NodeSetupLink>();
-
-        protected Node():base()
+        NodeSetup _chain;
+        [XmlIgnore]
+        public NodeSetup Chain
         {
+            get => _chain;
+            set
+            {
+                _chain = value;
+                ChainChanged?.Invoke();
+                
+            }
         }
+
+
+        public event Action ChainChanged;
+        protected Node():base() { }
         public void Apply()
         {
             _apply();
@@ -44,8 +59,13 @@ namespace psdPH.Nodes
         }
         protected abstract void _apply();
         
-        public virtual bool CheckOutLink(Setup thisSetup, Setup otherSetup) => otherSetup.MayImport(thisSetup);
-        public void Link(Setup thisSetup, Node other,Setup otherSetup)
+        public virtual bool CheckOutLink(Setup thisSetup, Setup otherSetup) =>
+            otherSetup.MayImport(thisSetup);
+        public static void Link(NodeSetup from, NodeSetup to)
+        {
+            from.Node.LinkOut(from.Setup,to.Node,to.Setup);
+        }
+        public void LinkOut(Setup thisSetup, Node other,Setup otherSetup)
         {
             if (!CheckOutLink(thisSetup, otherSetup))
                 throw new NotCompatibleSetupException();
@@ -59,11 +79,36 @@ namespace psdPH.Nodes
             Links.Add(link);
             other.Subscribe(this);
         }
+        public void ChainIn(Node node)
+        {
+            Subscribe(node);
+        }
+        public void ChainIn(NodeSetup chain)
+        {
+            if (Chain!=null || chain.Node.getOutputLinksToNode(this).Any())
+                throw new NotCompatibleSetupException();
+            Chain = chain;
+            ChainIn(chain.Node);
+        }
+        public void Unchain(NodeSetup chain)
+        {
+            Chain = null;
+            Unsubscribe(chain.Node);
+        }
+        bool ChainAllows { get {
+                if (Chain?.Setup.IsNone() != false)
+                    return true;
+                bool? chainResult = (bool?)Chain?.Setup.Config.GetValue();
+                return chainResult == true; 
+            } 
+        }
+        bool AllParentsApplied => ParentAppliedDict.All(p => p.Value);
         private void ParentApplied(Node node)
         {
             ParentAppliedDict[node] = true;
-            if (ParentAppliedDict.All(p => p.Value))
-                Apply();
+            if (AllParentsApplied)
+                if (ChainAllows)
+                    Apply();
         }
 
         void Subscribe(Node node)
@@ -97,10 +142,11 @@ namespace psdPH.Nodes
             return LinkedSetups.Contains(thisSetup);
         }
 
-        public void Unlink(NodeSetup from, NodeSetup to)
+        public static void Unlink(NodeSetup from, NodeSetup to)
         {
-            Links.Remove(Links.First(l=>l.FromNodeSetup.Equals(from) && l.ToNodeSetup.Equals(to)));
-            to.Node.Unsubscribe(this);
+            var fromNode = from.Node;
+            fromNode.Links.Remove(fromNode.Links.First(l=>l.ToNodeSetup.Equals(to)));
+            to.Node.Unsubscribe(fromNode);
         }
         public void Unlink(Node other)
         {

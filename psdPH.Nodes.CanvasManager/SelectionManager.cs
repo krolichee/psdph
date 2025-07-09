@@ -104,7 +104,7 @@ namespace psdPH.Nodes.CanvasManager
             foreach (var item in Canvas.Children)
             {
                 if (item is Line line)
-                    LinkLine.Paint(line, LinkLineEffect.None);
+                    LinkLine.PaintDefault(line);
                 else if (item is NodeUI nodeUI)
                     nodeUI.Selected = false;
             }

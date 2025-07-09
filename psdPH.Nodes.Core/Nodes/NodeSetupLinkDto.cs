@@ -19,16 +19,16 @@ namespace psdPH.Nodes
         {
         }
     }
-    public class NodeLinkDto
+    public class NodeSetupLinkDto
     {
         public NodeSetupDescriptor FromNodeDescriptor;
         public NodeSetupDescriptor ToNodeDescriptor;
 
-        public NodeLinkDto()
+        public NodeSetupLinkDto()
         {
         }
 
-        public NodeLinkDto(NodeSetupDescriptor from, NodeSetupDescriptor to)
+        public NodeSetupLinkDto(NodeSetupDescriptor from, NodeSetupDescriptor to)
         {
             FromNodeDescriptor = from;
             ToNodeDescriptor = to;

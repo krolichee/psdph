@@ -1,14 +1,17 @@
 ﻿using psdPH.Nodes.UI;
+using psdPH.Nodes.UI.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Shapes;
 
@@ -32,17 +35,18 @@ namespace psdPH.Nodes.CanvasManager
             return instance;
         }
 
-        
-        
 
 
-        
+
+
+
         NodeCanvasManager(Canvas canvas)
         {
             Canvas = canvas;
-            PullManager.Attach(this);
+            LinkPullManager.Attach(this);
+            ChainPullManager.Attach(this);
             SelectionManager.Attach(this);
-            
+
             UpdateLines();
         }
 
@@ -57,16 +61,8 @@ namespace psdPH.Nodes.CanvasManager
                 To = to;
             }
         }
-        private void UpdateLines()
+        private void drawSetupLinks(List<NodeUI> nodeUIs)
         {
-            List<NodeUI> nodeUIs = new List<NodeUI>();
-            foreach (var item in Canvas.Children.OfType<UIElement>().ToList())
-            {
-                if (item is Line line)
-                    Canvas.Children.Remove(line);
-                if (item is NodeUI nodeUI)
-                    nodeUIs.Add(nodeUI);
-            }
             List<SetupBar> setupBars = new List<SetupBar>();
             foreach (var item in nodeUIs.Select(nui => nui.SetupBars))
             {
@@ -83,6 +79,51 @@ namespace psdPH.Nodes.CanvasManager
 
                 Canvas.Children.Add(line);
             }
+        }
+        private void drawFlowLine(NodeUI source, NodeUI dest)
+        {
+            var line = LinkLine.Create(source, dest, Canvas);
+            Canvas.Children.Add(line);
+        }
+        private void drawFlowLine(ChainBar chainBar, NodeUI nodeUI)
+        {
+            var line = LinkLine.Create(chainBar, nodeUI, Canvas);
+            Canvas.Children.Add(line);
+        }
+        private void drawChainLinks(List<NodeUI> nodeUIs)
+        {
+            foreach (var nodeUI in nodeUIs)
+            {
+                var node = nodeUI.Node;
+                var chain = node.Chain;
+                if (chain == null)
+                    continue;
+
+                var chainedNode = nodeUIs.First(nui => nui.Node == chain.Node);
+                if (chain.Setup.IsNone())
+                    drawFlowLine(chainedNode, nodeUI);
+                else
+                {
+                    var chainBar = chainedNode.ChainBars.First(c => c.NodeSetup.Equals(chain));
+                    drawFlowLine(chainBar, nodeUI);
+                }
+            }
+        }
+        private void UpdateLines()
+        {
+            List<NodeUI> nodeUIs = new List<NodeUI>();
+            foreach (var item in Canvas.Children.OfType<UIElement>().ToList())
+            {
+                if (item is Line line)
+                {
+                    Canvas.Children.Remove(line);
+                    LinkLine.Clear(line);
+                }
+                if (item is NodeUI nodeUI)
+                    nodeUIs.Add(nodeUI);
+            }
+            drawSetupLinks(nodeUIs);
+            drawChainLinks(nodeUIs);
         }
 
         private List<SetupBarsLinks> getSetupBarsLinks(SetupBar[] setupBars)
@@ -107,21 +148,22 @@ namespace psdPH.Nodes.CanvasManager
 
         public void AddNode(Node node)
         {
-            
+
             var nodeUI = new NodeUI(node);
             NodeUIAdded?.Invoke(nodeUI);
 
-            
+
             nodeUI.Node.Links.CollectionChanged += (_, __) => UpdateLines();
-            nodeUI.CanvasDragged += NodeUI_CanvasDragged; 
-            
+            nodeUI.Node.ChainChanged += UpdateLines;
+            nodeUI.CanvasDragged += NodeUI_CanvasDragged;
+
 
             if (double.IsNaN(Canvas.GetLeft(nodeUI)))
                 Canvas.SetLeft(nodeUI, 0);
             if (double.IsNaN(Canvas.GetTop(nodeUI)))
                 Canvas.SetTop(nodeUI, 0);
             Canvas.Children.Add(nodeUI);
-            
+
         }
         private void NodeUI_CanvasDragged(FrameworkElement sender, Vector delta)
         {

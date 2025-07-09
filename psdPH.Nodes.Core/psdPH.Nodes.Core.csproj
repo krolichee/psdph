@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Nodes\Node.cs" />
-    <Compile Include="Nodes\NodeLinkDto.cs" />
+    <Compile Include="Nodes\NodeSetupLinkDto.cs" />
     <Compile Include="Nodes\NodeSet.cs" />
     <Compile Include="Nodes\NodeSetup.cs" />
     <Compile Include="Nodes\NodeSetupLink.cs" />

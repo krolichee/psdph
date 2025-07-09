@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="psdPH.Nodes.UI.UI.ChainBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:psdPH.Nodes.UI.UI"
+             xmlns:converters="clr-namespace:psdPH.Nodes.UI" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             >
+    <UserControl.Resources>
+        <converters:AppearEllipseConverter  
+          x:Key="AppearEllipseConverter"/>
+        <converters:RightMarginConverter  
+  x:Key="RightMarginConverter"/>
+    </UserControl.Resources>
+    <Grid x:Name="mainGrid" Background="#7FB395BD">
+        <Label x:Name="nameLabel" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Ellipse 
+x:Name="pickAreaVisEllipse"
+Grid.Column="2" 
+Fill="#00E01414" 
+
+Margin="{Binding RelativeSource={RelativeSource Self}, Path=Width,Converter={StaticResource RightMarginConverter}}" 
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Right">
+
+            <Ellipse.Width>
+                <MultiBinding Converter="{StaticResource AppearEllipseConverter}">
+                    <Binding ElementName="pickBorder"  
+         Path="Width" Mode="OneWay"/>
+                    <Binding>
+                        <Binding.Source>
+                            <sys:Double>3</sys:Double>
+                        </Binding.Source>
+                    </Binding>
+                </MultiBinding>
+            </Ellipse.Width>
+            <Ellipse.Height>
+                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+            </Ellipse.Height>
+        </Ellipse>
+        <Border x:Name="pickBorder" 
+            Width="8" 
+            Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+            BorderBrush="#FF171717" 
+            BorderThickness="1,1,1,1" 
+            Grid.Column="2" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Center" 
+            Background="#FFEFD166"
+            Margin="{Binding RelativeSource={RelativeSource Self}, Path=Width,Converter={StaticResource RightMarginConverter}}" 
+            
+                    CornerRadius="4,4,4,4" MouseLeftButtonDown="pickBorder_MouseLeftButtonDown">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Opacity" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFF9FB16"/>
+                            <Setter Property="Opacity" Value="1"/>
+                        </Trigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsMouseOver, ElementName=pickAreaVisEllipse}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Opacity" Value="1"/>
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+        </Border>
+    </Grid>
+</UserControl>

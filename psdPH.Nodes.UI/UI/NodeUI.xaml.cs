@@ -26,15 +26,22 @@ namespace psdPH.Nodes.UI
     public partial class NodeUI : UserControl
     {
         public delegate void SetupBarEvent(SetupBar sb);
+        
+
         public event SetupBarEvent SetupBarEnter;
         public event SetupBarEvent SetupBarLeave;
+
+        public event NodeEvent ChainPut;
+        public event NodeEvent ChainPick;
 
         public event Action<FrameworkElement,Vector> CanvasDragged;
 
 
         private readonly Node _node;
         private readonly List<SetupBar> _setupBars = new List<SetupBar>();
+        private readonly List<ChainBar> _chainBars = new List<ChainBar>();
         public SetupBar[] SetupBars => _setupBars.ToArray();
+        public ChainBar[] ChainBars => _chainBars.ToArray();
         public Node Node => _node;
         public static readonly DependencyProperty MyBrushProperty =
             DependencyProperty.Register(
@@ -55,6 +62,13 @@ namespace psdPH.Nodes.UI
             _setupBars.Add(setupBar);
             return setupBar;
         }
+        private ChainBar NewChainBar(Setup setup)
+        {
+            var nodeSetupLink = new NodeSetup(_node, setup);
+            var chainBar = new ChainBar(nodeSetupLink,this);
+            _chainBars.Add(chainBar);
+            return chainBar;
+        }
         public NodeUI(Node node)
         {
             _node = node;
@@ -72,6 +86,10 @@ namespace psdPH.Nodes.UI
             {
                 sb.MouseEnter += (_,__) => SetupBarEnter?.Invoke(sb);
                 sb.MouseLeave += (_,__) => SetupBarLeave?.Invoke(sb);
+            }
+            foreach (var chain in node.Chains)
+            {
+                chainsStack.Children.Add(NewChainBar(chain));
             }
         }
         public bool Selected
@@ -96,6 +114,17 @@ namespace psdPH.Nodes.UI
                 Canvas.SetLeft(this, value.X);
                 Canvas.SetTop(this, value.Y);
             }
+        }
+
+        private void pickBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ChainPick?.Invoke(Node);
+            e.Handled = true;
+        }
+
+        private void headGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ChainPut?.Invoke(Node);
         }
     }
 }

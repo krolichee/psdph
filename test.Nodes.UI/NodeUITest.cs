@@ -21,24 +21,22 @@ namespace test.Nodes.UI
     [TestClass]
     public class NodeUITest
     {
+        RootBlob sampleComposition()
+        {
+            var result = new RootBlob();
+            result.AddChild(new AreaLeaf() { LayerName = "зона1" });
+            result.AddChild(new AreaLeaf() { LayerName = "зона2" });
+            return result;
+        }
         [TestMethod]
         public void testNodeCanvas()
         {
-            RootBlob sampleComposition()
-            {
-                var result = new RootBlob();
-                result.AddChild(new AreaLeaf() { LayerName = "зона1" });
-                result.AddChild(new AreaLeaf() { LayerName = "зона2" });
-                return result;
-            }
+            
             var w = new Window()
             {
                 Height = 400,
                 Width = 800
             };
-
-
-
             var c = new Canvas()
             {
                 Height = 400,
@@ -74,6 +72,34 @@ namespace test.Nodes.UI
             var scr = new ScrollViewer() {VerticalScrollBarVisibility= ScrollBarVisibility.Disabled};
             scr.Content = c;
             w.Content = scr;
+            w.ShowDialog();
+        }
+        [TestMethod]
+        public void testChainUI()
+        {
+            var w = new Window()
+            {
+                Height = 400,
+                Width = 800
+            };
+            var c = new Canvas()
+            {
+                Height = 400,
+                Width = 800,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Background = new SolidColorBrush(Colors.White)
+            };
+            var ncm = NodeCanvasManager.MakeInstance(c);
+            var fpar = new FlagParameter("flag1");
+            var fpar_node = new ParameterNode(fpar);
+            var forkNode = new ForkNode();
+            var ruleNode = new RuleNode(new AlignRule(sampleComposition()));
+
+            ncm.AddNode(fpar_node);
+            ncm.AddNode(ruleNode);
+            ncm.AddNode(forkNode);
+            w.Content = c;
             w.ShowDialog();
         }
     }

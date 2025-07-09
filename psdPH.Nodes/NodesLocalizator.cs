@@ -1,5 +1,6 @@
 ﻿using psdPH.Localization;
 using psdPH.Logic.Parameters;
+using psdPH.Nodes.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,8 @@ namespace psdPH.Nodes
             ObjectLocalization.RegisterLocalization(
                  new Dictionary<Type, string>
         {
-                { typeof(MuxNode),"Выбор" }
+                { typeof(MuxNode),"Выбор" },
+                { typeof(ForkNode),"Ветвление" }
         });
 
         }

@@ -19,9 +19,9 @@ namespace psdPH.Nodes
             Node = node;
             Setup = setup;
         }
-        public void Link(NodeSetup otherSetupLink)
+        public void Link(NodeSetup other)
         {
-            Node.Link(Setup, otherSetupLink.Node, otherSetupLink.Setup);
+            Node.Link(this,other);
 
         }
         public void IsLinked()

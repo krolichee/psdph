@@ -55,6 +55,9 @@ namespace psdPH.Setups
             nonSafe = true;
             return this;
         }
+        bool isNone;
+        public static Setup None => new Setup() { isNone = true };
+        public bool IsNone() => isNone;
         public Setup AutoAccept()
         {
             changed += () => Accept();

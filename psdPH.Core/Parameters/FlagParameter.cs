@@ -11,7 +11,7 @@ namespace psdPH.Logic.Parameters
         public bool? Toggle { get =>(bool?) Value; set => Value = value; }
         public override Setup[] Setups
         {
-            get => new Setup[] { new CheckSetup(getValueSetupConfig()) };
+            get => new Setup[] { new CheckSetup(getValueSetupConfig()).WithType(typeof(bool)) };
         }
         public FlagParameter() : base(null) { }
         public FlagParameter(string name) : base(name) { }

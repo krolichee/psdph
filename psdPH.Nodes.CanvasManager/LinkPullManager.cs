@@ -11,11 +11,11 @@ using psdPH.Nodes.UI;
 
 namespace psdPH.Nodes.CanvasManager
 {
-    public class PullManager
+    public class LinkPullManager
     {
-        public static PullManager Attach(NodeCanvasManager canvasManager)
+        public static LinkPullManager Attach(NodeCanvasManager canvasManager)
         {
-            return new PullManager(canvasManager);
+            return new LinkPullManager(canvasManager);
         }
         NodeSetup pullLink;
         Point dragStartPoint;
@@ -55,7 +55,7 @@ namespace psdPH.Nodes.CanvasManager
         List<NodeUI> NodeUIs = new List<NodeUI>();
         public readonly Canvas Canvas;
 
-        public PullManager(NodeCanvasManager canvasManager)
+        public LinkPullManager(NodeCanvasManager canvasManager)
         {
             Canvas = canvasManager.Canvas;
             canvasManager.NodeUIAdded += CanvasManager_NodeUIAdded;

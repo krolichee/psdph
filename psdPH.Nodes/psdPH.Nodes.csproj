@@ -53,6 +53,7 @@
     <Compile Include="NodesLocalizator.cs" />
     <Compile Include="Nodes\ChmoNode.cs" />
     <Compile Include="Nodes\ConditionNode.cs" />
+    <Compile Include="Nodes\ForkNode.cs" />
     <Compile Include="Nodes\MuxNode.cs" />
     <Compile Include="Nodes\ObjectNode.cs" />
     <Compile Include="Nodes\ParameterNode.cs" />

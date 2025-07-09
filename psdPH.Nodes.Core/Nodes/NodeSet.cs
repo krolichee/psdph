@@ -14,7 +14,7 @@ namespace psdPH.Nodes.Core
         
         void CalculateLinks()
         {
-            var result = new List<NodeLinkDto>();
+            var result = new List<NodeSetupLinkDto>();
             foreach (var node in Nodes)
             {
                 NodeSetupDescriptor from;
@@ -23,15 +23,15 @@ namespace psdPH.Nodes.Core
                 {
                     from = new NodeSetupDescriptor(outputLink.FromNodeSetup);
                     to = new NodeSetupDescriptor(outputLink.ToNodeSetup);
-                    result.Add(new NodeLinkDto(from, to));
+                    result.Add(new NodeSetupLinkDto(from, to));
                 }
 
             }
-            Links = result;
+            SetupLinks = result;
         }
         void ApplyLinks()
         {
-            foreach (var nodeLinkDto in Links)
+            foreach (var nodeLinkDto in SetupLinks)
             {
                 var from = nodeLinkDto.FromNodeDescriptor;
                 var to = nodeLinkDto.ToNodeDescriptor;
@@ -39,7 +39,7 @@ namespace psdPH.Nodes.Core
                 var toNode = GuidScope.Current.GetByGuid(to.NodeGuid) as Node;
                 var fromSetup = fromNode.IOSetups.First(s => s.GetHashCode() == from.SetupConfigHash);
                 var toSetup = toNode.IOSetups.First(s => s.GetHashCode() == to.SetupConfigHash);
-                fromNode.Link(fromSetup, toNode, toSetup);
+                fromNode.LinkOut(fromSetup, toNode, toSetup);
             }
         }
         
@@ -56,7 +56,8 @@ namespace psdPH.Nodes.Core
             set { }
         }
         [XmlElement(Order = 3)]
-        public List<NodeLinkDto> Links;
+        public List<NodeSetupLinkDto> SetupLinks;
+        public List<NodeSetupLinkDto> ChainLinks;
         [XmlElement(Order = 4)]
         public bool onDeserializing
         {
