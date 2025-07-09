@@ -51,7 +51,8 @@ namespace psdPH.Nodes.UI
 
         private void pickBorder_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            NodeSetupPut?.Invoke(NodeSetup);
+            NodeSetupPick?.Invoke(NodeSetup);
+            e.Handled = true;
         }
 
         private void mainGrid_MouseMove(object sender, MouseEventArgs e)

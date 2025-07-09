@@ -16,6 +16,7 @@ namespace psdPH.Nodes.CanvasManager
 {
     public partial class NodeCanvasManager
     {
+        public readonly Canvas Canvas;
         static NodeCanvasManager instance;
         public delegate void NodeUIEvent(NodeUI nodeUI);
         public event NodeUIEvent NodeUIAdded;
@@ -31,93 +32,19 @@ namespace psdPH.Nodes.CanvasManager
             return instance;
         }
 
-        public void PreviewLink(NodeSetup nodeSetup)
-        {
-            LinkLineEffect effect = PullLink?.CanLink(nodeSetup) == true ? LinkLineEffect.None : LinkLineEffect.Bad;
-            if (PullLinkLine != null)
-                LinkLine.Paint(PullLinkLine, effect);
-        }
-        public void LinkPulledTo(NodeSetup nodeSetup)
-        {
-            try
-            {
-                PullLink?.Link(nodeSetup);
-            }
-            catch (NotCompatibleSetupException)
-            {
-            }
-            PullLink = null;
-            Canvas.Children.Remove(PullLinkLine);
-        }
-        List<NodeUI> NodeUIs = new List<NodeUI>();
+        
+        
 
-        public readonly Canvas Canvas;
-        NodeSetup pullLink;
-        Point dragStartPoint;
-        Line PullLinkLine = new Line();
-        public NodeSetup PullLink
-        {
-            get => pullLink;
-            set
-            {
-                if (value != null)
-                    dragStartPoint = Mouse.GetPosition(Canvas);
-                pullLink = value;
-                PullLinkLine.CaptureMouse();
-                LinkLine.Paint(PullLinkLine, LinkLineEffect.None);
-            }
-        }
-        private void NodeUI_CanvasDragged(FrameworkElement sender, Vector delta)
-        {
-            UpdateLines();
-        }
+
+        
         NodeCanvasManager(Canvas canvas)
         {
             Canvas = canvas;
-            Canvas.MouseMove += Canvas_MouseMove;
-            Canvas.MouseLeftButtonUp += Canvas_MouseLeftButtonUp;
+            PullManager.Attach(this);
+            SelectionManager.Attach(this);
+            
             UpdateLines();
         }
-        
-
-        
-
-        private void NodeUI_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LinkLine.Paint(PullLinkLine, LinkLineEffect.None);
-        }
-
-        void releasePull()
-        {
-            PullLink = null;
-            Canvas.Children.Remove(PullLinkLine);
-        }
-        private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            releasePull();
-        }
-        
-        void previewPull(MouseEventArgs e)
-        {
-            Canvas.Children.Remove(PullLinkLine);
-            var endPoint = e.GetPosition(Canvas);
-            var shift = dragStartPoint.X > endPoint.X ? 1 : -1;
-            PullLinkLine.X1 = dragStartPoint.X;
-            PullLinkLine.Y1 = dragStartPoint.Y;
-            PullLinkLine.X2 = endPoint.X + shift;
-            PullLinkLine.Y2 = endPoint.Y;
-            Canvas.Children.Add(PullLinkLine);
-        }
-        private void Canvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (PullLink != null)
-                if (e.LeftButton == MouseButtonState.Released)
-                    releasePull();
-                else
-                    previewPull(e);
-
-        }
-        
 
         class SetupBarsLinks
         {
@@ -182,23 +109,23 @@ namespace psdPH.Nodes.CanvasManager
         {
             
             var nodeUI = new NodeUI(node);
-            var nodesSetupBars = nodeUI.SetupBars;
-            foreach (SetupBar setupBar in nodesSetupBars)
-            {
-                setupBar.NodeSetupPick += (ns) => pullLink = ns;
-                setupBar.NodeSetupHover += PreviewLink;
-                setupBar.NodeSetupPut += LinkPulledTo;
-            }
+            NodeUIAdded?.Invoke(nodeUI);
+
+            
             nodeUI.Node.Links.CollectionChanged += (_, __) => UpdateLines();
             nodeUI.CanvasDragged += NodeUI_CanvasDragged; 
-            nodeUI.MouseLeave += NodeUI_MouseLeave;
+            
 
             if (double.IsNaN(Canvas.GetLeft(nodeUI)))
                 Canvas.SetLeft(nodeUI, 0);
             if (double.IsNaN(Canvas.GetTop(nodeUI)))
                 Canvas.SetTop(nodeUI, 0);
             Canvas.Children.Add(nodeUI);
-            NodeUIAdded?.Invoke(nodeUI);
+            
+        }
+        private void NodeUI_CanvasDragged(FrameworkElement sender, Vector delta)
+        {
+            UpdateLines();
         }
     }
 }

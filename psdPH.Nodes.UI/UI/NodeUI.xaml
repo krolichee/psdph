@@ -8,6 +8,9 @@
              x:Name="root"
              HorizontalContentAlignment="Stretch"
              MinWidth ="120" ClipToBounds="False">
+    <UserControl.Effect>
+        <DropShadowEffect Color="#FF4E4950" Opacity="0.2" BlurRadius="15"/>
+    </UserControl.Effect>
     <Border BorderBrush="{Binding MyBrush, ElementName=root}" BorderThickness="2,0,2,2" CornerRadius="3,3,3,3" ClipToBounds="False" x:Name="mainBorder">
         <Border.Background>
             <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}"/>

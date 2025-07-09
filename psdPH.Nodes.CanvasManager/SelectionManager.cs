@@ -82,9 +82,10 @@ namespace psdPH.Nodes.CanvasManager
             bool inSelectionBorder(FrameworkElement element)
             {
                 var selectionRect = getSelectionRect();
-                var elementRect = element.getCanvasRect();
+                
                 if (element is Line line)
-                    elementRect = new Rect(new Point(line.X1, line.Y1), new Point(line.X2, line.Y2));
+                    return GeometryHelper.LineIntersectsRect(new Point(line.X1, line.Y1), new Point(line.X2, line.Y2), selectionRect);
+                var elementRect = element.getCanvasRect();
                 return selectionRect.IntersectsWith(elementRect);
             }
             selectedElements.Clear();
