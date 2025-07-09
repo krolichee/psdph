@@ -21,6 +21,9 @@ namespace psdPH.Setups
 
         protected ReflectionConfig _config;
         public ReflectionConfig Config => _config;
+
+        bool nonSafe;
+        public Type Type;
         public void Accept()
         {
             _config.SetValue(valueFunc());
@@ -46,10 +49,23 @@ namespace psdPH.Setups
             _stack.Children.Add(new Label() { Content = config.Desc });
             _config = config;
             _stack.HorizontalAlignment = HorizontalAlignment.Stretch;
-
-            if (config.AutoAccept)
-                changed += () => Accept();
         }
+        public Setup NonSafe()
+        {
+            nonSafe = true;
+            return this;
+        }
+        public Setup AutoAccept()
+        {
+            changed += () => Accept();
+            return this;
+        }
+        public Setup Sealed()
+        {
+            _sealed = true;
+            return this;
+        }
+
         public static Setup Sealed(ReflectionConfig config)
         {
             var result = new Setup(config);
@@ -59,13 +75,27 @@ namespace psdPH.Setups
             return result;
         }
         protected bool _sealed = false;
-        public bool MayImport(Setup other)
+        public bool MayImport(Setup source)
         {
             if (_sealed)
                 return false;
-            var thisConfigType = _config.GetFieldOrPropertyType();
-            var otherConfigType = other._config.GetFieldOrPropertyType();
+            if (source.nonSafe)
+                return true;
+            var thisConfigType = GetFieldOrPropertyType();
+            var otherConfigType = source.GetFieldOrPropertyType();
             return thisConfigType.IsAssignableFrom(otherConfigType);
+        }
+        public Setup WithType(Type type)
+        {
+            Type = type;
+            return this;
+        }
+
+        private Type GetFieldOrPropertyType()
+        {
+            if (Type != null)
+                return Type;
+            return _config.GetFieldOrPropertyType();
         }
 
         public static Setup TypeConstrained<T>(ReflectionConfig setupConfig)

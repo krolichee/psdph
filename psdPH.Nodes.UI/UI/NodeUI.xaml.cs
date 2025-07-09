@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using psdPH.Localization;
+using System.Windows.Media.Effects;
 
 namespace psdPH.Nodes.UI
 {
@@ -28,6 +29,7 @@ namespace psdPH.Nodes.UI
         public event SetupBarEvent SetupBarEnter;
         public event SetupBarEvent SetupBarLeave;
 
+        public event Action<FrameworkElement,Vector> CanvasDragged;
 
 
         private readonly Node _node;
@@ -59,7 +61,7 @@ namespace psdPH.Nodes.UI
             InitializeComponent();
 
 
-            headLabel.Content = Localization.LocalizationService.Localize(node);
+            headLabel.Text = Localization.LocalizationService.Localize(node);
             var cdBehavior = new CanvasDragBehavior();
             cdBehavior.Attach(headGrid);
             cdBehavior.CanvasPositionChanged += CdBehavior_CanvasPositionChanged;
@@ -74,20 +76,25 @@ namespace psdPH.Nodes.UI
                 sb.MouseLeave += (_,__) => SetupBarLeave?.Invoke(sb);
             }
         }
-
+        public bool Selected
+        {
+            set { 
+                Opacity = value ? 0.5 : 1;
+                //contentGrid.BitmapEffect = value ? new DropShadowBitmapEffect() {Softness = 0,ShadowDepth = 0,Opacity = 0.5,Color = Colors.AliceBlue} :null;
+            }
+        }
         private void CdBehavior_CanvasPositionChanged(Vector delta)
         {
             CanvasPosition += delta;
+            CanvasDragged?.Invoke(this,delta);
         }
-
-        public event Action CanvasDragged;
 
         Point CanvasPosition
         {
             get => new Point(Canvas.GetLeft(this), Canvas.GetTop(this));
             set
             {
-                CanvasDragged?.Invoke();
+                
                 Canvas.SetLeft(this, value.X);
                 Canvas.SetTop(this, value.Y);
             }

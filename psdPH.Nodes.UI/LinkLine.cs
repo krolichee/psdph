@@ -60,7 +60,7 @@ namespace psdPH.Nodes.UI
                 void Line_MouseEnter(object sender, MouseEventArgs e)
                 {
                 Paint(line, LinkLineEffect.Selected);
-            }
+                }
 
                 line.MouseRightButtonDown += deleteLine;
 

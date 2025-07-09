@@ -40,7 +40,7 @@ namespace psdPH.Nodes
 
         public bool CanLink(NodeSetup nodeSetup)
         {
-            return Node.CheckLink(Setup,nodeSetup.Setup);
+            return Node.CheckOutLink(Setup,nodeSetup.Setup);
         }
     }
 }

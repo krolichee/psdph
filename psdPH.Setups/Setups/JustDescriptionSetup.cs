@@ -20,6 +20,7 @@ namespace psdPH.Utils.Setups
             var stack = result._stack;
             result.Control = label;
             result.valueFunc = () => ""; ;
+            result._sealed = true;
             return result;
         }
         protected JustDescriptionSetup(ReflectionConfig config) : base(config) { }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 public class CanvasDragBehavior
@@ -41,10 +42,18 @@ public class CanvasDragBehavior
         if (!_isDragging) return;
 
         var currentPoint = e.GetPosition(null);
+        if (currentPoint.X < 10)
+            currentPoint.X = 10;
+        if (currentPoint.Y < 10)
+            currentPoint.Y = 10;
+
         var diff = currentPoint - _startPoint;
 
-        CanvasPositionChanged?.Invoke(diff);
+        
         _startPoint = currentPoint;
+        
+
+        CanvasPositionChanged?.Invoke(diff);
         e.Handled = true;
     }
 

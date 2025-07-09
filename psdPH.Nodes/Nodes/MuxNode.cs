@@ -24,7 +24,7 @@ namespace psdPH.Nodes
         [XmlIgnore]
         public Setup ToggleSetup => new CheckSetup(new ReflectionConfig(this, nameof(Toggle), "Да/Нет"));
         [XmlIgnore]
-        public Setup OutputSetup => Setup.Sealed(new ReflectionConfig(this, nameof(Output),"результат"));
+        public Setup OutputSetup => Setup.Sealed(new ReflectionConfig(this, nameof(Output),"результат")).NonSafe();
         [XmlIgnore]
         public override List<Setup> Inputs => new List<Setup>() {ToggleSetup,OnSetup, OffSetup };
         [XmlIgnore]

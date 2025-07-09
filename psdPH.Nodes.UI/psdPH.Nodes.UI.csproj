@@ -75,7 +75,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="CanvasDragBehavior.cs" />
+    <Compile Include="CanvasExtension.cs" />
     <Compile Include="LinkLine.cs" />
+    <Compile Include="NodeCanvasSelection.cs" />
     <Compile Include="NodeConvasManager.cs" />
     <Compile Include="UI\AppearEllipseConverter.cs" />
     <Compile Include="UI\NodeBrushes.cs" />

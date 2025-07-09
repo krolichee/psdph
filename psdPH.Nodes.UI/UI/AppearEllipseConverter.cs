@@ -40,7 +40,7 @@ namespace psdPH.Nodes.UI
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return NodeConvasManager.Instance().DraggedLink != null;
+            return NodeConvasManager.Instance().PullLink != null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

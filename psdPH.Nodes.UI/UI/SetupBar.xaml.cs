@@ -41,13 +41,13 @@ namespace psdPH.Nodes.UI
 
         private void mainGrid_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            NodeConvasManager.Instance().LinkDraggedTo(NodeSetup);
+            NodeConvasManager.Instance().LinkPulledTo(NodeSetup);
             Console.WriteLine("Перетащено значение ноды");
         }
 
         private void pickBorder_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            NodeConvasManager.Instance().DraggedLink = NodeSetup;
+            NodeConvasManager.Instance().PullLink = NodeSetup;
             Console.WriteLine("Захват значение ноды");
         }
 

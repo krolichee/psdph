@@ -7,34 +7,8 @@ using System.Collections.ObjectModel;
 
 namespace psdPH.Nodes
 {
-    public abstract class Node:DtoGuided,ISerializable
+    public abstract partial class Node:DtoGuided,ISerializable
     {
-        public class NodeSetupLink
-        {
-            public NodeSetup FromNodeSetup;
-            public NodeSetup ToNodeSetup;
-            public NodeSetupLink(NodeSetup from, NodeSetup to)
-            {
-                FromNodeSetup = from;
-                ToNodeSetup = to;
-            }
-            public bool Cycled { get
-                {
-                    bool check(Node node1,Node node2)
-                    {
-                        if (node1 == node2)
-                            return true;
-                        foreach (NodeSetupLink nsl in node1.Links)
-                        {
-                            if (check(nsl.ToNodeSetup.Node,node2))
-                                return true;
-                        }
-                        return false;
-                    }
-                    return check(ToNodeSetup.Node,FromNodeSetup.Node);
-                } 
-            }
-        }
         [XmlIgnore]
         Dictionary<Node, bool> ParentAppliedDict = new Dictionary<Node, bool>();
         protected event Action<Node> Applied;
@@ -70,10 +44,10 @@ namespace psdPH.Nodes
         }
         protected abstract void _apply();
         
-        public virtual bool CheckLink(Setup inSetup, Setup outSetup) => outSetup.MayImport(inSetup);
+        public virtual bool CheckOutLink(Setup thisSetup, Setup otherSetup) => otherSetup.MayImport(thisSetup);
         public void Link(Setup thisSetup, Node other,Setup otherSetup)
         {
-            if (!CheckLink(thisSetup, otherSetup))
+            if (!CheckOutLink(thisSetup, otherSetup))
                 throw new NotCompatibleSetupException();
             if (other.IsLinkedSetup(otherSetup))
                 throw new NotCompatibleSetupException();

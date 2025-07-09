@@ -11,7 +11,7 @@ namespace psdPH.Logic.Parameters
         public string Text { get => Value as string; set => Value=value; }
         public override Setup[] Setups
         {
-            get => new Setup[] { new StringInputSetup(getValueSetupConfig().WithType(typeof(string)))};
+            get => new Setup[] { new StringInputSetup(new ReflectionConfig(this, nameof(Text), "Текст")) };
         }
         public StringParameter():base(null) { }
         public StringParameter(string name):base(name) { }

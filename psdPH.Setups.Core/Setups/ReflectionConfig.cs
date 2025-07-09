@@ -9,9 +9,7 @@ namespace psdPH.Setups
         public string FieldName;
         public string Desc;
 
-        public Type Type;
-
-        public bool AutoAccept { get; internal set; }
+        
 
         public Type GetTypeOfObj()
         {
@@ -19,8 +17,7 @@ namespace psdPH.Setups
         }
         public Type GetFieldOrPropertyType()
         {
-            if (Type != null)
-                return Type;
+            
             if (Obj == null)
                 throw new InvalidOperationException("Объект Obj не может быть null для определения типа.");
 
@@ -63,17 +60,12 @@ namespace psdPH.Setups
             else
                 throw new ArgumentException($"Поле или свойство с именем '{FieldName}' не найдено в объекте типа '{objType.Name}'.");
         }
-        public ReflectionConfig WithType(Type type)
-        {
-            Type = type;
-            return this;
-        }
-        public ReflectionConfig(object obj, string fieldname, string desc = "", bool autoAccept=false)
+        
+        public ReflectionConfig(object obj, string fieldname, string desc = "")
         {
             Obj = obj;
             FieldName = fieldname;
             Desc = desc;
-            AutoAccept = autoAccept;
         }
         public override bool Equals(object obj)
         {

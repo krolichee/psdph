@@ -19,8 +19,8 @@ namespace psdPH.Nodes.Nodes
 
         public override List<Setup> Inputs => new List<Setup>();
         protected Setup ObjectOutputSetup => Setup.Sealed(
-            new ReflectionConfig(this,nameof(Obj),_obj.ToString())
-            .WithType(_obj.GetType()));
+            new ReflectionConfig(this,nameof(Obj),_obj.ToString())).
+            WithType(_obj.GetType());
         public override List<Setup> Outputs => new List<Setup>() { ObjectOutputSetup};
 
         protected override void _apply() {  }

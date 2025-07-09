@@ -15,7 +15,8 @@ namespace psdPH.Nodes
 {
     public class ParameterNode : Node
     {
-        public override string ToString() => LocalizationService.Localize(Parameter.GetType());
+        public override string ToString() => $"{Parameter.Name}" +"\n"+
+            $"<<{LocalizationService.Localize(Parameter.GetType())}>>";
         [XmlIgnore]
         public Parameter Parameter;
         [XmlIgnore]
@@ -23,8 +24,7 @@ namespace psdPH.Nodes
         [XmlIgnore]
         public override List<Setup> Outputs { get {
                 var result = new List<Setup>();
-                result.Add(JustDescriptionSetup.JustDescription(Parameter.Name));
-                result.AddRange(Parameter.Setups);
+                result.AddRange(Parameter.Setups.Select(s=>s.Sealed()));
                 return result;
             } }
             
