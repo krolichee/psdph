@@ -22,7 +22,7 @@ namespace psdPH.Nodes.CanvasManager
         Canvas Canvas;
         Rect getSelectionRect()
         {
-            return selectionBorder.getCanvasRect();
+            return selectionBorder.GetCanvasRect();
         }
         bool selection;
         Border selectionBorder = new Border() { Background = Brushes.Blue, Opacity = 0.4 };
@@ -36,7 +36,7 @@ namespace psdPH.Nodes.CanvasManager
                 nodeUI.Selected = true;
                 return;
                 var esBorder = new Border() { Background = Brushes.Blue, Opacity = 0.4 };
-                esBorder.setCanvasRect(nodeUI.getCanvasRect());
+                esBorder.SetCanvasRect(nodeUI.GetCanvasRect());
                 elementSelectionBorders.Add(esBorder);
                 Canvas.Children.Add(esBorder);
             }
@@ -56,7 +56,7 @@ namespace psdPH.Nodes.CanvasManager
             topLeft.Y = ys.First();
             bottomRight.X = xs.Last();
             bottomRight.Y = ys.Last();
-            selectionBorder.setCanvasRect(new Rect(topLeft, bottomRight));
+            selectionBorder.SetCanvasRect(new Rect(topLeft, bottomRight));
         }
         void previewSelectionBorder(Point endPoint)
         {
@@ -85,7 +85,7 @@ namespace psdPH.Nodes.CanvasManager
                 
                 if (element is Line line)
                     return GeometryHelper.LineIntersectsRect(new Point(line.X1, line.Y1), new Point(line.X2, line.Y2), selectionRect);
-                var elementRect = element.getCanvasRect();
+                var elementRect = element.GetCanvasRect();
                 return selectionRect.IntersectsWith(elementRect);
             }
             selectedElements.Clear();
@@ -155,7 +155,7 @@ namespace psdPH.Nodes.CanvasManager
         }
         void canvasDrag(FrameworkElement element, Vector delta)
         {
-            element.setCanvasPoint(element.getCanvasPoint() + delta);
+            element.SetCanvasPoint(element.GetCanvasPoint() + delta);
         }
         private void NodeUI_CanvasDragged(FrameworkElement sender, Vector delta)
         {

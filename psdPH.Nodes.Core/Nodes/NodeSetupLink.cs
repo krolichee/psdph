@@ -21,9 +21,9 @@ namespace psdPH.Nodes
                     {
                         if (node1 == node2)
                             return true;
-                        foreach (NodeSetupLink nsl in node1.Links)
+                        foreach (var nsl in node1.ParentAppliedDict)
                         {
-                            if (check(nsl.ToNodeSetup.Node, node2))
+                            if (check(nsl.Key, node2))
                                 return true;
                         }
                         return false;

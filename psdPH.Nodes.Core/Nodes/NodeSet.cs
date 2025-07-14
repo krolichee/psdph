@@ -57,14 +57,20 @@ namespace psdPH.Nodes.Core
         }
         [XmlElement(Order = 3)]
         public List<NodeSetupLinkDto> SetupLinks;
-        public List<NodeSetupLinkDto> ChainLinks;
         [XmlElement(Order = 4)]
+        public List<NodeSetupLinkDto> ChainLinks;
+        [XmlElement(Order = 5)]
         public bool onDeserializing
         {
             get => true;
             set
             {
-                GuidScope.Current.GuidsLoaded+=ApplyLinks;
+                void onGuidsLoaded()
+                {
+                    GuidScope.Current.GuidsLoaded -= onGuidsLoaded;
+                    ApplyLinks();
+                }
+                GuidScope.Current.GuidsLoaded += onGuidsLoaded;
             }
         }
         public Node this[int index]

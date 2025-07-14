@@ -2,6 +2,7 @@
 using System.Windows;
 using System;
 using System.Windows.Media;
+using psdPH.Localization;
 
 namespace psdPH.Logic
 {
@@ -91,7 +92,7 @@ namespace psdPH.Logic
             }
             public override string ToString()
             {
-                return $"Гориз. = {this.H}\nВерт. = {this.V}";
+                return $"Гориз. = {LocalizationService.Localize( this.H)}\nВерт. = {LocalizationService.Localize(this.V)}";
             }
             //public string ToLocalizedString()
             //{

@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace psdPH.Nodes
 {
     public class DtoGuided:Guided
     {
+        [XmlElement]
         public object Dto
         {
             get => DtoConvertersRegistry.GetFor(this).GetDto(this);

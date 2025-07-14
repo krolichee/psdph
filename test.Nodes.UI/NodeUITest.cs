@@ -2,6 +2,7 @@
 using System.Security.Principal;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using psdPH.Compositions;
@@ -45,7 +46,9 @@ namespace test.Nodes.UI
                 VerticalAlignment = VerticalAlignment.Top,
                 Background = new SolidColorBrush(Colors.White)
             };
-            var ncm = NodeCanvasManager.MakeInstance(c);
+            var scr = new ScrollViewer() { VerticalScrollBarVisibility = ScrollBarVisibility.Disabled };
+            scr.Content = c;
+            var ncm = NodeCanvasManager.MakeInstance(c, scr);
             
             var parameterNode = new ParameterNode(new StringParameter("Хавальник"));
 
@@ -69,8 +72,7 @@ namespace test.Nodes.UI
             ncm.AddNode(alignRuleNode);
             ncm.AddNode(layerLeafNode);
             ncm.AddNode(empNode);
-            var scr = new ScrollViewer() {VerticalScrollBarVisibility= ScrollBarVisibility.Disabled};
-            scr.Content = c;
+            
             w.Content = scr;
             w.ShowDialog();
         }
@@ -84,13 +86,17 @@ namespace test.Nodes.UI
             };
             var c = new Canvas()
             {
-                Height = 400,
-                Width = 800,
+                Height = 2000,
+                Width = 2000,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
-                Background = new SolidColorBrush(Colors.White)
+                Background = Brushes.AliceBlue
             };
-            var ncm = NodeCanvasManager.MakeInstance(c);
+            var sc = new ScrollViewer() { VerticalScrollBarVisibility = ScrollBarVisibility.Hidden ,HorizontalScrollBarVisibility=ScrollBarVisibility.Hidden};
+            sc.MaxWidth = 2000;
+            sc.MaxHeight = 2000;
+            sc.Content = c;
+            var ncm = NodeCanvasManager.MakeInstance(c,sc);
             var fpar = new FlagParameter("flag1");
             var fpar_node = new ParameterNode(fpar);
             var forkNode = new ForkNode();
@@ -99,7 +105,8 @@ namespace test.Nodes.UI
             ncm.AddNode(fpar_node);
             ncm.AddNode(ruleNode);
             ncm.AddNode(forkNode);
-            w.Content = c;
+            
+            w.Content = sc;
             w.ShowDialog();
         }
     }

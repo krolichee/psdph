@@ -22,6 +22,8 @@ namespace psdPH.Nodes
             Condition = condition;
         }
 
+        public ConditionNode() { }
+
         [XmlIgnore]
         public Setup OutputSetup => Setup.Sealed(new ReflectionConfig(this,nameof(Output),"результат"));
         [XmlIgnore]

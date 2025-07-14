@@ -81,14 +81,18 @@ namespace psdPH.Nodes
         }
         public void ChainIn(Node node)
         {
+            
             Subscribe(node);
         }
         public void ChainIn(NodeSetup chain)
         {
-            if (Chain!=null || chain.Node.getOutputLinksToNode(this).Any())
+            if (Chain!=null)
                 throw new NotCompatibleSetupException();
-            Chain = chain;
+            if(new NodeSetupLink( new NodeSetup(this, Setup.None), new NodeSetup(chain.Node, Setup.None)).Cycled)
+                throw new NotCompatibleSetupException();
             ChainIn(chain.Node);
+            Chain = chain;
+            
         }
         public void Unchain(NodeSetup chain)
         {
@@ -154,7 +158,7 @@ namespace psdPH.Nodes
         }
         void Unsubscribe(Node node)
         {
-            if (!ParentAppliedDict.TryGetValue(node, out var _))
+            if (ParentAppliedDict.TryGetValue(node, out var _))
                 ParentAppliedDict.Remove(node);
             node.Applied -= ParentApplied;
         }

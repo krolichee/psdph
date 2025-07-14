@@ -10,23 +10,23 @@ namespace psdPH.Nodes.CanvasManager
 {
     public static class CanvasExtension
     {
-        public static  Point getCanvasPoint(this FrameworkElement e)
+        public static  Point GetCanvasPoint(this FrameworkElement e)
         {
             return new Point(Canvas.GetLeft(e), Canvas.GetTop(e));
         }
-        public static  void setCanvasPoint(this FrameworkElement e, Point point)
+        public static  void SetCanvasPoint(this FrameworkElement e, Point point)
         {
             Canvas.SetLeft(e, point.X);
             Canvas.SetTop(e, point.Y);
         }
 
-        public static Rect getCanvasRect(this FrameworkElement e)
+        public static Rect GetCanvasRect(this FrameworkElement e)
         {
-            return new Rect(getCanvasPoint(e), e.RenderSize);
+            return new Rect(GetCanvasPoint(e), e.RenderSize);
         }
-        public static void setCanvasRect(this FrameworkElement e, Rect rect)
+        public static void SetCanvasRect(this FrameworkElement e, Rect rect)
         {
-            setCanvasPoint(e, rect.TopLeft);
+            SetCanvasPoint(e, rect.TopLeft);
             e.Width = rect.Width;
             e.Height = rect.Height;
         }

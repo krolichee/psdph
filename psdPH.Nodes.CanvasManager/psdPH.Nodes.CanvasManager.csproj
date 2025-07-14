@@ -48,21 +48,16 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UserControl1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="CanvasExtension.cs" />
-    <Compile Include="ChainPullManager.cs" />
+    <Compile Include="Drawers\ChainLinksDrawer.cs" />
+    <Compile Include="SubManagers\ChainPullManager.cs" />
     <Compile Include="GeometryHelper.cs" />
     <Compile Include="LinkLine.cs" />
-    <Compile Include="NodeCanvasManager.cs" />
-    <Compile Include="LinkPullManager.cs" />
-    <Compile Include="SelectionManager.cs" />
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="SubManagers\NodeCanvasManager.cs" />
+    <Compile Include="SubManagers\LinkPullManager.cs" />
+    <Compile Include="SubManagers\PanManager.cs" />
+    <Compile Include="SubManagers\SelectionManager.cs" />
+    <Compile Include="Drawers\SetupLinksDrawer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
