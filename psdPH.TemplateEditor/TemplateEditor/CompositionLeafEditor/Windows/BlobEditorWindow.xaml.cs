@@ -43,17 +43,19 @@ namespace psdPH.TemplateEditor
             editor.Show();
             return editor;
         }
+        
         BlobEditorWindow(DocumentWr doc, Composition root)
         {
             _composition = root;
             _doc = doc;
             InitializeComponent();
-            
-            structureTab.Content = CEDStackUI.CreateCEDStack(
+            new CEDStackUI();
+
+            structureTab = CEDStackUI.CreateCEDStack(
                 new StructureStackHandler(new PsdPhContext(doc, root)));
             //ruleTab.Content = CEDStackUI.CreateCEDStack(
             //    new StructureRuleStackHandler(_composition.RuleSet));
-            paramTab.Content = CEDStackUI.CreateCEDStack(
+            paramTab = CEDStackUI.CreateCEDStack(
                 new ParameterHandler(_composition.ParameterSet));
         }
 

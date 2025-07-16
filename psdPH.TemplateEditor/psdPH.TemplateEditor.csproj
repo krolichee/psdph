@@ -61,6 +61,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\SectionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,10 +74,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControl1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -96,6 +96,9 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\SingleCompositionCreators.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\IBatchParameterCreator.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\ParameterCreator.cs" />
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\SectionControl.xaml.cs">
+      <DependentUpon>SectionControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\CompositionButtonGrid.xaml.cs">
       <DependentUpon>CompositionButtonGrid.xaml</DependentUpon>
     </Compile>
@@ -108,10 +111,6 @@
     </Compile>
     <Compile Include="TemplateEditor\ParameterDicts.cs" />
     <Compile Include="TemplateEditor\StructureDicts.cs" />
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -212,6 +211,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TemplateEditor\CompositionLeafEditor\Windows\psdPH Template UI.drawio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TemplateEditor\CompositionLeafEditor\Windows\inputs.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

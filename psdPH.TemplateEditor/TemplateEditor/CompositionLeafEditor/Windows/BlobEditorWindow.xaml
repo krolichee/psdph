@@ -7,13 +7,17 @@
          xmlns:CedStack="clr-namespace:psdPH.CED;assembly=psdPH.CED"  
         x:Class="psdPH.TemplateEditor.BlobEditorWindow" 
          mc:Ignorable="d"
-        Title="TemplateEditor" Height="450" Width="365" Closed="Window_Closed" Activated="Window_Activated"
+        Title="TemplateEditor"  Width="1920" Height="1080" Closed="Window_Closed" Activated="Window_Activated"
         >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="18"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="8*"/>
+        </Grid.ColumnDefinitions>
 
         <Menu x:Name="templateMenu" VerticalAlignment="Center" Height="18" >
             <MenuItem Header="Шаблон" >
@@ -21,21 +25,26 @@
                 <MenuItem Header="Сохранить" Click="saveMenuItem_Click" />
             </MenuItem>
         </Menu>
-        <Grid Grid.Row="1">
 
-            <TabControl Margin="0,0,0,0">
-                <TabItem x:Name="structureTab" Header="Структура">
-                    <CedStack:CEDStackUI/>
-                </TabItem>
-                <TabItem x:Name="paramTab" Header="Параметры" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="76">
-                    <CedStack:CEDStackUI/>
-                </TabItem>
-                <TabItem x:Name="ruleTab" Header="Правила" Height="22" Margin="-2,-2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58">
-                    <CedStack:CEDStackUI/>
-                </TabItem>
-                
-            </TabControl>
+        <Grid x:Name="stacksGrid" Grid.Row="1" Margin="4,4,4,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <local:SectionControl Title="Структура"
+                          BorderThickness="1,1,0,1"
+                          IconSource="/psdPH.TemplateEditor;component/TemplateEditor/CompositionLeafEditor/Windows/psdPH Template UI.drawio.png">
+                    <CedStack:CEDStackUI x:Name="structureTab"/>
+                </local:SectionControl>
+            </Grid>
 
+            <Grid Grid.Row="1" Grid.Column="1">
+                <local:SectionControl Title="Вводы"
+                          IconSource="/psdPH.TemplateEditor;component/TemplateEditor/CompositionLeafEditor/Windows/inputs.png">
+                    <CedStack:CEDStackUI x:Name="paramTab"/>
+                </local:SectionControl>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
