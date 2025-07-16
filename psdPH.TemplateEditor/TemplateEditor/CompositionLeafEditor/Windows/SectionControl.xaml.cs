@@ -3,8 +3,8 @@ using System.Windows.Media;
 using System.Windows;
 
 namespace psdPH.TemplateEditor { 
-public partial class SectionControl : UserControl
-{
+public partial class SectionControl : ContentControl
+    {
     public SectionControl()
     {
         InitializeComponent();
@@ -17,11 +17,11 @@ public partial class SectionControl : UserControl
     public static readonly DependencyProperty IconSourceProperty =
         DependencyProperty.Register("IconSource", typeof(ImageSource), typeof(SectionControl));
 
-    public static readonly DependencyProperty BorderThicknessProperty =
+    public static readonly new DependencyProperty BorderThicknessProperty =
         DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(SectionControl),
             new PropertyMetadata(new Thickness(1, 1, 1, 1)));
 
-    public static readonly DependencyProperty BorderBrushProperty =
+    public static readonly new DependencyProperty BorderBrushProperty =
         DependencyProperty.Register("BorderBrush", typeof(Brush), typeof(SectionControl),
             new PropertyMetadata(Brushes.Black));
 
@@ -37,19 +37,19 @@ public partial class SectionControl : UserControl
         set { SetValue(IconSourceProperty, value); }
     }
 
-    public Thickness BorderThickness
+    public new Thickness BorderThickness
     {
         get { return (Thickness)GetValue(BorderThicknessProperty); }
         set { SetValue(BorderThicknessProperty, value); }
     }
 
-    public Brush BorderBrush
+    public new Brush BorderBrush
     {
         get { return (Brush)GetValue(BorderBrushProperty); }
         set { SetValue(BorderBrushProperty, value); }
     }
 
-    public object Content
+    public new object Content
     {
         get { return GetValue(ContentProperty); }
         set { SetValue(ContentProperty, value); }
