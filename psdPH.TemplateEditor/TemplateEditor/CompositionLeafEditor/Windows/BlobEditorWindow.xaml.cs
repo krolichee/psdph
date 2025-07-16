@@ -51,11 +51,11 @@ namespace psdPH.TemplateEditor
             InitializeComponent();
             new CEDStackUI();
 
-            structureTab = CEDStackUI.CreateCEDStack(
+            structureSection.Content = CEDStackUI.CreateCEDStack(
                 new StructureStackHandler(new PsdPhContext(doc, root)));
             //ruleTab.Content = CEDStackUI.CreateCEDStack(
             //    new StructureRuleStackHandler(_composition.RuleSet));
-            paramTab = CEDStackUI.CreateCEDStack(
+            paramSection.Content = CEDStackUI.CreateCEDStack(
                 new ParameterHandler(_composition.ParameterSet));
         }
 
