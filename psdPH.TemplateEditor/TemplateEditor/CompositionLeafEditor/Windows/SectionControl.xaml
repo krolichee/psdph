@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
 
-    <Border BorderBrush="{Binding SectionBorderBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-            BorderThickness="{Binding SectionBorderThickness, RelativeSource={RelativeSource AncestorType=UserControl}}">
+    <Border BorderBrush="{Binding BorderBrush}" 
+            BorderThickness="{Binding BorderThickness}">
         <StackPanel>
             <Border Height="38" VerticalAlignment="Top" 
                     Background="White" 
@@ -16,7 +16,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Rectangle Width="19.8" Height="20">
                             <Rectangle.Fill>
-                                <ImageBrush ImageSource="{Binding SectionIconSource, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                <ImageBrush ImageSource="{Binding IconSource}" 
                                            Stretch="Uniform">
                                     <ImageBrush.RelativeTransform>
                                         <TransformGroup>
@@ -29,11 +29,11 @@
                                 </ImageBrush>
                             </Rectangle.Fill>
                         </Rectangle>
-                        <Label Content="{Binding SectionTitle, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                        <Label Content="{Binding Title}"/>
                     </StackPanel>
                 </Label>
             </Border>
-            <ContentControl Content="{Binding Content, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            <ContentPresenter Content="{Binding Content}"/>
         </StackPanel>
     </Border>
 </UserControl>
