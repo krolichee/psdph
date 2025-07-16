@@ -109,5 +109,10 @@ namespace test.Nodes.UI
             w.Content = sc;
             w.ShowDialog();
         }
+        [TestMethod]
+        public void testNodeCanvasPanel()
+        {
+
+        }
     }
 }
