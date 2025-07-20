@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Compositions;
 using psdPH.Photoshop;
 using System;
 
@@ -19,10 +20,11 @@ namespace psdPH.Logic.Compositions
         {
             return LayerDescriptor.DoesDocHas(doc);
         }
-        public ImageLeaf()
+        public ImageLeaf():base()
         {
             
         }
+        protected override DtoConverter DtoConverter => new LayerCompositionDtoConverter();
     }
 
 }

@@ -1,4 +1,6 @@
-﻿using psdPH.Setups;
+﻿using psdPH.Logic.Compositions;
+using psdPH.Logic;
+using psdPH.Setups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +28,6 @@ namespace psdPH.Nodes.Nodes
         public override List<Setup> Outputs => new List<Setup>();
 
         protected override void _apply() { }
+        protected override DtoConverter DtoConverter =>new NullDtoConverter() ;
     }
 }

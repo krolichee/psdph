@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Compositions;
 using psdPH.Photoshop;
 using System;
 
@@ -6,19 +7,10 @@ namespace psdPH.Logic.Compositions
 {
     public class LayerBlob:LayerComposition
     {
-        protected void register()
-        {
-            DtoConvertersRegistry.Register<LayerBlob>(new LayerCompositionDtoConverter());
-        }
-        public LayerBlob()
-        {
-            register();
-        }
+        protected override DtoConverter DtoConverter => new LayerCompositionDtoConverter();
+        public LayerBlob():base() { }
 
-        public LayerBlob(string layername) : base(layername)
-        {
-            register();
-        }
+        public LayerBlob(string layername) : base(layername) { }
 
         public override void Apply(DocumentWr doc)
         {

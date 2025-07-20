@@ -22,10 +22,9 @@ namespace psdPH.Logic.Compositions
         {
            return LayerDescriptor.Layer(LayerName,PsLayerKind.psTextLayer).DoesDocHas(doc);
         }
-        public TextLeaf()
-        {
-            DtoConvertersRegistry.Register<TextLeaf>(new TextLeafDtoConverter());
-        }
+        protected override DtoConverter DtoConverter => new TextLeafDtoConverter();
+
+        public TextLeaf():base() {  }
     }
 
     public class TextLeafDto:LayerCompostionDto

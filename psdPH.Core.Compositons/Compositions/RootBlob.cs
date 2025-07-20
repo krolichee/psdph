@@ -9,12 +9,8 @@ namespace psdPH.Logic.Compositions
     [UIName("Главный документ")]
     public class RootBlob : Composition
     {
-        public RootBlob()
-        {
-            DtoConvertersRegistry.Register<RootBlob>(new NullDtoConverter());
-            SetupsRegistry.Register<RootBlob>(new EmptySetupsSource());
-        }
-        public NodeSet NodeSet = new NodeSet();
+        public RootBlob():base() { }
+        
 
         public override string ObjName => "Главный документ";
 
@@ -33,6 +29,8 @@ namespace psdPH.Logic.Compositions
             matchChildren(result, doc);
             return result;
         }
+
+        protected override DtoConverter DtoConverter => new NullDtoConverter();
     }
     
 }

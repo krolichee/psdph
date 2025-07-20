@@ -162,7 +162,7 @@ namespace psdPH
             //{
             //    MessageBox.Show("Изменения шаблона не будут отображаться на уже созданных видах. После редактирования необходимо будет заново создавать либо очищать виды");
             //}
-            TemplateWindow = BlobEditorWindow.OpenFromDisk();
+            TemplateWindow = TemplateEditorWindow.OpenFromDisk();
         }
         private void weekViewMenuItem_Execute(object _)
         {

@@ -3,6 +3,7 @@ using psdPH.CED;
 using psdPH.Context;
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
+using psdPH.Nodes.Editor;
 using psdPH.Photoshop;
 using psdPH.Project;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
@@ -22,41 +23,42 @@ namespace psdPH.TemplateEditor
     /// Логика взаимодействия для TemplateEditor.xaml
     /// </summary>
 
-    public partial class BlobEditorWindow : Window, IBatchCompositionCreator
+    public partial class TemplateEditorWindow : Window, IBatchCompositionCreator
     {
         Composition _composition;
         DocumentWr _doc;
-        public static BlobEditorWindow OpenInDocument(DocumentWr doc, LayerBlob blob)
+        public static TemplateEditorWindow OpenInDocument(DocumentWr doc, LayerBlob blob)
         {
             DocumentWr new_doc;
             new_doc = doc.OpenSmartLayer(blob.LayerDescriptor);
-            var result = new BlobEditorWindow(new_doc, blob);
-            result.templateMenu.Visibility = Visibility.Hidden;
-            return result;
-        }
-        
-        public static BlobEditorWindow OpenFromDisk()
-        {
-            RootBlob blob = PsdPhProject.Instance().openOrCreateMainBlob();
-            DocumentWr doc = PhotoshopWrapper.OpenDocument(PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
-            var editor = new BlobEditorWindow(doc, blob);
-            editor.Show();
+            var editor = new TemplateEditorWindow(new_doc, blob);
+            editor.templateMenu.Visibility = Visibility.Hidden;
             return editor;
         }
         
-        BlobEditorWindow(DocumentWr doc, Composition root)
+        public static TemplateEditorWindow OpenFromDisk()
+        {
+            RootBlob blob = PsdPhProject.Instance().openOrCreateMainBlob();
+            DocumentWr doc = PhotoshopWrapper.OpenDocument(PsdPhDirectories.ProjectPsd(PsdPhProject.Instance().ProjectName));
+            var editor = new TemplateEditorWindow(doc, blob);
+            return editor;
+        }
+        
+        TemplateEditorWindow(DocumentWr doc, Composition root)
         {
             _composition = root;
             _doc = doc;
             InitializeComponent();
             new CEDStackUI();
 
-            structureSection.Content = CEDStackUI.CreateCEDStack(
-                new StructureStackHandler(new PsdPhContext(doc, root)));
-            //ruleTab.Content = CEDStackUI.CreateCEDStack(
-            //    new StructureRuleStackHandler(_composition.RuleSet));
+            var structureCed = CEDStackUI.CreateCEDStack(
+                new StructureStackHandler(new PsdPhContext(doc, root)))
+            ;
+            structureCed.VerticalAlignment = VerticalAlignment.Stretch;
+            structureSection.Content = structureCed;
             paramSection.Content = CEDStackUI.CreateCEDStack(
                 new ParameterHandler(_composition.ParameterSet));
+            nodesSection.Content = new NodesEditor(root);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

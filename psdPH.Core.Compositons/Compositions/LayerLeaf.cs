@@ -11,7 +11,7 @@ namespace psdPH.Logic.Compositions
     [UIName("Слой")]
     public class LayerLeaf : LayerComposition
     {
-
+        protected override DtoConverter DtoConverter => new LayerCompositionDtoConverter();
         public override void Apply(DocumentWr doc) { }
 
         public override bool IsMatching(DocumentWr doc)

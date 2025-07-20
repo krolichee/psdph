@@ -57,7 +57,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml">
+    <Page Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -81,8 +81,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\BlobEditorWindow.xaml.cs">
-      <DependentUpon>BlobEditorWindow.xaml</DependentUpon>
+    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateEditorWindow.xaml.cs">
+      <DependentUpon>TemplateEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterCommand.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterControl.cs" />
@@ -167,6 +167,10 @@
       <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
       <Name>psdPH.Nodes.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes.Editor\psdPH.Nodes.Editor.csproj">
+      <Project>{460684AF-2AB1-4B44-AFBD-21A00E4339BD}</Project>
+      <Name>psdPH.Nodes.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Nodes.UI\psdPH.Nodes.UI.csproj">
       <Project>{a371c100-4f9c-4744-9837-4c73bbb09ce0}</Project>
       <Name>psdPH.Nodes.UI</Name>
@@ -220,10 +224,13 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="TemplateEditor\CompositionLeafEditor\Windows\psdPH Template UI.drawio.png" />
+    <Resource Include="TemplateEditor\icons\structure.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="TemplateEditor\CompositionLeafEditor\Windows\inputs.png" />
+    <Resource Include="TemplateEditor\icons\inputs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TemplateEditor\icons\nodes.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

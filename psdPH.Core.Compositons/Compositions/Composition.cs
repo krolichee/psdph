@@ -3,6 +3,7 @@ using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Serialization;
 using psdPH.Nodes;
+using psdPH.Nodes.Core;
 using psdPH.Parameters;
 using psdPH.Photoshop;
 using psdPH.Utils;
@@ -16,7 +17,8 @@ namespace psdPH
     [Serializable]
     public abstract class Composition : DtoGuided
     {
-
+        //NodeSet
+        public NodeSet NodeSet = new NodeSet();
         //ParameterSet
         public ParameterSet ParameterSet = new ParameterSet();
 

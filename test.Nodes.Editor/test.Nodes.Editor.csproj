@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{64BD0324-926B-49B6-BF14-7996050DD28C}</ProjectGuid>
+    <ProjectGuid>{9F884E50-302D-4947-97C0-CF466066C152}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>test.TemplateEditor</RootNamespace>
-    <AssemblyName>test.TemplateEditor</AssemblyName>
+    <RootNamespace>test.Nodes.Editor</RootNamespace>
+    <AssemblyName>test.Nodes.Editor</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -52,44 +52,28 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommonTest.cs" />
-    <Compile Include="StructureEditingTest.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Projects\testProject\template.psd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\psdPH.Core.Compositons\psdPH.Compositons.csproj">
-      <Project>{c20e66c4-e8a7-4f52-a74e-b5806125d9fc}</Project>
+      <Project>{C20E66C4-E8A7-4F52-A74E-B5806125D9FC}</Project>
       <Name>psdPH.Compositons</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
       <Project>{5AA065A2-D4A8-49A7-8DC5-66E1081B84F9}</Project>
       <Name>psdPH.Nodes.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes.Editor\psdPH.Nodes.Editor.csproj">
+      <Project>{460684af-2ab1-4b44-afbd-21a00e4339bd}</Project>
+      <Name>psdPH.Nodes.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Nodes\psdPH.Nodes.csproj">
-      <Project>{5226CE47-9474-4681-8847-69E4F38EB9F5}</Project>
+      <Project>{5226ce47-9474-4681-8847-69e4f38eb9f5}</Project>
       <Name>psdPH.Nodes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
-      <Project>{E879B3A1-E6FB-4B50-B0DF-9E34546BEA19}</Project>
-      <Name>psdPH.Photoshop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Project\psdPH.Project.csproj">
-      <Project>{baad7f1f-5b1c-4e50-b1de-ce9d8c5945cb}</Project>
-      <Name>psdPH.Project</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
-      <Project>{CC0FFFDC-697C-4469-B1FB-61B396311625}</Project>
-      <Name>psdPH.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.TemplateEditor\psdPH.TemplateEditor.csproj">
-      <Project>{ED1721B9-B443-4B31-AAD8-27AE1C2B1BE3}</Project>
-      <Name>psdPH.TemplateEditor</Name>
     </ProjectReference>
     <ProjectReference Include="..\TestDefinitions\TestDefinitions.csproj">
       <Project>{37fe1678-2a21-431a-a816-e682675f2d22}</Project>

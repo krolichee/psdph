@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:psdPH.TemplateEditor" 
          xmlns:CedStack="clr-namespace:psdPH.CED;assembly=psdPH.CED"  
-        x:Class="psdPH.TemplateEditor.BlobEditorWindow" 
+        x:Class="psdPH.TemplateEditor.TemplateEditorWindow" 
          mc:Ignorable="d"
         Title="TemplateEditor"  Width="1920" Height="1080" Closed="Window_Closed" Activated="Window_Activated"
         >
@@ -19,7 +19,7 @@
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
 
-        <Menu x:Name="templateMenu" VerticalAlignment="Center" Height="18" >
+        <Menu x:Name="templateMenu" VerticalAlignment="Center" Height="18" Grid.ColumnSpan="2" >
             <MenuItem Header="Шаблон" >
                 <MenuItem Header="Очистить" Click="clearMenuItem_Click" />
                 <MenuItem Header="Сохранить" Click="saveMenuItem_Click" />
@@ -34,16 +34,20 @@
             <Grid Grid.Row="1">
                 <local:SectionControl Title="Структура" x:Name="structureSection"
                           BorderThickness="1,1,0,1"
-                          IconSource="/psdPH.TemplateEditor;component/TemplateEditor/CompositionLeafEditor/Windows/psdPH Template UI.drawio.png">
+                          IconSource="/psdPH.TemplateEditor;component/TemplateEditor/icons/structure.png">
                 </local:SectionControl>
             </Grid>
-            <local:TestControl/>
             <!-- Если это работает, значит проблема в SectionControl -->
             <Grid Grid.Row="1" Grid.Column="1">
                 <local:SectionControl Title="Вводы" x:Name="paramSection"
-                          IconSource="/psdPH.TemplateEditor;component/TemplateEditor/CompositionLeafEditor/Windows/inputs.png">
+                          IconSource="/psdPH.TemplateEditor;component/TemplateEditor/icons/inputs.png">
                 </local:SectionControl>
             </Grid>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="1" Margin="4,4,4,4">
+            <local:SectionControl Title="Ноды" x:Name="nodesSection"
+                          IconSource="/psdPH.TemplateEditor;component/TemplateEditor/icons/nodes.png">
+            </local:SectionControl>
         </Grid>
     </Grid>
 </Window>

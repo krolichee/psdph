@@ -8,7 +8,7 @@ namespace psdPHTest.Tests.UI
 {
     [TestCategory(TestCategories.PhotoshopManual)]
     [TestClass]
-    public class TemplateEditorTest
+    public class StructureEditingTest
     {
         [TestMethod]
         public void testMultiTextLeaf()

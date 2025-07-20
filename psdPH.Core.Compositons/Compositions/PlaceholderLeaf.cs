@@ -32,11 +32,8 @@ namespace psdPH.Logic.Compositions
                 Replacement.Apply(doc);
             }
         }
-        public PlaceholderLeaf() : base()
-        {
-            DtoConvertersRegistry.Register<PlaceholderLeaf>(new PlaceholderDtoConverter());
-            
-        }
+        protected override DtoConverter DtoConverter => new PlaceholderDtoConverter();
+        public PlaceholderLeaf() : base() {   }
         public override void RestoreParents(Composition parent = null)
         {
             base.RestoreParents(parent);

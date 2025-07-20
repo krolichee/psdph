@@ -7,14 +7,14 @@
 
     <Border BorderBrush="{Binding BorderBrush}" 
             BorderThickness="{Binding BorderThickness}">
-        <StackPanel>
-            <Border Height="38" VerticalAlignment="Top" 
+        <DockPanel LastChildFill="True">
+            <Border DockPanel.Dock="Top" Height="30" VerticalAlignment="Top" 
                     Background="White" 
                     BorderThickness="0,0,0,1" 
                     BorderBrush="Black">
-                <Label HorizontalAlignment="Center">
+                <TextBlock  HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
-                        <Rectangle Width="19.8" Height="20">
+                        <Rectangle Width="20" Height="20">
                             <Rectangle.Fill>
                                 <ImageBrush ImageSource="{Binding IconSource}" 
                                            Stretch="Uniform">
@@ -31,9 +31,9 @@
                         </Rectangle>
                         <Label Content="{Binding Title}"/>
                     </StackPanel>
-                </Label>
+                </TextBlock>
             </Border>
             <ContentPresenter Content="{Binding Content}"/>
-        </StackPanel>
+        </DockPanel>
     </Border>
 </ContentControl>

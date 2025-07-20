@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using psdPH.Logic.Compositions;
+using psdPH.Logic;
 
 
 namespace psdPH.Nodes.Nodes
@@ -30,5 +32,7 @@ namespace psdPH.Nodes.Nodes
         {
             rule.Apply(PhotoshopWrapper.GetActiveDocument());
         }
+        //TODO Добавить правило в DTO
+        protected override DtoConverter DtoConverter => new NullDtoConverter();
     }
 }

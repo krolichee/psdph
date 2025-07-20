@@ -32,11 +32,11 @@ namespace psdPH.Logic.Rules
                 QuestionableSetups.Setups.Add(textSetup);
             }
         }
+        protected override DtoConverter DtoConverter => new SplitForAreaRuleDtoConverter();
 
         public SplitForAreaRule(Composition composition) : base(composition) { }
         public SplitForAreaRule():base(null) {
             SetupsRegistry.Register<SplitForAreaRule>(new SplitTextForAreaRuleSetupSource());
-            DtoConvertersRegistry.Register<SplitForAreaRule>(new SplitForAreaRuleDtoConverter());
         }
 
     }

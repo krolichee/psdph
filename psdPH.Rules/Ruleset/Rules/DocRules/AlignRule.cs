@@ -28,7 +28,6 @@ namespace psdPH.Logic.Ruleset.Rules
         void InitRegistrations()
         {
             SetupsRegistry.Register<AlignRule>(new AlignRuleSetupSource());
-            DtoConvertersRegistry.Register<AlignRule>(new AlignRuleDtoConverter());
         }
         public AlignRule(Composition composition) : base(composition) {
             InitRegistrations();
@@ -40,7 +39,7 @@ namespace psdPH.Logic.Ruleset.Rules
         {
             getLayerWr(doc).AlignLayer(AreaLeaf.GetLayerWr(doc), AlignOptions);
         }
-
+        protected override DtoConverter DtoConverter => new AlignRuleDtoConverter();
     }
     public class AlignRuleDto : LayerRuleDto
     {

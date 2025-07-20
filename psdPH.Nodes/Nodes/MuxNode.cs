@@ -3,6 +3,8 @@ using psdPH.Utils.Setups;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using psdPH.Setups;
+using psdPH.Logic.Compositions;
+using psdPH.Logic;
 
 namespace psdPH.Nodes
 {
@@ -30,10 +32,8 @@ namespace psdPH.Nodes
         [XmlIgnore]
         public override List<Setup> Outputs => new List<Setup>() { OutputSetup };
 
-        public MuxNode() : base()
-        {
-        }
-
+        public MuxNode() : base() { }
+        protected override DtoConverter DtoConverter => new NullDtoConverter();
         protected override void _apply()
         {
             Output = Toggle ? OnObj : OffObj;

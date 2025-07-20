@@ -29,7 +29,7 @@ namespace psdPH.TemplateEditor
             EditorDict = new Dictionary<Type, EditComposition>
             ()
             {
-                { typeof(RootBlob),(doc,composition)=>BlobEditorWindow.OpenInDocument(doc,composition as LayerBlob) }
+                { typeof(RootBlob),(doc,composition)=>TemplateEditorWindow.OpenInDocument(doc,composition as LayerBlob) }
             };
     }
 

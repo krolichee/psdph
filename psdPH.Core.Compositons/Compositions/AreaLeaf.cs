@@ -13,6 +13,8 @@ namespace psdPH.Compositions
     [UIName("Зона")]
     public class AreaLeaf : LayerComposition
     {
+        protected override DtoConverter DtoConverter => new LayerCompositionDtoConverter();
+
         public override void Apply(DocumentWr doc)
         {
             this.GetLayerWr(doc).Visible = false;
@@ -21,6 +23,7 @@ namespace psdPH.Compositions
         {
             return LayerDescriptor.Layer(LayerName).DoesDocHas(doc);
         }
+
         public AreaLeaf():base()
         {
 

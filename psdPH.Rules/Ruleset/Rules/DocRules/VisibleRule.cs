@@ -16,10 +16,12 @@ namespace psdPH.Logic.Ruleset.Rules
         {
             getLayerWr(doc).Visible = Toggle;
         }
+        protected override DtoConverter DtoConverter => new VisibleRuleDtoConverter();
+
         public VisibleRule(Composition composition) : base(composition) { }
         public VisibleRule() : base(null) {
             SetupsRegistry.Register<VisibleRule>(new VisibleRuleSetups());
-            DtoConvertersRegistry.Register<VisibleRule>(new VisibleRuleDtoConverter());
+            
         }
     }
     public class VisibleRuleDto : LayerRuleDto

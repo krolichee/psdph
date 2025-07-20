@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using psdPH.Logic.Ruleset.Conditions;
 using System.Xml.Serialization;
 using psdPH.Setups;
+using psdPH.Logic.Compositions;
+using psdPH.Logic;
 
 namespace psdPH.Nodes
 {
@@ -17,12 +19,12 @@ namespace psdPH.Nodes
         [XmlIgnore]
         public bool Output;
 
-        public ConditionNode(Condition condition)
+        public ConditionNode(Condition condition):base()
         {
             Condition = condition;
         }
 
-        public ConditionNode() { }
+        public ConditionNode():base() { }
 
         [XmlIgnore]
         public Setup OutputSetup => Setup.Sealed(new ReflectionConfig(this,nameof(Output),"результат"));
@@ -35,5 +37,8 @@ namespace psdPH.Nodes
         {
             Output = Condition.IsValid();
         }
+        //TODO Добавить условие в DTO
+        protected override DtoConverter DtoConverter => new NullDtoConverter();
+
     }
 }

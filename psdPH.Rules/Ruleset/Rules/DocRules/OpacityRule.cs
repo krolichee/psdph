@@ -27,6 +27,7 @@ namespace psdPH.Logic.Ruleset.Rules
         {
             return base.IsSetUp()&&Opacity!=notSetOpacity;
         }
+        protected override DtoConverter DtoConverter => new OpacityRuleDtoConverter();
     }
     public class OpacityRuleDto:LayerRuleDto
     {

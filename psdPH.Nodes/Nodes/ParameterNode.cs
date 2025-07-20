@@ -32,15 +32,13 @@ namespace psdPH.Nodes
         [XmlIgnore]
         public override List<Setup> Outputs => new List<Setup>();
             
-        public ParameterNode() : base()
-        {
-            DtoConvertersRegistry.Register<ParameterNode>(new ParameterNodeDtoConverter());
-        }
+        public ParameterNode() : base() { }
 
         public ParameterNode(Parameter parameter):this()
         {
             Parameter = parameter;
         }
+        protected override DtoConverter DtoConverter => new ParameterNodeDtoConverter();
 
         protected override void _apply() {  }
     }

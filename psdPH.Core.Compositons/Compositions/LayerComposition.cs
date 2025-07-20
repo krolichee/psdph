@@ -18,8 +18,7 @@ namespace psdPH.Logic.Compositions
         { 
             LayerDescriptor = LayerDescriptor.Layer(layername); 
         }
-        public LayerComposition():base() {
-        }
+        public LayerComposition():base() { }
         //protected LayerWr getLayerWr(Document doc, string layerName) => doc.GetLayerWrByName(layerName);
     }
     public class LayerCompostionDto:Dto
