@@ -1,4 +1,5 @@
 ﻿using psdPH.Context;
+using psdPH.Localization;
 using psdPH.Utils;
 using System.Windows;
 using System.Windows.Input;
@@ -21,7 +22,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             ICommand deleteCommand = DeleteCommand();
             
             Height = 28;
-            Content = TypeAndNameGrid.Get(composition.UIName, composition.ObjName);
+            Content = TypeAndNameGrid.Get(LocalizationService.Localize(composition.GetType()), composition.ObjName);
             CommandParameter = composition;
             Command = editCommand;
             setContextMenu(this, composition);

@@ -6,7 +6,6 @@ using System;
 namespace psdPH.Logic.Compositions
 {
     [Serializable]
-    [UIName("Группа")]
     public class GroupLeaf : LayerComposition
     {
         protected override DtoConverter DtoConverter => new LayerCompositionDtoConverter();

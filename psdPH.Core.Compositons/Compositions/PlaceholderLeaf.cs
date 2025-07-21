@@ -9,7 +9,6 @@ using static psdPH.Logic.PhotoshopLayerExtension;
 namespace psdPH.Logic.Compositions
 {
     [Serializable]
-    [UIName("Заглушка")]
     public class PlaceholderLeaf : LayerComposition
     {
 

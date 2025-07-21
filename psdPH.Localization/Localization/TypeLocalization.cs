@@ -1,4 +1,4 @@
-﻿namespace psdPH
+﻿namespace psdPH.Localization
 {
     using System;
     using System.Collections.Generic;
@@ -11,7 +11,7 @@
             foreach (var pair in localization)
                 Localizations[pair.Key] = pair.Value;
         }
-        public static string GetLocalizedDescription(this Type type)
+        internal static string GetLocalizedDescription(this Type type)
         {
             if (Localizations.TryGetValue(type, out var description))
             {

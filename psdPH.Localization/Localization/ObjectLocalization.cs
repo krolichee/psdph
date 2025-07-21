@@ -11,7 +11,7 @@
             foreach (var pair in localization)
                 Localizations[pair.Key] = pair.Value;
         }
-        public static string GetLocalizedDescription(object obj)
+        internal static string GetLocalizedDescription(object obj)
         {
             if (Localizations.TryGetValue(obj?.GetType(), out var description))
             {

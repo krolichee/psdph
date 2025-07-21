@@ -8,7 +8,6 @@ namespace psdPH.Logic.Compositions
 {
     
     [Serializable]
-    [UIName("Текст")]
     public class TextLeaf : LayerComposition
     {
         [XmlIgnore]

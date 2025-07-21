@@ -2,6 +2,6 @@
 {
     public static class BoolLocalization
     {
-        public static string LocalizeBool(bool val) => val ? "да" : "нет";
+        internal static string LocalizeBool(bool val) => val ? "да" : "нет";
     }
 }

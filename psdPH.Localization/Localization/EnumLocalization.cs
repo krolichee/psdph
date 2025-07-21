@@ -31,7 +31,7 @@ namespace psdPH
 
             Localizations[enumType] = dict;
         }
-        public static string GetLocalizedDescription<TEnum>(this TEnum value)
+        internal static string GetLocalizedDescription<TEnum>(this TEnum value)
         {
             Type enumType = value.GetType();
 

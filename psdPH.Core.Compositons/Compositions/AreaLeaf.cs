@@ -10,7 +10,6 @@ using System.Xml.Serialization;
 namespace psdPH.Compositions
 {
     [Serializable]
-    [UIName("Зона")]
     public class AreaLeaf : LayerComposition
     {
         protected override DtoConverter DtoConverter => new LayerCompositionDtoConverter();

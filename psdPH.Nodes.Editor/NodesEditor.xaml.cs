@@ -1,5 +1,7 @@
-﻿using psdPH.Logic.Compositions;
+﻿using psdPH.Localization;
+using psdPH.Logic.Compositions;
 using psdPH.Nodes.CanvasManager;
+using psdPH.Nodes.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +24,22 @@ namespace psdPH.Nodes.Editor
     /// </summary>
     public partial class NodesEditor : UserControl
     {
+        Composition[] Children;
+        Dictionary<string, Action> ObjectBundle
+        {
+            get
+            {
+                var result = new Dictionary<string, Action>();
+                foreach (var item in Children)
+                {
+                    var caption = LocalizationService.Localize((item as object).GetType());
+                    Action creationCommand = () => NodeCanvasManager.Instance().AddNode(new ObjectNode(item));
+                    result.Add(caption, creationCommand);
+                }
+                return result;
+            }
+        }
+        
         public NodesEditor(Composition blob)
         {
             InitializeComponent();

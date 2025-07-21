@@ -75,15 +75,6 @@ namespace psdPH
         }
 
         //String represetations
-        public string UIName
-        {
-            get
-            {
-                Type type = this.GetType();
-                UINameAttribute rootAttribute = (UINameAttribute)Attribute.GetCustomAttribute(type, typeof(UINameAttribute));
-                return rootAttribute.PositionalString;
-            }
-        }
         abstract public string ObjName { get; }
 
         public override string ToString()

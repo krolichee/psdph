@@ -6,7 +6,6 @@ using psdPH.Nodes.Core;
 
 namespace psdPH.Logic.Compositions
 {
-    [UIName("Главный документ")]
     public class RootBlob : Composition
     {
         public RootBlob():base() { }

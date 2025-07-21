@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{460684AF-2AB1-4B44-AFBD-21A00E4339BD}</ProjectGuid>
+    <ProjectGuid>{1A9301FC-A806-4C6F-A173-1741D76E7606}</ProjectGuid>
     <OutputType>library</OutputType>
-    <RootNamespace>psdPH.Nodes.Editor</RootNamespace>
-    <AssemblyName>psdPH.Nodes.Editor</AssemblyName>
+    <RootNamespace>psdPH.Nodes.Icons</RootNamespace>
+    <AssemblyName>psdPH.Nodes.Icons</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.135\lib\net462\Microsoft.Xaml.Behaviors.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -50,22 +46,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="ButtonStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="NodesEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="LeftClickContextMenuBehavior.cs" />
-    <Compile Include="NodeCreateButton.cs" />
-    <Compile Include="NodesEditor.xaml.cs">
-      <DependentUpon>NodesEditor.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -85,43 +65,19 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\psdPH.Core.Compositons\psdPH.Compositons.csproj">
-      <Project>{C20E66C4-E8A7-4F52-A74E-B5806125D9FC}</Project>
-      <Name>psdPH.Compositons</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
-      <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
-      <Name>psdPH.Localization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Nodes.CanvasManager\psdPH.Nodes.CanvasManager.csproj">
-      <Project>{83486cca-9f06-411c-9260-499276e46e9b}</Project>
-      <Name>psdPH.Nodes.CanvasManager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
-      <Project>{5AA065A2-D4A8-49A7-8DC5-66E1081B84F9}</Project>
-      <Name>psdPH.Nodes.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Nodes.Icons\psdPH.Nodes.Icons.csproj">
-      <Project>{1a9301fc-a806-4c6f-a173-1741d76e7606}</Project>
-      <Name>psdPH.Nodes.Icons</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Nodes\psdPH.Nodes.csproj">
-      <Project>{5226CE47-9474-4681-8847-69E4F38EB9F5}</Project>
-      <Name>psdPH.Nodes</Name>
-    </ProjectReference>
+    <Resource Include="inputs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="nodes.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="structure.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="inputs.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="action.png" />

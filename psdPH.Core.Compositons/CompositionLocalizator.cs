@@ -17,7 +17,8 @@ namespace psdPH.Core.Compositons
             TypeLocalization.RegisterLocalization(
             new Dictionary<Type, string>
         {
-                {typeof(RootBlob), "Поддокумент" },
+                {typeof(RootBlob), "Документ" },
+                {typeof(LayerBlob), "Поддокумент" },
 
                 {typeof(PrototypeBlob), "Прототип" },
                 { typeof(PlaceholderLeaf), "Заглушка" },
