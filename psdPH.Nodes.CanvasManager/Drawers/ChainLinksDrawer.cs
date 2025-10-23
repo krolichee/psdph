@@ -19,12 +19,12 @@ namespace psdPH.Nodes.CanvasManager
         }
         private void drawFlowLine(NodeUI source, NodeUI dest)
         {
-            var line = LinkLine.Create(source, dest, Canvas);
+            var line = ConnectionLineDrawer.CreateSequenceLine(source, dest, Canvas);
             Canvas.Children.Add(line);
         }
         private void drawFlowLine(ChainBar chainBar, NodeUI nodeUI)
         {
-            var line = LinkLine.Create(chainBar, nodeUI, Canvas);
+            var line = ConnectionLineDrawer.CreateChainLine(chainBar, nodeUI, Canvas);
             Canvas.Children.Add(line);
         }
         public void DrawChainLinks(List<NodeUI> nodeUIs)

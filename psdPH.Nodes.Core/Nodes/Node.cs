@@ -8,10 +8,10 @@ using System.Collections.ObjectModel;
 namespace psdPH.Nodes
 {
     public delegate void NodeEvent(Node node);
-    public abstract partial class Node:DtoGuided,ISerializable
+    public abstract partial class Node:DtoGuided
     {
         [XmlIgnore]
-        Dictionary<Node, bool> ParentAppliedDict = new Dictionary<Node, bool>();
+        internal Dictionary<Node, bool> ParentAppliedDict = new Dictionary<Node, bool>();
         protected event Action<Node> Applied;
         [XmlIgnore]
         public virtual Setup[] Chains => new Setup[0];
@@ -102,8 +102,8 @@ namespace psdPH.Nodes
         bool ChainAllows { get {
                 if (Chain?.Setup.IsNone() != false)
                     return true;
-                bool? chainResult = (bool?)Chain?.Setup.Config.GetValue();
-                return chainResult == true; 
+                bool chainResult = (bool)Chain.Setup.Config.GetValue();
+                return chainResult; 
             } 
         }
         bool AllParentsApplied => ParentAppliedDict.All(p => p.Value);

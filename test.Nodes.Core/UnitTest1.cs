@@ -1,5 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using psdPH.Nodes;
+using psdPH.Nodes.Core;
+using psdPH.Utils;
 
 namespace test.Nodes.Core
 {
@@ -7,8 +10,11 @@ namespace test.Nodes.Core
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void NodeSetSerialization()
         {
+            NodeSet ns = new NodeSet();
+            ns.Nodes.Add(new MuxNode());
+            CloneConverter.GetXml(ns);
         }
     }
 }

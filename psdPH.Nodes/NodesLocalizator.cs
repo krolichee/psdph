@@ -20,6 +20,12 @@ namespace psdPH.Nodes
                 { typeof(MuxNode),"Выбор" },
                 { typeof(ForkNode),"Ветвление" }
         });
+            TypeLocalization.RegisterLocalization(
+                 new Dictionary<Type, string>
+        {
+                { typeof(MuxNode),"Выбор" },
+                { typeof(ForkNode),"Ветвление" }
+        });
 
         }
     }

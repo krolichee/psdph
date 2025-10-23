@@ -59,6 +59,7 @@
     <None Include="ohshed.mdj" />
     <None Include="psdPH Nodes.drawio" />
     <None Include="psdPH Template UI.drawio" />
+    <None Include="psdPH.mdj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

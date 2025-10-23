@@ -79,6 +79,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test.Nodes.Editor", "test.N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psdPH.Nodes.Icons", "psdPH.Nodes.Icons\psdPH.Nodes.Icons.csproj", "{1A9301FC-A806-4C6F-A173-1741D76E7606}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test.Nodes.Core", "test.Nodes.Core\test.Nodes.Core.csproj", "{B249BBA8-741B-4784-A84E-3F005A4B2CC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -307,6 +309,12 @@ Global
 		{1A9301FC-A806-4C6F-A173-1741D76E7606}.NoViews|Any CPU.Build.0 = Release|Any CPU
 		{1A9301FC-A806-4C6F-A173-1741D76E7606}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A9301FC-A806-4C6F-A173-1741D76E7606}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B249BBA8-741B-4784-A84E-3F005A4B2CC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B249BBA8-741B-4784-A84E-3F005A4B2CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B249BBA8-741B-4784-A84E-3F005A4B2CC4}.NoViews|Any CPU.ActiveCfg = Release|Any CPU
+		{B249BBA8-741B-4784-A84E-3F005A4B2CC4}.NoViews|Any CPU.Build.0 = Release|Any CPU
+		{B249BBA8-741B-4784-A84E-3F005A4B2CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B249BBA8-741B-4784-A84E-3F005A4B2CC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

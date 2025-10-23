@@ -55,6 +55,20 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
+      <Project>{5AA065A2-D4A8-49A7-8DC5-66E1081B84F9}</Project>
+      <Name>psdPH.Nodes.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes\psdPH.Nodes.csproj">
+      <Project>{5226CE47-9474-4681-8847-69E4F38EB9F5}</Project>
+      <Name>psdPH.Nodes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
+      <Project>{CC0FFFDC-697C-4469-B1FB-61B396311625}</Project>
+      <Name>psdPH.Serialization</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

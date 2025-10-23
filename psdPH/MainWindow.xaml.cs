@@ -89,7 +89,7 @@ namespace psdPH
 
             LoadFoldersIntoMenu();
             InitializeButtonCommands();
-
+            KnownTypes.Initialize();
 
         }
         void InitializeButtonCommands()
@@ -163,6 +163,12 @@ namespace psdPH
             //    MessageBox.Show("Изменения шаблона не будут отображаться на уже созданных видах. После редактирования необходимо будет заново создавать либо очищать виды");
             //}
             TemplateWindow = TemplateEditorWindow.OpenFromDisk();
+            if (TemplateWindow != null)
+            {
+                TemplateWindow.Show();
+                TemplateWindow.WindowState = WindowState.Maximized;
+            }
+            
         }
         private void weekViewMenuItem_Execute(object _)
         {

@@ -30,14 +30,14 @@ namespace psdPH.Nodes.CanvasManager
                     dragStartPoint = Mouse.GetPosition(Canvas);
                 pullLink = value;
                 PullLinkLine.CaptureMouse();
-                LinkLine.Paint(PullLinkLine, LinkLineEffect.None);
+                ConnectionLineDrawer.Paint(PullLinkLine, LinkLineEffect.Simple);
             }
         }
         public void PreviewLink(NodeSetup nodeSetup)
         {
-            LinkLineEffect effect = PullLink?.CanLink(nodeSetup) == true ? LinkLineEffect.None : LinkLineEffect.Bad;
+            LinkLineEffect effect = PullLink?.CanLink(nodeSetup) == true ? LinkLineEffect.Simple : LinkLineEffect.Bad;
             if (PullLinkLine != null)
-                LinkLine.Paint(PullLinkLine, effect);
+                ConnectionLineDrawer.Paint(PullLinkLine, effect);
         }
         public void LinkPulledTo(NodeSetup nodeSetup)
         {
@@ -76,7 +76,7 @@ namespace psdPH.Nodes.CanvasManager
         }
         private void NodeUI_MouseLeave(object sender, MouseEventArgs e)
         {
-            LinkLine.Paint(PullLinkLine, LinkLineEffect.None);
+            ConnectionLineDrawer.Paint(PullLinkLine, LinkLineEffect.Simple);
         }
         private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {

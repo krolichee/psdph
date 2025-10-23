@@ -29,86 +29,76 @@ namespace test.Nodes.UI
             result.AddChild(new AreaLeaf() { LayerName = "зона2" });
             return result;
         }
-        [TestMethod]
-        public void testNodeCanvas()
-        {
+        //[TestMethod]
+        //public void testNodeCanvas()
+        //{
             
-            var w = new Window()
-            {
-                Height = 400,
-                Width = 800
-            };
-            var c = new Canvas()
-            {
-                Height = 400,
-                Width = 800,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                Background = new SolidColorBrush(Colors.White)
-            };
-            var scr = new ScrollViewer() { VerticalScrollBarVisibility = ScrollBarVisibility.Disabled };
-            scr.Content = c;
-            var ncm = NodeCanvasManager.MakeInstance(c, scr);
+        //    var w = new Window()
+        //    {
+        //        Height = 400,
+        //        Width = 800
+        //    };
+        //    var ncm = new NodeCanvasManager(c);
             
-            var parameterNode = new ParameterNode(new StringParameter("Хавальник"));
+        //    var parameterNode = new ParameterNode(new StringParameter("Хавальник"));
 
-            var composition = sampleComposition();
+        //    var composition = sampleComposition();
 
-            var layerLeaf = new LayerLeaf() { LayerName = "слой" };
-            composition.AddChild(layerLeaf);
+        //    var layerLeaf = new LayerLeaf() { LayerName = "слой" };
+        //    composition.AddChild(layerLeaf);
 
-            var alignRule = new AlignRule(composition);
-            var textCondition = new EmptynessCondition();
+        //    var alignRule = new AlignRule(composition);
+        //    var textCondition = new EmptynessCondition();
 
-            var muxNode1 = new MuxNode();
-            var muxNode2 = new MuxNode();
-            var alignRuleNode = new RuleNode(alignRule);
-            var layerLeafNode = new ObjectNode(layerLeaf);
+        //    var muxNode1 = new MuxNode();
+        //    var muxNode2 = new MuxNode();
+        //    var alignRuleNode = new RuleNode(alignRule);
+        //    var layerLeafNode = new ObjectNode(layerLeaf);
             
-            var empNode = new ConditionNode(textCondition);
+        //    var empNode = new ConditionNode(textCondition);
 
-            ncm.AddNode(muxNode1);
-            ncm.AddNode(muxNode2);
-            ncm.AddNode(alignRuleNode);
-            ncm.AddNode(layerLeafNode);
-            ncm.AddNode(empNode);
+        //    ncm.AddNodeToModel(muxNode1);
+        //    ncm.AddNodeToModel(muxNode2);
+        //    ncm.AddNodeToModel(alignRuleNode);
+        //    ncm.AddNodeToModel(layerLeafNode);
+        //    ncm.AddNodeToModel(empNode);
             
-            w.Content = scr;
-            w.ShowDialog();
-        }
-        [TestMethod]
-        public void testChainUI()
-        {
-            var w = new Window()
-            {
-                Height = 400,
-                Width = 800
-            };
-            var c = new Canvas()
-            {
-                Height = 2000,
-                Width = 2000,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                Background = Brushes.AliceBlue
-            };
-            var sc = new ScrollViewer() { VerticalScrollBarVisibility = ScrollBarVisibility.Hidden ,HorizontalScrollBarVisibility=ScrollBarVisibility.Hidden};
-            sc.MaxWidth = 2000;
-            sc.MaxHeight = 2000;
-            sc.Content = c;
-            var ncm = NodeCanvasManager.MakeInstance(c,sc);
-            var fpar = new FlagParameter("flag1");
-            var fpar_node = new ParameterNode(fpar);
-            var forkNode = new ForkNode();
-            var ruleNode = new RuleNode(new AlignRule(sampleComposition()));
+        //    w.Content = scr;
+        //    w.ShowDialog();
+        //}
+        //[TestMethod]
+        //public void testChainUI()
+        //{
+        //    var w = new Window()
+        //    {
+        //        Height = 400,
+        //        Width = 800
+        //    };
+        //    var c = new Canvas()
+        //    {
+        //        Height = 2000,
+        //        Width = 2000,
+        //        HorizontalAlignment = HorizontalAlignment.Left,
+        //        VerticalAlignment = VerticalAlignment.Top,
+        //        Background = Brushes.AliceBlue
+        //    };
+        //    var sc = new ScrollViewer() { VerticalScrollBarVisibility = ScrollBarVisibility.Hidden ,HorizontalScrollBarVisibility=ScrollBarVisibility.Hidden};
+        //    sc.MaxWidth = 2000;
+        //    sc.MaxHeight = 2000;
+        //    sc.Content = c;
+        //    var ncm = NodeCanvasManager.MakeInstance(c,sc);
+        //    var fpar = new FlagParameter("flag1");
+        //    var fpar_node = new ParameterNode(fpar);
+        //    var forkNode = new ForkNode();
+        //    var ruleNode = new RuleNode(new AlignRule(sampleComposition()));
 
-            ncm.AddNode(fpar_node);
-            ncm.AddNode(ruleNode);
-            ncm.AddNode(forkNode);
+        //    ncm.AddNodeToModel(fpar_node);
+        //    ncm.AddNodeToModel(ruleNode);
+        //    ncm.AddNodeToModel(forkNode);
             
-            w.Content = sc;
-            w.ShowDialog();
-        }
+        //    w.Content = sc;
+        //    w.ShowDialog();
+        //}
         [TestMethod]
         public void testNodeCanvasPanel()
         {

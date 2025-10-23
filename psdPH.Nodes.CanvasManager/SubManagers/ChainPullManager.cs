@@ -31,7 +31,7 @@ namespace psdPH.Nodes.CanvasManager
                     dragStartPoint = Mouse.GetPosition(Canvas);
                 pullLink = value;
                 PullLinkLine.CaptureMouse();
-                LinkLine.Paint(PullLinkLine, LinkLineEffect.Flow);
+                ConnectionLineDrawer.Paint(PullLinkLine, LinkLineEffect.Flow);
             }
         }
         public void LinkPulledTo(Node node)

@@ -2,8 +2,6 @@
 
 namespace psdPH.Nodes
 {
-    public abstract partial class Node
-    {
         public class NodeSetupLink
         {
             public NodeSetup FromNodeSetup;
@@ -43,5 +41,5 @@ namespace psdPH.Nodes
                 return FromNodeSetup.GetHashCode() * 23 + ToNodeSetup.GetHashCode();
             }
         }
-    }
+   
 }

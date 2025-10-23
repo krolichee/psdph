@@ -1,4 +1,5 @@
-﻿using System;
+﻿using psdPH.Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace psdPH.Logic
         {
             var route = compositions.GetRange(0, compositions.Count - 1).Select(c => c.ObjName).ToArray();
             var last = compositions.Last();
-            return string.Join("/", route) + $"/[{last.UIName}]{last.ObjName}";
+            return string.Join("/", route) + $"/[{LocalizationService.Localize(last.GetType())}]{last.ObjName}";
         }
         public override string ToString()
         {

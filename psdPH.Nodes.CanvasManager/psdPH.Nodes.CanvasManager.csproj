@@ -49,11 +49,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CanvasExtension.cs" />
+    <Compile Include="ConnectionLinkLineModel.cs" />
     <Compile Include="Drawers\ChainLinksDrawer.cs" />
     <Compile Include="SubManagers\ChainPullManager.cs" />
     <Compile Include="GeometryHelper.cs" />
-    <Compile Include="LinkLine.cs" />
-    <Compile Include="SubManagers\NodeCanvasManager.cs" />
+    <Compile Include="ConnectionLineDrawer.cs" />
+    <Compile Include="NodeCanvasManager.cs" />
     <Compile Include="SubManagers\LinkPullManager.cs" />
     <Compile Include="SubManagers\PanManager.cs" />
     <Compile Include="SubManagers\SelectionManager.cs" />
@@ -102,6 +103,10 @@
     <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
       <Project>{3369D6FE-2C5F-4F88-AF24-24A441C4D4B7}</Project>
       <Name>psdPH.Setups.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj">
+      <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>
+      <Name>psdPH.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

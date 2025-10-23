@@ -12,25 +12,45 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ButtonStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <local:DictionaryToMenuItemsConverter x:Key="DictionaryItemToMenuItem"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-
-        <ScrollViewer x:Name="canvasViewer" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36" />
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="1" x:Name="canvasViewer" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
             <Border x:Name="canvasBorder" HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue"/>
         </ScrollViewer>
-        <ToolBar Height="36" Background="{x:Null}" VerticalAlignment="Top" >
+        <ToolBar Grid.Row="0" Height="36" VerticalAlignment="Top" Background="White" >
             <Button Style="{DynamicResource ResourceKey=ObjectNodeButtonStyle}">
                 <i:Interaction.Behaviors>
                     <local:LeftClickContextMenuBehavior />
                 </i:Interaction.Behaviors>
-                
-                <Image Source="/psdPH.Nodes.Icons;component/structure.png" />
+
+                <Image Source="/psdPH.Nodes.Editor;component/structure.png" />
+
             </Button>
             <Button Style="{DynamicResource ResourceKey=ObjectNodeButtonStyle}">
                 <Image Source="/psdPH.Nodes.Editor;component/inputs.png" />
             </Button>
-            <Button Style="{DynamicResource ResourceKey=CalcNodeButtonStyle}">
+            <Button Style="{DynamicResource CalcNodeButtonStyle}"
+        DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                <Button.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding CalcBundle}" Opened="ContextMenu_Opened">
+                        <ContextMenu.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Header" Value="{Binding Header}"/>
+                                <Setter Property="Command" Value="{Binding Command}"/>
+                                <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
+                            </Style>
+                        </ContextMenu.ItemContainerStyle>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                <i:Interaction.Behaviors>
+                    <local:LeftClickContextMenuBehavior />
+                </i:Interaction.Behaviors>
                 <TextBlock FontWeight="Bold" FontSize="14" FontFamily="Arial Unicode MS">=</TextBlock>
             </Button>
             <Button Style="{DynamicResource ResourceKey=CalcNodeButtonStyle}">

@@ -158,6 +158,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\psdPH.Nodes\psdPH.Nodes.csproj">
+      <Project>{5226ce47-9474-4681-8847-69e4f38eb9f5}</Project>
+      <Name>psdPH.Nodes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
       <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
       <Name>psdPH.Photoshop</Name>

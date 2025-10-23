@@ -4,14 +4,14 @@
                     xmlns:local="clr-namespace:psdPH.Nodes.Editor">
     
     <!-- Ресурсы цветов -->
-        <SolidColorBrush x:Key="BlueButtonBackground" Color="#FF648CAB"/>
+        <SolidColorBrush x:Key="BlueButtonBackground" Color="#FF70AAD6"/>
         <SolidColorBrush x:Key="BlueButtonBorder" Color="#FF47647B"/>
 
-        <SolidColorBrush x:Key="GreenButtonBackground" Color="#FF64AB6C"/>
+        <SolidColorBrush x:Key="GreenButtonBackground" Color="#FF7ECA6E"/>
         <SolidColorBrush x:Key="GreenButtonBorder" Color="#FF477B5D"/>
 
-        <SolidColorBrush x:Key="GoldButtonBackground" Color="#FFC1AB6E"/>
-        <SolidColorBrush x:Key="GoldButtonBorder" Color="#FF928455"/>
+        <SolidColorBrush x:Key="GoldButtonBackground" Color="#FFECC764"/>
+        <SolidColorBrush x:Key="GoldButtonBorder" Color="#FFC7B373"/>
 
         <!-- Базовый стиль для всех кнопок -->
         <Style x:Key="BaseSquareButtonStyle" TargetType="Button">

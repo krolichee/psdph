@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -12,9 +13,22 @@ namespace psdPH
    public interface ISerializable { }
     public static class KnownTypes
     {
+        public static void Initialize() { }
         static KnownTypes()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            // Загружаем все сборки, на которые есть ссылки
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            var loadedPaths = loadedAssemblies.Select(a => a.Location).ToArray();
+
+            var referencedPaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
+            var toLoad = referencedPaths.Where(r => !loadedPaths.Contains(r, StringComparer.InvariantCultureIgnoreCase)).ToList();
+
+            toLoad.ForEach(path => {
+                try { loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))); }
+                catch { /* ignore */ }
+            });
+
+            foreach (var assembly in loadedAssemblies)
             {
                 try
                 {
@@ -26,7 +40,11 @@ namespace psdPH
                         }
                     }
                 }
-                catch (ReflectionTypeLoadException) { }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    // Логируйте ошибку для диагностики
+                    Console.WriteLine($"Ошибка загрузки типов из сборки {assembly.FullName}: {ex}");
+                }
             }
         }
         public static HashSet<Type> Types = new HashSet<Type>();

@@ -23,7 +23,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.CedStacks.Parameter
         {
             return new MenuItem()
             {
-                Header = TypeLocalization.GetLocalizedDescription(type),
+                Header = LocalizationService.Localize(type),
                 Command = new ParameterCommand(ParameterSet).CreateCommand,
                 CommandParameter = type
             };

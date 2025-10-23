@@ -19,7 +19,8 @@ namespace psdPH.Nodes.CanvasManager
         {
             return new SelectionManager(canvasManager);
         }
-        Canvas Canvas;
+        NodeCanvasManager CanvasManager;
+        Canvas Canvas=> CanvasManager.Canvas;
         Rect getSelectionRect()
         {
             return selectionBorder.GetCanvasRect();
@@ -41,7 +42,7 @@ namespace psdPH.Nodes.CanvasManager
                 Canvas.Children.Add(esBorder);
             }
             else if (e is Line line)
-                LinkLine.Paint(line, LinkLineEffect.Selected);
+                ConnectionLineDrawer.Paint(line, LinkLineEffect.Selected);
         }
 
         void setupSelectionBorder(Point endPoint)
@@ -104,7 +105,7 @@ namespace psdPH.Nodes.CanvasManager
             foreach (var item in Canvas.Children)
             {
                 if (item is Line line)
-                    LinkLine.PaintDefault(line);
+                    ConnectionLinkLineModel.Get(line).Selected = false;
                 else if (item is NodeUI nodeUI)
                     nodeUI.Selected = false;
             }
@@ -114,11 +115,21 @@ namespace psdPH.Nodes.CanvasManager
 
         public SelectionManager(NodeCanvasManager canvasManager)
         {
-            Canvas = canvasManager.Canvas;
+            CanvasManager = canvasManager;
             Canvas.MouseLeftButtonDown += Canvas_MouseLeftButtonDown;
             Canvas.MouseLeftButtonUp += Canvas_MouseLeftButtonUp;
             Canvas.MouseMove += Canvas_MouseMove;
-            canvasManager.NodeUIAdded += CanvasManager_NodeUIAdded;
+            CanvasManager.NodeUIAdded += CanvasManager_NodeUIAdded;
+            Canvas.PreviewKeyDown += Canvas_KeyDown;
+            Canvas.KeyDown += Canvas_KeyDown;
+        }
+        private void Canvas_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete && selectedElements.Count!=0)
+            {
+                Delete();
+                e.Handled = true;
+            }
         }
 
         private void CanvasManager_NodeUIAdded(NodeUI nodeUI)
@@ -133,7 +144,7 @@ namespace psdPH.Nodes.CanvasManager
                     releaseSelection();
                 else
                 {
-                    previewSelectionBorder(e.GetPosition(null));
+                    previewSelectionBorder(e.GetPosition(Canvas));
                     previewSelection();
                 }
 
@@ -152,6 +163,7 @@ namespace psdPH.Nodes.CanvasManager
         private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             releaseSelection();
+            Canvas.Focus();
         }
         void canvasDrag(FrameworkElement element, Vector delta)
         {
@@ -169,10 +181,14 @@ namespace psdPH.Nodes.CanvasManager
         {
             clearSelection();
             clearSelectionPreview();
-            selectionStartPoint = e.GetPosition(null);
+            selectionStartPoint = e.GetPosition(Canvas);
             selection = true;
             Canvas.Children.Add(selectionBorder);
-            previewSelectionBorder(e.GetPosition(null));
+            previewSelectionBorder(e.GetPosition(Canvas));
+        }
+        public void Delete()
+        {
+                CanvasManager.DeleteElementFromModel(selectedElements.ToArray());
         }
     }
 }

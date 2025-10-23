@@ -14,6 +14,11 @@ namespace psdPH
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
+        public RelayCommand(Action<object> execute)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = (_)=>true;
+        }
 
         public bool CanExecute(object parameter)
         {

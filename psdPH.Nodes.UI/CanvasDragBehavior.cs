@@ -7,6 +7,7 @@ namespace psdPH.Nodes.UI
 {
     public class CanvasDragBehavior
     {
+        public Canvas Canvas;
         public delegate void CanvasPositionChangedEvent(Vector delta);
         public event CanvasPositionChangedEvent CanvasPositionChanged;
 
@@ -27,7 +28,7 @@ namespace psdPH.Nodes.UI
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isDragging = true;
-            _startPoint = e.GetPosition(null);
+            _startPoint = e.GetPosition(Canvas);
             element.CaptureMouse();
             e.Handled = true;
         }
@@ -43,7 +44,7 @@ namespace psdPH.Nodes.UI
         {
             if (!_isDragging) return;
 
-            var currentPoint = e.GetPosition(null);
+            var currentPoint = e.GetPosition(Canvas);
             if (currentPoint.X < 10)
                 currentPoint.X = 10;
             if (currentPoint.Y < 10)

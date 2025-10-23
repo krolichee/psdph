@@ -25,6 +25,8 @@ namespace psdPH.Nodes.UI
     /// </summary>
     public partial class NodeUI : UserControl
     {
+        public readonly CanvasDragBehavior CanvasDragBehavior;
+
         public delegate void SetupBarEvent(SetupBar sb);
         
 
@@ -74,9 +76,10 @@ namespace psdPH.Nodes.UI
             _node = node;
             InitializeComponent();
             headLabel.Text = Localization.LocalizationService.Localize(node);
-            var cdBehavior = new CanvasDragBehavior();
-            cdBehavior.Attach(headGrid);
-            cdBehavior.CanvasPositionChanged += CdBehavior_CanvasPositionChanged;
+            CanvasDragBehavior = new CanvasDragBehavior();
+
+            CanvasDragBehavior.Attach(headGrid);
+            CanvasDragBehavior.CanvasPositionChanged += CdBehavior_CanvasPositionChanged;
             MyBrush = NodeBrushes.GetBrush(node.GetType());
             foreach (var setup in node.Inputs)
                 inputsStack.Children.Add(NewSetupBar(setup));

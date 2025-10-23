@@ -5,13 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Shapes;
+using static psdPH.Nodes.Node;
 
 namespace psdPH.Nodes.CanvasManager
 {
     class SetupLinksDrawer
     {
         Canvas Canvas;
-
+        Dictionary<Line, NodeSetupLink> AssociatedLinks = new Dictionary<Line, NodeSetupLink>();
         public SetupLinksDrawer(Canvas canvas)
         {
             Canvas = canvas;
@@ -41,9 +43,12 @@ namespace psdPH.Nodes.CanvasManager
 
                 var fromBar = item.From;
                 var toBar = item.To;
-
-                var line = LinkLine.Create(fromBar, toBar, Canvas);
-
+                var from = fromBar.NodeSetup;
+                var to = toBar.NodeSetup;
+                
+                var line = ConnectionLineDrawer.CreateLinkLine(fromBar, toBar, Canvas);
+                
+                AssociatedLinks.Add(line,new NodeSetupLink(from,to));
                 Canvas.Children.Add(line);
             }
         }
@@ -53,9 +58,9 @@ namespace psdPH.Nodes.CanvasManager
             for (int i = 0; i < setupBars.Length; i++)
             {
                 SetupBar fromBar = setupBars[i];
-                var fromSetupOutputLinks = fromBar.NodeSetup.Node.Links.Where(ol => ol.FromNodeSetup.Equals(fromBar.NodeSetup));
+                var fromSetupOutputLinks = fromBar.NodeSetup.Node.Links.Where(l => l.FromNodeSetup.Equals(fromBar.NodeSetup));
 
-                var toNodeSetups = fromSetupOutputLinks.Select(ol => ol.ToNodeSetup).ToArray();
+                var toNodeSetups = fromSetupOutputLinks.Select(l => l.ToNodeSetup).ToArray();
 
                 for (int j = 0; j < toNodeSetups.Length; j++)
                 {
