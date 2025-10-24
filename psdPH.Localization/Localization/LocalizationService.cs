@@ -36,7 +36,7 @@ namespace psdPH.Localization
                         if (type.GetCustomAttribute<LocalizatorAttribute>() != null
                             && type.IsAbstract && type.IsSealed) // Проверяем, что это статический класс
                         {
-                            var registerMethod = type.GetMethod("RegisterLocalizations",
+                            var registerMethod = type.GetMethod(nameof(TypeLocalization.RegisterLocalization),
                                 BindingFlags.Public | BindingFlags.Static);
 
                             registerMethod?.Invoke(null, null);

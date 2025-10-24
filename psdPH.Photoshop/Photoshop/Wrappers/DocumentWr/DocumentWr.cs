@@ -22,6 +22,7 @@ namespace psdPH.Photoshop
         Document doc;
         public Document Doc => doc;
         Application Application => doc.Application;
+        const LayerListing DefaultListing = LayerListing.Recursive;
 
         public bool Saved => doc.Saved;
 
@@ -30,13 +31,12 @@ namespace psdPH.Photoshop
             var initialState = doc.HistoryStates[1];
             doc.ActiveHistoryState = initialState;
         }
-        const LayerListing DefaultListing = LayerListing.Recursive;
-
+        
         public DocumentWr(Document d)
         {
             doc = d;
         }
-        public bool IsPathIs(string path)
+        public bool IsPathPresent(string path)
         {
             if (IsNonFile())
                 return false;

@@ -55,12 +55,17 @@
     <Compile Include="PhotoshopLocalizator.cs" />
     <Compile Include="Photoshop\Alignment.cs" />
     <Compile Include="Photoshop\AlignOptions.cs" />
-    <Compile Include="Photoshop\DocumentWr\DocumentWr.cs" />
+    <Compile Include="Photoshop\Wrappers\DocumentWr\DocumentWr.cs" />
     <Compile Include="Photoshop\KostylExecutor.cs" />
-    <Compile Include="Photoshop\LayerWr\ArtLayerWr.cs" />
-    <Compile Include="Photoshop\LayerWr\LayerDescriptor.cs" />
-    <Compile Include="Photoshop\LayerWr\LayerSetWr.cs" />
-    <Compile Include="Photoshop\LayerWr\LayerWr.cs" />
+    <Compile Include="Photoshop\Wrappers\LayerWr\ArtLayerWr.Common.cs" />
+    <Compile Include="Photoshop\Wrappers\LayerWr\ArtLayerWr.cs" />
+    <Compile Include="Photoshop\Wrappers\LayerWr\ConsiderFx.cs" />
+    <Compile Include="Photoshop\Wrappers\LayerWr\LayerDescriptor.cs" />
+    <Compile Include="Photoshop\Wrappers\LayerWr\LayerSetWr.Common.cs" />
+    <Compile Include="Photoshop\Wrappers\LayerWr\LayerSetWr.cs" />
+    <Compile Include="Photoshop\Wrappers\LayerWr\LayerWr.cs" />
+    <Compile Include="Photoshop\Wrappers\LayerWr\LDFilter.cs" />
+    <Compile Include="Photoshop\Wrappers\LayerWr\TextLayerWr.cs" />
     <Compile Include="Photoshop\WrapperExtension.cs" />
     <Compile Include="Photoshop\OutputSaver.cs" />
     <Compile Include="Photoshop\PhotoshopDocumentExtension.Layers.cs" />
@@ -72,11 +77,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Photoshop\LayerWr\LayerWrCommon.tt">
+    <Content Include="Photoshop\Wrappers\LayerWr\LayerWrCommon.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LayerWrCommon.txt</LastGenOutput>
     </Content>
-    <Resource Include="Photoshop\LayerWr\LayerWrCommon.txt">
+    <Resource Include="Photoshop\Wrappers\LayerWr\LayerWrCommon.txt">
       <DependentUpon>LayerWrCommon.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -98,6 +103,9 @@
       <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
       <Name>psdPH.Localization</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

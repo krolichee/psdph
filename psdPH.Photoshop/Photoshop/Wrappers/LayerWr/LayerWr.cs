@@ -1,7 +1,4 @@
 ﻿using Photoshop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Application = Photoshop.Application;
@@ -9,7 +6,7 @@ using Application = Photoshop.Application;
 namespace psdPH.Photoshop
 {
 
-    public abstract class LayerWr
+    public abstract partial class LayerWr
     {
         public class LayerStyle
         {
@@ -168,56 +165,5 @@ namespace psdPH.Photoshop
             Name = layername;
         }
 
-        public enum ConsiderFx
-        {
-            WithFx,
-            NoFx
-        }
-
-    }
-    public partial class ArtLayerWr : LayerWr
-    {
-        private ArtLayer _layer;
-        public ArtLayer ArtLayer { get => _layer; }
-        public ArtLayerWr(ArtLayer layer) =>
-            _layer = layer;
-
-    }
-    public class TextLayerWr : ArtLayerWr
-    {
-        public TextLayerWr(ArtLayer layer) : base(layer)
-        {
-            if (layer.Kind != PsLayerKind.psTextLayer)
-                throw new ArgumentException();
-        }
-        public LayerSetWr SplitTextLayer()
-        {
-            LayerSets parentLayersets = GetParentLayerSets();
-            LayerSet linesLayerSet = parentLayersets.Add();
-            linesLayerSet.Name = $"{Name}_Split";
-            var linesLayerSetWr = new LayerSetWr(linesLayerSet);
-            List<ArtLayer> lineLayers = new List<ArtLayer>();
-
-            var lines = ArtLayer.TextItem.Contents.Split('\r');
-
-            int lineCount = lines.Count();
-            for (int i = 0; i < lineCount; i++)
-            {
-                ArtLayer copy = ArtLayer.Duplicate(linesLayerSet, PsElementPlacement.psPlaceAtEnd);
-                copy.TextItem.Contents = new string('\r', i) + lines[i];
-                copy.Name = $"{Name}_line{i + 0}";
-                lineLayers.Add(copy);
-            }
-            Visible = false;
-            return linesLayerSet.Wrapper();
-        }
-    }
-    public partial class LayerSetWr : LayerWr
-    {
-        private LayerSet _layer;
-        public LayerSet LayerSet { get => _layer; }
-        public ArtLayers ArtLayers => _layer.ArtLayers;
-        public LayerSetWr(LayerSet layer) =>
-            _layer = layer;
     }
 }

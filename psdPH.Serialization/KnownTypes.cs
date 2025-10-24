@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace psdPH
 {
-   public interface ISerializable { }
     public static class KnownTypes
     {
         public static void Initialize() { }
@@ -47,6 +46,7 @@ namespace psdPH
                 }
             }
         }
+        //TODO Искоренить это безумие
         public static HashSet<Type> Types = new HashSet<Type>();
         //public static void AddTypeToKnownTypes(this object obj)
         //{

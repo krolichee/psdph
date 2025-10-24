@@ -54,6 +54,7 @@
     <Compile Include="DiskOperations.cs" />
     <Compile Include="DtoGuided.cs" />
     <Compile Include="Guided.cs" />
+    <Compile Include="ISerializable.cs" />
     <Compile Include="KnownTypes.cs" />
     <Compile Include="NullDtoConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

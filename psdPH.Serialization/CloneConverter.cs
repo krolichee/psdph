@@ -8,6 +8,8 @@ using System.Xml.Serialization;
 
 namespace psdPH.Utils
 {
+    //TODO добавить обработку ошибок
+    
     public class CloneConverter
     {
         public static string GetXml(object obj) {

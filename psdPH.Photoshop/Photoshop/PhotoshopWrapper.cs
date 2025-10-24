@@ -41,7 +41,7 @@ namespace psdPH.Photoshop
         {
             bool hasDocs = HasOpenDocuments();
             var docs = DocumentWr.GetDocs(GetPhotoshopApplication());
-            return hasDocs ? docs.FirstOrDefault(d => d.IsPathIs(path)):null;
+            return hasDocs ? docs.FirstOrDefault(d => d.IsPathPresent(path)):null;
         }
 
 

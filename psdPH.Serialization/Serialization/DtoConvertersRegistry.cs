@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace psdPH.Logic.Compositions
 {
+    //TODO преобразовать в одиночку
     public class DtoConvertersRegistry
     {
         private static readonly Dictionary<Type, DtoConverter> _converters = new Dictionary<Type, DtoConverter>();

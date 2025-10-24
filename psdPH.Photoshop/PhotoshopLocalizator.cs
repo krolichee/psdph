@@ -10,6 +10,7 @@ using static psdPH.Photoshop.LayerWr;
 
 namespace psdPH.Photoshop
 {
+    //TODO сделать общего потомка для Localizator (с ограничением, что это именно потомок)
     [Localizator]
     public static class PhotoshopLocalizator
     {

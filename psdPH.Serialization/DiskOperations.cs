@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace psdPH.Utils
 {
-
+    //TODO Добавить обработку ошибок
     public static class DiskOperations
     {
         public static T LoadXml<T>(string path)where T:class
@@ -30,16 +30,10 @@ namespace psdPH.Utils
         public static SaveXmlResult SaveXml<T>(string path, T obj)
         {
             SaveXmlResult result = new SaveXmlResult() { Serialized = false,Written = false };
-            try
-            {
                 var stringXml = CloneConverter.GetXml(obj);
                 result.Serialized = true;
                 File.WriteAllText(path, stringXml, Encoding.Unicode);
                 result.Written = true;
-            }
-            catch {
-                ;
-            }
             return result;
         }
 
