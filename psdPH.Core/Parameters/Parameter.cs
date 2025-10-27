@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace psdPH.Parameters
 {
-    public abstract class Parameter: Guided,ISerializable, ISetupable
+    public abstract class Parameter: Guided, ISetupable
     {
         public object Value;
         public string Name;

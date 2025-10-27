@@ -1,4 +1,5 @@
-﻿using static psdPH.Logic.PhotoshopDocumentExtension;
+﻿using psdPH.Photoshop;
+using static psdPH.Photoshop.PhotoshopDocumentExtension;
 using static psdPH.Photoshop.LayerWr;
 
 namespace psdPH.Logic

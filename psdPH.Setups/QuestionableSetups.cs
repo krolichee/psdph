@@ -12,6 +12,7 @@ namespace psdPH.Utils.Setups
 {
     public class QuestionableSetups
     {
+        //TODO Инкапсулировать работу со списком! Какой ужас
         public static List<Setup> Setups = new List<Setup>();
         public static void Ask()
         {

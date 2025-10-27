@@ -3,7 +3,7 @@ using psdPH.Photoshop;
 using psdPH.Utils;
 using System;
 using System.Xml.Serialization;
-using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Photoshop.PhotoshopDocumentExtension;
 using static psdPH.Logic.PhotoshopLayerExtension;
 
 namespace psdPH.Logic.Compositions
@@ -46,7 +46,7 @@ namespace psdPH.Logic.Compositions
             ArtLayerWr newLayerWr = new ArtLayerWr(originalLayerWr.CloneSmartLayer());
             originalLayerWr.Visible = false;
             var prototypeAVector = PrototypeBlob.GetRelativeLayerAlightmentVector(docWr);
-            var options = new AlignOptions(Alignment.Create("up", "left"), LayerWr.ConsiderFx.NoFx);
+            var options = new AlignOptions(Alignment.Create("up", "left"), ConsiderFx.NoFx);
             var phAVector = newLayerWr.GetAlightmentVector(phLayerWr, options);
 
             newLayerWr.TranslateV(phAVector+prototypeAVector);

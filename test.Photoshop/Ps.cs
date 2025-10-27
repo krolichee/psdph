@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Photoshop.PhotoshopDocumentExtension;
 using psdPH.Logic;
 using System.Runtime.InteropServices;
 //using System.Windows.Controls;

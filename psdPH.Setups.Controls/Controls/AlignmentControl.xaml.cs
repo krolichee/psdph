@@ -1,4 +1,5 @@
 ﻿using psdPH.Localization;
+using psdPH.Photoshop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Photoshop.PhotoshopDocumentExtension;
 
 namespace psdPH
 {

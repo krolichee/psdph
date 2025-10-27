@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Photoshop.PhotoshopDocumentExtension;
 using System.Windows.Controls;
 using System.Windows;
 using psdPH.Photoshop;
 
 namespace psdPH.Logic
 {
+	//TODO Вынести реализации операций в отдельный класс, а этот оставить чисто для поддежки расширений
 	public static partial class PhotoshopLayerExtension
 	{
 		public static Vector GetAlightmentVector(this LayerWr dynamicLayer, LayerWr targetLayer, AlignOptions options)

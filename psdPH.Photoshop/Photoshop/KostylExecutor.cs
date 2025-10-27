@@ -31,7 +31,7 @@ namespace psdPH.Photoshop
 
             try
             {
-                Console.WriteLine("Пытаемся скопировать стиль слоя...");
+                Console.WriteLine("Пытаемся выполнить костыльное действие...");
                 action();
                 result = true;
             }

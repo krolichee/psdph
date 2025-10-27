@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Windows;
-using static psdPH.Logic.PhotoshopDocumentExtension;
-using psdPH.Photoshop;
+using static psdPH.Photoshop.PhotoshopDocumentExtension;
 
 namespace psdPH.Logic
 {

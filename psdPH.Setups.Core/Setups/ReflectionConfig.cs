@@ -31,7 +31,7 @@ namespace psdPH.Setups
                 return propertyInfo.PropertyType;
             else
                 throw new ArgumentException($"Поле или свойство с именем '{FieldName}' не найдено в объекте типа '{objType.Name}'.");
-        }
+        }//TODO устранить дублирование
         public void SetValue(object value)
         {
             Type objType = GetTypeOfObj();

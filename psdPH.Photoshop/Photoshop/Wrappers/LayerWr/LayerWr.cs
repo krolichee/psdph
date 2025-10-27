@@ -8,32 +8,6 @@ namespace psdPH.Photoshop
 
     public abstract partial class LayerWr
     {
-        public class LayerStyle
-        {
-            LayerWr source;
-            public bool Toggle
-            {
-                set
-                {
-                    if (value)
-                        source.OnStyle();
-                    else
-                        source.OffStyle();
-                }
-            }
-            public LayerStyle(LayerWr source)
-            {
-                this.source = source;
-            }
-            public void Paste(LayerWr dest)
-            {
-                if (dest.HasStyle() && source.HasStyle())
-                {
-                    source.CopyStyle();
-                    dest.PasteStyle();
-                }
-            }
-        }
         //LibMethods
         public abstract void Translate(double x, double y);
         public abstract void Resize(double w, double h);
@@ -58,6 +32,7 @@ namespace psdPH.Photoshop
             return new Rect(new Point(bounds[0], bounds[1]),
                 new Point(bounds[2], bounds[3]));
         }
+        //TODO Заменить эти методы на методы с параметром ConsiderFx
         public Rect GetNoFxBoundRect() => GetRect(BoundsNoEffects);
         public Size GetNoFxBoundsSize() => GetNoFxBoundRect().Size;
         public Rect GetBoundRect() => GetRect(Bounds);
@@ -88,6 +63,7 @@ namespace psdPH.Photoshop
             MakeActive();
             Application.DoAction("onFx", "psdPH");
         }
+        //TODO заменить на ArtLayerWr
         public ArtLayer CloneSmartLayer()
         {
             this.Active = true;
@@ -95,6 +71,7 @@ namespace psdPH.Photoshop
             return GetActiveDocument().ActiveLayer;
         }
         public LayerStyle Style => new LayerStyle(this);
+        //TODO заменить на DocumentWr
         public Document GetActiveDocument() => Application.ActiveDocument;
         public bool Active
         {

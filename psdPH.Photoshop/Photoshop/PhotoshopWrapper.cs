@@ -9,6 +9,8 @@ using Application = Photoshop.Application;
 
 namespace psdPH.Photoshop
 {
+    //TODO Одиночка
+    //TODO Диспоз маршала после использования
     public static class PhotoshopWrapper
     {
         private static Application psApp;
@@ -36,7 +38,7 @@ namespace psdPH.Photoshop
             if (psApp != null)
                 Marshal.ReleaseComObject(psApp);
         }
-        
+        //TODO Переименовать
         public static DocumentWr Opened(string path)
         {
             bool hasDocs = HasOpenDocuments();

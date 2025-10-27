@@ -1,6 +1,6 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.Utils.Setups;
-using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Photoshop.PhotoshopDocumentExtension;
 using static psdPH.Logic.PhotoshopLayerExtension;
 using System.Xml.Serialization;
 using static psdPH.Photoshop.LayerWr;

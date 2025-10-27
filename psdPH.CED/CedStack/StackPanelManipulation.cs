@@ -13,11 +13,6 @@ using System.Collections;
 
 namespace psdPH.Utils.CedStack
 {
-    public struct SwapInexes
-    {
-        int Original;
-        int New;
-    }
     public class StackPanelManipulation : PanelManipulation
     {
         public StackPanelManipulation(Panel panel)

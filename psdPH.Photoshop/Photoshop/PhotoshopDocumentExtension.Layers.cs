@@ -1,5 +1,4 @@
 ﻿using Photoshop;
-using psdPH.Photoshop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +6,11 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace psdPH.Logic
+namespace psdPH.Photoshop
 {
+    //TODO Вынести реализации операций в отдельный класс, а этот оставить чисто для поддежки расширений3
     public static partial class PhotoshopDocumentExtension
     {
-        public const LayerListing DefaultListing = LayerListing.Recursive;
         public static string[] GetLayersNames(ArtLayer[] layers)
         {
             return layers.Select(l => l.Name).ToArray();
@@ -22,7 +21,7 @@ namespace psdPH.Logic
         }
         public static string[] GetLayersNames(this Document doc, LayerListing listing = DefaultListing)
         {
-            return GetArtLayers(doc, listing).Select(l => l.Name).ToArray();
+            return doc.GetArtLayers(listing).Select(l => l.Name).ToArray();
         }
         public static ArtLayer[] GetArtLayers(this Document doc, LayerListing listing = DefaultListing)
         {
@@ -56,7 +55,7 @@ namespace psdPH.Logic
             {
                 return kinds.Contains(layer.Kind);
             }
-            return GetArtLayers(doc, listing).Where(filter).ToArray();
+            return doc.GetArtLayers(listing).Where(filter).ToArray();
         }
         public static ArtLayer[] GetLayersByKind(this Document doc, PsLayerKind kind, LayerListing listing = DefaultListing)
         {
@@ -64,7 +63,7 @@ namespace psdPH.Logic
             {
                 return kind == layer.Kind;
             }
-            return GetArtLayers(doc, listing).Where(filter).ToArray();
+            return doc.GetArtLayers(listing).Where(filter).ToArray();
         }
 
         private static ArtLayer FindLayerById(this Document doc, int layerId, LayerListing listing = DefaultListing)

@@ -1,8 +1,7 @@
 ﻿using Photoshop;
-using psdPH.Logic;
 using System.Collections.Generic;
 using System.Linq;
-using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Photoshop.PhotoshopDocumentExtension;
 
 namespace psdPH.Photoshop
 {

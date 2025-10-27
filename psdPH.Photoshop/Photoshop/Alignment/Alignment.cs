@@ -4,24 +4,8 @@ using System;
 using System.Windows.Media;
 using psdPH.Localization;
 
-namespace psdPH.Logic
+namespace psdPH.Photoshop
 {
-    public enum HAilgnment
-    {
-        Left,
-        Right,
-        Center,
-        None
-    }
-    public enum VAilgnment
-    {
-        Top,
-        Bottom,
-        Center,
-        None
-    }
-    public static partial class PhotoshopDocumentExtension
-    {
         public class Alignment: IEquatable<Alignment>
         {
             public override int GetHashCode() => (int)H * 4 + (int)V;
@@ -88,17 +72,17 @@ namespace psdPH.Logic
 
             public bool Equals(Alignment other)
             {
-                return this.H == other.H && this.V == other.V;
+                return H == other.H && V == other.V;
             }
+            //TODO добавить перегрузку для обработчика строкового представления
             public override string ToString()
             {
-                return $"Гориз. = {LocalizationService.Localize( this.H)}\nВерт. = {LocalizationService.Localize(this.V)}";
+                return $"Гориз. = {H.Localize( )}\nВерт. = {V.Localize()}";
             }
             //public string ToLocalizedString()
             //{
             //    return $"Горизонтально: {EnumLocalization.GetLocalizedDescription(this.H)}\n" +
             //        $"Вертикально: {EnumLocalization.GetLocalizedDescription(this.V)}";
             //}
-        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Photoshop;
 using psdPH.Localization;
-using psdPH.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;

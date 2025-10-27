@@ -7,6 +7,7 @@ using static psdPH.Photoshop.LayerWr;
 
 namespace psdPH.Logic
 {
+    //TODO Вынести реализации операций в отдельный класс, а этот оставить чисто для поддежки расширений
     public static partial class PhotoshopLayerExtension
     {
         public static void AdjustToWidth(this LayerWr layer, double width, ConsiderFx considerFx)

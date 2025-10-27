@@ -1,11 +1,11 @@
-﻿using psdPH.Logic;
+﻿using psdPH.Photoshop;
 using psdPH.Setups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Photoshop.PhotoshopDocumentExtension;
 
 namespace psdPH.Utils.Setups
 {
@@ -13,7 +13,8 @@ namespace psdPH.Utils.Setups
     {
         public AlignmentSetup(ReflectionConfig config):base(config)
         {
-            var aliControl = new AlignmentControl(config.GetValue() as Alignment);
+            Alignment alignment = config.GetValue() as Alignment;
+            var aliControl = new AlignmentControl();
             aliControl.Dimension = 30;
             Control = aliControl;
             _stack.Children.Add(aliControl);

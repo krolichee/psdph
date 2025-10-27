@@ -5,6 +5,7 @@ using System.Windows.Controls;
 
 namespace psdPH.Setups
 {
+    //TODO Жоска отрефакторить
     public class Setup
     {
         public delegate void AcceptedEvent();
@@ -50,6 +51,7 @@ namespace psdPH.Setups
             _config = config;
             _stack.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
+        //TODO Клонирование, а не изменение
         public Setup NonSafe()
         {
             nonSafe = true;

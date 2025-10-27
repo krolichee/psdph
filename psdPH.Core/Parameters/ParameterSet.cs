@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace psdPH.Parameters
 {
+    //TODO Инкапсулировать использование типа Collection
     public static class ParameterSetExtension
     {
         public static void Add(this ParameterSet ps, Parameter parameter) => ps.AsCollection().Add(parameter);

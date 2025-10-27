@@ -53,8 +53,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PhotoshopLocalizator.cs" />
-    <Compile Include="Photoshop\Alignment.cs" />
+    <Compile Include="Photoshop\Alignment\Alignment.cs" />
     <Compile Include="Photoshop\AlignOptions.cs" />
+    <Compile Include="Photoshop\Alignment\HAilgnment.cs" />
+    <Compile Include="Photoshop\Alignment\VAilgnment.cs" />
     <Compile Include="Photoshop\Wrappers\DocumentWr\DocumentWr.cs" />
     <Compile Include="Photoshop\KostylExecutor.cs" />
     <Compile Include="Photoshop\Wrappers\LayerWr\ArtLayerWr.Common.cs" />
@@ -64,9 +66,10 @@
     <Compile Include="Photoshop\Wrappers\LayerWr\LayerSetWr.Common.cs" />
     <Compile Include="Photoshop\Wrappers\LayerWr\LayerSetWr.cs" />
     <Compile Include="Photoshop\Wrappers\LayerWr\LayerWr.cs" />
+    <Compile Include="Photoshop\Wrappers\LayerWr\LayerWr.LayerStyle.cs" />
     <Compile Include="Photoshop\Wrappers\LayerWr\LDFilter.cs" />
     <Compile Include="Photoshop\Wrappers\LayerWr\TextLayerWr.cs" />
-    <Compile Include="Photoshop\WrapperExtension.cs" />
+    <Compile Include="Photoshop\Wrappers\WrapperExtension.cs" />
     <Compile Include="Photoshop\OutputSaver.cs" />
     <Compile Include="Photoshop\PhotoshopDocumentExtension.Layers.cs" />
     <Compile Include="Photoshop\PhotoshopDocumentExtenson.Layersets.cs" />
@@ -107,5 +110,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

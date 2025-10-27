@@ -3,7 +3,7 @@ using psdPH.Logic.Compositions;
 using psdPH.Setups;
 using System.Linq;
 using System.Xml.Serialization;
-using static psdPH.Logic.PhotoshopDocumentExtension;
+using static psdPH.Photoshop.PhotoshopDocumentExtension;
 using static psdPH.Logic.PhotoshopLayerExtension;
 using static psdPH.Photoshop.LayerWr;
 

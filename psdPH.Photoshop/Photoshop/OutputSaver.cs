@@ -24,7 +24,7 @@ namespace psdPH.Photoshop
             }
             catch
             {
-                //Interop даже успешно сохраняет с ошибкой. это фотошоп, детка
+                //У Interop даже успешное сохранение с ошибкой. это фотошоп, детка
             }
             doc.SaveAs(psdPath, new PhotoshopSaveOptions(),true,PsExtensionType.psLowercase);
         }
