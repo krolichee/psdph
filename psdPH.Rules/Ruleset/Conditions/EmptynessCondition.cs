@@ -5,7 +5,7 @@ namespace psdPH.Logic.Rules
 {
     public class EmptynessCondition : TextCondition
     {
-        
+        //TODO Локализация отправлена в далёкое эротическое путешествие???
         public override string ToString() => "Tекст пустой?";
         public EmptynessCondition() {
             SetupsRegistry.Register<EmptynessCondition>(new TextConditionSetupSource());

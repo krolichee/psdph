@@ -22,7 +22,7 @@ namespace psdPH.Logic.Ruleset.Rules
         public abstract bool IsSetUp();
 
         //Using
-        abstract public void Apply(DocumentWr doc);
+        public abstract void Apply(DocumentWr doc);
         public virtual CompositionRule Clone()
         {
             CompositionRule result = CloneConverter.Clone(this) as CompositionRule;

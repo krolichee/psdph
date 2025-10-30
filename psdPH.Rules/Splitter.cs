@@ -4,7 +4,8 @@ using System.Linq;
 
 namespace psdPH.Utils
 {
-    public partial class SplitTextToRatio
+    //TODO Задокументировать (вообще то, всё надо документировать, если что)
+    public class SplitTextToRatio
     {
         public static class Splitter
         {

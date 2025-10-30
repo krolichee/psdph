@@ -56,7 +56,6 @@
     <Resource Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ohshed.mdj" />
     <None Include="psdPH Nodes.drawio" />
     <None Include="psdPH Template UI.drawio" />
     <None Include="psdPH.mdj" />
