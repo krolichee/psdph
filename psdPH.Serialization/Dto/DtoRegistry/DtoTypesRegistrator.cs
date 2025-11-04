@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class DtoRegistrator
+    class DtoTypesRegistrator
     {
         public static void RegisterInitialize() {
             // Загружаем все сборки, на которые есть ссылки
@@ -31,7 +31,7 @@ namespace psdPH.Serialization
                     {
                         if (typeof(Dto).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
                         {
-                            DtoRegistry.Add(type);
+                            DtoTypesRegistry.Add(type);
                         }
                     }
                 }

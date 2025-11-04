@@ -18318,7 +18318,7 @@
 													"top": 591,
 													"width": 190.72802734375,
 													"height": 13,
-													"text": "DtoRegistry"
+													"text": "DtoTypesRegistry"
 												},
 												{
 													"_type": "LabelView",
@@ -20677,9 +20677,9 @@
 													"font": "Arial;13;1",
 													"left": 1493,
 													"top": 703,
-													"width": 111.62353515625,
+													"width": 127.61328125,
 													"height": 13,
-													"text": "DtoRegistrator"
+													"text": "DtoTypesRegistrator"
 												},
 												{
 													"_type": "LabelView",
@@ -20715,7 +20715,7 @@
 											"font": "Arial;13;0",
 											"left": 1488,
 											"top": 696,
-											"width": 121.62353515625,
+											"width": 137.61328125,
 											"height": 25,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGaT3AFVWlmSZk="
@@ -20743,7 +20743,7 @@
 											"font": "Arial;13;0",
 											"left": 1488,
 											"top": 721,
-											"width": 121.62353515625,
+											"width": 137.61328125,
 											"height": 10
 										},
 										{
@@ -20769,7 +20769,7 @@
 													"font": "Arial;13;0",
 													"left": 1493,
 													"top": 736,
-													"width": 111.62353515625,
+													"width": 127.61328125,
 													"height": 13,
 													"text": "+InitializeRegistry()",
 													"horizontalAlignment": 0
@@ -20779,7 +20779,7 @@
 											"font": "Arial;13;0",
 											"left": 1488,
 											"top": 731,
-											"width": 121.62353515625,
+											"width": 137.61328125,
 											"height": 23
 										},
 										{
@@ -20822,7 +20822,7 @@
 									"containerChangeable": true,
 									"left": 1488,
 									"top": 696,
-									"width": 121.62353515625,
+									"width": 137.61328125,
 									"height": 58,
 									"nameCompartment": {
 										"$ref": "AAAAAAGaT3AFVWlljRI="
@@ -20861,8 +20861,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 1650,
-											"top": 661,
+											"left": 1658,
+											"top": 660,
 											"height": 13,
 											"alpha": 1.5707963267948966,
 											"distance": 15,
@@ -20882,8 +20882,8 @@
 											},
 											"visible": null,
 											"font": "Arial;13;0",
-											"left": 1645,
-											"top": 647,
+											"left": 1653,
+											"top": 646,
 											"height": 13,
 											"alpha": 1.5707963267948966,
 											"distance": 30,
@@ -20903,8 +20903,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 1661,
-											"top": 690,
+											"left": 1669,
+											"top": 689,
 											"height": 13,
 											"alpha": -1.5707963267948966,
 											"distance": 15,
@@ -20922,7 +20922,7 @@
 										"$ref": "AAAAAAGaT3AFVWlk3wY="
 									},
 									"lineStyle": 1,
-									"points": "1610:700;1703:664",
+									"points": "1626:696;1703:666",
 									"showVisibility": true,
 									"nameLabel": {
 										"$ref": "AAAAAAGaT3Js+mnGhBs="
@@ -21661,7 +21661,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGaC+xJV7keDvw="
 							},
-							"name": "DtoRegistry",
+							"name": "DtoTypesRegistry",
 							"ownedElements": [
 								{
 									"_type": "UMLDependency",
@@ -22309,7 +22309,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGaC+xJV7keDvw="
 							},
-							"name": "DtoRegistrator",
+							"name": "DtoTypesRegistrator",
 							"ownedElements": [
 								{
 									"_type": "UMLDependency",

@@ -53,9 +53,9 @@
     <Compile Include="CloneConverter.cs" />
     <Compile Include="DiskOperations.cs" />
     <Compile Include="Dto\DtoConverters\DtoConverterRegistrator.cs" />
-    <Compile Include="Dto\DtoRegistry\DtoRegistrator.cs" />
+    <Compile Include="Dto\DtoRegistry\DtoTypesRegistrator.cs" />
     <Compile Include="Guided.cs" />
-    <Compile Include="Dto\DtoRegistry\DtoRegistry.cs" />
+    <Compile Include="Dto\DtoRegistry\DtoTypesRegistry.cs" />
     <Compile Include="Guid\GuidScopeLoader.cs" />
     <Compile Include="Dto\DtoConverters\NullDtoConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace psdPH
 {
-    public static class DtoRegistry
+    public static class DtoTypesRegistry
     {
         public static HashSet<Type> Types = new HashSet<Type>();
         public static void Add(Type type)
