@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace psdPH.Nodes
 {
     public delegate void NodeSetupEvent(NodeSetup nodeSetup);
+    //проблемы известно с чем (с инкапсуляцией) и не только
     public class NodeSetup
     {
         public Node Node;
@@ -24,9 +25,10 @@ namespace psdPH.Nodes
             Node.Link(this,other);
 
         }
-        public void IsLinked()
+        public bool IsLinked()
         {
-            Node.IsLinkedSetup(Setup);
+            //нет защиты от null
+            return Node.IsLinkedSetup(Setup);
         }
         public override bool Equals(object obj)
         {
@@ -39,9 +41,9 @@ namespace psdPH.Nodes
             return Setup.GetHashCode() * 23 + Node?.GetHashCode() ?? 0;
         }
 
-        public bool CanLink(NodeSetup nodeSetup)
+        public bool CanLink(NodeSetup other)
         {
-            return Node.CheckOutLink(Setup,nodeSetup.Setup);
+            return Node.CheckOutLink(Setup,other.Setup);
         }
     }
 }

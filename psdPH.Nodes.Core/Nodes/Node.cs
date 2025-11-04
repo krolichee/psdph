@@ -8,6 +8,10 @@ using System.Collections.ObjectModel;
 namespace psdPH.Nodes
 {
     public delegate void NodeEvent(Node node);
+    //TODO отсоритровать члены, пересмотреть зоны ответственности и инкапсуляцию
+    //Вынести ответственнось за графы в отдельный класс
+    //Вынести ответственность за выполнение графа в отдельный класс
+    //Вынести валидацию создания связей в отдельный класс
     public abstract partial class Node:DtoGuided
     {
         [XmlIgnore]

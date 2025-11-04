@@ -18,6 +18,7 @@ namespace psdPH.Logic.Compositions
         { 
             LayerDescriptor = LayerDescriptor.Layer(layername); 
         }
+        //Ужасная неочевидная условность, тянущаяся от наследования от DtoSerialized. Фу
         public LayerComposition():base() { }
         //protected LayerWr getLayerWr(Document doc, string layerName) => doc.GetLayerWrByName(layerName);
     }

@@ -28,6 +28,8 @@ namespace psdPH.Logic.Compositions
 
     public class TextLeafDto:LayerCompostionDto
     {
+        //TODO Глобально, композиция не должна хранить конкретные значения,
+        //она только должна иметь методы для установки значений при рендере
         public string Text;
     }
     class TextLeafDtoConverter : LayerCompositionDtoConverter

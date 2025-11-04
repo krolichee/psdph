@@ -11,6 +11,7 @@ namespace psdPH.Nodes
                 FromNodeSetup = from;
                 ToNodeSetup = to;
             }
+            //TODO Это ответственность класса
             public bool Cycled
             {
                 get

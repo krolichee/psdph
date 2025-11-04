@@ -33,6 +33,7 @@ namespace psdPH.Logic.Compositions
         }
         protected override DtoConverter DtoConverter => new PlaceholderDtoConverter();
         public PlaceholderLeaf() : base() {   }
+        //Зачем это переопределять?
         public override void RestoreParents(Composition parent = null)
         {
             base.RestoreParents(parent);

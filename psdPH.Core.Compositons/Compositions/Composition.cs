@@ -35,6 +35,7 @@ namespace psdPH
         }
         [XmlIgnore]
         virtual public Composition Parent { get; set; }
+        //переименовать в GetSiblings
         protected T[] Siblings<T>() where T : Composition
         {
             if (Parent == null)
@@ -84,6 +85,7 @@ namespace psdPH
 
         //Using
         abstract public void Apply(DocumentWr doc);
+        //Ни о каких "мэтчингах" класс не должен знать
         public abstract bool IsMatching(DocumentWr doc);
         public virtual MatchingResult IsMatchingRouted(DocumentWr doc)
         {
