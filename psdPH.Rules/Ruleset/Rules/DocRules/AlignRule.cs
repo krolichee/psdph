@@ -51,14 +51,14 @@ namespace psdPH.Logic.Ruleset.Rules
         public override object GetDto(object _obj)
         {
             var dto = new AlignRuleDto();
-            ExportDto(_obj, dto);
+            UpdateDto(_obj, dto);
             return dto;
         }
-        protected override void ExportDto(object _obj, object _dto)
+        protected override void UpdateDto(object _obj, object _dto)
         {
             var obj = _obj as AlignRule;
             var dto = _dto as AlignRuleDto;
-            base.ExportDto(_obj, _dto);
+            base.UpdateDto(_obj, _dto);
             dto.ConsiderFx = obj.ConsiderFx;
             dto.Alignment = obj.Alignment;
         }

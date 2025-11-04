@@ -1,4 +1,4 @@
-﻿using psdPH.Logic.Serialization;
+﻿using psdPH.Serialization;
 using System;
 using System.IO;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace psdPH.Utils
     {
         public static string GetXml(object obj) {
             var type = obj.GetType();
-            XmlSerializer serializer = new XmlSerializer(type,KnownTypes.Types.ToArray());
+            XmlSerializer serializer = new XmlSerializer(type,DtoRegistry.Types.ToArray());
             StringBuilder sb = new StringBuilder();
             StringWriter sw = new StringWriter(sb);
             serializer.Serialize(sw, obj);
@@ -29,7 +29,7 @@ namespace psdPH.Utils
         {
             GuidScope.StartLoad(); 
             StringReader sr = new StringReader(xmlString);
-            XmlSerializer serializer = new XmlSerializer(type, KnownTypes.Types.ToArray());
+            XmlSerializer serializer = new XmlSerializer(type, DtoRegistry.Types.ToArray());
             object result = serializer.Deserialize(sr);
             GuidScope.Current.EndOfLoad();
             return result;

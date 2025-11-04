@@ -89,7 +89,7 @@ namespace psdPH
 
             LoadFoldersIntoMenu();
             InitializeButtonCommands();
-            KnownTypes.Initialize();
+            DtoRegistry.Initialize();
 
         }
         void InitializeButtonCommands()

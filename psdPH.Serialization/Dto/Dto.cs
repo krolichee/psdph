@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace psdPH.Logic
+namespace psdPH.Serialization
 {
-    public interface Dto:ISerializable
+    public interface Dto
     {
     }
 }

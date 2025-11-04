@@ -52,16 +52,19 @@
   <ItemGroup>
     <Compile Include="CloneConverter.cs" />
     <Compile Include="DiskOperations.cs" />
-    <Compile Include="DtoGuided.cs" />
+    <Compile Include="Dto\DtoConverters\DtoConverterRegistrator.cs" />
+    <Compile Include="Dto\DtoRegistry\DtoRegistrator.cs" />
     <Compile Include="Guided.cs" />
-    <Compile Include="ISerializable.cs" />
-    <Compile Include="KnownTypes.cs" />
-    <Compile Include="NullDtoConverter.cs" />
+    <Compile Include="Dto\DtoRegistry\DtoRegistry.cs" />
+    <Compile Include="Guid\GuidScopeLoader.cs" />
+    <Compile Include="Dto\DtoConverters\NullDtoConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\Dto.cs" />
-    <Compile Include="Serialization\DtoConverter.cs" />
-    <Compile Include="Serialization\DtoConvertersRegistry.cs" />
-    <Compile Include="Serialization\GuidScope.cs" />
+    <Compile Include="Dto\Dto.cs" />
+    <Compile Include="Dto\DtoConverters\DtoConverter.cs" />
+    <Compile Include="Dto\DtoConverters\DtoConvertersRegistry.cs" />
+    <Compile Include="Dto\DtoConverters\DtoMapper.cs" />
+    <Compile Include="Guid\GuidScope.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

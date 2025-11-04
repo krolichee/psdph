@@ -1,15 +1,14 @@
-﻿using psdPH.Logic.Serialization;
+﻿using psdPH.Serialization;
 using System;
 
 namespace psdPH.Nodes
 {
-    public class Guided: ISerializable
+    public class Guided
     {
        public Guid Guid { get; set; }
         public Guided()
         {
             Guid = Guid.NewGuid();
-            GuidScope.Current?.Add(this);
         }
         public override int GetHashCode()
         {

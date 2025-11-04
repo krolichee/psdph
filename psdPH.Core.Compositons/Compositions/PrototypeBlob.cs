@@ -38,22 +38,22 @@ namespace psdPH.Logic.Compositions
         }
         public PlaceholderLeaf[] Placeholders => Siblings<PlaceholderLeaf>().Where(p=>p.PrototypeBlob==this).ToArray();
     }
-    public class PrototypeBlobDto : LayerCompostionDto
+    public class PrototypeBlobDto : LayerCompositionDto
     {
         public LayerDescriptor RelativeLayerDescriptor;
     }
     public class PrototypeBlobDtoConverter : LayerCompositionDtoConverter
     {
-        public override void ApplyDto(object _obj, object _dto)
+        public override void GetEntity(object _obj, object _dto)
         {
-            base.ApplyDto(_obj, _dto);
+            base.GetEntity(_obj, _dto);
             var obj = _obj as PrototypeBlob;
             var dto = _dto as PrototypeBlobDto;
             obj.RelativeLayerDescriptor = dto.RelativeLayerDescriptor;
         }
-        protected override void ExportDto(object _obj, object _dto)
+        protected override void UpdateDto(object _obj, object _dto)
         {
-            base.ExportDto(_obj, _dto);
+            base.UpdateDto(_obj, _dto);
             var obj = _obj as PrototypeBlob;
             var dto = _dto as PrototypeBlobDto;
             dto.RelativeLayerDescriptor = obj.RelativeLayerDescriptor;
@@ -61,7 +61,7 @@ namespace psdPH.Logic.Compositions
         public override object GetDto(object _obj)
         {
             var dto = new PrototypeBlobDto();
-            ExportDto(_obj,dto);
+            UpdateDto(_obj,dto);
             return dto;
         }
     }

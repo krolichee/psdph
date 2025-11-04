@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace psdPH
+namespace psdPH.Serialization
 {
-    public static class KnownTypes
+    class DtoRegistrator
     {
-        public static void Initialize() { }
-        static KnownTypes()
-        {
+        public static void RegisterInitialize() {
             // Загружаем все сборки, на которые есть ссылки
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
             var loadedPaths = loadedAssemblies.Select(a => a.Location).ToArray();
@@ -33,9 +29,9 @@ namespace psdPH
                 {
                     foreach (var type in assembly.GetTypes())
                     {
-                        if (typeof(ISerializable).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
+                        if (typeof(Dto).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
                         {
-                            Types.Add(type);
+                            DtoRegistry.Add(type);
                         }
                     }
                 }
@@ -46,11 +42,5 @@ namespace psdPH
                 }
             }
         }
-        //TODO Искоренить это безумие
-        public static HashSet<Type> Types = new HashSet<Type>();
-        //public static void AddTypeToKnownTypes(this object obj)
-        //{
-        //    Types.Add(obj.GetType());
-        //}
     }
 }

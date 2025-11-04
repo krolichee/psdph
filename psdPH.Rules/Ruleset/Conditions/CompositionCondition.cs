@@ -19,7 +19,7 @@ namespace psdPH.Logic.Rules
         public CompositionCondition(Composition composition)
         {
             Composition = composition;
-            KnownTypes.Types.Add(this.GetType());
+            DtoRegistry.Types.Add(this.GetType());
         }
     }
     

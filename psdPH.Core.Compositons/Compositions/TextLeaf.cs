@@ -26,7 +26,7 @@ namespace psdPH.Logic.Compositions
         public TextLeaf():base() {  }
     }
 
-    public class TextLeafDto:LayerCompostionDto
+    public class TextLeafDto:LayerCompositionDto
     {
         //TODO Глобально, композиция не должна хранить конкретные значения,
         //она только должна иметь методы для установки значений при рендере
@@ -34,11 +34,11 @@ namespace psdPH.Logic.Compositions
     }
     class TextLeafDtoConverter : LayerCompositionDtoConverter
     {
-        public override void ApplyDto(object _obj, object _dto)
+        public override void GetEntity(object _obj, object _dto)
         {
             var obj = _obj as TextLeaf;
             var dto = (TextLeafDto)_dto;
-            base.ApplyDto(_obj,_dto);
+            base.GetEntity(_obj,_dto);
             obj.Text = dto.Text ?? string.Empty;
         }
 
@@ -46,14 +46,14 @@ namespace psdPH.Logic.Compositions
         {
             var obj = _obj as TextLeaf;
             var dto = new TextLeafDto();
-            ExportDto(obj,dto);
+            UpdateDto(obj,dto);
             return dto;
         }
-        protected override void ExportDto(object _obj, object _dto)
+        protected override void UpdateDto(object _obj, object _dto)
         {
             var dto = _dto as TextLeafDto;
             var obj = _obj as TextLeaf;
-            base.ExportDto(_obj, _dto);
+            base.UpdateDto(_obj, _dto);
             dto.Text = obj.Text;
         }
     }

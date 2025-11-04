@@ -38,14 +38,14 @@ namespace psdPH.Logic.Ruleset.Rules
         public override object GetDto(object _obj)
         {
             var dto = new OpacityRuleDto();
-            ExportDto(_obj, dto);
+            UpdateDto(_obj, dto);
             return dto;
         }
-        protected override void ExportDto(object _obj, object _dto)
+        protected override void UpdateDto(object _obj, object _dto)
         {
             var obj = _obj as OpacityRule;
             var dto = _dto as OpacityRuleDto;
-            base.ExportDto(_obj, _dto);
+            base.UpdateDto(_obj, _dto);
             dto.Opacity = obj.Opacity;
         }
     }

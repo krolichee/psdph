@@ -2,14 +2,13 @@
 using psdPH.Logic.Parameters;
 using psdPH.Utils.Setups;
 using System.Collections.Generic;
-using psdPH.Logic;
 using System;
 using psdPH.Logic.Compositions;
-using psdPH.Logic.Serialization;
 using System.Xml.Serialization;
 using psdPH.Setups;
 using psdPH.Parameters;
 using psdPH.Localization;
+using psdPH.Serialization;
 
 namespace psdPH.Nodes
 {
@@ -48,7 +47,7 @@ namespace psdPH.Nodes
     }
     public class ParameterNodeDtoConverter : DtoConverter
     {
-        public override void ApplyDto(object _obj, object _dto)
+        public override void GetEntity(object _obj, object _dto)
         {
             var obj = _obj as ParameterNode;
             var dto = _dto as ParameterNodeDto;

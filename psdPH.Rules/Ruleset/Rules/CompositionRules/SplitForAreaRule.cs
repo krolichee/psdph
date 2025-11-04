@@ -40,31 +40,31 @@ namespace psdPH.Logic.Rules
         }
 
     }
-    public class SplitForAreaRuleDto : LayerCompostionDto
+    public class SplitForAreaRuleDto : LayerCompositionDto
     {
         public string DryText;
     }
     public class SplitForAreaRuleDtoConverter : LayerRuleDtoConverter
     {
-        public override void ApplyDto(object _obj, object _dto)
+        public override void GetEntity(object _obj, object _dto)
         {
             var obj = _obj as SplitForAreaRule;
             var dto = _dto as SplitForAreaRule;
-            base.ApplyDto(_obj, _dto);
+            base.GetEntity(_obj, _dto);
             dto.DryText = obj.DryText;
         }
 
         public override object GetDto(object _obj)
         {
             var dto = new SplitForAreaRuleDto();
-            ExportDto(_obj,dto);
+            UpdateDto(_obj,dto);
             throw new NotImplementedException();
         }
-        protected override void ExportDto(object _obj, object _dto)
+        protected override void UpdateDto(object _obj, object _dto)
         {
             var obj = _obj as SplitForAreaRule;
             var dto = _dto as SplitForAreaRuleDto;
-            base.ExportDto(_obj, _dto);
+            base.UpdateDto(_obj, _dto);
             dto.DryText = obj.DryText;
         }
     }

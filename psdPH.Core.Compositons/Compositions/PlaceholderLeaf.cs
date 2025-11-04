@@ -1,10 +1,11 @@
-﻿using psdPH.Logic.Serialization;
-using psdPH.Photoshop;
+﻿using psdPH.Photoshop;
 using psdPH.Utils;
 using System;
 using System.Xml.Serialization;
 using static psdPH.Photoshop.PhotoshopDocumentExtension;
 using static psdPH.Logic.PhotoshopLayerExtension;
+using psdPH.Serialization.Serialization;
+using psdPH.Serialization;
 
 namespace psdPH.Logic.Compositions
 {
@@ -65,33 +66,45 @@ namespace psdPH.Logic.Compositions
                 && PrototypeBlob.IsMatching(doc);
         }
     }
-    public class PlaceholderDto : LayerCompostionDto
+    public class PlaceholderDto : LayerCompositionDto
     {
         public Guid PrototypeGuid;
     }
-    class PlaceholderDtoConverter : LayerCompositionDtoConverter
+    class PlaceholderDtoConverter : DtoConverter
     {
-        public override void ApplyDto(object _obj, object _dto)
+        public override void GetEntity(object _obj, object _dto)
         {
             var obj = _obj as PlaceholderLeaf;
             var dto = _dto as PlaceholderDto;
-            base.ApplyDto(_obj, _dto);
+            base.GetEntity(_obj, _dto);
             GuidScope.Current.GuidsLoaded += () => 
             obj.PrototypeBlob = GuidScope.Current.GetByGuid(dto.PrototypeGuid) as PrototypeBlob;
         }
-        protected override void ExportDto(object _obj, object _dto)
+        protected override void UpdateDto(object _obj, object _dto)
         {
             var obj = _obj as PlaceholderLeaf;
             var dto = _dto as PlaceholderDto;
-            base.ExportDto(_obj, _dto);
+            new LayerCompositionDtoConverter().UpdateDto(_obj, _dto);
             dto.PrototypeGuid = obj.PrototypeBlob.Guid;
         }
 
         public override object GetDto(object _obj)
         {
             var dto = new PlaceholderDto();
-            ExportDto(_obj, dto);
+            UpdateDto(_obj, dto);
             return dto;
+        }
+    }
+    class PlaceholderDtoMapper : DtoMapper<PlaceholderLeaf, PlaceholderDto>
+    {
+        public override void UpdateDto(PlaceholderLeaf entity, PlaceholderDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void UpdateEntity(PlaceholderLeaf entity, PlaceholderDto dto)
+        {
+            throw new NotImplementedException();
         }
     }
 

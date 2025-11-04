@@ -15,7 +15,7 @@ namespace psdPH.Logic.Ruleset.Conditions
         public object Dto
         {
             get => DtoConvertersRegistry.GetFor(this).GetDto(this);
-            set => DtoConvertersRegistry.GetFor(this).ApplyDto(this, value);
+            set => DtoConvertersRegistry.GetFor(this).GetEntity(this, value);
         }
 
         //Setups

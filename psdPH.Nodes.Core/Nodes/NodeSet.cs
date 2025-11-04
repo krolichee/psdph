@@ -1,4 +1,4 @@
-﻿using psdPH.Logic.Serialization;
+﻿using psdPH.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

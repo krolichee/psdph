@@ -15,7 +15,7 @@ using System.Xml.Serialization;
 namespace psdPH
 {
     [Serializable]
-    public abstract class Composition : DtoGuided
+    public abstract class Composition
     {
         //NodeSet
         public NodeSet NodeSet = new NodeSet();

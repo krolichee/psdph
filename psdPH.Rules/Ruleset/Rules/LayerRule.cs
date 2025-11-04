@@ -1,6 +1,7 @@
 ﻿using psdPH.Logic.Compositions;
 using psdPH.Photoshop;
 using psdPH.Rules;
+using psdPH.Serialization;
 using psdPH.Setups;
 using psdPH.Utils.Setups;
 using System;
@@ -28,7 +29,7 @@ namespace psdPH.Logic.Ruleset.Rules
     }
     public class LayerRuleDtoConverter : DtoConverter
     {
-        public override void ApplyDto(object _obj, object _dto)
+        public override void GetEntity(object _obj, object _dto)
         {
             var obj = _obj as LayerRule;
             var dto = _dto as LayerRuleDto;
@@ -46,10 +47,10 @@ namespace psdPH.Logic.Ruleset.Rules
         public override object GetDto(object _obj)
         {
             var dto = new LayerRuleDto();
-            ExportDto(_obj,dto);
+            UpdateDto(_obj,dto);
             return dto;
         }
-        protected override void ExportDto(object _obj, object _dto)
+        protected override void UpdateDto(object _obj, object _dto)
         {
             var obj = _obj as LayerRule;
             var dto = _dto as LayerRuleDto;

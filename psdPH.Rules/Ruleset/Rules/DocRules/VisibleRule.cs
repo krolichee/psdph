@@ -30,9 +30,9 @@ namespace psdPH.Logic.Ruleset.Rules
     }
     public class VisibleRuleDtoConverter : LayerRuleDtoConverter
     {
-        public override void ApplyDto(object _obj, object _dto)
+        public override void GetEntity(object _obj, object _dto)
         {
-            base.ApplyDto(_obj, _dto);
+            base.GetEntity(_obj, _dto);
             var obj = _obj as VisibleRule;
             var dto = _dto as VisibleRuleDto;
             dto.Toggle = obj.Toggle;
@@ -41,9 +41,9 @@ namespace psdPH.Logic.Ruleset.Rules
         {
             return base.GetDto(_obj);
         }
-        protected override void ExportDto(object _obj, object _dto)
+        protected override void UpdateDto(object _obj, object _dto)
         {
-            base.ExportDto(_obj, _dto);
+            base.UpdateDto(_obj, _dto);
             var obj = _obj as VisibleRule;
             var dto = _dto as VisibleRuleDto;
             obj.Toggle = dto.Toggle;
