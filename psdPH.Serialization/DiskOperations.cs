@@ -1,4 +1,4 @@
-﻿using psdPH.Logic.Serialization;
+﻿using psdPH.Serialization;
 using System;
 using System.IO;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace psdPH.Utils
             {
                 var stringXml = File.ReadAllText(path, Encoding.Unicode);
                 
-                result = CloneConverter.GetObj<T>(stringXml);
+                result = XmlSerializerHelper.GetObj<T>(stringXml);
                 
             }
             return result;
@@ -30,7 +30,7 @@ namespace psdPH.Utils
         public static SaveXmlResult SaveXml<T>(string path, T obj)
         {
             SaveXmlResult result = new SaveXmlResult() { Serialized = false,Written = false };
-                var stringXml = CloneConverter.GetXml(obj);
+                var stringXml = XmlSerializerHelper.GetXml(obj);
                 result.Serialized = true;
                 File.WriteAllText(path, stringXml, Encoding.Unicode);
                 result.Written = true;

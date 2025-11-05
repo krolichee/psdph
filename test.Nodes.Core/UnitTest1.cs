@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using psdPH.Nodes;
 using psdPH.Nodes.Core;
-using psdPH.Utils;
+using psdPH.Serialization;
 
 namespace test.Nodes.Core
 {
@@ -14,7 +14,7 @@ namespace test.Nodes.Core
         {
             NodeSet ns = new NodeSet();
             ns.Nodes.Add(new MuxNode());
-            CloneConverter.GetXml(ns);
+            XmlSerializerHelper.GetXml(ns);
         }
     }
 }

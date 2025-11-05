@@ -50,7 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CloneConverter.cs" />
+    <Compile Include="Dto\Dto.cs" />
+    <Compile Include="XmlForcedConverter.cs" />
+    <Compile Include="XmlSerializerHelper.cs" />
+    <Compile Include="Cloner.cs" />
     <Compile Include="DiskOperations.cs" />
     <Compile Include="Dto\DtoConverters\DtoConverterRegistrator.cs" />
     <Compile Include="Dto\DtoRegistry\DtoTypesRegistrator.cs" />
@@ -59,7 +62,6 @@
     <Compile Include="Guid\GuidScopeLoader.cs" />
     <Compile Include="Dto\DtoConverters\NullDtoConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Dto\Dto.cs" />
     <Compile Include="Dto\DtoConverters\DtoConverter.cs" />
     <Compile Include="Dto\DtoConverters\DtoConvertersRegistry.cs" />
     <Compile Include="Dto\DtoConverters\DtoMapper.cs" />

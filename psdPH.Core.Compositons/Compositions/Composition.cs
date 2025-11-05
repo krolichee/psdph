@@ -1,12 +1,11 @@
 ﻿using Photoshop;
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
-using psdPH.Logic.Serialization;
+using psdPH.Serialization;
 using psdPH.Nodes;
 using psdPH.Nodes.Core;
 using psdPH.Parameters;
 using psdPH.Photoshop;
-using psdPH.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,7 +106,7 @@ namespace psdPH
         }
         public Composition Clone()
         {
-            Composition result = CloneConverter.Clone(this) as Composition;
+            Composition result = XmlSerializerHelper.Clone(this) as Composition;
             result.Restore(Parent);
             return result;
         }

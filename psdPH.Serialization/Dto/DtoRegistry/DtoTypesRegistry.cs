@@ -13,11 +13,11 @@ namespace psdPH
 {
     public static class DtoTypesRegistry
     {
-        public static HashSet<Type> Types = new HashSet<Type>();
+        static HashSet<Type> Types = new HashSet<Type>();
         public static void Add(Type type)
         {
             Types.Add(type);
         }
-        public static Type[] GetTypes => Types.ToArray();
+        public static Type[] DtoTypes => Types.ToArray();
     }
 }

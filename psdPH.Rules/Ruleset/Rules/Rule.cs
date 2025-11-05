@@ -2,8 +2,8 @@
 using psdPH.Nodes;
 using psdPH.Photoshop;
 using psdPH.Rules;
+using psdPH.Serialization;
 using psdPH.Setups;
-using psdPH.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +25,7 @@ namespace psdPH.Logic.Ruleset.Rules
         public abstract void Apply(DocumentWr doc);
         public virtual CompositionRule Clone()
         {
-            CompositionRule result = CloneConverter.Clone(this) as CompositionRule;
+            CompositionRule result = XmlSerializerHelper.Clone(this) as CompositionRule;
             return result;
         }
        

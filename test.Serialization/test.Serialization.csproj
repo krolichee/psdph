@@ -49,34 +49,23 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DtoConverter.cs" />
+    <Compile Include="Dto\DtoRegistry\DtoTypesRegistryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\psdPH.Core.Compositons\psdPH.Compositons.csproj">
-      <Project>{c20e66c4-e8a7-4f52-a74e-b5806125d9fc}</Project>
-      <Name>psdPH.Compositons</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Project\psdPH.Project.csproj">
-      <Project>{baad7f1f-5b1c-4e50-b1de-ce9d8c5945cb}</Project>
-      <Name>psdPH.Project</Name>
-    </ProjectReference>
     <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
       <Project>{cc0fffdc-697c-4469-b1fb-61b396311625}</Project>
       <Name>psdPH.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj">
-      <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>
-      <Name>psdPH.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\TestDefinitions\TestDefinitions.csproj">
       <Project>{37fe1678-2a21-431a-a816-e682675f2d22}</Project>
       <Name>TestDefinitions</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using psdPH.Logic.Compositions;
 using psdPH.Logic.Parameters;
 using psdPH.Nodes;
-using psdPH.Utils;
 using psdPH.Parameters;
 using psdPH.Nodes.Core;
 using psdPH.Nodes.Nodes;
+using psdPH.Serialization;
 
 namespace psdPHTest.Nodes
 {
@@ -133,10 +133,10 @@ namespace psdPHTest.Nodes
                 var root = new RootBlob();
                 root.NodeSet = nodeSet;
                 root.ParameterSet = parameterSet;
-                xml = CloneConverter.GetXml(root);
+                xml = XmlSerializerHelper.GetXml(root);
             }
             {
-                var root = CloneConverter.GetObj<RootBlob>(xml);
+                var root = XmlSerializerHelper.GetObj<RootBlob>(xml);
                 var fpar1 = root.ParameterSet[0];
                 var fpar2 = root.ParameterSet[1];
                 var fpar1Node = root.NodeSet[0];
