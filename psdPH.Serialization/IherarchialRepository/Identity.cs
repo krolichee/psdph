@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class DtoConverterRegistrator
+    struct Identity
     {
-        public static void InitializeRegistry()
-        {
-            throw new NotImplementedException();
-        }
+        public Guid Guid;
+        public object Entity;
     }
 }
