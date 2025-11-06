@@ -24,7 +24,7 @@ namespace psdPH.Serialization
     {
         public static string GetXml(object obj) {
             var type = obj.GetType();
-            XmlSerializer serializer = new XmlSerializer(type,DtoTypesRegistry.DtoTypes);
+            XmlSerializer serializer = new XmlSerializer(type,DtoTypesRegistry.Types.ToArray());
             StringBuilder sb = new StringBuilder();
             StringWriter sw = new StringWriter(sb);
             serializer.Serialize(sw, obj);
@@ -37,11 +37,11 @@ namespace psdPH.Serialization
         }
         public static object GetObj(string xmlString,Type type)
         {
-            //GuidScope.StartLoad(); 
+            GuidScope.StartLoad(); 
             StringReader sr = new StringReader(xmlString);
-            XmlSerializer serializer = new XmlSerializer(type, DtoTypesRegistry.DtoTypes);
+            XmlSerializer serializer = new XmlSerializer(type, DtoTypesRegistry.Types.ToArray());
             object result = serializer.Deserialize(sr);
-            //GuidScope.Current.EndOfLoad();
+            GuidScope.Current.EndOfLoad();
             return result;
         }
     }

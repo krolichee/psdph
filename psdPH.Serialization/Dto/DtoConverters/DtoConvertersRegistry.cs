@@ -1,32 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace psdPH.Serialization
+namespace psdPH.Logic.Compositions
 {
     //TODO преобразовать в одиночку
     public class DtoConvertersRegistry
     {
-        static HashSet<DtoConverter> converters = new HashSet<DtoConverter>();
-        public static void Register(DtoConverter converter)
+        private static readonly Dictionary<Type, DtoConverter> _converters = new Dictionary<Type, DtoConverter>();
+
+        public static void Register<T>(DtoConverter converter)
         {
-            converters.Add(converter);
+            Register(typeof(T), converter);
         }
-        public static DtoConverter GetForEntity(object entity)
+        public static void Register(Type type, DtoConverter converter)
         {
-            return GetForEntityType(entity.GetType());
+            _converters[type] = converter;
         }
-        public static DtoConverter GetForEntityType(Type type)
+        public static DtoConverter Get<T>()
         {
-            return converters.First(c=>c.EntityType == type);
+            return _converters[typeof(T)];
         }
-        public static DtoConverter GetForDto(Dto dto)
+        public static DtoConverter GetFor(object obj)
         {
-            return GetForDtoType(dto.GetType());
-        }
-        public static DtoConverter GetForDtoType(Type type)
-        {
-            return converters.First(c => c.DtoType == type);
+           var type = obj.GetType();
+           return _converters[type];
         }
     }
 

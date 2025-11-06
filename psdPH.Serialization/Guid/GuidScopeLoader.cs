@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class DtoScope
+    class GuidScopeLoader
     {
-        public List<Dto> scope = new List<Dto>();
+        public GuidScope NewScope()
+        {
+            return new GuidScope();
+        }
     }
 }

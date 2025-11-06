@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace psdPH.Serialization
+namespace psdPH.Serialization.Dto.DtoConverters
 {
     class DtoConverterRegistrator
     {
