@@ -1,10 +1,10 @@
-﻿using psdPH.Nodes;
+﻿
 using psdPH.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace psdPH.Logic.Compositions
+namespace psdPH.Serialization
 {
     /// <summary>
     /// Абстракция, содержащая определения методов, производящие конверсию и реверсию
@@ -58,12 +58,17 @@ namespace psdPH.Logic.Compositions
     ///
     public abstract class DtoConverter
     {
+        public abstract Type DtoType { get; }
+        public abstract Type EntityType { get; }
+
         //Метод получения DTO для объекта
-        public object GetEntity(object _dto)
+        internal Identity GetIdentity(object dto,out PendingReference[] pendingReferences)
         {
             var obj = CreateEntity();
-            UpdateEntity(obj, _dto);
-            return obj;
+            UpdateEntity(obj, dto);
+            pendingReferences = GetPendingReferences(obj,dto);
+            var result = new Identity() { Entity = obj, Guid = GetDtoGuid(dto) };
+            return result;
         }
         //Метод получения объекта из DTO
         public Dto GetDto(object _obj)
@@ -72,12 +77,14 @@ namespace psdPH.Logic.Compositions
             UpdateDto(_obj, dto);
             return dto;
         }
+        protected virtual PendingReference[] GetPendingReferences(object obj, object dto) => new PendingReference[0];
+        public virtual Guid GetDtoGuid(object dto) => new Guid();
         //Фабричный метод сущности
         protected abstract object CreateEntity();
         //Фабричный метод DTO
         protected abstract Dto CreateDto();
-        protected abstract void UpdateDto(object _obj, object _dto);
-        protected abstract void UpdateEntity(object _obj, object _dto);
+        protected abstract void UpdateDto(object obj, object dto);
+        protected abstract void UpdateEntity(object obj, object dto);
     }
 
 }

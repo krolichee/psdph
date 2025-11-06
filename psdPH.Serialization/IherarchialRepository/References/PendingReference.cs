@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class DtoConverterRegistrator
+    public class PendingReference
     {
-        public static void InitializeRegistry()
-        {
-            throw new NotImplementedException();
-        }
+        public Guid TargetEntityGuid;
+        public Action<object> ReferenceSetter;
     }
 }

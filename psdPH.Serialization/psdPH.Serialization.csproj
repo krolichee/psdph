@@ -50,22 +50,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IherarchialRepository\ConversionContext.cs" />
+    <Compile Include="IherarchialRepository\DtoScope.cs" />
+    <Compile Include="IherarchialRepository\DtoScopeReader.cs" />
     <Compile Include="Dto\Dto.cs" />
+    <Compile Include="IherarchialRepository\Identity.cs" />
+    <Compile Include="IherarchialRepository\IdentityMap.cs" />
+    <Compile Include="IherarchialRepository\IherarchialRepository.cs" />
+    <Compile Include="IherarchialRepository\References\PendingReference.cs" />
+    <Compile Include="IherarchialRepository\References\ReferenceResolver.cs" />
+    <Compile Include="IherarchialRepository\RootPointer.cs" />
+    <Compile Include="IherarchialRepository\ScopeConverter.cs" />
     <Compile Include="XmlForcedConverter.cs" />
     <Compile Include="XmlSerializerHelper.cs" />
     <Compile Include="Cloner.cs" />
     <Compile Include="DiskOperations.cs" />
     <Compile Include="Dto\DtoConverters\DtoConverterRegistrator.cs" />
     <Compile Include="Dto\DtoRegistry\DtoTypesRegistrator.cs" />
-    <Compile Include="Guided.cs" />
     <Compile Include="Dto\DtoRegistry\DtoTypesRegistry.cs" />
-    <Compile Include="Guid\GuidScopeLoader.cs" />
     <Compile Include="Dto\DtoConverters\NullDtoConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dto\DtoConverters\DtoConverter.cs" />
     <Compile Include="Dto\DtoConverters\DtoConvertersRegistry.cs" />
     <Compile Include="Dto\DtoConverters\DtoMapper.cs" />
-    <Compile Include="Guid\GuidScope.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
