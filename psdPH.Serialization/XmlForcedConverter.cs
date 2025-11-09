@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace psdPH.Serialization
 {
-    class XmlForcedConverter
+    public class XmlForcedConverter
     {
         private static string ChangeType<T>(string xmlString) where T : class
         {
@@ -18,6 +18,8 @@ namespace psdPH.Serialization
         }
         public static T Convert<T>(object obj) where T : class, new()
         {
+            if (obj == null)
+                throw new ArgumentNullException();
             var dayBlob = new T();
             var resultXml = XmlSerializerHelper.GetXml(obj);
             resultXml = ChangeType<T>(resultXml);

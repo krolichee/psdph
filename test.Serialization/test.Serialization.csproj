@@ -47,10 +47,19 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\DtoConverter\DtoMapperTest.cs" />
+    <Compile Include="Dto\DtoRegistry\DtoTypesRegistratorTest.cs" />
     <Compile Include="Dto\DtoRegistry\DtoTypesRegistryTest.cs" />
+    <Compile Include="IherarchialRepository\IdentityMapTests.cs" />
+    <Compile Include="IherarchialRepository\RootPointerTests.cs" />
+    <Compile Include="IherarchialRepository\ReferenceResolverTests.cs" />
+    <Compile Include="IherarchialRepository\ScopeConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlForcedConverterTests.cs" />
+    <Compile Include="XmlSerializerHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

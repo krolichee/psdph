@@ -58,6 +58,7 @@ namespace psdPH.Serialization
     ///
     public abstract class DtoConverter
     {
+
         public abstract Type DtoType { get; }
         public abstract Type EntityType { get; }
 
@@ -67,7 +68,7 @@ namespace psdPH.Serialization
             var obj = CreateEntity();
             UpdateEntity(obj, dto);
             pendingReferences = GetPendingReferences(obj,dto);
-            var result = new Identity() { Entity = obj, Guid = GetDtoGuid(dto) };
+            var result = new Identity(GetDtoGuid(dto),obj);
             return result;
         }
         //Метод получения объекта из DTO

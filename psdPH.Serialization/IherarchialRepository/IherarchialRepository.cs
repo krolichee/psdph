@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class IherarchialRepository
+    public class IherarchialRepository
     {
         public static object ReadRoot(string path)
         {

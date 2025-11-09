@@ -8,7 +8,7 @@ namespace psdPH.Serialization
 {
     public class PendingReference
     {
-        public Guid TargetEntityGuid;
-        public Action<object> ReferenceSetter;
+        public Guid TargetEntityGuid { get; set; }
+        public Action<object> ReferenceSetter { get; set; }
     }
 }

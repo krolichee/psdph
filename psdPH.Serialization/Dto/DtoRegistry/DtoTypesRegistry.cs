@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace psdPH
+namespace psdPH.Serialization
 {
     public static class DtoTypesRegistry
     {

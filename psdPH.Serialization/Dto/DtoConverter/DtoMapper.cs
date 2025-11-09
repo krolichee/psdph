@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace psdPH.Serialization.Serialization
+namespace psdPH.Serialization
 {
     public abstract class DtoMapper<TEntity,TDto> where TEntity:class where TDto:class
     {

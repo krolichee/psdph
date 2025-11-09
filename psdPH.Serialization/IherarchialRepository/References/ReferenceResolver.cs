@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class ReferenceResolver
+    public class ReferenceResolver
     {
         public static void ResolveReferences(ConversionContext context)
         {
+            if (context == null)
+                throw new ArgumentNullException();
+            if (context.PendingReferences == null)
+                return;
             var pReferences = context.PendingReferences;
             foreach (var pRef in pReferences)
             {

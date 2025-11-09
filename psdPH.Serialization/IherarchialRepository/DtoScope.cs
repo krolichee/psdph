@@ -8,6 +8,11 @@ namespace psdPH.Serialization
 {
     class DtoScope
     {
-        public List<Dto> scope = new List<Dto>();
+        public DtoScope()
+        {
+            Scope = new List<Dto>();
+        }
+
+        public List<Dto> Scope { get; }
     }
 }

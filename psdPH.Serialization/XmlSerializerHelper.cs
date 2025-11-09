@@ -37,11 +37,9 @@ namespace psdPH.Serialization
         }
         public static object GetObj(string xmlString,Type type)
         {
-            //GuidScope.StartLoad(); 
             StringReader sr = new StringReader(xmlString);
             XmlSerializer serializer = new XmlSerializer(type, DtoTypesRegistry.DtoTypes);
             object result = serializer.Deserialize(sr);
-            //GuidScope.Current.EndOfLoad();
             return result;
         }
     }

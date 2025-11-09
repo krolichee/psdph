@@ -65,14 +65,14 @@
     <Compile Include="XmlSerializerHelper.cs" />
     <Compile Include="Cloner.cs" />
     <Compile Include="DiskOperations.cs" />
-    <Compile Include="Dto\DtoConverters\DtoConverterRegistrator.cs" />
+    <Compile Include="Dto\DtoConverter\DtoConverterRegistrator.cs" />
     <Compile Include="Dto\DtoRegistry\DtoTypesRegistrator.cs" />
     <Compile Include="Dto\DtoRegistry\DtoTypesRegistry.cs" />
-    <Compile Include="Dto\DtoConverters\NullDtoConverter.cs" />
+    <Compile Include="Dto\DtoConverter\NullDtoConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Dto\DtoConverters\DtoConverter.cs" />
-    <Compile Include="Dto\DtoConverters\DtoConvertersRegistry.cs" />
-    <Compile Include="Dto\DtoConverters\DtoMapper.cs" />
+    <Compile Include="Dto\DtoConverter\DtoConverter.cs" />
+    <Compile Include="Dto\DtoConverter\DtoConvertersRegistry.cs" />
+    <Compile Include="Dto\DtoConverter\DtoMapper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    public class DtoTypesRegistrator
+    class DtoConverterRegistrator
     {
-        public static void InitializeRegistry() {
+        public static void InitializeRegistry()
+        {
             // Загружаем все сборки, на которые есть ссылки
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
             var loadedPaths = loadedAssemblies.Select(a => a.Location).ToArray();
@@ -29,9 +30,12 @@ namespace psdPH.Serialization
                 {
                     foreach (var type in assembly.GetTypes())
                     {
-                        if (typeof(Dto).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
+                        if (typeof(DtoConverter).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
                         {
-                            DtoTypesRegistry.Add(type);
+                            //TODO добавить фабрику или вроде того
+                            var converter = Activator.CreateInstance(type,
+    nonPublic: true) as DtoConverter;
+                            DtoConvertersRegistry.Register(converter);
                         }
                     }
                 }

@@ -6,16 +6,27 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class RootPointer
+    public class RootPointer
     {
-        Guid RootGuid;
+        
+
+        Guid RootGuid { get; }
+        public RootPointer(Guid rootGuid)
+        {
+            RootGuid = rootGuid;
+        }
+        //TODO добавить Generic
         public object GetRoot(IdentityMap identityMap)
         {
+            if (identityMap == null)
+                throw new ArgumentNullException();
             return identityMap.GetObject(RootGuid);
         }
         //TODO Единственное место, которое требует добавление свойста Objects у IdentityMap
         public static RootPointer FindRootPointer(IdentityMap identityMap)
         {
+            if (identityMap == null)
+                throw new ArgumentNullException();
             return identityMap.Objects.First(o=>o.GetType()==typeof(RootPointer)) as RootPointer;
         }
     }

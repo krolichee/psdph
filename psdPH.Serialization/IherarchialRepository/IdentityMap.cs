@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class IdentityMap
+    public class IdentityMap
     {
         private readonly Dictionary<object, Guid> _objectToId = new Dictionary<object, Guid>();
         private readonly Dictionary<Guid, object> _idToObject = new Dictionary<Guid, object>();
@@ -91,6 +91,11 @@ namespace psdPH.Serialization
                 _idToObject[id] = obj;
             }
         }
+
+        public IdentityMap()
+        {
+        }
+
         public object[] Objects => _idToObject.Values.ToArray();
         public Guid[] Ids => _objectToId.Values.ToArray();
     }

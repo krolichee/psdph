@@ -10,6 +10,7 @@ namespace psdPH.Serialization
         static HashSet<DtoConverter> converters = new HashSet<DtoConverter>();
         public static void Register(DtoConverter converter)
         {
+            //TODO проверка на то, есть ли конвертер с таким же Entity или Dto типом
             converters.Add(converter);
         }
         public static DtoConverter GetForEntity(object entity)
@@ -26,7 +27,13 @@ namespace psdPH.Serialization
         }
         public static DtoConverter GetForDtoType(Type type)
         {
-            return converters.First(c => c.DtoType == type);
+            try
+            {
+                return converters.First(c => c.DtoType == type);
+            }catch (InvalidOperationException)
+            {
+                throw new InvalidOperationException("No converter found");
+            }
         }
     }
 

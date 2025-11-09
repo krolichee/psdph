@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class ConversionContext
+    public class ConversionContext
     {
-        public IdentityMap IdentityMap;
-        public PendingReference[] PendingReferences;
+        public IdentityMap IdentityMap { get; }
+        public PendingReference[] PendingReferences { get; }
 
         public ConversionContext(IdentityMap identityMap, PendingReference[] pendingReferences)
         {

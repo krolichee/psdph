@@ -6,9 +6,16 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    struct Identity
+    public struct Identity
     {
-        public Guid Guid;
-        public object Entity;
+        public Identity(Guid guid, object entity)
+        {
+            Guid = guid;
+            Entity = entity;
+        }
+
+        public Guid Guid { get; }
+        public object Entity { get; }
+
     }
 }
