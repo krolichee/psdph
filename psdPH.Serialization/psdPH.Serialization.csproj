@@ -50,17 +50,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IherarchialRepository\ConversionContext.cs" />
+    <Compile Include="IherarchialRepository\DeserializationContext.cs" />
     <Compile Include="IherarchialRepository\DtoScope.cs" />
     <Compile Include="IherarchialRepository\DtoScopeReader.cs" />
     <Compile Include="Dto\Dto.cs" />
     <Compile Include="IherarchialRepository\Identity.cs" />
     <Compile Include="IherarchialRepository\IdentityMap.cs" />
     <Compile Include="IherarchialRepository\IherarchialRepository.cs" />
-    <Compile Include="IherarchialRepository\References\PendingReference.cs" />
+    <Compile Include="IherarchialRepository\References\UnknownEntityReference.cs" />
+    <Compile Include="IherarchialRepository\References\UnknownGuidReference.cs" />
     <Compile Include="IherarchialRepository\References\ReferenceResolver.cs" />
+    <Compile Include="IherarchialRepository\IherarchyConverter.cs" />
     <Compile Include="IherarchialRepository\RootPointer.cs" />
     <Compile Include="IherarchialRepository\ScopeConverter.cs" />
+    <Compile Include="IherarchialRepository\SerializationContext.cs" />
     <Compile Include="XmlForcedConverter.cs" />
     <Compile Include="XmlSerializerHelper.cs" />
     <Compile Include="Cloner.cs" />

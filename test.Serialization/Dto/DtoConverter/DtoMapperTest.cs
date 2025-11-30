@@ -8,7 +8,8 @@ namespace test.Serialization
 {
 	class TestDto : Dto
 	{
-		public int[] ints;
+        public Guid Guid { get; }
+        public int[] ints;
 	}
     class NotDto { }
     class TestDtoMapper : DtoMapper<List<int>, TestDto>

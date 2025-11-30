@@ -18,25 +18,26 @@ namespace test.Serialization.IherarchialRepository
             public override Type EntityType => typeof(TestEntity);
 
             private readonly Guid _fixedGuid;
-            private readonly PendingReference[] _pendingReferences;
+            private readonly UnknownEntityReference[] _pendingReferences;
 
-            public TestDtoConverter(Guid fixedGuid = default, PendingReference[] pendingReferences = null)
+            public TestDtoConverter(Guid fixedGuid = default, UnknownEntityReference[] pendingReferences = null)
             {
                 _fixedGuid = fixedGuid != default ? fixedGuid : Guid.NewGuid();
-                _pendingReferences = pendingReferences ?? Array.Empty<PendingReference>();
+                _pendingReferences = pendingReferences ?? Array.Empty<UnknownEntityReference>();
             }
 
             public TestDtoConverter()
             {
-                _pendingReferences = Array.Empty<PendingReference>();
+                _pendingReferences = Array.Empty<UnknownEntityReference>();
             }
 
             protected override object CreateEntity() => new TestEntity();
             protected override Dto CreateDto() => new TestDto();
             protected override void UpdateDto(object obj, object dto) { }
             protected override void UpdateEntity(object obj, object dto) { }
-            public override Guid GetDtoGuid(object dto) => _fixedGuid;
-            protected override PendingReference[] GetPendingReferences(object obj, object dto) => _pendingReferences;
+            public Guid GetDtoGuid(object dto) => _fixedGuid;
+            //protected override UnknownEntityReference[] GetUnknownEntityReferences(object obj, Dto dto) => _pendingReferences;
+            protected override UnknownEntityReference[] GetUnknownEntityReferences(object obj, Dto dto) => _pendingReferences;
         }
 
         [TestInitialize]
@@ -97,8 +98,8 @@ namespace test.Serialization.IherarchialRepository
             var targetGuid = Guid.NewGuid();
             var pendingRefs = new[]
             {
-            new PendingReference { TargetEntityGuid = targetGuid, ReferenceSetter = obj => { } },
-            new PendingReference { TargetEntityGuid = targetGuid, ReferenceSetter = obj => { } }
+            new UnknownEntityReference { TargetEntityGuid = targetGuid, ReferenceSetter = obj => { } },
+            new UnknownEntityReference { TargetEntityGuid = targetGuid, ReferenceSetter = obj => { } }
         };
 
             var converter = new TestDtoConverter(Guid.NewGuid(), pendingRefs);

@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    public class RootPointer
+    public class RootPointer:Dto
     {
         
 
         Guid RootGuid { get; }
+
+        public Guid Guid => Guid.Empty;
+
         public RootPointer(Guid rootGuid)
         {
             RootGuid = rootGuid;

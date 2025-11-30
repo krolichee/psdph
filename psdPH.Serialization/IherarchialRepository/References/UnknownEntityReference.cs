@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    public class PendingReference
+    /// <summary>
+    /// Used by deserialization
+    /// </summary>
+    public class UnknownEntityReference
     {
         public Guid TargetEntityGuid { get; set; }
         public Action<object> ReferenceSetter { get; set; }

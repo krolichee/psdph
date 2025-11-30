@@ -15,5 +15,10 @@ namespace psdPH.Serialization
             ReferenceResolver.ResolveReferences(context);
             return RootPointer.FindRootPointer(context.IdentityMap).GetRoot(context.IdentityMap);
         }
+        public static object WriteRoot(object root, string path)
+        {
+            //получаение IdentityMap всех связанных объектов
+            throw new NotImplementedException();
+        }
     }
 }

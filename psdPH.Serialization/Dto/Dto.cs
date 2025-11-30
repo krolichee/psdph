@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    public interface Dto
+    public class Dto
     {
+        public Guid Guid { get; protected set; } = Guid.NewGuid();
     }
 }

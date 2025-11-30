@@ -54,6 +54,7 @@
     <Compile Include="Dto\DtoRegistry\DtoTypesRegistratorTest.cs" />
     <Compile Include="Dto\DtoRegistry\DtoTypesRegistryTest.cs" />
     <Compile Include="IherarchialRepository\IdentityMapTests.cs" />
+    <Compile Include="IherarchialRepository\IherarchyConverterTests.cs" />
     <Compile Include="IherarchialRepository\RootPointerTests.cs" />
     <Compile Include="IherarchialRepository\ReferenceResolverTests.cs" />
     <Compile Include="IherarchialRepository\ScopeConverterTests.cs" />
