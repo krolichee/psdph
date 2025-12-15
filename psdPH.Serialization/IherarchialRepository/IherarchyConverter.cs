@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class IherarchyConverter
+    static class IherarchyConverter
     {
-        DtoScope getRelatedDtoScope(object entity, SerializationContext context)
+        static DtoScope getRelatedDtoScope(object entity, ConversionContext context)
         {
             //Создание возвращаемого dtoScope
             var dtoScope = new DtoScope();
@@ -30,7 +30,7 @@ namespace psdPH.Serialization
             }
             return dtoScope;
         }
-        static bool ResolveReferences(SerializationContext context)
+        static bool ResolveReferences(ConversionContext context)
         {
             bool full = true;
             foreach (var pRef in context.PendingReferences.ToList())
@@ -43,9 +43,9 @@ namespace psdPH.Serialization
                     full = false;
             return full;
         }
-        public DtoScope GetRelatedDtoScopeFromRootEntity(object root)
+        static public DtoScope GetRelatedDtoScopeFromRootEntity(object root)
         {
-            var context = new SerializationContext();
+            var context = new ConversionContext();
             var dtoScope = getRelatedDtoScope(root, context);
             var rootGuid = context.IdentityMap.GetId(root);
             RootPointer rootPointer = new RootPointer(rootGuid);

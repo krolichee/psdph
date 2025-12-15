@@ -8,9 +8,9 @@ namespace psdPH.Serialization
 {
     public class NullDtoConverter : DtoConverter
     {
-        public override Type DtoType => throw new NotImplementedException();
+        public override Type DtoType => null;
 
-        public override Type EntityType => throw new NotImplementedException();
+        public override Type EntityType => null;
 
         protected override object CreateEntity() => null;
 

@@ -8,7 +8,7 @@ namespace psdPH.Serialization
 {
     public class ReferenceResolver
     {
-        public static void ResolveReferences(DeserializationContext context)
+        public static void ResolveReferences(ReversionContext context)
         {
             if (context == null)
                 throw new ArgumentNullException();

@@ -8,6 +8,6 @@ namespace psdPH.Serialization
 {
     public class Dto
     {
-        public Guid Guid { get; protected set; } = Guid.NewGuid();
+        public Guid Guid { get; set; } = Guid.NewGuid();
     }
 }

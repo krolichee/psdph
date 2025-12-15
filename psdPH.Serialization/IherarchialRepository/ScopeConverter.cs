@@ -8,7 +8,7 @@ namespace psdPH.Serialization
 {
     class ScopeConverter
     {
-        public static DeserializationContext ConvertDtoScope(DtoScope dtoScope)
+        public static ReversionContext ConvertDtoScope(DtoScope dtoScope)
         {
             if (dtoScope == null)
                 throw new ArgumentNullException();
@@ -23,7 +23,7 @@ namespace psdPH.Serialization
                 identities.Add(identity);
                 references.AddRange(pReferences);
             }
-            return new DeserializationContext(new IdentityMap(identities.ToArray()),references.ToArray());
+            return new ReversionContext(new IdentityMap(identities.ToArray()),references.ToArray());
         }
     }
 }

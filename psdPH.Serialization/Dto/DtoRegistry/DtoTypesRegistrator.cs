@@ -29,7 +29,7 @@ namespace psdPH.Serialization
                 {
                     foreach (var type in assembly.GetTypes())
                     {
-                        if (typeof(Dto).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
+                        if (typeof(Dto).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract && type.IsPublic)
                         {
                             DtoTypesRegistry.Add(type);
                         }

@@ -1,19 +1,17 @@
 ﻿using psdPH.Utils;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class DtoScopeReader
+    static class DtoScopeWriter
     {
-        public static DtoScope ReadScope(string path)
+        public static void WriteScope(string path,DtoScope dtoScope)
         {
-            DtoScope scope = DiskOperations.LoadXml<DtoScope>(path);
-            return scope;
+            DiskOperations.SaveXml(path, dtoScope);
         }
     }
 }

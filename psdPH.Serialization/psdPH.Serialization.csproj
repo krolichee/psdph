@@ -50,7 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IherarchialRepository\DeserializationContext.cs" />
+    <Compile Include="IherarchialRepository\DtoScopeWriter.cs" />
+    <Compile Include="IherarchialRepository\ReversionContext.cs" />
     <Compile Include="IherarchialRepository\DtoScope.cs" />
     <Compile Include="IherarchialRepository\DtoScopeReader.cs" />
     <Compile Include="Dto\Dto.cs" />
@@ -63,7 +64,7 @@
     <Compile Include="IherarchialRepository\IherarchyConverter.cs" />
     <Compile Include="IherarchialRepository\RootPointer.cs" />
     <Compile Include="IherarchialRepository\ScopeConverter.cs" />
-    <Compile Include="IherarchialRepository\SerializationContext.cs" />
+    <Compile Include="IherarchialRepository\ConversionContext.cs" />
     <Compile Include="XmlForcedConverter.cs" />
     <Compile Include="XmlSerializerHelper.cs" />
     <Compile Include="Cloner.cs" />

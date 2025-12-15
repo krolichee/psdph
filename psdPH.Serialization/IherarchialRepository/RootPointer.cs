@@ -10,14 +10,17 @@ namespace psdPH.Serialization
     {
         
 
-        Guid RootGuid { get; }
-
-        public Guid Guid => Guid.Empty;
+        public Guid RootGuid { get; set; }
 
         public RootPointer(Guid rootGuid)
         {
             RootGuid = rootGuid;
         }
+
+        public RootPointer()
+        {
+        }
+
         //TODO добавить Generic
         public object GetRoot(IdentityMap identityMap)
         {
@@ -26,11 +29,9 @@ namespace psdPH.Serialization
             return identityMap.GetObject(RootGuid);
         }
         //TODO Единственное место, которое требует добавление свойста Objects у IdentityMap
-        public static RootPointer FindRootPointer(IdentityMap identityMap)
+        public static RootPointer FindRootPointer(DtoScope dtoScope)
         {
-            if (identityMap == null)
-                throw new ArgumentNullException();
-            return identityMap.Objects.First(o=>o.GetType()==typeof(RootPointer)) as RootPointer;
+            return dtoScope.Scope.First(o=>o.GetType()==typeof(RootPointer)) as RootPointer;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using psdPH.Serialization;
 
-namespace test.Serialization.IherarchialRepository
+namespace test.Serialization
 {
     [TestClass]
     public class IdentityMapTests

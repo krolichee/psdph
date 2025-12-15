@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class DtoScope
+    public class DtoScope
     {
         public DtoScope()
         {

@@ -11,14 +11,17 @@ namespace psdPH.Serialization
         public static object ReadRoot(string path)
         {
             var scope = DtoScopeReader.ReadScope(path);
+            var rootPointer = RootPointer.FindRootPointer(scope);
+            scope.Scope.Remove(rootPointer);
             var context = ScopeConverter.ConvertDtoScope(scope);
+            
             ReferenceResolver.ResolveReferences(context);
-            return RootPointer.FindRootPointer(context.IdentityMap).GetRoot(context.IdentityMap);
+            return rootPointer.GetRoot(context.IdentityMap);
         }
-        public static object WriteRoot(object root, string path)
+        public static void WriteRoot(object root, string path)
         {
-            //получаение IdentityMap всех связанных объектов
-            throw new NotImplementedException();
+            var scope = IherarchyConverter.GetRelatedDtoScopeFromRootEntity(root);
+            DtoScopeWriter.WriteScope(path,scope);
         }
     }
 }
