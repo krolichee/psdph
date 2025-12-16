@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NodeGraphTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -63,6 +64,10 @@
     <ProjectReference Include="..\psdPH.Nodes\psdPH.Nodes.csproj">
       <Project>{5226CE47-9474-4681-8847-69E4F38EB9F5}</Project>
       <Name>psdPH.Nodes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
+      <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
+      <Name>psdPH.Photoshop</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
       <Project>{CC0FFFDC-697C-4469-B1FB-61B396311625}</Project>

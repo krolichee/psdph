@@ -6,6 +6,7 @@ using psdPH.Serialization;
 
 namespace test.Nodes.Core
 {
+
     [TestClass]
     public class UnitTest1
     {
