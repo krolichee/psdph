@@ -9,9 +9,9 @@ namespace psdPH.Serialization
     public class ReversionContext
     {
         public IdentityMap IdentityMap { get; }                                    
-        public UnknownEntityReference[] PendingReferences { get; }
+        public PendingEntityReference[] PendingReferences { get; }
 
-        public ReversionContext(IdentityMap identityMap, UnknownEntityReference[] pendingReferences)
+        public ReversionContext(IdentityMap identityMap, PendingEntityReference[] pendingReferences)
         {
             IdentityMap = identityMap;
             PendingReferences = pendingReferences;

@@ -9,7 +9,7 @@ namespace psdPH.Serialization
     /// <summary>
     /// Used by serialization
     /// </summary>
-    public class UnknownGuidReference
+    public class PendingGuidReference
     {
         public object TargetEntity { get; set; }
         public Action<Guid> ReferenceSetter { get; set; }

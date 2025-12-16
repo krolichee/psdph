@@ -13,11 +13,11 @@ namespace psdPH.Serialization
             if (dtoScope == null)
                 throw new ArgumentNullException();
             var identities = new List<Identity>();
-            var references = new List<UnknownEntityReference>();
+            var references = new List<PendingEntityReference>();
             foreach (var item in dtoScope.Scope)
             {
                 DtoConverter converter = DtoConvertersRegistry.GetForDto(item);
-                var identity = converter.GetIdentity(item, out UnknownEntityReference[] pReferences);
+                var identity = converter.GetIdentity(item, out PendingEntityReference[] pReferences);
                 if (identities.Any(i => i.Guid == identity.Guid))
                     throw new InvalidOperationException();
                 identities.Add(identity);

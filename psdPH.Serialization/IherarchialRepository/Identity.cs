@@ -8,7 +8,8 @@ namespace psdPH.Serialization
 {
     public struct Identity
     {
-
+        public Guid Guid { get; }
+        public object Entity { get; }
         public Identity(object entity) : this()
         {
             this.Entity = entity;
@@ -22,8 +23,7 @@ namespace psdPH.Serialization
             Entity = entity;
         }
 
-        public Guid Guid { get; }
-        public object Entity { get; }
+        
 
     }
 }

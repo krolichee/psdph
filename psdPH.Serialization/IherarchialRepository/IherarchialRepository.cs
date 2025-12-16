@@ -10,7 +10,7 @@ namespace psdPH.Serialization
     {
         public static object ReadRoot(string path)
         {
-            var scope = DtoScopeReader.ReadScope(path);
+            var scope = DtoScopeRepository.ReadScope(path);
             var rootPointer = RootPointer.FindRootPointer(scope);
             scope.Scope.Remove(rootPointer);
             var context = ScopeConverter.ConvertDtoScope(scope);
@@ -18,10 +18,10 @@ namespace psdPH.Serialization
             ReferenceResolver.ResolveReferences(context);
             return rootPointer.GetRoot(context.IdentityMap);
         }
-        public static void WriteRoot(object root, string path)
+        public static void WriteRoot(string path, object root)
         {
             var scope = IherarchyConverter.GetRelatedDtoScopeFromRootEntity(root);
-            DtoScopeWriter.WriteScope(path,scope);
+            DtoScopeRepository.WriteScope(path,scope);
         }
     }
 }

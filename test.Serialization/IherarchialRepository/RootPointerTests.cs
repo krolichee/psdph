@@ -26,12 +26,7 @@ namespace test.Serialization
             // Act
             var pointer = new RootPointer(_testGuid);
 
-            // Assert - используем рефлексию для проверки приватного поля
-            var field = typeof(RootPointer).GetProperty("RootGuid",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var value = (Guid)field.GetValue(pointer);
-
-            Assert.AreEqual(_testGuid, value);
+            Assert.AreEqual(_testGuid, pointer.RootGuid);
         }
 
         [TestMethod]

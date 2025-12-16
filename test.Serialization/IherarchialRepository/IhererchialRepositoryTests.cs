@@ -21,7 +21,7 @@ namespace test.Serialization
 			entity.Ref1 = ref1;
 			entity.Ref2 = ref2;
 
-			IherarchialRepository.WriteRoot(entity,path);
+			IherarchialRepository.WriteRoot(path,entity);
 			entity = IherarchialRepository.ReadRoot(path) as RefEntity;
 
 			Assert.IsTrue(ref1.Equals(entity.Ref1));

@@ -31,6 +31,8 @@ namespace psdPH.Serialization
         //TODO Единственное место, которое требует добавление свойста Objects у IdentityMap
         public static RootPointer FindRootPointer(DtoScope dtoScope)
         {
+            if (dtoScope == null)
+                throw new ArgumentNullException();
             return dtoScope.Scope.First(o=>o.GetType()==typeof(RootPointer)) as RootPointer;
         }
     }

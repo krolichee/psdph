@@ -26,24 +26,24 @@ namespace test.Serialization
             protected override void UpdateEntity(object obj, object dto)
             {
             }
-            protected override UnknownGuidReference[] GetUnknownGuidReferences(object obj, Dto dto)
+            protected override PendingGuidReference[] GetUnknownGuidReferences(object obj, Dto dto)
             {
                 var _obj = obj as RefEntity;
                 var _dto = dto as RefDto;
-                return new UnknownGuidReference[]
+                return new PendingGuidReference[]
                 {
-                    new UnknownGuidReference(){TargetEntity = _obj.Ref1,ReferenceSetter=(id)=>_dto.Ref1=id},
-                    new UnknownGuidReference(){TargetEntity = _obj.Ref2,ReferenceSetter=(id)=>_dto.Ref2=id}
+                    new PendingGuidReference(){TargetEntity = _obj.Ref1,ReferenceSetter=(id)=>_dto.Ref1=id},
+                    new PendingGuidReference(){TargetEntity = _obj.Ref2,ReferenceSetter=(id)=>_dto.Ref2=id}
                 };
             }
-        protected override UnknownEntityReference[] GetUnknownEntityReferences(object obj, Dto dto)
+        protected override PendingEntityReference[] GetUnknownEntityReferences(object obj, Dto dto)
         {
             var _obj = obj as RefEntity;
             var _dto = dto as RefDto;
-            return new UnknownEntityReference[]
+            return new PendingEntityReference[]
             {
-                    new UnknownEntityReference(){TargetEntityGuid = _dto.Ref1,ReferenceSetter=(ent)=>_obj.Ref1=ent},
-                    new UnknownEntityReference(){TargetEntityGuid = _dto.Ref2,ReferenceSetter=(ent)=>_obj.Ref2=ent}
+                    new PendingEntityReference(){TargetEntityGuid = _dto.Ref1,ReferenceSetter=(ent)=>_obj.Ref1=ent},
+                    new PendingEntityReference(){TargetEntityGuid = _dto.Ref2,ReferenceSetter=(ent)=>_obj.Ref2=ent}
             };
         }
     }

@@ -50,25 +50,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IherarchialRepository\DtoScopeWriter.cs" />
+    <Compile Include="IherarchialRepository\DtoScopeRepository.cs" />
     <Compile Include="IherarchialRepository\ReversionContext.cs" />
     <Compile Include="IherarchialRepository\DtoScope.cs" />
-    <Compile Include="IherarchialRepository\DtoScopeReader.cs" />
     <Compile Include="Dto\Dto.cs" />
     <Compile Include="IherarchialRepository\Identity.cs" />
     <Compile Include="IherarchialRepository\IdentityMap.cs" />
     <Compile Include="IherarchialRepository\IherarchialRepository.cs" />
-    <Compile Include="IherarchialRepository\References\UnknownEntityReference.cs" />
-    <Compile Include="IherarchialRepository\References\UnknownGuidReference.cs" />
-    <Compile Include="IherarchialRepository\References\ReferenceResolver.cs" />
+    <Compile Include="IherarchialRepository\References\PendingEntityReference.cs" />
+    <Compile Include="IherarchialRepository\References\PendingGuidReference.cs" />
+    <Compile Include="IherarchialRepository\ReferenceResolver.cs" />
     <Compile Include="IherarchialRepository\IherarchyConverter.cs" />
     <Compile Include="IherarchialRepository\RootPointer.cs" />
     <Compile Include="IherarchialRepository\ScopeConverter.cs" />
     <Compile Include="IherarchialRepository\ConversionContext.cs" />
-    <Compile Include="XmlForcedConverter.cs" />
-    <Compile Include="XmlSerializerHelper.cs" />
-    <Compile Include="Cloner.cs" />
-    <Compile Include="DiskOperations.cs" />
+    <Compile Include="Utils\XmlForcedConverter.cs" />
+    <Compile Include="Utils\XmlSerializerHelper.cs" />
+    <Compile Include="Utils\Cloner.cs" />
+    <Compile Include="Utils\DiskOperations.cs" />
     <Compile Include="Dto\DtoConverter\DtoConverterRegistrator.cs" />
     <Compile Include="Dto\DtoRegistry\DtoTypesRegistrator.cs" />
     <Compile Include="Dto\DtoRegistry\DtoTypesRegistry.cs" />

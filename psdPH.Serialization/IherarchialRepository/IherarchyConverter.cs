@@ -15,7 +15,7 @@ namespace psdPH.Serialization
             //Поиск конвертера для корневого объекта
             var converter = DtoConvertersRegistry.GetForEntity(entity);
             //Получение DTO
-            var entityDto = converter.GetDto(entity, out UnknownGuidReference[] pRefs);
+            var entityDto = converter.GetDto(entity, out PendingGuidReference[] pRefs);
             context.PendingReferences.AddRange(pRefs);
             context.IdentityMap.AddMapping(entity,entityDto.Guid);
             //Разрешение ссылок уже существующими объектами включая текущий

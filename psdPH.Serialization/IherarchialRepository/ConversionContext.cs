@@ -9,8 +9,8 @@ namespace psdPH.Serialization
     public class ConversionContext
     {
         public IdentityMap IdentityMap { get; }
-        public List<UnknownGuidReference> PendingReferences { get; }
-        public ConversionContext(IdentityMap identityMap, List<UnknownGuidReference> pendingReferences)
+        public List<PendingGuidReference> PendingReferences { get; }
+        public ConversionContext(IdentityMap identityMap, List<PendingGuidReference> pendingReferences)
         {
             IdentityMap = identityMap;
             PendingReferences = pendingReferences;
@@ -19,7 +19,7 @@ namespace psdPH.Serialization
         public ConversionContext()
         {
             IdentityMap = new IdentityMap();
-            PendingReferences = new List<UnknownGuidReference>();
+            PendingReferences = new List<PendingGuidReference>();
         }
     }
 }

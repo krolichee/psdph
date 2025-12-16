@@ -63,7 +63,7 @@ namespace psdPH.Serialization
         public abstract Type EntityType { get; }
 
         //Метод получения DTO для объекта
-        internal Identity GetIdentity(Dto dto,out UnknownEntityReference[] pendingReferences)
+        internal Identity GetIdentity(Dto dto,out PendingEntityReference[] pendingReferences)
         {
             var obj = CreateEntity();
             UpdateEntity(obj, dto);
@@ -72,7 +72,7 @@ namespace psdPH.Serialization
             return result;
         }
         //Метод получения объекта из DTO
-        public Dto GetDto(object obj,out UnknownGuidReference[] pendingReferences)
+        public Dto GetDto(object obj,out PendingGuidReference[] pendingReferences)
         {
             var dto = CreateDto();
             UpdateDto(obj, dto);
@@ -80,8 +80,8 @@ namespace psdPH.Serialization
             return dto;
         }
 
-        protected virtual UnknownGuidReference[] GetUnknownGuidReferences(object obj, Dto dto) => new UnknownGuidReference[0];
-        protected virtual UnknownEntityReference[] GetUnknownEntityReferences(object obj, Dto dto) => new UnknownEntityReference[0];
+        protected virtual PendingGuidReference[] GetUnknownGuidReferences(object obj, Dto dto) => new PendingGuidReference[0];
+        protected virtual PendingEntityReference[] GetUnknownEntityReferences(object obj, Dto dto) => new PendingEntityReference[0];
         //Фабричный метод сущности
         protected abstract object CreateEntity();
         //Фабричный метод DTO
