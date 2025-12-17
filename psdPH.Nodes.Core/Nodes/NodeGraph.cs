@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -50,13 +51,21 @@ namespace psdPH.Nodes
     }
     public class NodeGraph
     {
+        
+        public NodeGraph()
+        {
+            NodeLetLinks = new List<NodeLetLink>();
+            ChainLinks = new List<ChainLink>();
+            Nodes = new List<Node>();
+            RootNode = null;
+        }
 
         public List<NodeLetLink> NodeLetLinks { get; }
         public List<ChainLink> ChainLinks { get; }
         public List<Node> Nodes { get; }
         public Node RootNode { get; set; }
 
-        public void Chain(Let fromLet, Node toNode, bool inverted)
+        public void Chain(Let fromLet, Node toNode, bool inverted=false)
         {
             if (fromLet.Type != typeof(bool))
                 throw new ArgumentException();

@@ -10,20 +10,25 @@ namespace psdPH.Nodes
 {
     public class Let
     {
-        public object Obj => value;
+        public object Obj => obj;
 
-        public Type Type { get; internal set; }
-        public object Value { get; internal set; }
+        public Type Type => type;
+        public object Value { get => get(); set => set(value); }
 
-        private object value;
-        private string v;
+        Func<object> get;
+        Action<object> set;
+
+        object obj;
         private Type type;
+        string name;
 
-        public Let(object value, string v, Type type)
+        public Let(object obj, string name, Type type,Func<object> get,Action<object> set)
         {
-            this.value = value;
-            this.v = v;
+            this.name = name;
             this.type = type;
+            this.get = get;
+            this.set = set;
+            this.obj = obj;
         }
     }
     abstract public class Node
