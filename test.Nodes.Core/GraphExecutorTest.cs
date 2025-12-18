@@ -45,7 +45,7 @@ namespace test.Nodes.Core
             Assert.IsTrue(executed);
         }
         [TestMethod]
-        public void SequenceExecuteTest()
+        public void LetLinkExecuteTest()
         {
             //Arrange
             bool executed = false;
@@ -56,7 +56,7 @@ namespace test.Nodes.Core
             graph.Nodes.Add(rootNode);
             ///Нужно ли вообще добавлять что-то кроме главной ноды?
             graph.Nodes.Add(nextNode);
-            graph.Link(rootNode.Outlets[0], nextNode.Inlets[0]);
+            graph.LetLink(rootNode.Outlets[0], nextNode.Inlets[0]);
 
             graph.RootNode = rootNode;
             //Act&Assert
@@ -86,6 +86,24 @@ namespace test.Nodes.Core
 
             executed = false;
             rootNode.Inlets[0].Value = true;
+            GraphExecutor.Execute(graph, null);
+            Assert.IsTrue(executed);
+        }
+        [TestMethod]
+        public void NodeLinkExecuteTest()
+        {
+            //Arrange
+            bool executed = false;
+            var graph = new NodeGraph();
+            var rootNode = new SingleBoolLetsNode();
+            var nextNode = new ExeNode(() => executed = true);
+            graph.Nodes.Add(rootNode);
+            graph.Nodes.Add(nextNode);
+            graph.NodeLink(rootNode, nextNode);
+
+            graph.RootNode = rootNode;
+
+            //Act&Assert
             GraphExecutor.Execute(graph, null);
             Assert.IsTrue(executed);
         }

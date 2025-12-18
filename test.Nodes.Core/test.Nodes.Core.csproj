@@ -54,6 +54,7 @@
     <Compile Include="SingleBoolLetsNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NodeGraphTest.cs" />
+    <Compile Include="NodeLetLinkTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -4,12 +4,12 @@ namespace test.Nodes.Core
 {
     class SingleBoolLetsNode : EmptyNode
     {
-        bool bool1;
+        public bool LetBool;
         public override Let[] Outlets => new Let[] {
-            new Let(this,"kavabanga",typeof(bool),()=>bool1,(_)=>{ })
+            new Let(this,"kavabanga",typeof(bool),()=>LetBool,(_)=>{ })
         };
         public override Let[] Inlets => new Let[] {
-            new Let(this,"onobanga",typeof(bool),()=>false,(_)=>bool1 = (bool)_)
+            new Let(this,"onobanga",typeof(bool),()=>false,(_)=>LetBool = (bool)_)
         };
     }
 }

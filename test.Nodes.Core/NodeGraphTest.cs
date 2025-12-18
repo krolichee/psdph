@@ -14,12 +14,12 @@ namespace test.Nodes.Core
 			graph.Nodes.Add(new EmptyNode());
 		}
         [TestMethod]
-        public void LinkTest()
+        public void LetLinkTest()
         {
             var graph = new NodeGraph();
             var node1 = new SingleBoolLetsNode();
             var node2 = new SingleBoolLetsNode();
-            graph.Link(node1.Outlets[0], node2.Inlets[0]);
+            graph.LetLink(node1.Outlets[0], node2.Inlets[0]);
         }
         [TestMethod]
         public void ChainTest()
@@ -28,6 +28,14 @@ namespace test.Nodes.Core
             var node1 = new SingleBoolLetsNode();
             var node2 = new SingleBoolLetsNode();
             graph.Chain(node1.Outlets[0], node2,false);
+        }
+        [TestMethod]
+        public void NodeLinkTest()
+        {
+            var graph = new NodeGraph();
+            var node1 = new SingleBoolLetsNode();
+            var node2 = new SingleBoolLetsNode();
+            graph.NodeLink(node1, node2);
         }
         [TestMethod]
         public void SetRootTest()
