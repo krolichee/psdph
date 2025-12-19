@@ -33,15 +33,9 @@ namespace test.Nodes.Core
         public void NodeLinkTest()
         {
             var graph = new NodeGraph();
-            var node1 = new SingleBoolLetsNode();
-            var node2 = new SingleBoolLetsNode();
+            var node1 = new EmptyNode();
+            var node2 = new EmptyNode();
             graph.NodeLink(node1, node2);
-        }
-        [TestMethod]
-        public void SetRootTest()
-        {
-            var graph = new NodeGraph();
-            graph.RootNode = new EmptyNode();
         }
 	}
 }

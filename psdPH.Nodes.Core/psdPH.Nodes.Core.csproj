@@ -51,7 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Nodes\ChainLink.cs" />
-    <Compile Include="Nodes\Execution\Coherence.cs" />
+    <Compile Include="Nodes\Coherence.cs" />
+    <Compile Include="Nodes\Execution\GraphAnalyzer.cs" />
     <Compile Include="Nodes\Execution\GraphExecution.cs" />
     <Compile Include="Nodes\Execution\GraphExecutor.cs" />
     <Compile Include="Nodes\Execution\QueueCoherence.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Nodes\NodeGraph.cs" />
     <Compile Include="Nodes\NodeLet.cs" />
     <Compile Include="Nodes\NodeLetLink.cs" />
+    <Compile Include="Nodes\SourceNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

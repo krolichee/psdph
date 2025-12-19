@@ -5,15 +5,29 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace psdPH.Nodes.Core.Nodes
 {
     public class GraphExecutor
     {
-        //TODO Сделать не статическим
-        GraphExecution Execution;
-        NodeGraph Graph;
-        void Execute(Node node,DocumentWr doc)
+        readonly GraphExecution Execution;
+        readonly NodeGraph Graph;
+        //TODO вынести doc в диспетчер
+        readonly DocumentWr doc;
+        private GraphExecutor(NodeGraph graph)
+        {
+            Execution = new GraphExecution(graph);
+            Graph = graph;
+        }
+        
+        void ExecuteNode(Node node)
+        {
+            PullLets(node);
+            node.Execute(doc);
+            Execution.TickExecuted(node);
+        }
+        void Execute()
         {
             //Если есть chains:
             //По приоритету:
@@ -32,19 +46,27 @@ namespace psdPH.Nodes.Core.Nodes
              * 4. Для каждой этой ноды, повторить 1-4
              */
 
-            //Исполнить входящие линки
-            PullLets(node);
-            node.Execute(doc);
-            Execution.TickExecuted(node);
-            var readyNodes = Execution.GetReadyNodes();
-            foreach (var next_node in readyNodes)
+            foreach (var node in Graph.GetSourceNodes())
             {
-                Execute(next_node, doc);
+                ExecuteNode(node);
+            }
+
+            var rootNode = Graph.GetRootNode();
+
+            
+            ExecuteNode(rootNode);
+
+            IEnumerable<Node> readyNodes = Execution.GetReadyNodes();
+            for (; 
+                readyNodes.Count() > 0; 
+                readyNodes = Execution.GetReadyNodes())
+            {
+                ExecuteNode(readyNodes.First());
             }
             
         }
 
-        private void PullLets(Node node)
+        void PullLets(Node node)
         {
             foreach (var nodeLetLink in GetInboundLetLinks(node))
             {
@@ -52,24 +74,31 @@ namespace psdPH.Nodes.Core.Nodes
             }
         }
 
-        private IEnumerable<NodeLetLink> GetInboundLetLinks(Node node)
+        IEnumerable<NodeLetLink> GetInboundLetLinks(Node node)
         {
             return Graph.NodeLetLinks.Where(nll => nll.To.Node == node);
         }
-
-        public static void Execute(NodeGraph graph,DocumentWr doc)
+        public static void ExecuteGraph(NodeGraph graph, DocumentWr doc)
         {
-            
+
             if (graph.RootNode == null)
                 throw new ArgumentException("Root node is null");
+
+            CheckGraph(graph);
+
             var executor = new GraphExecutor(graph);
-            ///TODO Если есть "висящие" исполняемые ноды: Ошибка
-            executor.Execute(graph.RootNode,doc);
+            
+            executor.Execute();
         }
-        private GraphExecutor(NodeGraph graph)
+
+        private static void CheckGraph(NodeGraph graph)
         {
-            Execution = new GraphExecution(graph);
-            Graph = graph;
+            
+            
+            //TODO Проверка на циклы
+
+            //TODO Проверка на висящие ноды (потенциально корневые)
+
         }
     }
 }

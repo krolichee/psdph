@@ -9,23 +9,25 @@ namespace psdPH.Nodes
 {
     public class NodeGraph
     {
-        
+        readonly List<NodeLetLink> nodeLetLinks;
+        readonly List<ChainLink> chainLinks;
+        readonly List<Coherence> nodeLinks;
+        readonly List<Node> nodes;
         public NodeGraph()
         {
-            NodeLetLinks = new List<NodeLetLink>();
-            ChainLinks = new List<ChainLink>();
-            Nodes = new List<Node>();
+            nodeLetLinks = new List<NodeLetLink>();
+            chainLinks = new List<ChainLink>();
+            nodes = new List<Node>();
             RootNode = null;
-            NodeLinks = new List<Coherence>();
+            nodeLinks = new List<Coherence>();
         }
-        
-        public List<NodeLetLink> NodeLetLinks { get; }
-        public List<ChainLink> ChainLinks { get; }
+
+        public IEnumerable<NodeLetLink> NodeLetLinks => nodeLetLinks;
+        public IEnumerable<ChainLink> ChainLinks => chainLinks;
         //TODO NodeCoherence dict (from-to,to-from) cache
         //TODO calculated coherences
-        public List<Coherence> NodeLinks { get; }
-        public List<Node> Nodes { get; }
-        public Node RootNode { get; set; }
+        public IEnumerable<Coherence> NodeLinks => nodeLinks;
+        public List<Node> Nodes => nodes;
 
         public void Chain(Let fromLet, Node toNode, bool inverted=false)
         {
@@ -33,7 +35,7 @@ namespace psdPH.Nodes
                 throw new ArgumentException();
             var fromNodeLet = NodeLet.Get(fromLet);
             var chain = new ChainLink(fromNodeLet, toNode, inverted);
-            ChainLinks.Add(chain);
+            chainLinks.Add(chain);
         }
 
         public void LetLink(Let fromLet, Let toLet)
@@ -41,12 +43,12 @@ namespace psdPH.Nodes
             var from = NodeLet.Get(fromLet);
             var to = NodeLet.Get(toLet);
             var link = new NodeLetLink(from,to);
-            NodeLetLinks.Add(link);
+            nodeLetLinks.Add(link);
         }
         public void NodeLink(Node from, Node to)
         {
             var coherence = new Coherence(from,to);
-            NodeLinks.Add(coherence);
+            nodeLinks.Add(coherence);
         }
     }
 }

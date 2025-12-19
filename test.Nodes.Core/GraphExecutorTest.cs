@@ -15,7 +15,7 @@ namespace test.Nodes.Core
     {
         class ExeNode : SingleBoolLetsNode
         {
-            Action action = () => { };
+            protected Action action = () => { };
 
             public ExeNode()
             {
@@ -32,6 +32,11 @@ namespace test.Nodes.Core
             }
         }
         [TestMethod]
+        public void RootNodeSearch()
+        {
+
+        }
+        [TestMethod]
         public void RootExecuteTest()
         {
             //Arrange
@@ -39,9 +44,8 @@ namespace test.Nodes.Core
             var graph = new NodeGraph();
             var rootNode = new ExeNode(()=>executed=true);
             graph.Nodes.Add(rootNode);
-            graph.RootNode = rootNode;
             //Act&Assert
-            GraphExecutor.Execute(graph,null);
+            GraphExecutor.ExecuteGraph(graph,null);
             Assert.IsTrue(executed);
         }
         [TestMethod]
@@ -57,10 +61,8 @@ namespace test.Nodes.Core
             ///Нужно ли вообще добавлять что-то кроме главной ноды?
             graph.Nodes.Add(nextNode);
             graph.LetLink(rootNode.Outlets[0], nextNode.Inlets[0]);
-
-            graph.RootNode = rootNode;
             //Act&Assert
-            GraphExecutor.Execute(graph, null);
+            GraphExecutor.ExecuteGraph(graph, null);
             Assert.IsTrue(executed);
         }
         [TestMethod]
@@ -76,17 +78,15 @@ namespace test.Nodes.Core
             ///Нужно ли вообще добавлять что-то кроме главной ноды?
             graph.Nodes.Add(nextNode);
             graph.Chain(rootNode.Outlets[0], nextNode);
-
-            graph.RootNode = rootNode;
             //Act&Assert
             executed = false;
             rootNode.Inlets[0].Value = false;
-            GraphExecutor.Execute(graph, null);
+            GraphExecutor.ExecuteGraph(graph, null);
             Assert.IsFalse(executed);
 
             executed = false;
             rootNode.Inlets[0].Value = true;
-            GraphExecutor.Execute(graph, null);
+            GraphExecutor.ExecuteGraph(graph, null);
             Assert.IsTrue(executed);
         }
         [TestMethod]
@@ -101,11 +101,63 @@ namespace test.Nodes.Core
             graph.Nodes.Add(nextNode);
             graph.NodeLink(rootNode, nextNode);
 
-            graph.RootNode = rootNode;
-
             //Act&Assert
-            GraphExecutor.Execute(graph, null);
+            GraphExecutor.ExecuteGraph(graph, null);
             Assert.IsTrue(executed);
+        }
+        class IntListAddNumberNode : ExeNode
+        {
+            int number;
+            List<int> List;
+
+            public IntListAddNumberNode(int number, List<int> list)
+            {
+                this.number = number;
+                List = list;
+                action = () => list.Add(number);
+            }
+        }
+        [TestMethod]
+        public void TwoLevelTreeExecutionTest()
+        {
+            //Arrange
+            List<int> numbers = new List<int>();
+            var graph = new NodeGraph();
+            var rootNode = new IntListAddNumberNode(0, numbers);
+            var node1 = new IntListAddNumberNode(1, numbers);
+            var node2 = new IntListAddNumberNode(2, numbers);
+            var node3 = new IntListAddNumberNode(3, numbers);
+            var node4 = new IntListAddNumberNode(4, numbers);
+            var nodes = new Node[] { rootNode, node1, node2, node3, node4 };
+            graph.Nodes.AddRange(nodes);
+            graph.NodeLink(rootNode, node1);
+            graph.NodeLink(rootNode, node2);
+            graph.NodeLink(node2, node3);
+            graph.NodeLink(node2, node4);
+            //Act&Assert
+            GraphExecutor.ExecuteGraph(graph,null);
+            Assert.IsTrue(numbers.Count == nodes.Count());
+        }
+        [TestMethod]
+        public void CycleExceptionTest()
+        {
+            //Arrange
+            List<int> numbers = new List<int>();
+            var graph = new NodeGraph();
+            var rootNode = new EmptyNode();
+            var node1 = new IntListAddNumberNode(1, numbers);
+            var node2 = new IntListAddNumberNode(2, numbers);
+            var node3 = new IntListAddNumberNode(3, numbers);
+            var node4 = new IntListAddNumberNode(4, numbers);
+            var nodes = new Node[] { rootNode, node1, node2, node3, node4 };
+            graph.Nodes.AddRange(nodes);
+            graph.NodeLink(rootNode, node1);
+            graph.NodeLink(rootNode, node2);
+            graph.NodeLink(node2, node3);
+            graph.NodeLink(node2, node4);
+            //Act&Assert
+            GraphExecutor.ExecuteGraph(graph, null);
+            Assert.IsTrue(numbers.Count == nodes.Count());
         }
     }
 }

@@ -11,13 +11,13 @@ namespace psdPH.Nodes.Core.Nodes
 
         public GraphExecution(NodeGraph graph)
         {
-            QueueCoherences = ExtractCoherences(graph).Select(c=>new QueueCoherence(c.From,c.To)).ToList();
+            QueueCoherences = graph.GetCoherences().Select(c=>new QueueCoherence(c.From,c.To)).ToList();
             NodesExecuted = graph.Nodes.ToDictionary(n => n, _ => false);
             Graph = graph;
         }
-        public Node[] GetReadyNodes()
+        public IEnumerable<Node> GetReadyNodes()
         {
-            return NonExecutedNodes().Where(n => IsAllCoherencesExecuted(n) && IsAllChainsLet(n)).ToArray();
+            return NonExecutedNodes().Where(n => IsAllCoherencesExecuted(n) && IsAllChainsLet(n));
         }
         public void TickExecuted(Node node)
         {
@@ -41,22 +41,8 @@ namespace psdPH.Nodes.Core.Nodes
             return GetIngoingChains(node).Select(cl => cl.FromLet.Let.Value).All(b => (bool)b);
         }
 
-        static Coherence GetCoherence(NodeLetLink nodeLetLink)
-        {
-            return new Coherence(nodeLetLink.From.Node, nodeLetLink.To.Node);
-        }
-        static Coherence GetCoherence(ChainLink chainLink)
-        {
-            return new Coherence(chainLink.FromLet.Node, chainLink.ToNode);
-        }
-        static IEnumerable<Coherence> ExtractCoherences(NodeGraph graph)
-        {
-            var chainCoherences = graph.ChainLinks.Select(cl=>GetCoherence(cl));
-            var straightCoherences = graph.NodeLinks.AsEnumerable();
-            var letLinkCoherences = graph.NodeLetLinks.Select(nll=> GetCoherence(nll));
-            List<Coherence> result = new List<Coherence>();
-            return result.Concat(chainCoherences).Concat(straightCoherences).Concat(letLinkCoherences);
-        }
+        
+        
         
         
     }
