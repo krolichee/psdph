@@ -2,6 +2,7 @@
 {
     class QueueCoherence : Coherence
     {
+        public QueueCoherence(Coherence coherence) : base(coherence.From, coherence.To) { }
         public QueueCoherence(Node from, Node to) : base(from, to)
         {
             Executed = false;

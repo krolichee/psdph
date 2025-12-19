@@ -5,7 +5,7 @@ using psdPH.Nodes;
 namespace test.Nodes.Core
 {
     [TestClass]
-	public class NodeGraphTest
+	public class NodeGraphTests
 	{
 		[TestMethod]
 		public void AddNodeTest()

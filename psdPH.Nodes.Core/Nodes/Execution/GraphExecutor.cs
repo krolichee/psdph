@@ -14,17 +14,18 @@ namespace psdPH.Nodes.Core.Nodes
         readonly GraphExecution Execution;
         readonly NodeGraph Graph;
         //TODO вынести doc в диспетчер
-        readonly DocumentWr doc;
-        private GraphExecutor(NodeGraph graph)
+        readonly DocumentWr Doc;
+        private GraphExecutor(NodeGraph graph,DocumentWr doc)
         {
             Execution = new GraphExecution(graph);
             Graph = graph;
+            Doc = doc;
         }
         
         void ExecuteNode(Node node)
         {
             PullLets(node);
-            node.Execute(doc);
+            node.Execute(Doc);
             Execution.TickExecuted(node);
         }
         void Execute()
@@ -80,21 +81,19 @@ namespace psdPH.Nodes.Core.Nodes
         }
         public static void ExecuteGraph(NodeGraph graph, DocumentWr doc)
         {
-
-            if (graph.RootNode == null)
+            if (graph.GetRootNode() == null)
                 throw new ArgumentException("Root node is null");
 
             CheckGraph(graph);
-
-            var executor = new GraphExecutor(graph);
-            
+            var executor = new GraphExecutor(graph,doc);
             executor.Execute();
         }
 
         private static void CheckGraph(NodeGraph graph)
         {
-            
-            
+            graph.GetRootNode();
+            if (graph.IsCycled())
+                throw new ArgumentException();
             //TODO Проверка на циклы
 
             //TODO Проверка на висящие ноды (потенциально корневые)

@@ -18,7 +18,6 @@ namespace psdPH.Nodes
             nodeLetLinks = new List<NodeLetLink>();
             chainLinks = new List<ChainLink>();
             nodes = new List<Node>();
-            RootNode = null;
             nodeLinks = new List<Coherence>();
         }
 

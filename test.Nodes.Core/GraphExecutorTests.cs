@@ -5,13 +5,14 @@ using psdPH.Photoshop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace test.Nodes.Core
 {
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClass]
-    public class GraphExecutorTest
+    public class GraphExecutorTests
     {
         class ExeNode : SingleBoolLetsNode
         {
@@ -144,20 +145,24 @@ namespace test.Nodes.Core
             //Arrange
             List<int> numbers = new List<int>();
             var graph = new NodeGraph();
-            var rootNode = new EmptyNode();
-            var node1 = new IntListAddNumberNode(1, numbers);
-            var node2 = new IntListAddNumberNode(2, numbers);
-            var node3 = new IntListAddNumberNode(3, numbers);
-            var node4 = new IntListAddNumberNode(4, numbers);
-            var nodes = new Node[] { rootNode, node1, node2, node3, node4 };
-            graph.Nodes.AddRange(nodes);
-            graph.NodeLink(rootNode, node1);
-            graph.NodeLink(rootNode, node2);
+            var node1 = new EmptyNode();
+            var node2 = new EmptyNode();
+            var node3 = new EmptyNode();
+            var node4 = new EmptyNode();
+
+            graph.NodeLink(node1, node2);
             graph.NodeLink(node2, node3);
-            graph.NodeLink(node2, node4);
+            graph.NodeLink(node3, node1);
+            graph.NodeLink(node3, node1);
+
+            graph.Nodes.Add(node1);
+            graph.Nodes.Add(node2);
+            graph.Nodes.Add(node3);
+            graph.Nodes.Add(node4);
+
             //Act&Assert
-            GraphExecutor.ExecuteGraph(graph, null);
-            Assert.IsTrue(numbers.Count == nodes.Count());
+            Assert.ThrowsException<ArgumentException>(()=>GraphExecutor.ExecuteGraph(graph,null));
+
         }
     }
 }

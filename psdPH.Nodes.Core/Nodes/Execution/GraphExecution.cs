@@ -11,7 +11,7 @@ namespace psdPH.Nodes.Core.Nodes
 
         public GraphExecution(NodeGraph graph)
         {
-            QueueCoherences = graph.GetCoherences().Select(c=>new QueueCoherence(c.From,c.To)).ToList();
+            QueueCoherences = graph.GetCoherences().Select(c=>new QueueCoherence(c)).ToList();
             NodesExecuted = graph.Nodes.ToDictionary(n => n, _ => false);
             Graph = graph;
         }
@@ -29,7 +29,7 @@ namespace psdPH.Nodes.Core.Nodes
         }
         IEnumerable<QueueCoherence> GetCoheredTo(Node node)
         {
-            return QueueCoherences.Where(qc => qc.To == node);
+            return QueueCoherences.GetCoheredTo(node).Select(c=>c as QueueCoherence);
         }
         bool IsAllCoherencesExecuted(Node node) => GetCoheredTo(node).All(qc => qc.Executed);
 
