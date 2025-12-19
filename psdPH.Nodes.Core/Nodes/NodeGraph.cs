@@ -7,66 +7,6 @@ using System.Threading.Tasks;
 
 namespace psdPH.Nodes
 {
-    //TODO наследовать от Coherence
-    public class NodeLetLink
-    {
-        public NodeLet From;
-        public NodeLet To;
-
-        public NodeLetLink(NodeLet from, NodeLet to)
-        {
-            From = from;
-            To = to;
-        }
-
-        public void Push()
-        {
-            To.Let.Value = From.Let.Value;
-        }
-    }
-    public class NodeLet
-    {
-        public NodeLet(Node node, Let let)
-        {
-            Node = node;
-            Let = let;
-        }
-
-        public Node Node { get; set; }
-        public Let Let { get; set; }
-
-        internal static NodeLet Get(Let let)
-        {
-            if (!(let.Obj is Node))
-                throw new ArgumentException();
-            return new NodeLet(let.Obj as Node,let);
-        }
-    }
-    //TODO наследовать от Coherence
-    public class ChainLink
-    {
-        public NodeLet FromLet;
-        public Node ToNode;
-        public bool Inverted;
-
-        public ChainLink(NodeLet fromNodeLet, Node toNode, bool inverted)
-        {
-            FromLet = fromNodeLet;
-            ToNode = toNode;
-            Inverted = inverted;
-        }
-    }
-    public class Coherence
-    {
-        public Node From;
-        public Node To;
-
-        public Coherence(Node from, Node to)
-        {
-            From = from;
-            To = to;
-        }
-    }
     public class NodeGraph
     {
         
