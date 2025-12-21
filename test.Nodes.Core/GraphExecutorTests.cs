@@ -27,7 +27,7 @@ namespace test.Nodes.Core
                 this.action = action;
             }
 
-            public override void Execute(DocumentWr doc)
+            public override void Execute()
             {
                 action();
             }
@@ -46,7 +46,7 @@ namespace test.Nodes.Core
             var rootNode = new ExeNode(()=>executed=true);
             graph.Nodes.Add(rootNode);
             //Act&Assert
-            GraphExecutor.ExecuteGraph(graph,null);
+            GraphExecutor.ExecuteGraph(graph);
             Assert.IsTrue(executed);
         }
         [TestMethod]
@@ -63,7 +63,7 @@ namespace test.Nodes.Core
             graph.Nodes.Add(nextNode);
             graph.LetLink(rootNode.Outlets[0], nextNode.Inlets[0]);
             //Act&Assert
-            GraphExecutor.ExecuteGraph(graph, null);
+            GraphExecutor.ExecuteGraph(graph);
             Assert.IsTrue(executed);
         }
         [TestMethod]
@@ -82,12 +82,12 @@ namespace test.Nodes.Core
             //Act&Assert
             executed = false;
             rootNode.Inlets[0].Value = false;
-            GraphExecutor.ExecuteGraph(graph, null);
+            GraphExecutor.ExecuteGraph(graph);
             Assert.IsFalse(executed);
 
             executed = false;
             rootNode.Inlets[0].Value = true;
-            GraphExecutor.ExecuteGraph(graph, null);
+            GraphExecutor.ExecuteGraph(graph);
             Assert.IsTrue(executed);
         }
         [TestMethod]
@@ -103,7 +103,7 @@ namespace test.Nodes.Core
             graph.NodeLink(rootNode, nextNode);
 
             //Act&Assert
-            GraphExecutor.ExecuteGraph(graph, null);
+            GraphExecutor.ExecuteGraph(graph);
             Assert.IsTrue(executed);
         }
         class IntListAddNumberNode : ExeNode
@@ -136,7 +136,7 @@ namespace test.Nodes.Core
             graph.NodeLink(node2, node3);
             graph.NodeLink(node2, node4);
             //Act&Assert
-            GraphExecutor.ExecuteGraph(graph,null);
+            GraphExecutor.ExecuteGraph(graph);
             Assert.IsTrue(numbers.Count == nodes.Count());
         }
         [TestMethod]
@@ -161,7 +161,7 @@ namespace test.Nodes.Core
             graph.Nodes.Add(node4);
 
             //Act&Assert
-            Assert.ThrowsException<ArgumentException>(()=>GraphExecutor.ExecuteGraph(graph,null));
+            Assert.ThrowsException<ArgumentException>(()=>GraphExecutor.ExecuteGraph(graph));
 
         }
     }

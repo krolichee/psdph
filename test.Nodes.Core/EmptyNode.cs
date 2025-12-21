@@ -23,7 +23,7 @@ namespace test.Nodes.Core
 
         public override Let[] Chain => new Let[0];
 
-        public override void Execute(psdPH.Photoshop.DocumentWr doc)
+        public override void Execute()
         {
             
         }

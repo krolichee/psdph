@@ -10,6 +10,12 @@ namespace psdPH.Nodes
 {
     public static class GraphAnalyzer
     {
+        static class GraphExceptions
+        {
+            public const string CYCLED_GRAPH = "Cycled graph";
+            public const string MULTI_ROOTS = "Graph has multiple root nodes";
+        }
+
         static Coherence GetCoherence(NodeLetLink nodeLetLink)
         {
             return new Coherence(nodeLetLink.From.Node, nodeLetLink.To.Node);
@@ -28,13 +34,13 @@ namespace psdPH.Nodes
         }
         public static IEnumerable<Node> GetSourceNodes(this NodeGraph graph)
         {
-            return graph.Nodes.Where(n=>n is SourceNode);
+            return graph.Nodes.Where(n => n is SourceNode);
         }
         public static Node GetRootNode(this NodeGraph graph)
         {
             var rootNodes = GetRootishNodes(graph).Except(GetSourceNodes(graph));
             if (rootNodes.Count() > 1)
-                throw new ArgumentException("Graph has multiple root nodes");
+                throw new ArgumentException(GraphExceptions.MULTI_ROOTS);
             return rootNodes.First();
         }
         public static IEnumerable<Node> GetRootishNodes(this NodeGraph graph)
@@ -52,7 +58,7 @@ namespace psdPH.Nodes
         }
         public static bool IsCycled(this NodeGraph graph)
         {
-            const string CYCLED_GRAPH = "Cycled graph";
+
 
             Dictionary<Node, bool> nodesWalked = graph.Nodes.ToDictionary(n => n, _ => false);
             var coherences = GetCoherences(graph);
@@ -60,7 +66,7 @@ namespace psdPH.Nodes
             void walkFrom(Node node)
             {
                 if (nodesWalked[node])
-                    throw new Exception(CYCLED_GRAPH);
+                    throw new Exception(GraphExceptions.CYCLED_GRAPH);
                 nodesWalked[node] = true;
                 var nextNodes = coherences.GetCoheredFrom(node).Select(c => c.To);
                 foreach (var next in nextNodes)
@@ -70,14 +76,15 @@ namespace psdPH.Nodes
             }
             IEnumerable<Node> unwalked;
             IEnumerable<Node> getUnwalked() => nodesWalked.Where(kv => kv.Value == false).Select(kv => kv.Key);
-            
+
             for (unwalked = getUnwalked(); unwalked.Any(); unwalked = getUnwalked())
                 try
                 {
                     walkFrom(unwalked.First());
-                }catch (Exception e)
+                }
+                catch (Exception e)
                 {
-                    if (e.Message == CYCLED_GRAPH)
+                    if (e.Message == GraphExceptions.CYCLED_GRAPH)
                         return true;
                     else
                         throw e;

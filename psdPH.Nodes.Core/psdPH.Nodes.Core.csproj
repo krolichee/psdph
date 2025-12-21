@@ -65,17 +65,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
-      <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
-      <Name>psdPH.Photoshop</Name>
-    </ProjectReference>
     <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
       <Project>{cc0fffdc-697c-4469-b1fb-61b396311625}</Project>
       <Name>psdPH.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
-      <Project>{3369D6FE-2C5F-4F88-AF24-24A441C4D4B7}</Project>
-      <Name>psdPH.Setups.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

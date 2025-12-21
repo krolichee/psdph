@@ -1,5 +1,4 @@
-﻿using psdPH.Photoshop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -13,19 +12,16 @@ namespace psdPH.Nodes.Core.Nodes
     {
         readonly GraphExecution Execution;
         readonly NodeGraph Graph;
-        //TODO вынести doc в диспетчер
-        readonly DocumentWr Doc;
-        private GraphExecutor(NodeGraph graph,DocumentWr doc)
+        private GraphExecutor(NodeGraph graph)
         {
             Execution = new GraphExecution(graph);
             Graph = graph;
-            Doc = doc;
         }
         
         void ExecuteNode(Node node)
         {
             PullLets(node);
-            node.Execute(Doc);
+            node.Execute();
             Execution.TickExecuted(node);
         }
         void Execute()
@@ -79,13 +75,10 @@ namespace psdPH.Nodes.Core.Nodes
         {
             return Graph.NodeLetLinks.Where(nll => nll.To.Node == node);
         }
-        public static void ExecuteGraph(NodeGraph graph, DocumentWr doc)
+        public static void ExecuteGraph(NodeGraph graph)
         {
-            if (graph.GetRootNode() == null)
-                throw new ArgumentException("Root node is null");
-
             CheckGraph(graph);
-            var executor = new GraphExecutor(graph,doc);
+            var executor = new GraphExecutor(graph);
             executor.Execute();
         }
 
@@ -94,9 +87,6 @@ namespace psdPH.Nodes.Core.Nodes
             graph.GetRootNode();
             if (graph.IsCycled())
                 throw new ArgumentException();
-            //TODO Проверка на циклы
-
-            //TODO Проверка на висящие ноды (потенциально корневые)
 
         }
     }
