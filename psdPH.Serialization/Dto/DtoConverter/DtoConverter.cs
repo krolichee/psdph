@@ -63,7 +63,7 @@ namespace psdPH.Serialization
         public abstract Type EntityType { get; }
 
         //Метод получения DTO для объекта
-        internal Identity GetIdentity(Dto dto,out PendingEntityReference[] pendingReferences)
+        public Identity GetIdentity(Dto dto,out PendingEntityReference[] pendingReferences)
         {
             var obj = CreateEntity();
             UpdateEntity(obj, dto);
