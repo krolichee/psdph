@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace psdPH.Serialization
 {
-    class Cloner
+    public class Cloner
     {
         public static object Clone(object obj)
         {
