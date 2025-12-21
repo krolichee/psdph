@@ -4,7 +4,6 @@ using psdPH.Logic.Compositions;
 using psdPH.Serialization;
 using psdPH.Nodes;
 using psdPH.Nodes.Core;
-using psdPH.Parameters;
 using psdPH.Photoshop;
 using System;
 using System.Collections.Generic;
@@ -13,14 +12,8 @@ using System.Xml.Serialization;
 
 namespace psdPH
 {
-    [Serializable]
     public abstract class Composition
     {
-        //NodeSet
-        public NodeSet NodeSet = new NodeSet();
-        //ParameterSet
-        public ParameterSet ParameterSet = new ParameterSet();
-
         //Hierarchy
         public delegate void ChildrenUpdated();
         public event ChildrenUpdated ChildrenUpdatedEvent;
@@ -32,16 +25,15 @@ namespace psdPH
                 AddChild(item);
             }
         }
-        [XmlIgnore]
         virtual public Composition Parent { get; set; }
         //переименовать в GetSiblings
-        protected T[] Siblings<T>() where T : Composition
+        protected T[] GetSiblings<T>() where T : Composition
         {
             if (Parent == null)
                 return new Composition[0] as T[];
             return Parent.GetChildren<T>().ToArray();
         }
-        protected void invokeChildrenUpdatedEvent()
+        protected void InvokeChildrenUpdatedEvent()
         {
             ChildrenUpdatedEvent?.Invoke();
         }
@@ -49,12 +41,12 @@ namespace psdPH
         {
             child.Parent = this;
             Children.Add(child);
-            invokeChildrenUpdatedEvent();
+            InvokeChildrenUpdatedEvent();
         }
         public void RemoveChild(Composition child)
         {
             Children.Remove(child);
-            invokeChildrenUpdatedEvent();
+            InvokeChildrenUpdatedEvent();
         }
         public Composition[] GetChildren() =>
            Children.ToArray();
@@ -104,9 +96,10 @@ namespace psdPH
                 }
             }
         }
+        //TODO вынести клонирование в отдельный класс расширения
         public Composition Clone()
         {
-            Composition result = XmlSerializerHelper.Clone(this) as Composition;
+            Composition result = Cloner.Clone(this) as Composition;
             result.Restore(Parent);
             return result;
         }

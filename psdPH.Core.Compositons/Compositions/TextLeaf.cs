@@ -21,7 +21,6 @@ namespace psdPH.Logic.Compositions
         {
            return LayerDescriptor.Layer(LayerName,PsLayerKind.psTextLayer).DoesDocHas(doc);
         }
-        protected override DtoConverter DtoConverter => new TextLeafDtoConverter();
 
         public TextLeaf():base() {  }
     }

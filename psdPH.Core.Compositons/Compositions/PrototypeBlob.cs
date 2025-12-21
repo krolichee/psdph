@@ -19,9 +19,6 @@ namespace psdPH.Logic.Compositions
         [XmlIgnore]
         public string RelativeLayerName { get => RelativeLayerDescriptor.LayerName; set => RelativeLayerDescriptor = LayerDescriptor.Layer(value); }
         public override void Apply(DocumentWr doc) { }
-        public PrototypeBlob() : base() {
-            DtoConvertersRegistry.Register<PrototypeBlob>(new PrototypeBlobDtoConverter());
-        }
         public Vector GetRelativeLayerAlightmentVector(DocumentWr docWr)
         {
             var options = new AlignOptions(Alignment.Create("up", "left"),ConsiderFx.NoFx);
@@ -36,7 +33,7 @@ namespace psdPH.Logic.Compositions
             return RelativeLayerDescriptor.DoesDocHas(doc)
                 && base.IsMatching(doc);
         }
-        public PlaceholderLeaf[] Placeholders => Siblings<PlaceholderLeaf>().Where(p=>p.PrototypeBlob==this).ToArray();
+        public PlaceholderLeaf[] Placeholders => GetSiblings<PlaceholderLeaf>().Where(p=>p.PrototypeBlob==this).ToArray();
     }
     public class PrototypeBlobDto : LayerCompositionDto
     {
