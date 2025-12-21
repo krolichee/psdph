@@ -2,113 +2,49 @@
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.Serialization;
-using psdPH.Nodes;
-using psdPH.Nodes.Core;
 using psdPH.Photoshop;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
+using psdPH.Core.Compositons.Compositions;
 
 namespace psdPH
 {
-    public abstract class Composition
+    public abstract class Composition : IHierarchial<Composition>,IDocumentMatchable
     {
-        //Hierarchy
-        public delegate void ChildrenUpdated();
-        public event ChildrenUpdated ChildrenUpdatedEvent;
-        public List<Composition> Children = new List<Composition>();
-        public void AddChildren(Composition[] compositions)
-        {
-            foreach (var item in compositions)
-            {
-                AddChild(item);
-            }
-        }
-        virtual public Composition Parent { get; set; }
-        //переименовать в GetSiblings
-        protected T[] GetSiblings<T>() where T : Composition
-        {
-            if (Parent == null)
-                return new Composition[0] as T[];
-            return Parent.GetChildren<T>().ToArray();
-        }
-        protected void InvokeChildrenUpdatedEvent()
-        {
-            ChildrenUpdatedEvent?.Invoke();
-        }
-        public void AddChild(Composition child)
-        {
-            child.Parent = this;
-            Children.Add(child);
-            InvokeChildrenUpdatedEvent();
-        }
-        public void RemoveChild(Composition child)
-        {
-            Children.Remove(child);
-            InvokeChildrenUpdatedEvent();
-        }
-        public Composition[] GetChildren() =>
-           Children.ToArray();
 
-        public T[] GetChildren<T>() =>
-            Children.Where(l => l is T).Cast<T>().ToArray();
-        public void Restore(Composition parent = null)
+        Hierarchy<Composition> hierarchy;
+
+        string name;
+        public Composition Clone()
         {
-            RestoreParents(parent);
-        }
-        virtual public void RestoreParents(Composition parent = null)
-        {
-            if (parent != null)
-                Parent = parent;
-            if (GetChildren() != null)
-                foreach (var item in GetChildren())
-                    item.Restore(this);
+            Composition result = Cloner.Clone(this) as Composition;
+            result.Hierarchy.Restore(this);
+            return result;
         }
 
-        //String represetations
-        abstract public string ObjName { get; }
-
-        public override string ToString()
+        //Constructors
+        public Composition()
         {
-            return ObjName;
+            hierarchy = new Hierarchy<Composition>(this);
         }
+        public Hierarchy<Composition> Hierarchy { get => hierarchy; }
 
-        //Using
-        abstract public void Apply(DocumentWr doc);
-        //Ни о каких "мэтчингах" класс не должен знать
+        public virtual string Name { get => name; set => name = value; }
+
+        public abstract void Apply(DocumentWr doc);
         public abstract bool IsMatching(DocumentWr doc);
         public virtual MatchingResult IsMatchingRouted(DocumentWr doc)
         {
             return new MatchingResult(this, IsMatching(doc));
         }
-        protected void matchChildren(MatchingResult result, DocumentWr doc)
+        public override string ToString()
         {
-            foreach (var child in Children)
-            {
-                var r = child.IsMatchingRouted(doc);
-                result.Match &= r;
-
-                if (!result)
-                {
-                    result.MismatchRoute.AddRange(r.MismatchRoute);
-                    break;
-                }
-            }
-        }
-        //TODO вынести клонирование в отдельный класс расширения
-        public Composition Clone()
-        {
-            Composition result = Cloner.Clone(this) as Composition;
-            result.Restore(Parent);
-            return result;
+            return Name;
         }
 
-        //Constructors
-        public Composition():base() { 
-            ChildrenUpdatedEvent += () => Restore(); 
-        }
-        
+        internal void SetHierarchy(Hierarchy<Composition> hierarchy) => this.hierarchy = hierarchy;
+
     }
     
     

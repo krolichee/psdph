@@ -11,7 +11,7 @@ namespace psdPH.Logic.Compositions
         public RootBlob():base() { }
         
         //TODO имена из локализации
-        public override string ObjName => "Главный документ";
+        public override string Name => "Главный документ";
 
         public override void Apply(DocumentWr doc)
         {

@@ -16,7 +16,7 @@ namespace psdPH.Logic.Compositions
 
         [XmlIgnore]
         public PrototypeBlob PrototypeBlob;
-        public override string ObjName => LayerName;
+        public override string Name => LayerName;
         LayerBlob _replacement;
         [XmlIgnore]
         public LayerBlob Replacement
