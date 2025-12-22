@@ -90,6 +90,10 @@
       <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
       <Name>psdPH.Localization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
+      <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
+      <Name>psdPH.Nodes.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
       <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
       <Name>psdPH.Photoshop</Name>

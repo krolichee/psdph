@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using psdPH.Lets;
+using psdPH.Setups;
 
 namespace test.Lets.Core
 {
@@ -12,19 +13,14 @@ namespace test.Lets.Core
            public int A { get; set; }
         }
         [TestMethod]
-        public void GetSetConstructor_test()
+        public void ReflectionConfig_test()
         {
             var obj = new TestObj();
-            var let = new Let(obj, "ololo", obj.GetType(),()=>obj.A,(a)=>obj.A =  (int)a );
+            var config = new ReflectionConfig(obj, nameof(obj.A));
+            var let = new Let(config);
             const int NEW_VALUE = 2;
             let.Value = NEW_VALUE;
             Assert.IsTrue(obj.A == NEW_VALUE);
-        }
-        [TestMethod]
-        public void MemberConstructor_test()
-        {
-            var obj = new TestObj();
-            var let = new Let(obj,)
         }
 
     }

@@ -56,6 +56,7 @@
     <Compile Include="Nodes\Execution\GraphExecution.cs" />
     <Compile Include="Nodes\Execution\GraphExecutor.cs" />
     <Compile Include="Nodes\Execution\QueueCoherence.cs" />
+    <Compile Include="INodable.cs" />
     <Compile Include="Nodes\Let.cs" />
     <Compile Include="Nodes\Node.cs" />
     <Compile Include="Nodes\NodeGraph.cs" />
