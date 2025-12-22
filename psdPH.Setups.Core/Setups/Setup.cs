@@ -47,7 +47,7 @@ namespace psdPH.Setups
             _fieldFunctions = fieldFunctions;
             _stack = new StackPanel();
             _stack.Orientation = Orientation.Horizontal;
-            _stack.Children.Add(new Label() { Content = config.Desc });
+            _stack.Children.Add(new Label() { Content = config.Name });
             _config = config;
             _stack.HorizontalAlignment = HorizontalAlignment.Stretch;
         }

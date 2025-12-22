@@ -1,25 +1,29 @@
-﻿using System;
+﻿using psdPH.Setups;
+using System;
+using System.Xml.Linq;
 
-namespace psdPH.Nodes
+namespace psdPH.Lets
 {
     public class Let
     {
-        public object Obj { get; private set; }
-
-        public Type Type { get; private set; }
-        public object Value { get => get(); set => set(value); }
-
-        Func<object> get;
-        Action<object> set;
-        public string Name { get; private set; }
-
-        public Let(object obj, string name, Type type,Func<object> get,Action<object> set)
+        readonly ReflectionConfig config;
+        readonly Func<string> nameGetter;
+        public Let(ReflectionConfig config)
         {
-            this.Name = name;
-            this.Type = type;
-            this.get = get;
-            this.set = set;
-            this.Obj = obj;
+            this.config = config;
+            nameGetter = () => config.FieldName;
         }
+        public Let(ReflectionConfig config, Func<string> nameGetter) : this(config)
+        {
+            this.nameGetter = nameGetter;
+        }
+        public Let(ReflectionConfig config, string name) : this(config)
+        {
+            this.nameGetter = ()=>name;
+        }
+
+        public object Value { get => config.GetValue(); set => config.SetValue(value); }
+        public string Name => nameGetter();
+        
     }
 }
