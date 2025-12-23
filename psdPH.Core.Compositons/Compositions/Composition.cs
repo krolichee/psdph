@@ -11,6 +11,9 @@ using psdPH.Nodes;
 
 namespace psdPH
 {
+    /// <summary>
+    /// Представляет собой элемент структуры документа
+    /// </summary>
     public abstract class Composition : IHierarchial<Composition>,IDocumentMatchable,INodable
     {
 

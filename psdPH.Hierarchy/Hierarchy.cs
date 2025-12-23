@@ -34,7 +34,7 @@ namespace psdPH.Core.Compositons.Compositions
             }
         }
         public TIH Parent { get => parent; set => parent = value; }
-        protected T[] GetSiblings<T>() where T : TIH
+        public T[] GetSiblings<T>() where T : TIH
         {
             if (parent == null)
                 return new TIH[0] as T[];

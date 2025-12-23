@@ -12,7 +12,6 @@ namespace psdPH.Compositions
     [Serializable]
     public class AreaLeaf : LayerComposition
     {
-        protected override DtoConverter DtoConverter => new LayerCompositionDtoConverter();
 
         public override void Apply(DocumentWr doc)
         {
@@ -20,7 +19,7 @@ namespace psdPH.Compositions
         }
         public override bool IsMatching(DocumentWr doc)
         {
-            return LayerDescriptor.Layer(LayerName).DoesDocHas(doc);
+            return LayerDescriptor.Layer(LayerName).IsInDoc(doc);
         }
 
         public AreaLeaf():base()
