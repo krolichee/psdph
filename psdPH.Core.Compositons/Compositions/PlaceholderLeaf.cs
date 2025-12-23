@@ -4,7 +4,6 @@ using System;
 using System.Xml.Serialization;
 using static psdPH.Photoshop.PhotoshopDocumentExtension;
 using static psdPH.Logic.PhotoshopLayerExtension;
-using psdPH.Serialization.Serialization;
 using psdPH.Serialization;
 
 namespace psdPH.Logic.Compositions

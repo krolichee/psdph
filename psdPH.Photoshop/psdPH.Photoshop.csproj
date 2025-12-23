@@ -57,6 +57,8 @@
     <Compile Include="Photoshop\AlignOptions.cs" />
     <Compile Include="Photoshop\Alignment\HAilgnment.cs" />
     <Compile Include="Photoshop\Alignment\VAilgnment.cs" />
+    <Compile Include="Photoshop\IPhotoshopWrapper.cs" />
+    <Compile Include="Photoshop\PhotoshopWrapperProxy.cs" />
     <Compile Include="Photoshop\Wrappers\DocumentWr\DocumentWr.cs" />
     <Compile Include="Photoshop\KostylExecutor.cs" />
     <Compile Include="Photoshop\Wrappers\LayerWr\ArtLayerWr.Common.cs" />

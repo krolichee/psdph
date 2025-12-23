@@ -2,6 +2,7 @@
 using psdPH.Logic;
 using psdPH.Photoshop;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -11,12 +12,12 @@ namespace psdPH.Photoshop
 {
     //TODO Одиночка
     //TODO Диспоз маршала после использования
-    public static class PhotoshopWrapper
+    public class PhotoshopWrapper : IPhotoshopWrapper
     {
-        private static Application psApp;
-
-        // Конструктор: создает экземпляр Photoshop
-        public static Application GetPhotoshopApplication()
+        Application psApp;
+        PhotoshopWrapper instance;
+        public PhotoshopWrapper Instance => instance ?? (instance = new PhotoshopWrapper());
+        public Application GetPhotoshopApplication()
         {
             if (psApp == null)
             {
@@ -33,23 +34,23 @@ namespace psdPH.Photoshop
             psApp.Visible = true;
             return psApp;
         }
-        public static void Dispose()
+        public void Dispose()
         {
             if (psApp != null)
                 Marshal.ReleaseComObject(psApp);
         }
         //TODO Переименовать
-        public static DocumentWr Opened(string path)
+        public DocumentWr Opened(string path)
         {
             bool hasDocs = HasOpenDocuments();
             var docs = DocumentWr.GetDocs(GetPhotoshopApplication());
-            return hasDocs ? docs.FirstOrDefault(d => d.IsPathPresent(path)):null;
+            return hasDocs ? docs.FirstOrDefault(d => d.IsPathPresent(path)) : null;
         }
 
 
-        
+
         // Открывает PSD-файл
-        public static DocumentWr OpenDocument(string filePath, bool reopenIfOpened = false)
+        public DocumentWr OpenDocumentWr(string filePath, bool reopenIfOpened = false)
         {
             DocumentWr docWr = Opened(filePath);
             if (reopenIfOpened ? docWr != null : false)
@@ -67,13 +68,13 @@ namespace psdPH.Photoshop
             GetPhotoshopApplication().Open(filePath);
             return psApp.ActiveDocument.Wrapper();
         }
-        public static Document OpenDocument(Application psApp, string filePath)
+        public Document OpenDocument(Application psApp, string filePath)
         {
             psApp.Open(filePath);
             return psApp.ActiveDocument;
         }
         // Проверяет, открыто ли приложение Photoshop
-        public static bool IsPhotoshopRunning()
+        public bool IsPhotoshopRunning()
         {
             try
             {
@@ -89,11 +90,11 @@ namespace psdPH.Photoshop
         }
 
         // Проверяет, есть ли открытые документы в Photoshop
-        public static bool HasOpenDocuments()
+        public bool HasOpenDocuments()
         {
             return HasOpenDocuments(GetPhotoshopApplication());
         }
-        public static bool HasOpenDocuments(Application psApp)
+        public bool HasOpenDocuments(Application psApp)
         {
             if (psApp == null)
                 return false;
@@ -108,7 +109,7 @@ namespace psdPH.Photoshop
             }
         }
 
-        public static DocumentWr GetActiveDocument()
+        public DocumentWr GetActiveDocument()
         {
             return GetPhotoshopApplication().ActiveDocument.Wrapper();
         }
