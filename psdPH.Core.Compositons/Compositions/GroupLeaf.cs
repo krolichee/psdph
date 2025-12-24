@@ -14,7 +14,7 @@ namespace psdPH.Logic.Compositions
         public override void Apply(DocumentWr doc) { }
         public override bool IsMatching(DocumentWr doc)
         {
-            return LayerDescriptor.Group(LayerName).DoesDocHas(doc);
+            return LayerDescriptor.Group(LayerName).IsInDoc(doc);
         }
 
         public GroupLeaf():base() {}

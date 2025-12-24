@@ -36,7 +36,7 @@ namespace psdPH.Photoshop
                 result = GetArtLayerWr(docWr.Doc);
             return result;
         }
-        public bool DoesDocHas(DocumentWr docWr)
+        public bool IsInDoc(DocumentWr docWr)
         {
             //TODO Более конкретная обработка ошибок
             try

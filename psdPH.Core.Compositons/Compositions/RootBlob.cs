@@ -10,8 +10,8 @@ namespace psdPH.Logic.Compositions
     {
         public RootBlob():base() { }
         
-
-        public override string ObjName => "Главный документ";
+        //TODO имена из локализации
+        public override string Name => "Главный документ";
 
         public override void Apply(DocumentWr doc)
         {
@@ -28,8 +28,6 @@ namespace psdPH.Logic.Compositions
             matchChildren(result, doc);
             return result;
         }
-
-        protected override DtoConverter DtoConverter => new NullDtoConverter();
     }
     
 }

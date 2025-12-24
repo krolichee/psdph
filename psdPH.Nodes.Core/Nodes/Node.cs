@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace psdPH.Nodes
 {
-    abstract public class Node
+    abstract public class Node : INodable
     {
         public abstract Let[] Inlets { get; }
         public abstract Let[] Outlets { get; }

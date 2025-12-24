@@ -9,7 +9,7 @@ namespace psdPH.Logic.Compositions
         public string LayerName { get => LayerDescriptor.LayerName; set => LayerDescriptor = LayerDescriptor.Layer(value); }
         [XmlIgnore]
         public LayerDescriptor LayerDescriptor;
-        public override string ObjName => LayerName;
+        public override string Name => LayerName;
         public LayerWr GetLayerWr(DocumentWr doc)
         {
             return LayerDescriptor.GetLayerWr(doc);

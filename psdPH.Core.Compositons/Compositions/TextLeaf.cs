@@ -6,12 +6,9 @@ using System.Xml.Serialization;
 
 namespace psdPH.Logic.Compositions
 {
-    
-    [Serializable]
     public class TextLeaf : LayerComposition
     {
-        [XmlIgnore]
-        public string Text = string.Empty;
+        string Text = string.Empty;
         override public void Apply(DocumentWr doc)
         {
             ArtLayer layer = (GetLayerWr(doc) as ArtLayerWr).ArtLayer;
@@ -19,9 +16,8 @@ namespace psdPH.Logic.Compositions
         }
         public override bool IsMatching(DocumentWr doc)
         {
-           return LayerDescriptor.Layer(LayerName,PsLayerKind.psTextLayer).DoesDocHas(doc);
+           return LayerDescriptor.Layer(LayerName,PsLayerKind.psTextLayer).IsInDoc(doc);
         }
-        protected override DtoConverter DtoConverter => new TextLeafDtoConverter();
 
         public TextLeaf():base() {  }
     }
@@ -30,10 +26,11 @@ namespace psdPH.Logic.Compositions
     {
         //TODO Глобально, композиция не должна хранить конкретные значения,
         //она только должна иметь методы для установки значений при рендере
-        public string Text;
+        
     }
     class TextLeafDtoConverter : LayerCompositionDtoConverter
     {
+        override 
         public override void GetEntity(object _obj, object _dto)
         {
             var obj = _obj as TextLeaf;

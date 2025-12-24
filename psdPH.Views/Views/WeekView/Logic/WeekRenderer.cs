@@ -1,6 +1,7 @@
 ﻿using Photoshop;
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
+using psdPH.Photoshop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

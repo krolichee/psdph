@@ -7,7 +7,6 @@ namespace psdPH.Logic.Compositions
 {
     public class LayerBlob:LayerComposition
     {
-        protected override DtoConverter DtoConverter => new LayerCompositionDtoConverter();
         public LayerBlob():base() { }
 
         public LayerBlob(string layername) : base(layername) { }
@@ -22,7 +21,7 @@ namespace psdPH.Logic.Compositions
 
             //doc.Close(PsSaveOptions.psSaveChanges);
         }
-        public override bool IsMatching(DocumentWr doc) => LayerDescriptor.DoesDocHas(doc);
+        public override bool IsMatching(DocumentWr doc) => LayerDescriptor.IsInDoc(doc);
         public override MatchingResult IsMatchingRouted(DocumentWr doc)
         {
             MatchingResult result = new MatchingResult(this, IsMatching(doc));

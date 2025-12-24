@@ -72,7 +72,6 @@
     </Compile>
     <Compile Include="Setups\FieldFunctions.cs" />
     <Compile Include="Setups\ISetupable.cs" />
-    <Compile Include="Setups\ReflectionConfig.cs" />
     <Compile Include="Setups\SetupsRegistry\EmptySetupsSource.cs" />
     <Compile Include="Setups\SetupsRegistry\SetupsRegistry.cs" />
     <Compile Include="Setups\SetupsRegistry\SetupsSource.cs" />

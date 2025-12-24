@@ -2,120 +2,45 @@
 using psdPH.Logic;
 using psdPH.Logic.Compositions;
 using psdPH.Serialization;
-using psdPH.Nodes;
-using psdPH.Nodes.Core;
-using psdPH.Parameters;
 using psdPH.Photoshop;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
+using psdPH.Core.Compositons.Compositions;
+using psdPH.Nodes;
 
 namespace psdPH
 {
-    [Serializable]
-    public abstract class Composition
+    /// <summary>
+    /// Представляет собой элемент структуры документа
+    /// </summary>
+    public abstract class Composition : IHierarchial<Composition>,IDocumentMatchable,INodable
     {
-        //NodeSet
-        public NodeSet NodeSet = new NodeSet();
-        //ParameterSet
-        public ParameterSet ParameterSet = new ParameterSet();
 
-        //Hierarchy
-        public delegate void ChildrenUpdated();
-        public event ChildrenUpdated ChildrenUpdatedEvent;
-        public List<Composition> Children = new List<Composition>();
-        public void AddChildren(Composition[] compositions)
-        {
-            foreach (var item in compositions)
-            {
-                AddChild(item);
-            }
-        }
-        [XmlIgnore]
-        virtual public Composition Parent { get; set; }
-        //переименовать в GetSiblings
-        protected T[] Siblings<T>() where T : Composition
-        {
-            if (Parent == null)
-                return new Composition[0] as T[];
-            return Parent.GetChildren<T>().ToArray();
-        }
-        protected void invokeChildrenUpdatedEvent()
-        {
-            ChildrenUpdatedEvent?.Invoke();
-        }
-        public void AddChild(Composition child)
-        {
-            child.Parent = this;
-            Children.Add(child);
-            invokeChildrenUpdatedEvent();
-        }
-        public void RemoveChild(Composition child)
-        {
-            Children.Remove(child);
-            invokeChildrenUpdatedEvent();
-        }
-        public Composition[] GetChildren() =>
-           Children.ToArray();
-
-        public T[] GetChildren<T>() =>
-            Children.Where(l => l is T).Cast<T>().ToArray();
-        public void Restore(Composition parent = null)
-        {
-            RestoreParents(parent);
-        }
-        virtual public void RestoreParents(Composition parent = null)
-        {
-            if (parent != null)
-                Parent = parent;
-            if (GetChildren() != null)
-                foreach (var item in GetChildren())
-                    item.Restore(this);
-        }
-
-        //String represetations
-        abstract public string ObjName { get; }
-
-        public override string ToString()
-        {
-            return ObjName;
-        }
-
-        //Using
-        abstract public void Apply(DocumentWr doc);
-        //Ни о каких "мэтчингах" класс не должен знать
-        public abstract bool IsMatching(DocumentWr doc);
-        public virtual MatchingResult IsMatchingRouted(DocumentWr doc)
-        {
-            return new MatchingResult(this, IsMatching(doc));
-        }
-        protected void matchChildren(MatchingResult result, DocumentWr doc)
-        {
-            foreach (var child in Children)
-            {
-                var r = child.IsMatchingRouted(doc);
-                result.Match &= r;
-
-                if (!result)
-                {
-                    result.MismatchRoute.AddRange(r.MismatchRoute);
-                    break;
-                }
-            }
-        }
+        Hierarchy<Composition> hierarchy;
+        string name;
         public Composition Clone()
         {
-            Composition result = XmlSerializerHelper.Clone(this) as Composition;
-            result.Restore(Parent);
+            Composition result = Cloner.Clone(this) as Composition;
+            result.Hierarchy.Restore(this);
             return result;
         }
-
-        //Constructors
-        public Composition():base() { 
-            ChildrenUpdatedEvent += () => Restore(); 
+        public Composition()
+        {
+            hierarchy = new Hierarchy<Composition>(this);
         }
-        
+        public Hierarchy<Composition> Hierarchy { get => hierarchy; }
+        public virtual string Name { get => name; set => name = value; }
+        public abstract Let[] Chain { get; }
+        public abstract Let[] Inlets { get; }
+        public abstract Let[] Outlets { get; }
+
+        public abstract void Apply(DocumentWr doc);
+        public abstract bool IsMatching(DocumentWr doc);
+        public virtual MatchingResult IsMatchingRouted(DocumentWr doc) => new MatchingResult(this, IsMatching(doc));
+        public override string ToString() => Name;
+        public void Execute()=>Apply(PhotoshopWrapper.GetActiveDocument());
+        internal void SetHierarchy(Hierarchy<Composition> hierarchy) => this.hierarchy = hierarchy;
     }
     
     

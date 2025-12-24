@@ -67,7 +67,6 @@
     <Compile Include="Compositions\PrototypeBlob.cs" />
     <Compile Include="Compositions\RootBlob.cs" />
     <Compile Include="Compositions\TextLeaf.cs" />
-    <Compile Include="MatchingResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,12 +74,24 @@
       <Project>{2ec6f86a-2e44-4c97-9d8b-66f6bfd48244}</Project>
       <Name>psdPH.Parameters</Name>
     </ProjectReference>
+    <ProjectReference Include="..\psdPH.DocumentMatching\psdPH.DocumentMatching.csproj">
+      <Project>{93001457-db65-4921-a20f-d3fd43136ffe}</Project>
+      <Name>psdPH.DocumentMatching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Hierarchy\psdPH.Hierarchy.csproj">
+      <Project>{e833441a-44df-426f-b762-f7a8d8971310}</Project>
+      <Name>psdPH.Hierarchy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Lets.Core\psdPH.Lets.Core.csproj">
+      <Project>{93907d71-d3e7-41a8-ae97-c56f6366506f}</Project>
+      <Name>psdPH.Lets.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
       <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
       <Name>psdPH.Localization</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
-      <Project>{5AA065A2-D4A8-49A7-8DC5-66E1081B84F9}</Project>
+      <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
       <Name>psdPH.Nodes.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">

@@ -16,7 +16,7 @@ namespace psdPH.Logic.Compositions
 
         public override bool IsMatching(DocumentWr doc)
         {
-            return LayerDescriptor.Layer(LayerName).DoesDocHas(doc);
+            return LayerDescriptor.Layer(LayerName).IsInDoc(doc);
         }
     }
 
