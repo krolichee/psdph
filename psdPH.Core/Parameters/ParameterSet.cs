@@ -11,7 +11,7 @@ namespace psdPH.Parameters
         public static void Add(this ParameterSet ps, Parameter parameter) => ps.AsCollection().Add(parameter);
     }
     [Serializable]
-    public class ParameterSet : ISerializable
+    public class ParameterSet
     {
         public ObservableCollection<Parameter> Parameters = new ObservableCollection<Parameter>();
         public event Action Updated;

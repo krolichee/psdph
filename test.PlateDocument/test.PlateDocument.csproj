@@ -60,6 +60,14 @@
       <Project>{C20E66C4-E8A7-4F52-A74E-B5806125D9FC}</Project>
       <Name>psdPH.Compositons</Name>
     </ProjectReference>
+    <ProjectReference Include="..\psdPH.Core\psdPH.Parameters.csproj">
+      <Project>{2EC6F86A-2E44-4C97-9D8B-66F6BFD48244}</Project>
+      <Name>psdPH.Parameters</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Hierarchy\psdPH.Hierarchy.csproj">
+      <Project>{E833441A-44DF-426F-B762-F7A8D8971310}</Project>
+      <Name>psdPH.Hierarchy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
       <Project>{5AA065A2-D4A8-49A7-8DC5-66E1081B84F9}</Project>
       <Name>psdPH.Nodes.Core</Name>
