@@ -1,8 +1,6 @@
-﻿using Photoshop;
-using psdPH.CED;
+﻿using psdPH.CED;
 using psdPH.Context;
 using psdPH.Photoshop;
-using psdPH.Utils;
 
 namespace psdPH.TemplateEditor
 {

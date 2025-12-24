@@ -36,13 +36,13 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
             return new StructureStackControl((Composition)item, Context);
         }
         protected override object[] getElements() =>
-            _root.GetChildren();
+            _root.Hierarchy.GetChildren();
 
-        protected override IList Items => this._root.Children as IList;
+        protected override IList Items => this._root.Hierarchy.Children as IList;
 
         public StructureStackHandler(PsdPhContext context) : base(context)
         {
-            _root.ChildrenUpdatedEvent += Refresh;
+            _root.Hierarchy.ChildrenUpdatedEvent += Refresh;
         }
     }
 }

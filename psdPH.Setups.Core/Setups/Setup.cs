@@ -100,7 +100,7 @@ namespace psdPH.Setups
         {
             if (Type != null)
                 return Type;
-            return _config.GetFieldOrPropertyType();
+            return _config.GetTypeOfMember();
         }
 
         public static Setup TypeConstrained<T>(ReflectionConfig setupConfig)

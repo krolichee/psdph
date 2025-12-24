@@ -55,6 +55,7 @@ namespace psdPH.Core.Compositons.Compositions
             children.Remove(child);
             InvokeChildrenUpdatedEvent();
         }
+        public TIH[] GetChildren() => GetChildren<TIH>();
 
         public T[] GetChildren<T>() =>
             Children.Where(l => l is T).Cast<T>().ToArray();

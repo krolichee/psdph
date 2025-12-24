@@ -84,22 +84,6 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\TemplateEditorWindow.xaml.cs">
       <DependentUpon>TemplateEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterControl.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\ParameterCedStack\ParameterHandler.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureStackControl.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\StructureCedStack\StructureStackHandler.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateCEDCommand.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackControl.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TemplateStackHandler.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\CedStacks\TypeAndNameGrid.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\IBatchCompositionCreator.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\LayerSetup.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\MultiCompositionCreator.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\CompositionCreators\SingleCompositionCreators.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\IBatchParameterCreator.cs" />
-    <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Creators\ParameterCreators\ParameterCreator.cs" />
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\SectionControl.xaml.cs">
       <DependentUpon>SectionControl.xaml</DependentUpon>
     </Compile>
@@ -116,8 +100,6 @@
     <Compile Include="TemplateEditor\CompositionLeafEditor\Windows\Utils\StringChoiceWindow.xaml.cs">
       <DependentUpon>StringChoiceWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateEditor\ParameterDicts.cs" />
-    <Compile Include="TemplateEditor\StructureDicts.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
