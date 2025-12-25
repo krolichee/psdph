@@ -1,4 +1,5 @@
-﻿using psdPH.Setups;
+﻿using psdPH.Lets.Core;
+using psdPH.Setups;
 using System;
 using System.Xml.Linq;
 
@@ -8,6 +9,7 @@ namespace psdPH.Lets
     {
         readonly ReflectionConfig config;
         readonly Func<string> nameGetter;
+        
         public Let(ReflectionConfig config)
         {
             this.config = config;
@@ -24,6 +26,7 @@ namespace psdPH.Lets
 
         public object Value { get => config.GetValue(); set => config.SetValue(value); }
         public string Name => nameGetter();
+        
         
     }
 }

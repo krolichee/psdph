@@ -21,8 +21,6 @@ namespace test.Nodes.Core
 
         public override Let[] Outlets => new Let[0];
 
-        public override Let[] Chain => new Let[0];
-
         public override void Execute()
         {
             

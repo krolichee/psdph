@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{59BFABE0-49CD-4199-8E36-F64B3AD20025}</ProjectGuid>
+    <ProjectGuid>{40C091DE-6B26-4B8C-8B04-33EE8DFC1148}</ProjectGuid>
     <OutputType>library</OutputType>
-    <RootNamespace>psdPH.Setups.Controls</RootNamespace>
-    <AssemblyName>psdPH.Setups.Controls</AssemblyName>
+    <RootNamespace>psdPH.LetViews</RootNamespace>
+    <AssemblyName>psdPH.LetViews</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -31,15 +31,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoViews|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\NoViews\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -57,15 +48,24 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\SetupInputWindow.xaml">
+    <Page Include="AlignmentLetViewControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Controls\SetupInputWindow.xaml.cs">
-      <DependentUpon>SetupInputWindow.xaml</DependentUpon>
+    <Compile Include="AlignmentLetViewControl.xaml.cs">
+      <DependentUpon>AlignmentLetViewControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
+    <Page Include="CheckLetViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckLetViewControl.xaml.cs">
+      <DependentUpon>CheckLetViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LetViewsLocalizator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -88,22 +88,19 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\psdPH.Lets.Core\psdPH.Lets.Core.csproj">
+      <Project>{93907D71-D3E7-41A8-AE97-C56F6366506F}</Project>
+      <Name>psdPH.Lets.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
-      <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
+      <Project>{5B904C27-3C81-4E9B-A882-6A08D71E7C44}</Project>
       <Name>psdPH.Localization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
-      <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
-      <Name>psdPH.Photoshop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
-      <Project>{3369d6fe-2c5f-4f88-af24-24a441c4d4b7}</Project>
-      <Name>psdPH.Setups.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj">
-      <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>
-      <Name>psdPH.Utils</Name>
+    <ProjectReference Include="..\psdPH.SpecialControls\psdPH.SpecialControls.csproj">
+      <Project>{7ea427ff-bbee-442c-a8e7-def7ec5d95a5}</Project>
+      <Name>psdPH.SpecialControls</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

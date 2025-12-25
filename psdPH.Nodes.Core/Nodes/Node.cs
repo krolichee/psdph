@@ -9,7 +9,6 @@ namespace psdPH.Nodes
     {
         public abstract Let[] Inlets { get; }
         public abstract Let[] Outlets { get; }
-        public abstract Let[] Chain { get; }
         public abstract void Execute();
     }
 }

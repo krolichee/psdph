@@ -57,19 +57,12 @@ namespace psdPH.Nodes.UI
             get => (Brush)GetValue(MyBrushProperty);
             set => SetValue(MyBrushProperty, value);
         }
-        private SetupBar NewSetupBar(Setup setup)
+        private SetupBar NewLetBar(Let Let)
         {
-            var nodeSetupLink = new NodeSetup(_node, setup);
-            var setupBar = new SetupBar(nodeSetupLink, this);
+            var nodeLet = new NodeLet(_node, Let);
+            var setupBar = new SetupBar(nodeLet, this);
             _setupBars.Add(setupBar);
             return setupBar;
-        }
-        private ChainBar NewChainBar(Setup setup)
-        {
-            var nodeSetupLink = new NodeSetup(_node, setup);
-            var chainBar = new ChainBar(nodeSetupLink,this);
-            _chainBars.Add(chainBar);
-            return chainBar;
         }
         public NodeUI(Node node)
         {

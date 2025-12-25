@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace psdPH.Lets.Core
 {
-    class LetView
+    public class LetView
     {
     }
 }

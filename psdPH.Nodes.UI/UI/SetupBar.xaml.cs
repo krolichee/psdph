@@ -22,48 +22,48 @@ namespace psdPH.Nodes.UI
     /// </summary>
     public partial class SetupBar : UserControl
     {
-        public readonly NodeUI NodeUI;
-        public readonly NodeSetup NodeSetup;
+        public delegate void NodeLetEvent(NodeLet nodeLet);
 
-        public event NodeSetupEvent NodeSetupPick;
-        public event NodeSetupEvent NodeSetupHover;
-        public event NodeSetupEvent NodeSetupPut;
+        readonly NodeUI nodeUI;
+        readonly NodeLet nodeLet;
+
+        public event NodeLetEvent NodeSetupPick;
+        public event NodeLetEvent NodeSetupHover;
+        public event NodeLetEvent NodeSetupPut;
+
+        public SetupBar(NodeUI nodeUI,NodeLet nodeLet)
+        {
+            this.nodeUI = nodeUI;
+            this.nodeLet = nodeLet;
+            var control = nodeLet.View;
+            InitializeComponent();
+            Grid.SetColumn(control, 1);
+            control.HorizontalAlignment = HorizontalAlignment.Center;
+            control.VerticalAlignment = VerticalAlignment.Center;
+            setupControlBorder.Child = control;
+            nameLabel.Content = nodeLet.Let.Name;
+        }
 
         public bool SetupControlVisibility
         {
             set => setupControlBorder.Visibility = value ? Visibility.Visible : Visibility.Hidden;
         }
 
-        public SetupBar(NodeSetup nodeSetupLink, NodeUI nodeUI)
-        {
-            NodeUI = nodeUI;
-            NodeSetup = nodeSetupLink;
-            var setup = NodeSetup.Setup;
-            var control = setup.Control;
-            setup.Stack.Children.Remove(control);
-            InitializeComponent();
-            Grid.SetColumn(control, 1);
-            control.HorizontalAlignment = HorizontalAlignment.Center;
-            control.VerticalAlignment = VerticalAlignment.Center;
-            setupControlBorder.Child = control;
-            nameLabel.Content = setup.Config.Desc;
-        }
-
 
         private void mainGrid_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            NodeSetupPut?.Invoke(NodeSetup);
+            NodeSetupPut?.Invoke(nodeLet);
         }
 
         private void pickBorder_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            NodeSetupPick?.Invoke(NodeSetup);
+            NodeSetupPick?.Invoke(nodeLet);
             e.Handled = true;
         }
 
         private void mainGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            NodeSetupHover?.Invoke(NodeSetup);
+            NodeSetupHover?.Invoke(nodeLet);
         }
     }
 }
