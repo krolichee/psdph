@@ -14,9 +14,10 @@ namespace psdPH.Utils.Setups
         public static Setup JustDescription(string desc)
         {
             var label = new Label() { Content = "" };
-            var config = new ReflectionConfig(label, nameof(label.Content), desc);
-
+            var config = new ReflectionConfig(label, nameof(label.Content));
+            
             var result = new JustDescriptionSetup(config);
+            result.Desc = desc;
             var stack = result._stack;
             result.Control = label;
             result.valueFunc = () => ""; ;

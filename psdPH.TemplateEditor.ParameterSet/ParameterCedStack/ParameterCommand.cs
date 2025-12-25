@@ -1,8 +1,9 @@
 ﻿using psdPH.CED;
 using psdPH.Parameters;
 using System;
+using static psdPH.TemplateEditor.Parameters.ParameterDicts;
 
-namespace psdPH.TemplateEditor
+namespace psdPH.TemplateEditor.Parameters
 {
     public class ParameterCommand: CEDCommand
     {

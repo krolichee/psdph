@@ -24,7 +24,6 @@ namespace psdPH.Logic.Compositions
         {
             
         }
-        protected override DtoConverter DtoConverter => new LayerCompositionDtoConverter();
     }
 
 }

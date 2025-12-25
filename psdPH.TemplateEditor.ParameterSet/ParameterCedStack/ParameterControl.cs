@@ -1,18 +1,10 @@
 ﻿using psdPH.CED;
 using psdPH.Localization;
-using psdPH.Logic.Parameters;
 using psdPH.Parameters;
-using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
-using psdPH.TemplateEditor.CompositionLeafEditor.Windows.CedStacks.ParameterCedStack;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+using psdPH.TemplateEditor.Core;
 using System.Windows.Input;
 
-namespace psdPH.TemplateEditor
+namespace psdPH.TemplateEditor.Parameters
 {
     public class ParameterControl:CEDElementControl<Parameter>
     {

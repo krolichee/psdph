@@ -17,7 +17,7 @@ namespace psdPHTest.Photoshop
         [TestMethod]
         public void testSave()
         {
-            var psApp = PhotoshopWrapper.GetPhotoshopApplication();
+            var psApp = PhotoshopWrapper.Instance.GetPhotoshopApplication();
             
             var doc =psApp.ActiveDocument;
             var dir = Directory.GetCurrentDirectory();

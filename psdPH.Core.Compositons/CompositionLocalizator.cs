@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace psdPH.Core.Compositons
 {
     [Localizator]
-    public static class CompositionLocalizator
+    public class CompositionLocalizator:Localizator
     {
-        public static void RegisterLocalizations()
+        public override void RegisterLocalizations()
         {
             TypeLocalization.RegisterLocalization(
             new Dictionary<Type, string>

@@ -31,6 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.Photoshop">
+      <HintPath>..\psdPH.Photoshop\obj\Debug\Interop.Photoshop.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -40,6 +45,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompositionCreators\IBatchCompositionCreator.cs" />
@@ -80,6 +86,10 @@
     <ProjectReference Include="..\psdPH.Reflection\psdPH.Reflection.csproj">
       <Project>{e73844dc-d24c-490c-9098-98add149368a}</Project>
       <Name>psdPH.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Controls\psdPH.Setups.Controls.csproj">
+      <Project>{59BFABE0-49CD-4199-8E36-F64B3AD20025}</Project>
+      <Name>psdPH.Setups.Controls</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
       <Project>{3369D6FE-2C5F-4F88-AF24-24A441C4D4B7}</Project>

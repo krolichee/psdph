@@ -14,7 +14,7 @@ namespace psdPH.Utils.Setups
     public class JustSeparator:Setup
     {
         public JustSeparator() : base(
-            new ReflectionConfig(new Label() { Content = "" }, nameof(Label.Content), "")) {
+            new ReflectionConfig(new Label() { Content = "" }, nameof(Label.Content))) {
             var separator = new Separator() { };
             Control = separator;
             valueFunc = () => "";

@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5154A73E-8A56-4080-A49F-806C1577192D}</ProjectGuid>
+    <ProjectGuid>{5BBFE856-4132-4481-9CE6-B23BB583DF6B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>test.TemplateEditor.Structure</RootNamespace>
-    <AssemblyName>test.TemplateEditor.Structure</AssemblyName>
+    <RootNamespace>test.TemplateEditor.ParameterSet</RootNamespace>
+    <AssemblyName>test.TemplateEditor.ParameterSet</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -63,33 +63,17 @@
       <Project>{026C33A7-D6EB-4124-B53A-BF25D789E1C4}</Project>
       <Name>psdPH.CED</Name>
     </ProjectReference>
-    <ProjectReference Include="..\psdPH.Context\psdPH.Context.csproj">
-      <Project>{5af433db-0930-4fb7-8318-1d2bc519d3c6}</Project>
-      <Name>psdPH.Context</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Core.Compositons\psdPH.Compositons.csproj">
-      <Project>{C20E66C4-E8A7-4F52-A74E-B5806125D9FC}</Project>
-      <Name>psdPH.Compositons</Name>
+    <ProjectReference Include="..\psdPH.Core\psdPH.Parameters.csproj">
+      <Project>{2EC6F86A-2E44-4C97-9D8B-66F6BFD48244}</Project>
+      <Name>psdPH.Parameters</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
       <Project>{5B904C27-3C81-4E9B-A882-6A08D71E7C44}</Project>
       <Name>psdPH.Localization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
-      <Project>{E879B3A1-E6FB-4B50-B0DF-9E34546BEA19}</Project>
-      <Name>psdPH.Photoshop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.TemplateEditor.Core\psdPH.TemplateEditor.Core.csproj">
-      <Project>{B9CDF1E8-48C4-4705-9544-63EE7464A622}</Project>
-      <Name>psdPH.TemplateEditor.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.TemplateEditor.Structure\psdPH.TemplateEditor.Structure.csproj">
-      <Project>{b46a3adb-0be2-4add-9690-e873ba4317d5}</Project>
-      <Name>psdPH.TemplateEditor.Structure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TestDefinitions\TestDefinitions.csproj">
-      <Project>{37fe1678-2a21-431a-a816-e682675f2d22}</Project>
-      <Name>TestDefinitions</Name>
+    <ProjectReference Include="..\psdPH.TemplateEditor.ParameterSet\psdPH.TemplateEditor.Parameters.csproj">
+      <Project>{3a37350c-a6ad-4d29-9aac-a443f43df1fe}</Project>
+      <Name>psdPH.TemplateEditor.Parameters</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

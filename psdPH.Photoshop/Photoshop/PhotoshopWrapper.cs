@@ -15,8 +15,8 @@ namespace psdPH.Photoshop
     public class PhotoshopWrapper : IPhotoshopWrapper
     {
         Application psApp;
-        PhotoshopWrapper instance;
-        public PhotoshopWrapper Instance => instance ?? (instance = new PhotoshopWrapper());
+        static PhotoshopWrapper instance;
+        public static PhotoshopWrapper Instance => instance ?? (instance = new PhotoshopWrapper());
         public Application GetPhotoshopApplication()
         {
             if (psApp == null)

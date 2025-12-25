@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
+namespace psdPH.TemplateEditor.Core
 {
     public static class TypeAndNameGrid
     {

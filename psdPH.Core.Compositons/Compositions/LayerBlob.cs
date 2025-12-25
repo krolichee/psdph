@@ -28,7 +28,9 @@ namespace psdPH.Logic.Compositions
             if (!result)
                 return result;
             doc = doc.OpenSmartLayer(LayerDescriptor);
-            matchChildren(result, doc);
+            var childrenMatch = Hierarchy.Children.Match(doc);
+            if (childrenMatch != null)
+                result = childrenMatch.Value;
             doc.Doc.Close(PsSaveOptions.psSaveChanges);
             return result;
         }

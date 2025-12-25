@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
-namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
+namespace psdPH.TemplateEditor.Structure
 {
     
     public abstract class MultiCompositionCreator<T> : IBatchCompositionCreator where T : Composition, new()
@@ -53,8 +53,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         protected virtual Setup multiLayerSetup(DocumentWr doc)
         {
             var lds = LayerSetup.GetFilteredLDs(doc, ldFilter);
-            var ln_pconfig = new ReflectionConfig(this, nameof(Inputs), label);
-            return new MultiChooseSetup(ln_pconfig, lds); 
+            var ln_pconfig = new ReflectionConfig(this, nameof(Inputs));
+            return new MultiChooseSetup(ln_pconfig, lds) { Desc = label}; 
         }
         protected virtual Setup[] GetSetups(DocumentWr doc, Composition root)
         {
@@ -107,9 +107,10 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         protected override Setup[] GetSetups(DocumentWr doc, Composition root)
         {
             var result = new List<Setup>();
-            var prototypeConfig = new ReflectionConfig(this, nameof(PrototypeBlob), "Прототип");
-            var prototypes = root.GetChildren<PrototypeBlob>();
-            var prototypeSetup = new ChooseSetup(prototypeConfig, prototypes);
+            var prototypeConfig = new ReflectionConfig(this, nameof(PrototypeBlob));
+            
+            var prototypes = root.Hierarchy.GetChildren<PrototypeBlob>();
+            var prototypeSetup = new ChooseSetup(prototypeConfig, prototypes) { Desc = "Прототип" };
             result.Add(prototypeSetup);
             result.AddRange(base.GetSetups(doc, root));
             return result.ToArray();

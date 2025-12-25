@@ -17,7 +17,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
-namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
+namespace psdPH.TemplateEditor.Structure
 {
 
     public abstract class SingleLeafCreator: IBatchCompositionCreator
@@ -45,7 +45,7 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
         protected virtual string label => "Слой";
         
         protected virtual void resultInit() => result = new LayerLeaf();
-        protected ReflectionConfig resultLDConfig => new ReflectionConfig(result, nameof(LayerComposition.LayerDescriptor), label);
+        protected ReflectionConfig resultLDConfig => new ReflectionConfig(result, nameof(LayerComposition.LayerDescriptor));
         protected virtual Setup[] getSetups(DocumentWr docWr) => new[] { LayerSetup.getLayerChooseSetup(docWr, ldFilter, resultLDConfig) };
         public LayerLeafCreator(DocumentWr docWr) : base()
         {
@@ -93,11 +93,12 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
     {
         protected override LDFilter ldFilter => LDFilter.Layer(PsLayerKind.psSmartObjectLayer);
         protected override string label => "Слой прототипа";
+        const string relativeLayerCaption = "Опорный слой";
         protected override void resultInit() => result = new PrototypeBlob();
         protected override Setup[] getSetups(DocumentWr docWr)
         {
             var relativeFilter = LDFilter.Layer(CommonLayers);
-            var relativeConfig = new ReflectionConfig(result, nameof(PrototypeBlob.RelativeLayerDescriptor), "Опорный слой");
+            var relativeConfig = new ReflectionConfig(result, nameof(PrototypeBlob.RelativeLayerDescriptor));
             return new[] {
                 LayerSetup.getLayerChooseSetup(docWr, ldFilter, resultLDConfig),
                 LayerSetup.getLayerChooseSetup(docWr,relativeFilter,relativeConfig) };

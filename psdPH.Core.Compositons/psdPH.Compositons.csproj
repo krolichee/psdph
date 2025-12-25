@@ -58,10 +58,7 @@
     <Compile Include="Compositions\GroupLeaf.cs" />
     <Compile Include="Compositions\ImageLeaf.cs" />
     <Compile Include="Compositions\LayerBlob.cs" />
-    <Compile Include="Compositions\LayerComposition\LayerComposition.cs" />
-    <Compile Include="Compositions\LayerComposition\LayerCompositionDtoConverter.cs" />
-    <Compile Include="Compositions\LayerComposition\LayerCompositionDtoMapper.cs" />
-    <Compile Include="Compositions\LayerComposition\LayerCompositionDto.cs" />
+    <Compile Include="Compositions\LayerComposition.cs" />
     <Compile Include="Compositions\LayerLeaf.cs" />
     <Compile Include="Compositions\PlaceholderLeaf.cs" />
     <Compile Include="Compositions\PrototypeBlob.cs" />
@@ -70,10 +67,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\psdPH.Core\psdPH.Parameters.csproj">
-      <Project>{2ec6f86a-2e44-4c97-9d8b-66f6bfd48244}</Project>
-      <Name>psdPH.Parameters</Name>
-    </ProjectReference>
     <ProjectReference Include="..\psdPH.DocumentMatching\psdPH.DocumentMatching.csproj">
       <Project>{93001457-db65-4921-a20f-d3fd43136ffe}</Project>
       <Name>psdPH.DocumentMatching</Name>

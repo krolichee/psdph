@@ -8,6 +8,7 @@ namespace psdPH.Setups
     //TODO Жоска отрефакторить
     public class Setup
     {
+        public string Desc;
         public delegate void AcceptedEvent();
         public event AcceptedEvent Accepted;
         protected delegate void ChangedEvent();
@@ -47,7 +48,7 @@ namespace psdPH.Setups
             _fieldFunctions = fieldFunctions;
             _stack = new StackPanel();
             _stack.Orientation = Orientation.Horizontal;
-            _stack.Children.Add(new Label() { Content = config.Name });
+            _stack.Children.Add(new Label() { Content = config.FieldName });
             _config = config;
             _stack.HorizontalAlignment = HorizontalAlignment.Stretch;
         }

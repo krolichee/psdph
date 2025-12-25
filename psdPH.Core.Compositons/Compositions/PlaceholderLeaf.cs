@@ -44,6 +44,8 @@ namespace psdPH.Logic.Compositions
             return LayerDescriptor.IsInDoc(doc)
                 && PrototypeBlob.IsMatching(doc);
         }
+
+        public override void Apply(DocumentWr doc) { }
     }
 
 }

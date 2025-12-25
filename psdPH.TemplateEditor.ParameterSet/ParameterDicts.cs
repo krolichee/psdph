@@ -1,14 +1,8 @@
-﻿using psdPH.Logic.Compositions;
-using psdPH.Logic.Parameters;
-using psdPH.TemplateEditor.CompositionLeafEditor.Windows;
-using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Creators.ParameterCreators;
+﻿using psdPH.Logic.Parameters;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace psdPH.TemplateEditor
+namespace psdPH.TemplateEditor.Parameters
 {
     public static class ParameterDicts
     {

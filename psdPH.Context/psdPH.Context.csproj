@@ -62,10 +62,6 @@
       <Project>{E879B3A1-E6FB-4B50-B0DF-9E34546BEA19}</Project>
       <Name>psdPH.Photoshop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\test.Photoshop\test.Photoshop.csproj">
-      <Project>{00161ee0-91ba-425e-9a65-ddba88cb7b82}</Project>
-      <Name>test.Photoshop</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

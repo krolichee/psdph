@@ -31,6 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,6 +41,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ParameterCedStack\ParameterCommand.cs" />
@@ -57,6 +60,26 @@
     <ProjectReference Include="..\psdPH.Core\psdPH.Parameters.csproj">
       <Project>{2EC6F86A-2E44-4C97-9D8B-66F6BFD48244}</Project>
       <Name>psdPH.Parameters</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
+      <Project>{5B904C27-3C81-4E9B-A882-6A08D71E7C44}</Project>
+      <Name>psdPH.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Reflection\psdPH.Reflection.csproj">
+      <Project>{e73844dc-d24c-490c-9098-98add149368a}</Project>
+      <Name>psdPH.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Controls\psdPH.Setups.Controls.csproj">
+      <Project>{59BFABE0-49CD-4199-8E36-F64B3AD20025}</Project>
+      <Name>psdPH.Setups.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
+      <Project>{3369d6fe-2c5f-4f88-af24-24a441c4d4b7}</Project>
+      <Name>psdPH.Setups.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups\psdPH.Setups.csproj">
+      <Project>{55bd3ba6-11a4-42ba-a938-ff386ec090f5}</Project>
+      <Name>psdPH.Setups</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.TemplateEditor.Core\psdPH.TemplateEditor.Core.csproj">
       <Project>{B9CDF1E8-48C4-4705-9544-63EE7464A622}</Project>

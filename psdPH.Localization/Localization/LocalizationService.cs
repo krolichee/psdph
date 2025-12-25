@@ -18,8 +18,8 @@ namespace psdPH.Localization
             }
             if (obj is Enum)
                 return EnumLocalization.GetLocalizedDescription(obj as Enum);
-            else if (obj is bool)
-                return BoolLocalization.LocalizeBool((bool)obj);
+            else if (obj is bool b)
+                return BoolLocalization.LocalizeBool(b);
             else if (obj is Type)
                 return TypeLocalization.GetLocalizedDescription(obj as Type);
             else
@@ -33,13 +33,10 @@ namespace psdPH.Localization
                 {
                     foreach (var type in assembly.GetTypes())
                     {
-                        if (type.GetCustomAttribute<LocalizatorAttribute>() != null
-                            && type.IsAbstract && type.IsSealed) // Проверяем, что это статический класс
+                        if (typeof(Localizator).IsAssignableFrom(type) && !type.IsAbstract && type.IsPublic)
                         {
-                            var registerMethod = type.GetMethod(nameof(TypeLocalization.RegisterLocalization),
-                                BindingFlags.Public | BindingFlags.Static);
-
-                            registerMethod?.Invoke(null, null);
+                            var localizator = Activator.CreateInstance(type) as Localizator;
+                            localizator.RegisterLocalizations();
                         }
                     }
                 }

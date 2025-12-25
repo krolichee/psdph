@@ -49,7 +49,7 @@
     <Compile Include="TemplateCEDStack\TemplateCEDCommand.cs" />
     <Compile Include="TemplateCEDStack\TemplateStackControl.cs" />
     <Compile Include="TemplateCEDStack\TemplateStackHandler.cs" />
-    <Compile Include="TemplateCEDStack\TypeAndNameGrid.cs" />
+    <Compile Include="TypeAndNameGrid.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\psdPH.CED\psdPH.CED.csproj">

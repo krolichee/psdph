@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace psdPH.TemplateEditor
+namespace psdPH.TemplateEditor.Structure
 {
     public static class StructureDicts
     {
@@ -29,7 +29,7 @@ namespace psdPH.TemplateEditor
             EditorDict = new Dictionary<Type, EditComposition>
             ()
             {
-                { typeof(RootBlob),(doc,composition)=>TemplateEditorWindow.OpenInDocument(doc,composition as LayerBlob) }
+                //{ typeof(RootBlob),(doc,composition)=>TemplateEditorWindow.OpenInDocument(doc,composition as LayerBlob) }
             };
     }
 

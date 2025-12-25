@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.CedStacks.ParameterCedStack
+namespace psdPH.TemplateEditor.Parameters
 {
     public class ParameterHandler:CEDPanelHandler
     {

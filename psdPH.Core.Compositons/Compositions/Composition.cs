@@ -14,7 +14,7 @@ namespace psdPH
     /// <summary>
     /// Представляет собой элемент структуры документа
     /// </summary>
-    public abstract class Composition : IHierarchial<Composition>,IDocumentMatchable,INodable
+    public abstract class Composition : IHierarchial<Composition>,IDocumentMatchable
     {
 
         Hierarchy<Composition> hierarchy;
@@ -31,15 +31,11 @@ namespace psdPH
         }
         public Hierarchy<Composition> Hierarchy { get => hierarchy; }
         public virtual string Name { get => name; set => name = value; }
-        public abstract Let[] Chain { get; }
-        public abstract Let[] Inlets { get; }
-        public abstract Let[] Outlets { get; }
 
         public abstract void Apply(DocumentWr doc);
         public abstract bool IsMatching(DocumentWr doc);
         public virtual MatchingResult IsMatchingRouted(DocumentWr doc) => new MatchingResult(this, IsMatching(doc));
         public override string ToString() => Name;
-        public void Execute()=>Apply(PhotoshopWrapper.GetActiveDocument());
         internal void SetHierarchy(Hierarchy<Composition> hierarchy) => this.hierarchy = hierarchy;
     }
     

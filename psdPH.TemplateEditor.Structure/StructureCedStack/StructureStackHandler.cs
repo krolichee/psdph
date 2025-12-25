@@ -8,7 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows
+namespace psdPH.TemplateEditor.Structure
 {
     public class StructureStackHandler : TemplateStackHandler
     {

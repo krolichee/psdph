@@ -5,7 +5,7 @@ using psdPH.Setups;
 using psdPH.TemplateEditor.CompositionLeafEditor.Windows.Utils;
 using psdPH.Utils.Setups;
 
-namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Creators.ParameterCreators
+namespace psdPH.TemplateEditor.Parameters
 {
     public class ParameterCreator<T> : IBatchParameterCreator where T :Parameter,new()
     {
@@ -28,8 +28,8 @@ namespace psdPH.TemplateEditor.CompositionLeafEditor.Windows.Creators.ParameterC
         }
         protected Setup getNameSetup(T par)
         {
-            var nameConfig = new ReflectionConfig(par, nameof(par.Name), "Имя параметра");
-            return new StringInputSetup(nameConfig);
+            var nameConfig = new ReflectionConfig(par, nameof(par.Name));
+            return new StringInputSetup(nameConfig) {Desc = "Имя параметра" };
         }
     }
 }

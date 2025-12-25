@@ -22,11 +22,14 @@ namespace psdPH.Logic.Compositions
         
         public override MatchingResult IsMatchingRouted(DocumentWr doc)
         {
-            MatchingResult result = new MatchingResult(this, IsMatching(doc));
+            MatchingResult result = this.Match(doc);
             if (!result)
                 return result;
-            matchChildren(result, doc);
-            return result;
+            var childrenMatch = DocumentMatcher.Match(Hierarchy.Children, doc);
+            if (childrenMatch == null)
+                return result;
+            else
+                return childrenMatch.Value;
         }
     }
     

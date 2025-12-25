@@ -4,9 +4,9 @@ using psdPH.Utils;
 using System;
 using System.Media;
 using System.Windows;
-using static psdPH.TemplateEditor.StructureDicts;
+using static psdPH.TemplateEditor.Structure.StructureDicts;
 
-namespace psdPH.TemplateEditor
+namespace psdPH.TemplateEditor.Structure
 {
     public class StructureCommand : TemplateCEDCommand
     {
@@ -30,18 +30,19 @@ namespace psdPH.TemplateEditor
             
             if (creator.ShowDialog() != true)
                 return;
-            _root.AddChildren(creator.GetResultBatch());
+            _root.Hierarchy.AddChildren(creator.GetResultBatch());
         }
         protected override void EditExecuteCommand(object parameter)
         {
             if (EditorDict.ContainsKey(parameter.GetType()))
                 EditorDict[parameter.GetType()](_doc, parameter as Composition).ShowDialog();
             else
+                //TODO Убрать нарушение уровня операций
                 SystemSounds.Exclamation.Play();
         }
         protected override void DeleteExecuteCommand(object parameter)
         {
-            _root.RemoveChild(parameter as Composition);
+            _root.Hierarchy.RemoveChild(parameter as Composition);
         }
     }
 }
