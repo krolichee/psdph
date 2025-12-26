@@ -48,11 +48,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AlignmentLetViewControl.xaml">
+    <Page Include="Alignment\AlignmentLetViewControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AlignmentLetViewControl.xaml.cs">
+    <Compile Include="Alignment\AlignmentLetViewControl.xaml.cs">
       <DependentUpon>AlignmentLetViewControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -62,6 +62,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alignment\AlignmentLetView.cs" />
+    <Compile Include="Alignment\AlignmentLetViewModel.cs" />
+    <Compile Include="Alignment\AlignmentLetViewStrings.cs" />
+    <Compile Include="CaptionViewModel.cs" />
     <Compile Include="CheckLetViewControl.xaml.cs">
       <DependentUpon>CheckLetViewControl.xaml</DependentUpon>
     </Compile>

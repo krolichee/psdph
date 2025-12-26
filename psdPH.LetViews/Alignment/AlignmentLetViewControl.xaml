@@ -8,10 +8,7 @@
     <StackPanel Orientation="Horizontal">
         <Label Content="{Binding Caption}" 
                HorizontalAlignment="Center" 
-               VerticalAlignment="Center"
-               FontSize="24"/>
-        <psdph:AlignmentControl Dimension="30">
-            
-        </psdph:AlignmentControl>
+               VerticalAlignment="Center"/>
+        <psdph:AlignmentControl Dimension="40"/>
     </StackPanel>
 </UserControl>

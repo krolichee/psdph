@@ -59,9 +59,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\psdPH.Lets.Core\psdPH.Lets.Core.csproj">
+      <Project>{93907D71-D3E7-41A8-AE97-C56F6366506F}</Project>
+      <Name>psdPH.Lets.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.LetViews\psdPH.LetViews.csproj">
       <Project>{40c091de-6b26-4b8c-8b04-33ee8dfc1148}</Project>
       <Name>psdPH.LetViews</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
+      <Project>{E879B3A1-E6FB-4B50-B0DF-9E34546BEA19}</Project>
+      <Name>psdPH.Photoshop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Reflection\psdPH.Reflection.csproj">
+      <Project>{E73844DC-D24C-490C-9098-98ADD149368A}</Project>
+      <Name>psdPH.Reflection</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.SpecialControls\psdPH.SpecialControls.csproj">
       <Project>{7ea427ff-bbee-442c-a8e7-def7ec5d95a5}</Project>

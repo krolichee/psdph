@@ -57,7 +57,6 @@
     <Compile Include="Nodes\Execution\GraphExecutor.cs" />
     <Compile Include="Nodes\Execution\QueueCoherence.cs" />
     <Compile Include="INodable.cs" />
-    <Compile Include="Nodes\Let.cs" />
     <Compile Include="Nodes\Node.cs" />
     <Compile Include="Nodes\NodeGraph.cs" />
     <Compile Include="Nodes\NodeLet.cs" />
@@ -66,6 +65,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\psdPH.Lets.Core\psdPH.Lets.Core.csproj">
+      <Project>{93907D71-D3E7-41A8-AE97-C56F6366506F}</Project>
+      <Name>psdPH.Lets.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
       <Project>{cc0fffdc-697c-4469-b1fb-61b396311625}</Project>
       <Name>psdPH.Serialization</Name>
