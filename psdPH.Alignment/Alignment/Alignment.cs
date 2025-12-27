@@ -1,10 +1,9 @@
 ﻿using System.Dynamic;
 using System.Windows;
 using System;
-using System.Windows.Media;
 using psdPH.Localization;
 
-namespace psdPH.Photoshop
+namespace psdPH.Alignments
 {
         public class Alignment: IEquatable<Alignment>
         {

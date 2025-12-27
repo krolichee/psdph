@@ -1,4 +1,4 @@
-﻿namespace psdPH.Photoshop
+﻿namespace psdPH.Alignments
 {
     public enum VAilgnment
     {

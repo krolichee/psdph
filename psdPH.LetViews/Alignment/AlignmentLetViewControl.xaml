@@ -3,12 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:psdPH.LetViews" xmlns:psdph="clr-namespace:psdPH;assembly=psdPH.SpecialControls"
+             xmlns:local="clr-namespace:psdPH.LetViews" 
+             xmlns:psdph_sp="clr-namespace:psdPH.SpecialControls;assembly=psdPH.SpecialControls"
+             xmlns:align="clr-namespace:psdPH.Alignments;assembly=psdPH.Alignment"
              mc:Ignorable="d" >
     <StackPanel Orientation="Horizontal">
         <Label Content="{Binding Caption}" 
                HorizontalAlignment="Center" 
                VerticalAlignment="Center"/>
-        <psdph:AlignmentControl Dimension="40"/>
+        <psdph_sp:AlignmentControl Dimension="40" 
+         SelectedAlignment="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     </StackPanel>
 </UserControl>

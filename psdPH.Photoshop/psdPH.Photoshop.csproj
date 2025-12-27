@@ -52,11 +52,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlignOptions.cs" />
     <Compile Include="PhotoshopLocalizator.cs" />
-    <Compile Include="Photoshop\Alignment\Alignment.cs" />
-    <Compile Include="Photoshop\AlignOptions.cs" />
-    <Compile Include="Photoshop\Alignment\HAilgnment.cs" />
-    <Compile Include="Photoshop\Alignment\VAilgnment.cs" />
     <Compile Include="Photoshop\IPhotoshopWrapper.cs" />
     <Compile Include="Photoshop\PhotoshopWrapperProxy.cs" />
     <Compile Include="Photoshop\Wrappers\DocumentWr\DocumentWr.cs" />
@@ -104,6 +101,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\psdPH.Alignment\psdPH.Alignment.Core.csproj">
+      <Project>{325e2fd8-3957-48c2-a02c-5457875444f8}</Project>
+      <Name>psdPH.Alignment.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
       <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
       <Name>psdPH.Localization</Name>

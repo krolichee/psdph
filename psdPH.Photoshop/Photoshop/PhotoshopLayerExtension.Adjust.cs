@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows;
 using static psdPH.Photoshop.LayerWr;
 
-namespace psdPH.Logic
+namespace psdPH.Photoshop
 {
     //TODO Вынести реализации операций в отдельный класс, а этот оставить чисто для поддежки расширений
     public static partial class PhotoshopLayerExtension

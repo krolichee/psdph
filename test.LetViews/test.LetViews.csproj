@@ -59,6 +59,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\psdPH.Alignment\psdPH.Alignment.Core.csproj">
+      <Project>{325e2fd8-3957-48c2-a02c-5457875444f8}</Project>
+      <Name>psdPH.Alignment.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Lets.Core\psdPH.Lets.Core.csproj">
       <Project>{93907D71-D3E7-41A8-AE97-C56F6366506F}</Project>
       <Name>psdPH.Lets.Core</Name>

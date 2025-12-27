@@ -61,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\psdPH.Lets.Core\psdPH.Lets.Core.csproj">
+      <Project>{93907D71-D3E7-41A8-AE97-C56F6366506F}</Project>
+      <Name>psdPH.Lets.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
       <Project>{5AA065A2-D4A8-49A7-8DC5-66E1081B84F9}</Project>
       <Name>psdPH.Nodes.Core</Name>
@@ -68,6 +72,10 @@
     <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
       <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
       <Name>psdPH.Photoshop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Reflection\psdPH.Reflection.csproj">
+      <Project>{E73844DC-D24C-490C-9098-98ADD149368A}</Project>
+      <Name>psdPH.Reflection</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
       <Project>{CC0FFFDC-697C-4469-B1FB-61B396311625}</Project>

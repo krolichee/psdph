@@ -1,22 +1,24 @@
 ﻿using psdPH.Lets;
 using System;
 using System.ComponentModel;
+using psdPH.Utils;
+using psdPH.Alignments;
 
 namespace psdPH.LetViews
 {
-    internal class AlignmentLetViewModel : CaptionViewModel
+    public class AlignmentLetViewModel : CaptionViewModel
     {
-        protected readonly Func<object> valueGetter;
-        protected readonly Action<object> valueSetter;
+        protected readonly Func<Alignment> valueGetter;
+        protected readonly Action<Alignment> valueSetter;
 
         public AlignmentLetViewModel(Let let) : base(let.Name)
         {
-            valueGetter = () => let.Value;
+            valueGetter = () => let.Value as Alignment;
             valueSetter = (v) => let.Value = v;
         }
 
 
-       public object Value 
+        public Alignment Value 
         {
             get => valueGetter();
             set

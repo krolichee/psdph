@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using static psdPH.Logic.PhotoshopLayerExtension;
 using System.Windows;
 using Application = Photoshop.Application;
+using static psdPH.Photoshop.PhotoshopLayerExtension;
 
 namespace psdPH.Photoshop
 {

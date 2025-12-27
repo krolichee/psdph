@@ -1,11 +1,8 @@
-﻿using psdPH.Photoshop;
-using static psdPH.Photoshop.PhotoshopDocumentExtension;
-using static psdPH.Photoshop.LayerWr;
+﻿
+using psdPH.Alignments;
 
-namespace psdPH.Logic
+namespace psdPH.Photoshop
 {
-    public static partial class PhotoshopLayerExtension
-    {
         public struct AlignOptions
         {
             public Alignment Alignment;
@@ -19,8 +16,4 @@ namespace psdPH.Logic
 
             public static AlignOptions Default => new AlignOptions { ConsiderFx = ConsiderFx.NoFx, Alignment = Alignment.Default };
         }
-
-
-
-    }
 }

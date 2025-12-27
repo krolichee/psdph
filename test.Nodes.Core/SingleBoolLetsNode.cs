@@ -1,4 +1,5 @@
-﻿using psdPH.Nodes;
+﻿using psdPH.Lets;
+using psdPH.Reflection;
 
 namespace test.Nodes.Core
 {
@@ -6,10 +7,10 @@ namespace test.Nodes.Core
     {
         public bool LetBool;
         public override Let[] Outlets => new Let[] {
-            new Let(this,"kavabanga",typeof(bool),()=>LetBool,(_)=>{ })
+            new Let(new ReflectionConfig(this,nameof(LetBool)))
         };
         public override Let[] Inlets => new Let[] {
-            new Let(this,"onobanga",typeof(bool),()=>false,(_)=>LetBool = (bool)_)
+            new Let(new ReflectionConfig(this,nameof(LetBool)))
         };
     }
 }

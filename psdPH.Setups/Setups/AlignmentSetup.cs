@@ -1,11 +1,9 @@
-﻿using psdPH.Photoshop;
+﻿using psdPH.Alignments;
+using psdPH.Photoshop;
+using psdPH.Reflection;
 using psdPH.Setups;
+using psdPH.SpecialControls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static psdPH.Photoshop.PhotoshopDocumentExtension;
 
 namespace psdPH.Utils.Setups
 {
@@ -18,7 +16,7 @@ namespace psdPH.Utils.Setups
             aliControl.Dimension = 30;
             Control = aliControl;
             _stack.Children.Add(aliControl);
-            valueFunc = () => aliControl.GetResultAlignment();
+            valueFunc = () => throw new NotImplementedException();
         }
     }
 }

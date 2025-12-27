@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using static psdPH.Photoshop.PhotoshopDocumentExtension;
 using static psdPH.Logic.PhotoshopLayerExtension;
 using psdPH.Serialization;
+using psdPH.Alignments;
 
 namespace psdPH.Logic.Compositions
 {

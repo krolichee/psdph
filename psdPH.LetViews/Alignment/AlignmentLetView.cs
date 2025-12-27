@@ -14,6 +14,7 @@ namespace psdPH.LetViews
         {
             var model = new AlignmentLetViewModel(let);
             control = new AlignmentLetViewControl() { DataContext = model };
+            
         }
     }
 }

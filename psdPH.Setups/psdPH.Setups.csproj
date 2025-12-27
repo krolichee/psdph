@@ -69,6 +69,10 @@
     <Compile Include="Setups\StringInputSetup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\psdPH.Alignment\psdPH.Alignment.Core.csproj">
+      <Project>{325E2FD8-3957-48C2-A02C-5457875444F8}</Project>
+      <Name>psdPH.Alignment.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
       <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
       <Name>psdPH.Localization</Name>
@@ -88,6 +92,10 @@
     <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
       <Project>{3369d6fe-2c5f-4f88-af24-24a441c4d4b7}</Project>
       <Name>psdPH.Setups.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.SpecialControls\psdPH.SpecialControls.csproj">
+      <Project>{7EA427FF-BBEE-442C-A8E7-DEF7EC5D95A5}</Project>
+      <Name>psdPH.SpecialControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj">
       <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>

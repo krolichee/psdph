@@ -67,6 +67,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\psdPH.Alignment\psdPH.Alignment.Core.csproj">
+      <Project>{325E2FD8-3957-48C2-A02C-5457875444F8}</Project>
+      <Name>psdPH.Alignment.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.DocumentMatching\psdPH.DocumentMatching.csproj">
       <Project>{93001457-db65-4921-a20f-d3fd43136ffe}</Project>
       <Name>psdPH.DocumentMatching</Name>

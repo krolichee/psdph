@@ -1,4 +1,5 @@
 ﻿using Photoshop;
+using psdPH.Alignments;
 using psdPH.Localization;
 using System;
 using System.Collections.Generic;

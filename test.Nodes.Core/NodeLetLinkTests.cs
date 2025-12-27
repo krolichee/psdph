@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using psdPH.Lets;
 using psdPH.Nodes;
+using psdPH.Reflection;
 
 namespace test.Nodes.Core
 {
@@ -10,7 +12,7 @@ namespace test.Nodes.Core
 		private class Single
 		{
 			int a;
-			public Let Let => new Let(this, "122", typeof(int), () => a, (v) => a = (int)v);
+			public Let Let => new Let(new ReflectionConfig(this,nameof(a)));
 		}
 		[TestMethod]
 		public void TestPush()

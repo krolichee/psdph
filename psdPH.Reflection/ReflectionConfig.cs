@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace psdPH.Setups
+namespace psdPH.Reflection
 {
     public class ReflectionConfig
     {
@@ -15,6 +15,7 @@ namespace psdPH.Setups
             InitializeMember();
         }
         public string FieldName => fieldName;
+        public object Obj => obj;
         public Type GetTypeOfObj()=> obj.GetType();
         public Type GetTypeOfMember() => member.MemberType;
         public void SetValue(object value) => member.Value = value;
@@ -41,13 +42,15 @@ namespace psdPH.Setups
             if (fieldInfo != null)
             {
                 setter = (v) => fieldInfo.SetValue(obj, v);
-                getter = () => fieldInfo.GetValue(obj);
+                getter = () => 
+                fieldInfo.GetValue(obj);
                 typeGetter = () => fieldInfo.FieldType;
             }
             else if (propertyInfo != null)
             {
                 setter = (v) => propertyInfo.SetValue(obj, v);
-                getter = () => propertyInfo.GetValue(obj);
+                getter = () => 
+                propertyInfo.GetValue(obj);
                 typeGetter = () => propertyInfo.PropertyType;
             }
             else

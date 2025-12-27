@@ -1,15 +1,7 @@
-﻿using Photoshop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static psdPH.Photoshop.PhotoshopDocumentExtension;
-using System.Windows.Controls;
+﻿using psdPH.Alignments;
 using System.Windows;
-using psdPH.Photoshop;
 
-namespace psdPH.Logic
+namespace psdPH.Photoshop
 {
 	//TODO Вынести реализации операций в отдельный класс, а этот оставить чисто для поддежки расширений
 	public static partial class PhotoshopLayerExtension

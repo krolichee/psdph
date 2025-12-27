@@ -48,16 +48,19 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlignmentControl\AlignmentViewModel.cs" />
+    <Compile Include="AlignmentControl\AlignmentOption.cs" />
+    <Compile Include="AlignmentControl\IsSelectedToBrushConverter.cs" />
     <Compile Include="MultiPicker.xaml.cs">
       <DependentUpon>MultiPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="NumericTextBox.cs" />
     <Compile Include="RtbExtension.cs" />
-    <Page Include="AlignmentControl.xaml">
+    <Page Include="AlignmentControl\AlignmentControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AlignmentControl.xaml.cs">
+    <Compile Include="AlignmentControl\AlignmentControl.xaml.cs">
       <DependentUpon>AlignmentControl.xaml</DependentUpon>
     </Compile>
     <Page Include="MultiPicker.xaml">
@@ -89,6 +92,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\psdPH.Alignment\psdPH.Alignment.Core.csproj">
+      <Project>{325e2fd8-3957-48c2-a02c-5457875444f8}</Project>
+      <Name>psdPH.Alignment.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
       <Project>{5B904C27-3C81-4E9B-A882-6A08D71E7C44}</Project>
       <Name>psdPH.Localization</Name>

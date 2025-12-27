@@ -9,6 +9,7 @@ using static psdPH.Logic.PhotoshopLayerExtension;
 using System.Windows;
 using System.Xml.Serialization;
 using psdPH.Photoshop;
+using psdPH.Alignments;
 
 namespace psdPH.Logic.Compositions
 {

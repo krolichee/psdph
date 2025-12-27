@@ -1,5 +1,5 @@
 ﻿using psdPH.Lets.Core;
-using psdPH.Setups;
+using psdPH.Reflection;
 using System;
 using System.Xml.Linq;
 
@@ -26,7 +26,8 @@ namespace psdPH.Lets
 
         public object Value { get => config.GetValue(); set => config.SetValue(value); }
         public string Name => nameGetter();
-        
+        public Type Type => config.GetTypeOfMember();
+        public object Obj => config.Obj;
         
     }
 }
