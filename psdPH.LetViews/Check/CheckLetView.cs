@@ -6,14 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace psdPH.LetViews
+namespace psdPH.LetViews.Check
 {
-    public class AlignmentLetView : LetView
+    public class CheckLetView : LetView
     {
-        public AlignmentLetView(Let let):base(let)
+        public CheckLetView(Let let) : base(let)
         {
-            control = new AlignmentLetViewControl(let) { };
-            
+            control = new CheckLetViewControl(let) { };
         }
     }
 }

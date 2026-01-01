@@ -111,6 +111,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test.LetViews", "test.LetVi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psdPH.Alignment.Core", "psdPH.Alignment\psdPH.Alignment.Core.csproj", "{325E2FD8-3957-48C2-A02C-5457875444F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test.SpecialControls", "test.SpecialControls\test.SpecialControls.csproj", "{18E3DB89-E113-4CC8-85D7-2EB42A24A937}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -435,6 +437,12 @@ Global
 		{325E2FD8-3957-48C2-A02C-5457875444F8}.NoViews|Any CPU.Build.0 = Release|Any CPU
 		{325E2FD8-3957-48C2-A02C-5457875444F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{325E2FD8-3957-48C2-A02C-5457875444F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18E3DB89-E113-4CC8-85D7-2EB42A24A937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18E3DB89-E113-4CC8-85D7-2EB42A24A937}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18E3DB89-E113-4CC8-85D7-2EB42A24A937}.NoViews|Any CPU.ActiveCfg = Release|Any CPU
+		{18E3DB89-E113-4CC8-85D7-2EB42A24A937}.NoViews|Any CPU.Build.0 = Release|Any CPU
+		{18E3DB89-E113-4CC8-85D7-2EB42A24A937}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18E3DB89-E113-4CC8-85D7-2EB42A24A937}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

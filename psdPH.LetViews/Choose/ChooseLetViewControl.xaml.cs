@@ -1,4 +1,5 @@
-﻿using System;
+﻿using psdPH.Lets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,15 +14,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace psdPH.LetViews
+namespace psdPH.LetViews.Choose
 {
     /// <summary>
-    /// Interaction logic for CheckLetViewControl.xaml
+    /// Interaction logic for ChooseLetControl.xaml
     /// </summary>
-    public partial class CheckLetViewControl : UserControl
+    public partial class ChooseLetViewControl : UserControl
     {
-        public CheckLetViewControl()
+        public ChooseLetViewControl(Let let, object[] options)
         {
+            DataContext = new ChooseLetViewModel(let, options);
             InitializeComponent();
         }
     }

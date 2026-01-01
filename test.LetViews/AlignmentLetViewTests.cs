@@ -9,7 +9,7 @@ using psdPH.Reflection;
 namespace test.LetViews
 {
     [TestClass]
-    public class UnitTest1
+    public class AlignmentLetViewTests
     {
         Let let;
         class TestObj
@@ -17,13 +17,13 @@ namespace test.LetViews
             public Alignment Alignment { get; set; }
         }
         [TestMethod]
-        public void TestMethod1()
+        public void Usage_test()
         {
             var obj = new TestObj();
             var config = new ReflectionConfig(obj, nameof(TestObj.Alignment));
             let = new Let(config);
+            let.Value = new Alignment(HAilgnment.Left, VAilgnment.Top);
             var view = new AlignmentLetView(let);
-            var viewModel = view.Control.DataContext as AlignmentLetViewModel;
             var control = view.Control;
             var window = new Window() { Content = control };
             window.ShowDialog();

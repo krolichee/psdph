@@ -12,6 +12,7 @@
                HorizontalAlignment="Center" 
                VerticalAlignment="Center"/>
         <psdph_sp:AlignmentControl Dimension="40" 
-         SelectedAlignment="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+         SelectedAlignment="{Binding DataContext.Value, 
+                        RelativeSource={RelativeSource AncestorType=UserControl},Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>

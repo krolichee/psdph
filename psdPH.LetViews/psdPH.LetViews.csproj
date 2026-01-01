@@ -56,7 +56,11 @@
       <DependentUpon>AlignmentLetViewControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="CheckLetViewControl.xaml">
+    <Page Include="Check\CheckLetViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Choose\ChooseLetViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -65,10 +69,18 @@
     <Compile Include="Alignment\AlignmentLetView.cs" />
     <Compile Include="Alignment\AlignmentLetViewModel.cs" />
     <Compile Include="Alignment\AlignmentLetViewStrings.cs" />
+    <Compile Include="CaptionLetViewModel.cs" />
     <Compile Include="CaptionViewModel.cs" />
-    <Compile Include="CheckLetViewControl.xaml.cs">
+    <Compile Include="Check\CheckLetView.cs" />
+    <Compile Include="Check\CheckLetViewControl.xaml.cs">
       <DependentUpon>CheckLetViewControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Check\CheckLetViewModel.cs" />
+    <Compile Include="Choose\ChooseLetView.cs" />
+    <Compile Include="Choose\ChooseLetViewControl.xaml.cs">
+      <DependentUpon>ChooseLetViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Choose\ChooseLetViewModel.cs" />
     <Compile Include="LetViewsLocalizator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

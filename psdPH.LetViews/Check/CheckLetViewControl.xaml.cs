@@ -1,5 +1,4 @@
 ﻿using psdPH.Lets;
-using psdPH.Lets.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +14,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace psdPH.LetViews
+namespace psdPH.LetViews.Check
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for CheckLetViewControl.xaml
     /// </summary>
-    public partial class AlignmentLetViewControl : UserControl
+    public partial class CheckLetViewControl : UserControl
     {
-        public AlignmentLetViewControl(Let let)
+        public CheckLetViewControl(Let let)
         {
             InitializeComponent();
             DataContext = new CaptionLetViewModel(let);

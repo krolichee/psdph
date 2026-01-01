@@ -1,5 +1,7 @@
 ﻿using psdPH.Alignments;
 using psdPH.Photoshop;
+using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -43,6 +45,16 @@ namespace psdPH.SpecialControls
             InitializeComponent();
             ViewModel = new AlignmentViewModel();
             DataContext = ViewModel;
+            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        }
+
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(AlignmentViewModel.SelectedAlignment))
+            {
+                // Обновляем DependencyProperty при изменении в ViewModel
+                SetValue(SelectedAlignmentProperty, ViewModel.SelectedAlignment);
+            }
         }
 
         private static void OnDimensionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
