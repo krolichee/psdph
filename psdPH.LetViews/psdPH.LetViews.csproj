@@ -64,6 +64,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Date\DateLetViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment\AlignmentLetView.cs" />
@@ -81,6 +85,10 @@
       <DependentUpon>ChooseLetViewControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Choose\ChooseLetViewModel.cs" />
+    <Compile Include="Date\DateLetView.cs" />
+    <Compile Include="Date\DateLetViewControl.xaml.cs">
+      <DependentUpon>DateLetViewControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LetViewsLocalizator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -104,7 +112,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ComboString\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\psdPH.Alignment\psdPH.Alignment.Core.csproj">
       <Project>{325e2fd8-3957-48c2-a02c-5457875444f8}</Project>

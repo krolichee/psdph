@@ -100,10 +100,6 @@
       <Project>{5B904C27-3C81-4E9B-A882-6A08D71E7C44}</Project>
       <Name>psdPH.Localization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
-      <Project>{E879B3A1-E6FB-4B50-B0DF-9E34546BEA19}</Project>
-      <Name>psdPH.Photoshop</Name>
-    </ProjectReference>
     <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj">
       <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>
       <Name>psdPH.Utils</Name>
