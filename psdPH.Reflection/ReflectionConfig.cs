@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace psdPH.Reflection
 {
-    public class ReflectionConfig
+    public partial class ReflectionConfig
     {
         readonly object obj;
         readonly string fieldName;
@@ -57,21 +57,6 @@ namespace psdPH.Reflection
                 throw new ArgumentException($"Поле или свойство с именем '{fieldName}' не найдено в объекте типа '{objType.Name}'.");
 
             member = new Member(getter, setter, typeGetter);
-        }
-        class Member
-        {
-            readonly MemberGetter getter;
-            readonly MemberSetter setter;
-            readonly TypeGetter typeGetter;
-            public Member(MemberGetter getter, MemberSetter setter, TypeGetter typeGetter)
-            {
-                this.getter = getter;
-                this.setter = setter;
-                this.typeGetter = typeGetter;
-            }
-            public object Value { get => getter(); set => setter(value); }
-            public Type MemberType => typeGetter();
-
         }
 
         delegate void MemberSetter(object value);
