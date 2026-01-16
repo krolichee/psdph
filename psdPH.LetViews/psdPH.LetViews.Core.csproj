@@ -89,6 +89,8 @@
     <Compile Include="Date\DateLetViewControl.xaml.cs">
       <DependentUpon>DateLetViewControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Enum\EnumLetView.cs" />
+    <Compile Include="Enum\EnumLetViewModel.cs" />
     <Compile Include="LetViewsLocalizator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

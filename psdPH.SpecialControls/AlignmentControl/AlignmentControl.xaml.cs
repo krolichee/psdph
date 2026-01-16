@@ -1,5 +1,4 @@
 ﻿using psdPH.Alignments;
-using psdPH.Photoshop;
 using System;
 using System.ComponentModel;
 using System.Windows;

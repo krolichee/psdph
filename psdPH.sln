@@ -103,11 +103,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test.TemplateEditor.Structu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test.TemplateEditor.Parameters", "test.TemplateEditor.ParameterSet\test.TemplateEditor.Parameters.csproj", "{5BBFE856-4132-4481-9CE6-B23BB583DF6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psdPH.LetViews", "psdPH.LetViews\psdPH.LetViews.csproj", "{40C091DE-6B26-4B8C-8B04-33EE8DFC1148}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psdPH.LetViews.Core", "psdPH.LetViews\psdPH.LetViews.Core.csproj", "{40C091DE-6B26-4B8C-8B04-33EE8DFC1148}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psdPH.SpecialControls", "psdPH.SpecialControls\psdPH.SpecialControls.csproj", "{7EA427FF-BBEE-442C-A8E7-DEF7EC5D95A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test.LetViews", "test.LetViews\test.LetViews.csproj", "{A228D3D6-86AA-4515-9F32-3866235C7DF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test.LetViews.Core", "test.LetViews\test.LetViews.Core.csproj", "{A228D3D6-86AA-4515-9F32-3866235C7DF4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psdPH.Alignment.Core", "psdPH.Alignment\psdPH.Alignment.Core.csproj", "{325E2FD8-3957-48C2-A02C-5457875444F8}"
 EndProject

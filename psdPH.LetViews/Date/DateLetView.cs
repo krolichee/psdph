@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace psdPH.LetViews.Date
+namespace psdPH.LetViews
 {
-    internal class DateLetView : LetView
+    public class DateLetView : LetView
     {
         public DateLetView(Let let) : base(let)
         {

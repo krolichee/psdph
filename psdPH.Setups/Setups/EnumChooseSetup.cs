@@ -1,11 +1,7 @@
-﻿using psdPH.Logic;
-using psdPH.Reflection;
+﻿using psdPH.Reflection;
 using psdPH.Setups;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace psdPH.Utils.Setups
 {

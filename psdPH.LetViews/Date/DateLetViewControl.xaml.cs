@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace psdPH.LetViews.Date
+namespace psdPH.LetViews
 {
     /// <summary>
     /// Логика взаимодействия для DateLetViewControl.xaml
