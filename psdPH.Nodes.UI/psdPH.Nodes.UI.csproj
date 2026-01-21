@@ -116,6 +116,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\psdPH.Lets.Core\psdPH.Lets.Core.csproj">
+      <Project>{93907D71-D3E7-41A8-AE97-C56F6366506F}</Project>
+      <Name>psdPH.Lets.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
       <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
       <Name>psdPH.Localization</Name>
