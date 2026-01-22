@@ -13,7 +13,7 @@ namespace test.LetViews
 	public class ChooseLetViewTests
 	{
         Let let;
-        class TestObj
+        class ChooseTestObj
         {
             public int Selected { get; set; }
             public int[] Options => new int[] { 1, 2, 3, 4 };
@@ -21,8 +21,8 @@ namespace test.LetViews
         [TestMethod]
         public void Usage_test()
         {
-            var obj = new TestObj();
-            var config = new ReflectionConfig(obj, nameof(TestObj.Selected));
+            var obj = new ChooseTestObj();
+            var config = new ReflectionConfig(obj, nameof(ChooseTestObj.Selected));
             let = new Let(config);
             obj.Selected = 5;
             var view = new ChooseLetView(let, obj.Options.Cast<object>().ToArray());

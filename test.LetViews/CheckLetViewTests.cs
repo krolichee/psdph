@@ -13,15 +13,15 @@ namespace test.LetViews
 	public class CheckLetViewTests
 	{
         Let let;
-        class TestObj
+        class CheckTestObj
         {
             public bool Bool { get; set; }
         }
         [TestMethod]
         public void Usage_test()
         {
-            var obj = new TestObj();
-            var config = new ReflectionConfig(obj, nameof(TestObj.Bool));
+            var obj = new CheckTestObj();
+            var config = new ReflectionConfig(obj, nameof(CheckTestObj.Bool));
             let = new Let(config);
             let.Value = true;
             var view = new CheckLetView(let);

@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using psdPH.Alignments;
 using psdPH.Lets;
 using psdPH.LetViews;
-using psdPH.Photoshop;
 using psdPH.Reflection;
 
 namespace test.LetViews
@@ -12,15 +11,15 @@ namespace test.LetViews
     public class AlignmentLetViewTests
     {
         Let let;
-        class TestObj
+        class AlignmentTestObj
         {
             public Alignment Alignment { get; set; }
         }
         [TestMethod]
         public void Usage_test()
         {
-            var obj = new TestObj();
-            var config = new ReflectionConfig(obj, nameof(TestObj.Alignment));
+            var obj = new AlignmentTestObj();
+            var config = new ReflectionConfig(obj, nameof(AlignmentTestObj.Alignment));
             let = new Let(config);
             let.Value = new Alignment(HAilgnment.Left, VAilgnment.Top);
             var view = new AlignmentLetView(let);

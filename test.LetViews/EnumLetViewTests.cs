@@ -11,15 +11,15 @@ namespace test.LetViews
 	public class EnumLetViewTests
 	{
         Let let;
-        class TestObj
+        class EnumTestObj
         {
             public ExecutionScope Scope;
         }
         [TestMethod]
         public void Usage_test()
         {
-            var obj = new TestObj();
-            var config = new ReflectionConfig(obj, nameof(TestObj.Scope));
+            var obj = new EnumTestObj();
+            var config = new ReflectionConfig(obj, nameof(EnumTestObj.Scope));
             let = new Let(config);
             var view = new EnumLetView(let);
             var control = view.Control;

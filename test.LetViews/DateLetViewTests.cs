@@ -13,15 +13,15 @@ namespace test.LetViews
 	public class DateLetViewTests
 	{
         Let let;
-        class TestObj
+        class DateTestObj
         {
             public DateTime Date;
         }
         [TestMethod]
         public void Usage_test()
         {
-            var obj = new TestObj();
-            var config = new ReflectionConfig(obj, nameof(TestObj.Date));
+            var obj = new DateTestObj();
+            var config = new ReflectionConfig(obj, nameof(DateTestObj.Date));
             let = new Let(config);
             var view = new DateLetView(let);
             var control = view.Control;
