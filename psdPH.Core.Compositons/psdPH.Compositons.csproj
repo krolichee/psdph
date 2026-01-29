@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C20E66C4-E8A7-4F52-A74E-B5806125D9FC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>psdPH.Core.Compositons</RootNamespace>
+    <AssemblyName>psdPH.Core.Compositons</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoViews|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\NoViews\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CompositionLocalizator.cs" />
+    <Compile Include="Compositions\AreaLeaf.cs" />
+    <Compile Include="Compositions\Composition.cs" />
+    <Compile Include="Compositions\CoreComposition.cs" />
+    <Compile Include="Compositions\GroupLeaf.cs" />
+    <Compile Include="Compositions\ImageLeaf.cs" />
+    <Compile Include="Compositions\LayerBlob.cs" />
+    <Compile Include="Compositions\LayerComposition.cs" />
+    <Compile Include="Compositions\LayerLeaf.cs" />
+    <Compile Include="Compositions\PlaceholderLeaf.cs" />
+    <Compile Include="Compositions\PrototypeBlob.cs" />
+    <Compile Include="Compositions\RootBlob.cs" />
+    <Compile Include="Compositions\TextLeaf.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\psdPH.Alignment\psdPH.Alignment.Core.csproj">
+      <Project>{325E2FD8-3957-48C2-A02C-5457875444F8}</Project>
+      <Name>psdPH.Alignment.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.DocumentMatching\psdPH.DocumentMatching.csproj">
+      <Project>{93001457-db65-4921-a20f-d3fd43136ffe}</Project>
+      <Name>psdPH.DocumentMatching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Hierarchy\psdPH.Hierarchy.csproj">
+      <Project>{e833441a-44df-426f-b762-f7a8d8971310}</Project>
+      <Name>psdPH.Hierarchy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Lets.Core\psdPH.Lets.Core.csproj">
+      <Project>{93907d71-d3e7-41a8-ae97-c56f6366506f}</Project>
+      <Name>psdPH.Lets.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
+      <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
+      <Name>psdPH.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
+      <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
+      <Name>psdPH.Nodes.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Photoshop\psdPH.Photoshop.csproj">
+      <Project>{e879b3a1-e6fb-4b50-b0df-9e34546bea19}</Project>
+      <Name>psdPH.Photoshop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
+      <Project>{cc0fffdc-697c-4469-b1fb-61b396311625}</Project>
+      <Name>psdPH.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
+      <Project>{3369d6fe-2c5f-4f88-af24-24a441c4d4b7}</Project>
+      <Name>psdPH.Setups.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups\psdPH.Setups.csproj">
+      <Project>{55bd3ba6-11a4-42ba-a938-ff386ec090f5}</Project>
+      <Name>psdPH.Setups</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Utils\psdPH.Utils.csproj">
+      <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>
+      <Name>psdPH.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Photoshop">
+      <Guid>{E891EE9A-D0AE-4CB4-8871-F92C0109F18E}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="psdPH.Nodes.Editor.NodesEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:psdPH.Nodes.Editor"
+             mc:Ignorable="d" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             d:DesignHeight="800" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ButtonStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <local:DictionaryToMenuItemsConverter x:Key="DictionaryItemToMenuItem"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36" />
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="1" x:Name="canvasViewer" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+            <Border x:Name="canvasBorder" HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue"/>
+        </ScrollViewer>
+        <ToolBar Grid.Row="0" Height="36" VerticalAlignment="Top" Background="White" >
+            <Button Style="{DynamicResource ResourceKey=ObjectNodeButtonStyle}">
+                <i:Interaction.Behaviors>
+                    <local:LeftClickContextMenuBehavior />
+                </i:Interaction.Behaviors>
+
+                <Image Source="/psdPH.Nodes.Editor;component/structure.png" />
+
+            </Button>
+            <Button Style="{DynamicResource ResourceKey=ObjectNodeButtonStyle}">
+                <Image Source="/psdPH.Nodes.Editor;component/inputs.png" />
+            </Button>
+            <Button Style="{DynamicResource CalcNodeButtonStyle}"
+        DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                <Button.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding CalcBundle}" Opened="ContextMenu_Opened">
+                        <ContextMenu.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Header" Value="{Binding Header}"/>
+                                <Setter Property="Command" Value="{Binding Command}"/>
+                                <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
+                            </Style>
+                        </ContextMenu.ItemContainerStyle>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                <i:Interaction.Behaviors>
+                    <local:LeftClickContextMenuBehavior />
+                </i:Interaction.Behaviors>
+                <TextBlock FontWeight="Bold" FontSize="14" FontFamily="Arial Unicode MS">=</TextBlock>
+            </Button>
+            <Button Style="{DynamicResource ResourceKey=CalcNodeButtonStyle}">
+                <TextBlock FontSize="12" FontFamily="Arial Unicode MS">...?</TextBlock>
+            </Button>
+            <Button Style="{DynamicResource ResourceKey=RuleNodeButtonStyle}">
+                <Image Source="/psdPH.Nodes.Editor;component/action.png" />
+            </Button>
+        </ToolBar>
+    </Grid>
+</UserControl>

@@ -1,0 +1,7 @@
+﻿конфигурация превью daytile
+
+?Composition implements Nodable
+?Parameter implements Nodable
+Subgraph Node
+
+

@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="psdPH.LetViews.AlignmentLetViewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:psdPH.LetViews" 
+             xmlns:psdph_sp="clr-namespace:psdPH.SpecialControls;assembly=psdPH.SpecialControls"
+             xmlns:align="clr-namespace:psdPH.Alignments;assembly=psdPH.Alignment"
+             mc:Ignorable="d" >
+    <StackPanel Orientation="Horizontal">
+        <Label Content="{Binding Caption}" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center"/>
+        <psdph_sp:AlignmentControl Dimension="40" 
+         SelectedAlignment="{Binding DataContext.Value, 
+                        RelativeSource={RelativeSource AncestorType=UserControl},Mode=TwoWay}"/>
+    </StackPanel>
+</UserControl>

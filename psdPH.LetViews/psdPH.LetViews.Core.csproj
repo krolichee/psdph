@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{40C091DE-6B26-4B8C-8B04-33EE8DFC1148}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <RootNamespace>psdPH.LetViews</RootNamespace>
+    <AssemblyName>psdPH.LetViews</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Alignment\AlignmentLetViewControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Alignment\AlignmentLetViewControl.xaml.cs">
+      <DependentUpon>AlignmentLetViewControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Check\CheckLetViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Choose\ChooseLetViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Date\DateLetViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Alignment\AlignmentLetView.cs" />
+    <Compile Include="Alignment\AlignmentLetViewModel.cs" />
+    <Compile Include="Alignment\AlignmentLetViewStrings.cs" />
+    <Compile Include="CaptionLetViewModel.cs" />
+    <Compile Include="CaptionViewModel.cs" />
+    <Compile Include="Check\CheckLetView.cs" />
+    <Compile Include="Check\CheckLetViewControl.xaml.cs">
+      <DependentUpon>CheckLetViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Check\CheckLetViewModel.cs" />
+    <Compile Include="Choose\ChooseLetView.cs" />
+    <Compile Include="Choose\ChooseLetViewControl.xaml.cs">
+      <DependentUpon>ChooseLetViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Choose\ChooseLetViewModel.cs" />
+    <Compile Include="Date\DateLetView.cs" />
+    <Compile Include="Date\DateLetViewControl.xaml.cs">
+      <DependentUpon>DateLetViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Enum\EnumLetView.cs" />
+    <Compile Include="Enum\EnumLetViewModel.cs" />
+    <Compile Include="LetViewsLocalizator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ComboString\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\psdPH.Alignment\psdPH.Alignment.Core.csproj">
+      <Project>{325e2fd8-3957-48c2-a02c-5457875444f8}</Project>
+      <Name>psdPH.Alignment.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Lets.Core\psdPH.Lets.Core.csproj">
+      <Project>{93907D71-D3E7-41A8-AE97-C56F6366506F}</Project>
+      <Name>psdPH.Lets.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
+      <Project>{5B904C27-3C81-4E9B-A882-6A08D71E7C44}</Project>
+      <Name>psdPH.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.SpecialControls\psdPH.SpecialControls.csproj">
+      <Project>{7ea427ff-bbee-442c-a8e7-def7ec5d95a5}</Project>
+      <Name>psdPH.SpecialControls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

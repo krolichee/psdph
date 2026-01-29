@@ -1,0 +1,48 @@
+﻿using psdPH.Context;
+using psdPH.Utils;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+
+namespace psdPH.TemplateEditor.Structure
+{
+    public class StructureStackHandler : TemplateStackHandler
+    {
+        override protected MenuItem CreateAddMenuItem(Type type)
+        {
+            return new MenuItem()
+            {
+                Header =  Localization.LocalizationService.Localize(type),
+                Command = new StructureCommand(Context).CreateCommand,
+                CommandParameter = type
+            };
+        }
+        override protected void InitializeAddDropDownMenu(Button button)
+        {
+            ContextMenu contextMenu = new ContextMenu();
+            List<MenuItem> items = new List<MenuItem>();
+            foreach (var comp_type in StructureDicts.CreatorDict.Keys)
+                items.Add(CreateAddMenuItem(comp_type));
+            contextMenu.ItemsSource = items;
+            button.ContextMenu = contextMenu;
+        }
+
+        protected override FrameworkElement createControl(object item)
+        {
+            return new StructureStackControl((Composition)item, Context);
+        }
+        protected override object[] getElements() =>
+            _root.Hierarchy.GetChildren();
+
+        protected override IList Items => this._root.Hierarchy.Children as IList;
+
+        public StructureStackHandler(PsdPhContext context) : base(context)
+        {
+            _root.Hierarchy.ChildrenUpdatedEvent += Refresh;
+        }
+    }
+}

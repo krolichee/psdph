@@ -1,0 +1,63 @@
+﻿using psdPH.Alignments;
+using System.Windows;
+
+namespace psdPH.Photoshop
+{
+	//TODO Вынести реализации операций в отдельный класс, а этот оставить чисто для поддежки расширений
+	public static partial class PhotoshopLayerExtension
+	{
+		public static Vector GetAlightmentVector(this LayerWr dynamicLayer, LayerWr targetLayer, AlignOptions options)
+		{
+			return GetAlightmentVector(
+				targetLayer.GetBoundRect(options.ConsiderFx), 
+				dynamicLayer.GetBoundRect(options.ConsiderFx), 
+				options.Alignment);
+		}
+		public static void AlignLayer(this LayerWr dynamicLayer, LayerWr targetLayer, AlignOptions options)
+		{
+			dynamicLayer.TranslateV(dynamicLayer.GetAlightmentVector(targetLayer, options));
+        }
+		public static Vector GetAlightmentVector(Rect targetRect, Rect dynamicRect, Alignment alignment)
+		{
+            if (alignment == null)
+				alignment = new Alignment(HAilgnment.Left, VAilgnment.Top);
+			double x = 0;
+			double y = 0;
+			switch (alignment.H)
+			{
+				case HAilgnment.Left:
+					x = targetRect.Left - dynamicRect.Left;
+					break;
+				case HAilgnment.Right:
+					x = targetRect.Right - dynamicRect.Right;
+					break;
+				case HAilgnment.Center:
+                    double t_w = targetRect.Width;
+                    double d_w = dynamicRect.Width;
+                    x = (targetRect.Left + t_w / 2) - (dynamicRect.Left + d_w / 2);
+                    break;
+                case HAilgnment.None:
+					x = y = 0;
+					break;
+			}
+			switch (alignment.V)
+			{
+				case VAilgnment.Top:
+					y = targetRect.Top - dynamicRect.Top;
+					break;
+				case VAilgnment.Bottom:
+					y = targetRect.Bottom - dynamicRect.Bottom;
+					break;
+				case VAilgnment.Center:
+					double t_h = targetRect.Height;
+					double d_h = dynamicRect.Height;
+					y = (targetRect.Top + t_h / 2) - (dynamicRect.Top + d_h / 2);
+					break;
+                case VAilgnment.None:
+                    x = y = 0;
+                    break;
+            }
+			return new Vector(x, y);
+		}
+	}
+}

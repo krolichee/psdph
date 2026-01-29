@@ -1,0 +1,16 @@
+﻿using psdPH.Parameters;
+using psdPH.Setups;
+using psdPH.Utils.Setups;
+using System.Xml.Serialization;
+
+namespace psdPH.Logic.Parameters
+{
+    public class StringParameter : Parameter
+    {
+        [XmlIgnore]
+        public string Text { get => Value as string; set => Value=value; }
+        public StringParameter():base(null) { }
+        public StringParameter(string name):base(name) { }
+        public static implicit operator string(StringParameter node) => node.Text;
+    }
+}

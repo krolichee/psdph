@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3A37350C-A6AD-4D29-9AAC-A443F43DF1FE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>psdPH.TemplateEditor.ParameterSet</RootNamespace>
+    <AssemblyName>psdPH.TemplateEditor.ParameterSet</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ParameterCedStack\ParameterCommand.cs" />
+    <Compile Include="ParameterCedStack\ParameterControl.cs" />
+    <Compile Include="ParameterCedStack\ParameterHandler.cs" />
+    <Compile Include="ParameterCreators\IBatchParameterCreator.cs" />
+    <Compile Include="ParameterCreators\ParameterCreator.cs" />
+    <Compile Include="ParameterDicts.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\psdPH.CED\psdPH.CED.csproj">
+      <Project>{026C33A7-D6EB-4124-B53A-BF25D789E1C4}</Project>
+      <Name>psdPH.CED</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Core\psdPH.Parameters.csproj">
+      <Project>{2EC6F86A-2E44-4C97-9D8B-66F6BFD48244}</Project>
+      <Name>psdPH.Parameters</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
+      <Project>{5B904C27-3C81-4E9B-A882-6A08D71E7C44}</Project>
+      <Name>psdPH.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Reflection\psdPH.Reflection.csproj">
+      <Project>{e73844dc-d24c-490c-9098-98add149368a}</Project>
+      <Name>psdPH.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Controls\psdPH.Setups.Controls.csproj">
+      <Project>{59BFABE0-49CD-4199-8E36-F64B3AD20025}</Project>
+      <Name>psdPH.Setups.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups.Core\psdPH.Setups.Core.csproj">
+      <Project>{3369d6fe-2c5f-4f88-af24-24a441c4d4b7}</Project>
+      <Name>psdPH.Setups.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.Setups\psdPH.Setups.csproj">
+      <Project>{55bd3ba6-11a4-42ba-a938-ff386ec090f5}</Project>
+      <Name>psdPH.Setups</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\psdPH.TemplateEditor.Core\psdPH.TemplateEditor.Core.csproj">
+      <Project>{B9CDF1E8-48C4-4705-9544-63EE7464A622}</Project>
+      <Name>psdPH.TemplateEditor.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

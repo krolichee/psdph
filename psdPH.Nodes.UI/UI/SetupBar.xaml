@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="psdPH.Nodes.UI.SetupBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:psdPH.Nodes.UI"
+             xmlns:converters="clr-namespace:psdPH.Nodes.UI" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch"
+             ClipToBounds="False">
+    <UserControl.Resources>
+        <converters:AppearEllipseConverter  
+              x:Key="AppearEllipseConverter"/>
+        <converters:RightMarginConverter  
+      x:Key="RightMarginConverter"/>
+    </UserControl.Resources>
+    <Grid x:Name="mainGrid" 
+          HorizontalAlignment="Stretch" 
+          ClipToBounds="False" 
+          Background="White" 
+          MouseUp="mainGrid_MouseUp" 
+          MouseLeftButtonUp="mainGrid_MouseUp"
+          MouseMove="mainGrid_MouseMove"
+          >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="nameLabel" Content="Label" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"/>
+        <Border x:Name="setupControlBorder" 
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                Margin="5,0,5,0">
+            <!-- Отступ слева и справа -->
+            <!-- Внутри будет setup.Control -->
+        </Border>
+        <Ellipse 
+    x:Name="pickAreaVisEllipse"
+    Grid.Column="2" 
+    Fill="#00E01414" 
+    
+    Margin="{Binding RelativeSource={RelativeSource Self}, Path=Width,Converter={StaticResource RightMarginConverter}}" VerticalAlignment="Center" HorizontalAlignment="Right">
+
+            <Ellipse.Width>
+                <MultiBinding Converter="{StaticResource AppearEllipseConverter}">
+                    <Binding ElementName="pickBorder"  
+             Path="Width" Mode="OneWay"/>
+                    <Binding>
+                        <Binding.Source>
+                            <sys:Double>3</sys:Double>
+                        </Binding.Source>
+                    </Binding>
+                </MultiBinding>
+            </Ellipse.Width>
+            <Ellipse.Height>
+                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+            </Ellipse.Height>
+        </Ellipse>
+        <Border x:Name="pickBorder" 
+                Width="8" 
+                Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                BorderBrush="#FF171717" 
+                BorderThickness="1,1,1,1" 
+                Grid.Column="2" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Center" 
+                Background="White"
+                Margin="{Binding RelativeSource={RelativeSource Self}, Path=Width,Converter={StaticResource RightMarginConverter}}" 
+                MouseLeftButtonDown="pickBorder_MouseDown">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Opacity" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFF9FB16"/>
+                            <Setter Property="Opacity" Value="1"/>
+                        </Trigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsMouseOver, ElementName=pickAreaVisEllipse}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Opacity" Value="1"/>
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+        </Border>
+    </Grid>
+</UserControl>
