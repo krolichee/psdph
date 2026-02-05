@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{419199AB-1067-48CB-9DFC-DA923A9C8E89}</ProjectGuid>
+    <ProjectGuid>{CEC49F15-BA26-42EA-860D-2C68AEDB79A9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>test.Nodes.UI</RootNamespace>
-    <AssemblyName>test.Nodes.UI</AssemblyName>
+    <RootNamespace>test.Nodes.Basic</RootNamespace>
+    <AssemblyName>test.Nodes.Basic</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -45,16 +45,12 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.2.2.10\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NodeUITest.cs" />
+    <Compile Include="TernarNodeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LetBarTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -64,32 +60,20 @@
       <Project>{93907D71-D3E7-41A8-AE97-C56F6366506F}</Project>
       <Name>psdPH.Lets.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\psdPH.LetViews\psdPH.LetViews.Core.csproj">
-      <Project>{40C091DE-6B26-4B8C-8B04-33EE8DFC1148}</Project>
-      <Name>psdPH.LetViews.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\psdPH.Nodes.Basic\psdPH.Nodes.Basic.csproj">
-      <Project>{7EDF461D-8B85-45C3-A952-A3A1CB96B2DD}</Project>
+      <Project>{7edf461d-8b85-45c3-a952-a3a1cb96b2dd}</Project>
       <Name>psdPH.Nodes.Basic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\psdPH.Nodes.UI\psdPH.Nodes.UI.csproj">
-      <Project>{A371C100-4F9C-4744-9837-4C73BBB09CE0}</Project>
-      <Name>psdPH.Nodes.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
-      <Project>{CC0FFFDC-697C-4469-B1FB-61B396311625}</Project>
-      <Name>psdPH.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TestDefinitions\TestDefinitions.csproj">
-      <Project>{37fe1678-2a21-431a-a816-e682675f2d22}</Project>
-      <Name>TestDefinitions</Name>
+    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
+      <Project>{5AA065A2-D4A8-49A7-8DC5-66E1081B84F9}</Project>
+      <Name>psdPH.Nodes.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props'))" />
     <Error Condition="!Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets'))" />

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{40C091DE-6B26-4B8C-8B04-33EE8DFC1148}</ProjectGuid>
+    <ProjectGuid>{7EDF461D-8B85-45C3-A952-A3A1CB96B2DD}</ProjectGuid>
     <OutputType>library</OutputType>
-    <RootNamespace>psdPH.LetViews</RootNamespace>
-    <AssemblyName>psdPH.LetViews</AssemblyName>
+    <RootNamespace>psdPH.Nodes.Basic</RootNamespace>
+    <AssemblyName>psdPH.Nodes.Basic</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -48,49 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Alignment\AlignmentLetViewControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="Alignment\AlignmentLetViewControl.xaml.cs">
-      <DependentUpon>AlignmentLetViewControl.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Check\CheckLetViewControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Choose\ChooseLetViewControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Date\DateLetViewControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Alignment\AlignmentLetView.cs" />
-    <Compile Include="Alignment\AlignmentLetViewModel.cs" />
-    <Compile Include="Alignment\AlignmentLetViewStrings.cs" />
-    <Compile Include="CaptionLetViewModel.cs" />
-    <Compile Include="Check\CheckLetView.cs" />
-    <Compile Include="Check\CheckLetViewControl.xaml.cs">
-      <DependentUpon>CheckLetViewControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Check\CheckLetViewModel.cs" />
-    <Compile Include="Choose\ChooseLetView.cs" />
-    <Compile Include="Choose\ChooseLetViewControl.xaml.cs">
-      <DependentUpon>ChooseLetViewControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Choose\ChooseLetViewModel.cs" />
-    <Compile Include="Date\DateLetView.cs" />
-    <Compile Include="Date\DateLetViewControl.xaml.cs">
-      <DependentUpon>DateLetViewControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Enum\EnumLetView.cs" />
-    <Compile Include="Enum\EnumLetViewModel.cs" />
-    <Compile Include="LetViewsLocalizator.cs" />
+    <Compile Include="TernarNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -114,24 +72,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ComboString\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\psdPH.Alignment\psdPH.Alignment.Core.csproj">
-      <Project>{325e2fd8-3957-48c2-a02c-5457875444f8}</Project>
-      <Name>psdPH.Alignment.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\psdPH.Lets.Core\psdPH.Lets.Core.csproj">
       <Project>{93907D71-D3E7-41A8-AE97-C56F6366506F}</Project>
       <Name>psdPH.Lets.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\psdPH.Localization\psdPH.Localization.csproj">
-      <Project>{5B904C27-3C81-4E9B-A882-6A08D71E7C44}</Project>
-      <Name>psdPH.Localization</Name>
+    <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
+      <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
+      <Name>psdPH.Nodes.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\psdPH.SpecialControls\psdPH.SpecialControls.csproj">
-      <Project>{7ea427ff-bbee-442c-a8e7-def7ec5d95a5}</Project>
-      <Name>psdPH.SpecialControls</Name>
+    <ProjectReference Include="..\psdPH.Reflection\psdPH.Reflection.csproj">
+      <Project>{E73844DC-D24C-490C-9098-98ADD149368A}</Project>
+      <Name>psdPH.Reflection</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -28,6 +28,11 @@ namespace psdPH.Lets
         public string Name => nameGetter();
         public Type Type => config.GetTypeOfMember();
         public object Obj => config.Obj;
-        
+
+        public static Let FromField(object obj, string fieldName)
+        {
+            var config = new ReflectionConfig(obj,fieldName);
+            return new Let(config);
+        }
     }
 }

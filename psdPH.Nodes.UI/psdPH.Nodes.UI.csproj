@@ -66,32 +66,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UI\ChainBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\NodeUI.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UI\SetupBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="CanvasDragBehavior.cs" />
-    <Compile Include="UI\AppearEllipseConverter.cs" />
-    <Compile Include="UI\ChainBar.xaml.cs">
-      <DependentUpon>ChainBar.xaml</DependentUpon>
+    <Compile Include="LetBar.xaml.cs">
+      <DependentUpon>LetBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\NodeBrushes.cs" />
-    <Compile Include="UI\NodeUI.xaml.cs">
-      <DependentUpon>NodeUI.xaml</DependentUpon>
+    <Compile Include="LetBarViewModel.cs" />
+    <Compile Include="NodeControl.xaml.cs">
+      <DependentUpon>NodeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\SetupBar.xaml.cs">
-      <DependentUpon>SetupBar.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="NodeControlViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -124,13 +106,13 @@
       <Project>{5b904c27-3c81-4e9b-a882-6a08d71e7c44}</Project>
       <Name>psdPH.Localization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\psdPH.Nodes.Basic\psdPH.Nodes.Basic.csproj">
+      <Project>{7edf461d-8b85-45c3-a952-a3a1cb96b2dd}</Project>
+      <Name>psdPH.Nodes.Basic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\psdPH.Nodes.Core\psdPH.Nodes.Core.csproj">
       <Project>{5aa065a2-d4a8-49a7-8dc5-66e1081b84f9}</Project>
       <Name>psdPH.Nodes.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\psdPH.Nodes\psdPH.Nodes.csproj">
-      <Project>{5226CE47-9474-4681-8847-69E4F38EB9F5}</Project>
-      <Name>psdPH.Nodes</Name>
     </ProjectReference>
     <ProjectReference Include="..\psdPH.Serialization\psdPH.Serialization.csproj">
       <Project>{CC0FFFDC-697C-4469-B1FB-61B396311625}</Project>
@@ -144,6 +126,16 @@
       <Project>{ee2ef308-810e-4884-a755-8149d3ffad78}</Project>
       <Name>psdPH.Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="LetBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NodeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,12 +6,7 @@
              xmlns:local="clr-namespace:psdPH.LetViews"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Horizontal">
-        <Label Content="{Binding Caption}"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
-        <DatePicker SelectedDate="{Binding DataContext.Value,
+    <DatePicker SelectedDate="{Binding DataContext.Value,
             RelativeSource={RelativeSource AncestorType=UserControl},Mode=TwoWay}">
-        </DatePicker>
-    </StackPanel>
+    </DatePicker>
 </UserControl>
