@@ -11,18 +11,28 @@ namespace psdPH.Nodes.UI
 {
     public class LetBarViewModel
     {
+        readonly Node Node;
+        public Let Let => LetView.Let;
         public LetView LetView { get; set; }
+        Lazy<NodeLet> nodeLet;
+        NodeLet createNodeLet() => new NodeLet(Node, Let);
+        public NodeLet NodeLet => nodeLet.Value;
         public bool IsChainable() { throw new NotImplementedException(); }
-        public RelayCommand DropLinkOn;
+        public RelayCommand DropLinkOnCommand;
 
         public LetBarViewModel(LetView letView)
         {
             LetView = letView;
+            DropLinkOnCommand = new RelayCommand(DropLinkOn);
+            nodeLet = new Lazy<NodeLet>(createNodeLet);
+        }
+        void DropLinkOn(object _)
+        {
+            NodeCanvasDispatcher.Instance.PullLinkTo(NodeLet);
+            
         }
         [Obsolete]
-        public LetBarViewModel()
-        {
-        }
+        public LetBarViewModel() { }
     }
 
 }

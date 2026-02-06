@@ -12,9 +12,9 @@ namespace psdPH.Nodes.Basic
     public class TernarNode : Node
     {
         public Let FactorLet { get; }
-        public Let TrueLet{get;}
-        public Let FalseLet{get;}
-        public Let OutputLet{get;}
+        public Let TrueLet { get; }
+        public Let FalseLet { get; }
+        public Let OutputLet { get; }
 
         public TernarNode()
         {
@@ -23,21 +23,30 @@ namespace psdPH.Nodes.Basic
             FalseLet = Let.FromField(this, nameof(FalseVariant));
             OutputLet = Let.FromField(this, nameof(Output));
         }
+        public override IEnumerable<Let> Inlets
+        {
+            get
+            {
+                yield return FactorLet;
+                yield return TrueLet;
+                yield return FalseLet;
+            }
+        }
 
-        public override Let[] Inlets => new[] {
-             FactorLet,
-             TrueLet,
-             FalseLet,
-            };
-
-        public override Let[] Outlets => new[] { OutputLet };
+        public override IEnumerable<Let> Outlets
+        {
+            get
+            {
+                yield return OutputLet;
+            }
+        }
 
         public bool Factor { get; set; }
         public object TrueVariant { get; set; }
         public object FalseVariant { get; set; }
         public object Output { get; internal set; }
 
-        public override void Execute()
+        protected override void execute()
         {
             Output = Factor ? TrueVariant : FalseVariant;
         }

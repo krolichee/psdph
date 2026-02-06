@@ -1,11 +1,12 @@
 ﻿using psdPH.Lets;
+using System.Collections.Generic;
 
 namespace psdPH.Nodes
 {
     public interface INodable
     {
-        Let[] Inlets { get; }
-        Let[] Outlets { get; }
+        IEnumerable<Let> Inlets { get; }
+        IEnumerable<Let> Outlets { get; }
 
         void Execute();
     }

@@ -42,13 +42,23 @@ namespace psdPH.Nodes
         {
             var from = NodeLet.Get(fromLet);
             var to = NodeLet.Get(toLet);
-            var link = new NodeLetLink(from,to);
+            LetLink(from, to);
+        }
+        public void LetLink(NodeLet from, NodeLet to)
+        {
+            var link = new NodeLetLink(from, to);
             nodeLetLinks.Add(link);
         }
         public void NodeLink(Node from, Node to)
         {
             var coherence = new Coherence(from,to);
             nodeLinks.Add(coherence);
+        }
+        public void DeleteNode(Node node)
+        {
+            nodeLetLinks.RemoveAll((nl)=>nl.From.Node==node|| nl.To.Node == node);
+            chainLinks.RemoveAll((nl)=>nl.FromLet.Node==node|| nl.ToNode == node);
+            nodeLinks.RemoveAll((nl)=>nl.FromLet.Node==node|| nl.ToNode == node);
         }
     }
 }

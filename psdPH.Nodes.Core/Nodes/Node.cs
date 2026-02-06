@@ -8,8 +8,22 @@ namespace psdPH.Nodes
 {
     abstract public class Node : INodable
     {
-        public abstract Let[] Inlets { get; }
-        public abstract Let[] Outlets { get; }
-        public abstract void Execute();
+        bool canBeExecuted = true;
+
+        protected Node()
+        {
+            Flowlet = Let.FromField(this,nameof(Flow));
+        }
+
+        bool Flow { get => canBeExecuted; set => canBeExecuted &= value; }
+        public Let Flowlet { get; private set; }
+        public abstract IEnumerable<Let> Inlets { get; }
+        public abstract IEnumerable<Let> Outlets { get; }
+        protected abstract void execute();
+        public void Execute()
+        {
+            if (canBeExecuted)
+                execute();
+        }
     }
 }

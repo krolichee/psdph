@@ -8,5 +8,10 @@ namespace psdPH.Nodes.UI
 {
     class NodeControlViewModel
     {
+        readonly Node node;
+        void DeleteNode(object _)
+        {
+            NodeCanvasDispatcher.Instance.DeleteNode(node);
+        }
     }
 }

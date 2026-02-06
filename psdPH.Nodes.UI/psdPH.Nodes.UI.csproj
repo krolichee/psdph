@@ -70,6 +70,8 @@
       <DependentUpon>LetBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="LetBarViewModel.cs" />
+    <Compile Include="LineViewModel.cs" />
+    <Compile Include="NodeCanvasDispatcher.cs" />
     <Compile Include="NodeControl.xaml.cs">
       <DependentUpon>NodeControl.xaml</DependentUpon>
     </Compile>
