@@ -6,6 +6,5 @@
              xmlns:local="clr-namespace:psdPH.LetViews.Choose"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Label Content="{Binding Caption}"> </Label>
     <ComboBox ItemsSource="{Binding Options}" SelectedValue="{Binding Value}" VerticalAlignment="Center"></ComboBox>
 </UserControl>

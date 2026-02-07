@@ -10,34 +10,20 @@ namespace psdPH.Nodes
 {
     public class NodeGraph
     {
-        readonly List<NodeLetLink> nodeLetLinks;
-        readonly List<ChainLink> chainLinks;
-        readonly List<Coherence> nodeLinks;
-        readonly List<Node> nodes;
+        readonly List<NodeLetLink> links = new List<NodeLetLink>();
+        readonly List<Node> nodes = new List<Node>();
         public NodeGraph()
         {
-            nodeLetLinks = new List<NodeLetLink>();
-            chainLinks = new List<ChainLink>();
-            nodes = new List<Node>();
-            nodeLinks = new List<Coherence>();
         }
-
-        public IEnumerable<NodeLetLink> NodeLetLinks => nodeLetLinks;
-        public IEnumerable<ChainLink> ChainLinks => chainLinks;
         //TODO NodeCoherence dict (from-to,to-from) cache
         //TODO calculated coherences
-        public IEnumerable<Coherence> NodeLinks => nodeLinks;
+        public IEnumerable<NodeLetLink> Links => links;
         public List<Node> Nodes => nodes;
 
-        public void Chain(Let fromLet, Node toNode, bool inverted=false)
+        public bool IsLinked(Node node1, Node node2)
         {
-            if (fromLet.Type != typeof(bool))
-                throw new ArgumentException();
-            var fromNodeLet = NodeLet.Get(fromLet);
-            var chain = new ChainLink(fromNodeLet, toNode, inverted);
-            chainLinks.Add(chain);
+            return links.Where((l) => l.From.Node == node1).Any((l) => l.To.Node == node2);
         }
-
         public void LetLink(Let fromLet, Let toLet)
         {
             var from = NodeLet.Get(fromLet);
@@ -47,18 +33,20 @@ namespace psdPH.Nodes
         public void LetLink(NodeLet from, NodeLet to)
         {
             var link = new NodeLetLink(from, to);
-            nodeLetLinks.Add(link);
-        }
-        public void NodeLink(Node from, Node to)
-        {
-            var coherence = new Coherence(from,to);
-            nodeLinks.Add(coherence);
+            if (to.Let == to.Node.Flowlet)
+                if (from.Let.Type != typeof(bool))
+                    throw new ArgumentException();
+            links.Add(link);
         }
         public void DeleteNode(Node node)
         {
-            nodeLetLinks.RemoveAll((nl)=>nl.From.Node==node|| nl.To.Node == node);
-            chainLinks.RemoveAll((nl)=>nl.FromLet.Node==node|| nl.ToNode == node);
-            nodeLinks.RemoveAll((nl)=>nl.FromLet.Node==node|| nl.ToNode == node);
+            links.RemoveAll((nl) => nl.From.Node == node || nl.To.Node == node);
+            nodes.Remove(node);
+        }
+
+        public void DeleteLink(NodeLetLink link)
+        {
+            links.Remove(link);
         }
     }
 }

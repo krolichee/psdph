@@ -35,10 +35,10 @@ namespace psdPH.Nodes.Core.Nodes
 
         IEnumerable<Node> NonExecutedNodes() => NodesExecuted.Where(kv => !kv.Value).Select(kv => kv.Key);
 
-        IEnumerable<ChainLink> GetIngoingChains(Node node) => Graph.ChainLinks.Where(cl => cl.ToNode == node);
+        IEnumerable<NodeLetLink> GetIngoingChains(Node node) => Graph.Links.Where( cl => cl.To.Node == node && cl.IsChain());
         bool IsAllChainsLet(Node node)
         {
-            return GetIngoingChains(node).Select(cl => cl.FromLet.Let.Value).All(b => (bool)b);
+            return GetIngoingChains(node).Select(cl => cl.From.Let.Value).All(b => (bool)b);
         }
 
         

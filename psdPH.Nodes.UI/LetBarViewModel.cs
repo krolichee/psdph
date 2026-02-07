@@ -28,7 +28,7 @@ namespace psdPH.Nodes.UI
         }
         void DropLinkOn(object _)
         {
-            NodeCanvasDispatcher.Instance.PullLinkTo(NodeLet);
+            NodeCanvasDispatcherGlobal.Instance.PullLinkTo(NodeLet);
             
         }
         [Obsolete]

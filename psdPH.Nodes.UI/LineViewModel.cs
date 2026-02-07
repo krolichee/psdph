@@ -10,20 +10,18 @@ namespace psdPH.Nodes.UI
     class LineViewModel
     {
 
-        NodeLet from;
-        NodeLet to;
+        NodeLetLink link;
 
-        public LineViewModel(NodeLet from, NodeLet to)
+        public LineViewModel(NodeLetLink link)
         {
-            this.from = from;
-            this.to = to;
+            this.link = link;
             DeleteLinkCommand = new RelayCommand(DeleteLink);
         }
         public RelayCommand DeleteLinkCommand;
 
         void DeleteLink(object _)
         {
-            NodeCanvasDispatcher.Instance.DeleteLink(from,to);
+            NodeCanvasDispatcherGlobal.Instance.DeleteLink(link);
         }
     }
 }

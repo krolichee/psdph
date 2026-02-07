@@ -15,7 +15,7 @@ namespace psdPH.Nodes
             Flowlet = Let.FromField(this,nameof(Flow));
         }
 
-        bool Flow { get => canBeExecuted; set => canBeExecuted &= value; }
+        public bool Flow { get => canBeExecuted; set => canBeExecuted &= value; }
         public Let Flowlet { get; private set; }
         public abstract IEnumerable<Let> Inlets { get; }
         public abstract IEnumerable<Let> Outlets { get; }

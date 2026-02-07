@@ -50,7 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Nodes\ChainLink.cs" />
     <Compile Include="Nodes\Coherence.cs" />
     <Compile Include="Nodes\Execution\GraphAnalyzer.cs" />
     <Compile Include="Nodes\Execution\GraphExecution.cs" />

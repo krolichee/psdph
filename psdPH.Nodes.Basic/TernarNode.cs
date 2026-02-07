@@ -40,7 +40,7 @@ namespace psdPH.Nodes.Basic
                 yield return OutputLet;
             }
         }
-
+        //HACK они точно должны быть public?
         public bool Factor { get; set; }
         public object TrueVariant { get; set; }
         public object FalseVariant { get; set; }

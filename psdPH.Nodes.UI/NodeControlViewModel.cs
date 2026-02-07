@@ -6,12 +6,18 @@ using System.Threading.Tasks;
 
 namespace psdPH.Nodes.UI
 {
-    class NodeControlViewModel
+    public class NodeControlViewModel
     {
         readonly Node node;
-        void DeleteNode(object _)
+
+        public NodeControlViewModel(Node node)
         {
-            NodeCanvasDispatcher.Instance.DeleteNode(node);
+            this.node = node;
+        }
+
+        public void DeleteNode(object _ = null)
+        {
+            NodeCanvasDispatcherGlobal.Instance.DeleteNode(node);
         }
     }
 }

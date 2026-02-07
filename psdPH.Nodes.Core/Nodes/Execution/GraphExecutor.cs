@@ -65,15 +65,15 @@ namespace psdPH.Nodes.Core.Nodes
 
         void PullLets(Node node)
         {
-            foreach (var nodeLetLink in GetInboundLetLinks(node))
+            foreach (var nodeLetLink in GetIngoingLinks(node))
             {
                 nodeLetLink.Push();
             }
         }
 
-        IEnumerable<NodeLetLink> GetInboundLetLinks(Node node)
+        IEnumerable<NodeLetLink> GetIngoingLinks(Node node)
         {
-            return Graph.NodeLetLinks.Where(nll => nll.To.Node == node);
+            return Graph.Links.Where(nll => nll.To.Node == node);
         }
         public static void ExecuteGraph(NodeGraph graph)
         {

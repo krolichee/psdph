@@ -20,17 +20,11 @@ namespace psdPH.Nodes
         {
             return new Coherence(nodeLetLink.From.Node, nodeLetLink.To.Node);
         }
-        static Coherence GetCoherence(ChainLink chainLink)
-        {
-            return new Coherence(chainLink.FromLet.Node, chainLink.ToNode);
-        }
         public static IEnumerable<Coherence> GetCoherences(this NodeGraph graph)
         {
-            var chainCoherences = graph.ChainLinks.Select(cl => GetCoherence(cl));
-            var straightCoherences = graph.NodeLinks.AsEnumerable();
-            var letLinkCoherences = graph.NodeLetLinks.Select(nll => GetCoherence(nll));
+            var letLinkCoherences = graph.Links.Select(nll => GetCoherence(nll));
             List<Coherence> result = new List<Coherence>();
-            return result.Concat(chainCoherences).Concat(straightCoherences).Concat(letLinkCoherences);
+            return letLinkCoherences;
         }
         public static IEnumerable<Node> GetSourceNodes(this NodeGraph graph)
         {

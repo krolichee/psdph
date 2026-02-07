@@ -14,11 +14,21 @@ namespace psdPH.Nodes
         public Node Node { get; set; }
         public Let Let { get; set; }
 
-        internal static NodeLet Get(Let let)
+        public static NodeLet Get(Let let)
         {
             if (!(let.Obj is Node))
                 throw new ArgumentException();
             return new NodeLet(let.Obj as Node,let);
+        }
+        public bool IsFlowlet()
+        {
+            return Let == Node.Flowlet;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is NodeLet other)
+                return other.Node.Equals(Node) && other.Let.Equals(Let);
+            return false;
         }
     }
 }
